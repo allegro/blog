@@ -28,8 +28,8 @@ layout: null
           {% for author in post.author %}
           <author>
             <name>{{site.data.members[author].name}}</name>
-            <photo>{{ site.url }}{{ site.baseurl }}/img/authors/{{author}}.jpg</photo>
-            <url>{{ site.url }}{{ site.baseurl }}/authors/{{author}}</url>
+            <photo>{{ site.url }}/img/authors/{{author}}.jpg</photo>
+            <url>{{ site.url }}/authors/{{author}}</url>
           </author>
           {% endfor %}
         </authors>

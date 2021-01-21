@@ -5,7 +5,7 @@ author: [piotr.szczepanik, piotr.guzik]
 tags: [open source, big data]
 ---
 
-Two years ago at [Allegro]({{ '/about-us' | prepend: site.url }}) we used to have a very typical Big Data technology stack. The architecture was based
+Two years ago at [Allegro](https://allegro.tech) we used to have a very typical Big Data technology stack. The architecture was based
 on a [Hadoop](https://hadoop.apache.org/) cluster and we would query it with plain [Hive](https://hive.apache.org/)
 queries, [Spark](https://spark.apache.org/) jobs and [Jupyter](https://jupyter.org/) notebooks. Over those last two
 years we have transformed it into a more efficient and easy to use
@@ -184,7 +184,7 @@ With most urgent fixes out of the way we could start developing new features. We
 that have turned integrating and using Turnilo into a more pleasant user experience.
 
 We needed to integrate Turnilo with
-[Opbox Admin]({{site.baseurl}}/2016/03/Managing-Frontend-in-the-microservices-architecture.html#opbox-admin)
+[Opbox Admin](/2016/03/Managing-Frontend-in-the-microservices-architecture.html#opbox-admin)
 so that users could easily navigate from the web component definition into a well-crafted component usage report.
 Turnilo already implemented */mkurl* endpoint which allowed
 [generating links](https://github.com/allegro/turnilo/blob/master/docs/generating-links.md) to a view

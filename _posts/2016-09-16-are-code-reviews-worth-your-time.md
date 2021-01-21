@@ -5,7 +5,7 @@ author: michal.kosmulski
 tags: [code review, peer review, source control, software quality, bitbucket, stash, gerrit, git]
 ---
 
-Code reviews play an important role in how we develop software at [Allegro]({{ '/about-us' | prepend: site.url }}). All code we developers write is reviewed
+Code reviews play an important role in how we develop software at [Allegro](https://allegro.tech). All code we developers write is reviewed
 by our peers. If you apply for a job with us, we may ask you to review a sample piece of code during your interview. A code review done
 right carries a lot of value, but if done wrong it can become a waste of time. In this article I will describe what I think makes a good
 code review, how reviews have evolved over time at the teams I worked with and what you can do in order to make code reviews worthwhile.
@@ -66,7 +66,7 @@ the tip of the iceberg. Test coverage tools may be helpful but coverage is just 
 have high test coverage and yet the tests to be of little value. Such tools are also often slow and since they do not really understand
 what a test is supposed to do (and what the tested software is supposed to do), their application is limited. When reviewing tests, pay
 attention to what the tests actually check, whether their names are true to their actual content, and whether they won’t make your
-development harder in the future, for example due to [overmocking]({{site.baseurl}}{% post_url  2015-05-26-is-overmocking-bad %}).
+development harder in the future, for example due to [overmocking]({% post_url  2015-05-26-is-overmocking-bad %}).
 
 <figure>
 <img alt="Functionality added through annotations tends to be not be tested so well as normal code" src="/img/articles/2016-08-01-are-code-reviews-worth-your-time/annotations.png" />
@@ -208,7 +208,7 @@ them can understand the code and the changes they suggest are what shows how wel
 ## Going through changes
 
 Just like depending on experience, people spot different issues with the same piece of code, likewise teams learn to conduct better
-and better code reviews over time. When we started regular code reviews at [Allegro]({{ '/about-us' | prepend: site.url }}), they often boiled down to minor
+and better code reviews over time. When we started regular code reviews at [Allegro](https://allegro.tech), they often boiled down to minor
 issues such as code formatting, renaming variables and maybe extracting some code to a separate method here and there. We dubbed this stage
 _Sonar-Driven Development_ since most code reviews were about things which could be found by Sonar as well. Fortunately, with time we
 started paying attention to higher-level issues such as good design, separating business logic from the persistence layer or making sure

@@ -5,7 +5,7 @@ author: dariusz.jedrzejczyk
 tags: [microservices, service mesh, architecture, open source]
 ---
 
-This year [Allegro.pl]({{ '/about-us' | prepend: site.url }}) turns 21. The company, while serving millions of Poles in their
+This year [Allegro.pl](https://allegro.tech) turns 21. The company, while serving millions of Poles in their
 online shopping, has taken part in many technological advances. Breaking the monolith,
 utilising public cloud offerings, machine learning, you name it. Even though many technologies
 we use might seem as just following the hype, their adoption is backed by solid reasoning.
@@ -39,7 +39,7 @@ We also have:
 * a few edge solutions in place (API Gateways, Edge Proxies, Backends for Frontends, etc.),
 * external load balancers,
 * reverse proxies,
-* [a distributed message broker]({{site.baseurl}}{% post_url  2019-05-16-hermes-1-0-released %}),
+* [a distributed message broker]({% post_url  2019-05-16-hermes-1-0-released %}),
 * several services running on VMs,
 * a Hadoop cluster with batch jobs,
 * and an infamous, taken-apart, but still running, PHP monolith.
