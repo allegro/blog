@@ -6,7 +6,7 @@ tags: [elasticsearch, performance]
 ---
 
 Lately [my colleague Michał](/authors/michal.kosmulski/) described how he tracked a
-[Java memory leak]({% post_url  2018-05-07-a-comedy-of-errors-debugging-java-memory-leaks %}). Although that
+[Java memory leak]({% post_url 2018-05-07-a-comedy-of-errors-debugging-java-memory-leaks %}). Although that
 problem was completely solved, new complications suddenly appeared on the horizon. As it usually happens, everything
 started with an alert from our monitoring system which woke me up in the middle of the night.
 

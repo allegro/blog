@@ -28,7 +28,7 @@ searching for an offer, clicking on it to view details, and then buying, followi
 * Listing — prepares data related to item listing (search result) pages
 * Search — responsible for low-level search in offers, based on keywords, parameters and other criteria
 * Transaction — allows items to be bought
-* [Opbox]({% post_url  2016-03-12-Managing-Frontend-in-the-microservices-architecture %}) — responsible for frontend rendering
+* [Opbox]({% post_url 2016-03-12-Managing-Frontend-in-the-microservices-architecture %}) — responsible for frontend rendering
 of the data returned by backend services
 * Item — service for frontend rendering of item pages
 

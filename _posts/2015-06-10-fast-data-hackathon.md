@@ -167,7 +167,7 @@ do not interfere with any other job on the cluster.
 
 The diagram below presents mean execution time of each query:
 
-![Mean execution times plot](1 "Mean Execution times plot")
+![Mean execution times plot](/img/articles/2015-05-04-fast-data-hackathon/MeanExecution.png "Mean Execution times plot")
 
 Hive on Map-Reduce, unsurprisingly, is the slowest competitor while the fastest mean times were usually reported for Impala or Drill.
 When analyzing all the gathered results, presented in the diagram below, it can be noticed that the times seem to be consistent across

@@ -115,7 +115,7 @@ Of course, there is a [community plugins repository](http://plugins.gradle.org/)
 hosted by Gradle.
 A plugin created by our colleague, [Adam Dubiel](/authors/adam.dubiel/),
 is also [there](http://plugins.gradle.org/plugin/pl.allegro.tech.build.axion-release)
-(read more about `axion-release-plugin` in [this blog post]({% post_url  2014-09-24-axion-release-plugin %})).
+(read more about `axion-release-plugin` in [this blog post]({% post_url 2014-09-24-axion-release-plugin %})).
 
 ### Multi-module projects
 In our opinion it’s one of Gradle’s killer features: Gradle truly supports multi-module projects, or multi-project builds as they call them.
@@ -141,7 +141,7 @@ allprojects {
 ```
 
 We encourage you to use `axion-release-plugin`
-(see [this blog post]({% post_url  2014-09-24-axion-release-plugin %})).
+(see [this blog post]({% post_url 2014-09-24-axion-release-plugin %})).
 With this plugin you can discover project version from Git tags and forget about anemic *release commits*.
 
 Defining internal dependencies between two subprojects is surprisingly concise.
