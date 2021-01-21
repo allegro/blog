@@ -19,7 +19,7 @@ Let’s suppose that you are conducting an experiment that checks if making the 
 You want to deploy the larger button if it performs better than the smaller button in terms of the CTR.
 50% of your users see the smaller button and 50% see the larger button.
 
-<img alt="Small button vs large button" src="{{site.baseurl}}/{% link /img/articles/2019-07-23-ab-testing-calculating-required-sample-size/small-vs-large.png %}"" />
+<img alt="Small button vs large button" src="/img/articles/2019-07-23-ab-testing-calculating-required-sample-size/small-vs-large.png" />
 
 After you stop your experiment, you check the CTR of each version
 of your button and you can see that the larger button has 10% CTR and the smaller button has 9% CTR. Is it proof that the larger button
@@ -34,13 +34,13 @@ experiment you need the number of clicks and the number of views for each button
 and 1000 views and the small button got 90 clicks and 1000 views.
 Using this [calculator](https://www.surveymonkey.com/mp/ab-testing-significance-calculator/) you get the result "Result not significant!":
 
-<img alt="Result not significant!" src="{{site.baseurl}}/{% link /img/articles/2019-07-23-ab-testing-calculating-required-sample-size/non-significant.png %}"" />
+<img alt="Result not significant!" src="/img/articles/2019-07-23-ab-testing-calculating-required-sample-size/non-significant.png" />
 
 In other words, the difference in buttons CTR comes from random user behaviour and not from the actual difference between the buttons.
 Now, let’s modify the button performance a bit. Let’s say that the large button got 200 clicks and 1000 views and the small button got 90 clicks and 1000 views.
 When you calculate the significance again you get "Significant result!":
 
-<img alt="Result not significant!" src="{{site.baseurl}}/{% link /img/articles/2019-07-23-ab-testing-calculating-required-sample-size/significant.png %}"" />
+<img alt="Result not significant!" src="/img/articles/2019-07-23-ab-testing-calculating-required-sample-size/significant.png" />
 
 It means that the difference between the buttons CTR comes from the real difference between them and not from random users’ behaviour.
 
@@ -75,12 +75,12 @@ experiment, one button view is one sample.
 As you can see, in the picture below, by increasing the number of samples,
 the non-significant result changed to significant result (percentage CTR values are the same as previous ones):
 
-<img alt="Result not significant!" src="{{site.baseurl}}/{% link /img/articles/2019-07-23-ab-testing-calculating-required-sample-size/higher-sample-size.png %}"" />
+<img alt="Result not significant!" src="/img/articles/2019-07-23-ab-testing-calculating-required-sample-size/higher-sample-size.png" />
 
 If you look closely at the results that [calculator](https://www.surveymonkey.com/mp/ab-testing-significance-calculator/) provides,
 you can see the details section. The details section contains information used by the calculator to determine the final result.
 
-<img alt="Result not significant!" src="{{site.baseurl}}/{% link /img/articles/2019-07-23-ab-testing-calculating-required-sample-size/details-pvalue.png %}"" />
+<img alt="Result not significant!" src="/img/articles/2019-07-23-ab-testing-calculating-required-sample-size/details-pvalue.png" />
 
 The key value used to determine the final result is the [p-value](https://www.statsdirect.com/help/basics/p_values.htm). Under the hood, calculator calculates the p-value and compares
 it with the threshold calculated from the confidence level:
@@ -106,7 +106,7 @@ It’s because your chance of getting false positive is rising. **False positive
 difference where there is no such difference**.
 
 <figure class="image">
-  <img src="{{site.baseurl}}/{% link /img/articles/2019-07-23-ab-testing-calculating-required-sample-size/pValue_SampleSize.svg %}"" alt="pValue Sample Size">
+  <img src="/img/articles/2019-07-23-ab-testing-calculating-required-sample-size/pValue_SampleSize.svg"" alt="pValue Sample Size">
   <figcaption><center>Figure 1: Changes of p-value during an experiment lifecycle - data generated in a simulation </center></figcaption>
 </figure>
 
@@ -120,7 +120,7 @@ Problem is that the result of your test depends vastly on a number of samples. Y
 You can see on _Figure 2_ that fraction of detected true positives (detecting a difference when there is one) is increasing with sample size.
 
 <figure class="image">
-  <img src="{{site.baseurl}}/{% link /img/articles/2019-07-23-ab-testing-calculating-required-sample-size/TruePositives_SampleSize.svg %}"" alt="True Positives Sample Size">
+  <img src="/img/articles/2019-07-23-ab-testing-calculating-required-sample-size/TruePositives_SampleSize.svg"" alt="True Positives Sample Size">
   <figcaption><center>Figure 2: Dependency between number of detected true positives and sample size - data gathered during simulations </center></figcaption>
 </figure>
 
@@ -184,7 +184,7 @@ Increasing the power will also result in an enlarged sample size. If you want to
 We implemented our own sample size calculator for our experimentation platform. Below, we describe the theory behind our calculator.
 
 <figure class="image">
-  <img src="{{site.baseurl}}/{% link /img/articles/2019-07-23-ab-testing-calculating-required-sample-size/chi-calculator.png %}""
+  <img src="/img/articles/2019-07-23-ab-testing-calculating-required-sample-size/chi-calculator.png""
   alt="Chi sample size calculator"  width="90%" style="border:1px solid gray; padding:2%">
   <figcaption><center>Figure 3: The sample size calculator implemented by Allegro experimentation team</center></figcaption>
 </figure>

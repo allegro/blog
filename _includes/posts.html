@@ -3,7 +3,7 @@
     {% for post in site.posts offset:include.offset %}
     <article>
         <time class="post-date">{{ post.date | date: "<strong>%b %-d</strong> %Y" }}</time>
-        <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+        <a class="post-link" href="{{ post.url }}">{{ post.title }}</a>
         <p></p>
     </article>
     {% endfor %}

@@ -37,7 +37,7 @@ The graphic below shows how a change entered via VaaS GUI or API gets distribute
 and then applied on all servers simultaneously. The whole process should not take more than 10 secons. Multiple Varnish
 clusters are supported.
 
-![VaaS application]({{site.baseurl}}/{% link /img/articles/2015-07-28-vaas-application.png %} "VaaS application")
+![VaaS application](/img/articles/2015-07-28-vaas-application.png "VaaS application")
 
 ### What are the benefits of using VaaS
 Since we started using VaaS on a broader scale in Spring 2014, the most repetitive, time consuming, error prone and
