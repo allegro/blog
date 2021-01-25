@@ -12,6 +12,7 @@ layout: default
                 <ul class="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList">
                     <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
                         <a href="/" itemprop="item"><span itemprop="name">allegro.tech blog</span></a>
+                        <meta itemprop="position" content="1" />
                     </li>
                     <li class="authors" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
                         {% for author in page.author %}
@@ -19,10 +20,12 @@ layout: default
                            itemprop="item">{{site.data.members[author].name}}</a>
                         <meta itemprop="name" content="{{site.data.members[author].name}}"/>
                         {% endfor %}
+                        <meta itemprop="position" content="2" />
                     </li>
                     <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
                         <link href="{{ page.url }}" itemprop="item">
                         <span itemprop="name">{{ page.title }}</span>
+                        <meta itemprop="position" content="3" />
                     </li>
                 </ul>
             </div>
