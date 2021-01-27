@@ -71,14 +71,14 @@ only messages it’s interested in, not the whole topic.
       <img
         alt="Hermes console topic view"
         style="max-width:700px;width:90%"
-        src="/img/articles/2019-05-16-hermes-1-0-released/hermes-console-topic-view.png"">
+        src="/img/articles/2019-05-16-hermes-1-0-released/hermes-console-topic-view.png">
     </p>
     <br/>
     <p align="center">
           <img
             alt="Hermes console subscription view"
             style="max-width:700px;width:90%"
-            src="/img/articles/2019-05-16-hermes-1-0-released/hermes-console-subscription-view.png"">
+            src="/img/articles/2019-05-16-hermes-1-0-released/hermes-console-subscription-view.png">
     </p>
 
 ## How important is Hermes for Allegro?

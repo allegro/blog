@@ -106,7 +106,7 @@ It’s because your chance of getting false positive is rising. **False positive
 difference where there is no such difference**.
 
 <figure class="image">
-  <img src="/img/articles/2019-07-23-ab-testing-calculating-required-sample-size/pValue_SampleSize.svg"" alt="pValue Sample Size">
+  <img src="/img/articles/2019-07-23-ab-testing-calculating-required-sample-size/pValue_SampleSize.svg" alt="pValue Sample Size">
   <figcaption><center>Figure 1: Changes of p-value during an experiment lifecycle - data generated in a simulation </center></figcaption>
 </figure>
 
@@ -120,7 +120,7 @@ Problem is that the result of your test depends vastly on a number of samples. Y
 You can see on _Figure 2_ that fraction of detected true positives (detecting a difference when there is one) is increasing with sample size.
 
 <figure class="image">
-  <img src="/img/articles/2019-07-23-ab-testing-calculating-required-sample-size/TruePositives_SampleSize.svg"" alt="True Positives Sample Size">
+  <img src="/img/articles/2019-07-23-ab-testing-calculating-required-sample-size/TruePositives_SampleSize.svg" alt="True Positives Sample Size">
   <figcaption><center>Figure 2: Dependency between number of detected true positives and sample size - data gathered during simulations </center></figcaption>
 </figure>
 
@@ -184,7 +184,7 @@ Increasing the power will also result in an enlarged sample size. If you want to
 We implemented our own sample size calculator for our experimentation platform. Below, we describe the theory behind our calculator.
 
 <figure class="image">
-  <img src="/img/articles/2019-07-23-ab-testing-calculating-required-sample-size/chi-calculator.png""
+  <img src="/img/articles/2019-07-23-ab-testing-calculating-required-sample-size/chi-calculator.png"
   alt="Chi sample size calculator"  width="90%" style="border:1px solid gray; padding:2%">
   <figcaption><center>Figure 3: The sample size calculator implemented by Allegro experimentation team</center></figcaption>
 </figure>

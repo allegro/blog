@@ -97,7 +97,7 @@ Before we move on to discuss next stages of the project and tests we carried out
 than Hive. Cluster’s infrastructure involves one coordinator and many workers that are ready to process queries right
 after being launched, so you do not waste time for creating sessions and spawning Yarn containers.
 
-<figure class="image"><img src="/img/articles/2017-06-13-presto-small-step-for-devops-engineer-big-step-for-big-data-analyst/presto-overview.png"" alt="Presto archirecture overview"><figcaption>(Based on: <a href="https://prestodb.io/overview.html">https://prestodb.io/overview.html</a>)</figcaption></figure>
+<figure class="image"><img src="/img/articles/2017-06-13-presto-small-step-for-devops-engineer-big-step-for-big-data-analyst/presto-overview.png" alt="Presto archirecture overview"><figcaption>(Based on: <a href="https://prestodb.io/overview.html">https://prestodb.io/overview.html</a>)</figcaption></figure>
 
 Data is stored in memory as an optimized internal data structure and streamed between the processes when moving to
 consecutive stages of execution plans. Therefore, intermediary data is never saved on a drive when computing the query

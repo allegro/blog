@@ -90,7 +90,7 @@ Top layers closely resemble a traditional neural network with fully-connected la
 
 Example of a CNN:
 
-<figure class="image"><img src="/img/articles/2016-12-19-deep-learning-for-frame-detection/cnn.png"" alt="cnn"><figcaption>(CC BY-SA 4.0 https://en.wikipedia.org/wiki/File:Typical_cnn.png)</figcaption></figure>
+<figure class="image"><img src="/img/articles/2016-12-19-deep-learning-for-frame-detection/cnn.png" alt="cnn"><figcaption>(CC BY-SA 4.0 https://en.wikipedia.org/wiki/File:Typical_cnn.png)</figcaption></figure>
 
 ## Our approach and experiments
 
@@ -190,7 +190,7 @@ although given a pixel-annotation dataset &mdash; deep learning can solve the pr
   * [NeuralTalkv2](https://github.com/karpathy/neuraltalk2) creates textual descriptions of what is seen on an image.
   * [Google deep dream](https://github.com/google/deepdream) is able to create new art-pieces of a given style.
 
-    <figure class="image"><img src="/img/articles/2016-12-19-deep-learning-for-frame-detection/DeepDreamingProcess.jpg"" alt="dd"><figcaption>(CC BY-SA 4.0 https://commons.wikimedia.org/wiki/File:DeepDreamingProcess.jpg)</figcaption></figure>
+    <figure class="image"><img src="/img/articles/2016-12-19-deep-learning-for-frame-detection/DeepDreamingProcess.jpg" alt="dd"><figcaption>(CC BY-SA 4.0 https://commons.wikimedia.org/wiki/File:DeepDreamingProcess.jpg)</figcaption></figure>
 
 ### Resources
 
