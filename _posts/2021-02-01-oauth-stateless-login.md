@@ -30,7 +30,7 @@ You need to prove your identity, that's all. You may authenticate, for example, 
 You may need to use a token (hard or soft), an authentication-app-generated code or a text message sent to your phone number.
 I hope you tend to use at least two of these. Anyway, once you've done it, you are in.
 
-![Say the password and enter](/img/articles/2021-01-28-oauth-stateless-login/password.png)
+![Say the password and enter](/img/articles/2021-02-01-oauth-stateless-login/password.png)
 
 Authorization is about verifying *what you are allowed to do*. I'm not going to copy-paste bookish definitions here. For example, when entering a university library, you authenticate by presenting your ID.
 The librarian checks the authenticity of the document and analyzes whether you are the one on the photograph or not.
@@ -38,7 +38,7 @@ The authorization process starts right away.
 To keep things simple, the librarian checks, based on your confirmed identity, whether you are a professor or a student. This implies which books you can borrow and how many you can take home.
 This is where the privileges or permissions come into play.
 
-![But only if you are a friend](/img/articles/2021-01-28-oauth-stateless-login/authorization.jpeg)
+![But only if you are a friend](/img/articles/2021-02-01-oauth-stateless-login/authorization.jpeg)
 
 If you are already bored with the most obvious meme I could use, let me give you another obvious example of authorization.
 When entering a military zone, you also present your ID for authentication. You can't get in unless you ARE, e.g. a military officer. It's not the authentication that failed then.
@@ -47,7 +47,7 @@ You are forbidden to enter as you have not been granted such an authority.
 
 One last meme, I promise.
 
-![Authority is not granted to you](/img/articles/2021-01-28-oauth-stateless-login/authority_not_granted.png)
+![Authority is not granted to you](/img/articles/2021-02-01-oauth-stateless-login/authority_not_granted.png)
 
 ## OAuth 2.0: why is it not about authenticating the user?
 
@@ -67,7 +67,7 @@ The OAuth specification describes this framework as available in [four flavours]
 
 So 2012.
 
-![Ten years later](/img/articles/2021-01-28-oauth-stateless-login/i-built-a-time-machine-to-travel-through-time.jpg)
+![Ten years later](/img/articles/2021-02-01-oauth-stateless-login/i-built-a-time-machine-to-travel-through-time.jpg)
 
 The [Resource Owner Credentials](https://auth0.com/docs/flows/resource-owner-password-flow) (User Credentials) flow is already legacy and [officially banned by IETF](https://tools.ietf.org/html/draft-ietf-oauth-security-topics-13#section-3.4).
     The latest OAuth 2.0 Security Best Current Practice disallows the password grant entirely.
@@ -95,7 +95,7 @@ Let's consider the dumbest example ever.
 as Base64 encoded strings.
 * The *authorization server* is also Facebook itself.
 
-![Phishing level master](/img/articles/2021-01-28-oauth-stateless-login/legit.jpg)
+![Phishing level master](/img/articles/2021-02-01-oauth-stateless-login/legit.jpg)
 
 So, in the above scenario, you get the cool feature without giving these guys your Facebook login and password. When you are redirected to the Facebook login page
 first you give your consent for fb64.com to access a specific subset of your profile data. Next you type in your credentials (you send them to facebook.com, not to fb64.com) and
@@ -105,7 +105,7 @@ What have you done? You've **granted** some **client** app access to your **prot
 
 But is that what we meant? Is that the kind of **resource sharing** and **delegated authorization** you expect when you want to, for example, log in to Booking, via Facebook, to book a hotel room but don't want to set up an account?
 
-![Thanks but thanks](/img/articles/2021-01-28-oauth-stateless-login/no-no-no-thank-you.jpg)
+![Thanks but thanks](/img/articles/2021-02-01-oauth-stateless-login/no-no-no-thank-you.jpg)
 
 ### It's **Real Life Scenario** Time
 
@@ -264,7 +264,7 @@ will be interceptable if you don't use TLS, including JWT.
 
 Me discovering someone took over the evergreen refresh token to my mail account:
 
-![Me discovering someone took over the evergreen refresh token linked to my mail account](/img/articles/2021-01-28-oauth-stateless-login/refresh_token.jpg)
+![Me discovering someone took over the evergreen refresh token linked to my mail account](/img/articles/2021-02-01-oauth-stateless-login/refresh_token.jpg)
 
 There is no you-meme-it-wrong record I couldn't break.
 
@@ -306,7 +306,7 @@ approach using encryption. Obviously, to achieve revocation you need to store th
 anyway.
 
 This is where the critics of introducing JWTs in the main authorization flows, as opposed to one-time operations or server-side machine-to-machine communication, hit you hard:
-![Authority is not granted to you](/img/articles/2021-01-28-oauth-stateless-login/jwt-flowchart.png)
+![Authority is not granted to you](/img/articles/2021-02-01-oauth-stateless-login/jwt-flowchart.png)
 [Source: again the Slootweg article](http://cryto.net/~joepie91/blog/2016/06/19/stop-using-jwt-for-sessions-part-2-why-your-solution-doesnt-work/)
 
 This positions us somewhere between the second and the third “swimlane“ on the above chart, which means
