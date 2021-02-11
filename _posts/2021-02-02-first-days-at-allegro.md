@@ -16,8 +16,8 @@ But first I would like to give you a little background of my professional work l
 Long before becoming a developer, I was a chemical engineer, and I was designing distilleries, cosmetic and oil refinery plants, etc. During my work, I often
 used Microsoft Excel and VBA as my main apps for solving complex problems. I enjoyed it more than the job I was assigned. So I decided to take a Java bootcamp
 and afterwards I got hired by an IT company in my area. At my first IT job, I was hired as a junior, but I was already treated as a regular programmer.
-It was nice, I own them a lot, but on the other hand the only feedback I got was when something was not working. From the beginning, I was fully aware of how
-basic my knowledge was after the bootcamp. While catching up I realized that in this company I would not develop anymore, and I would be working with legacy
+It was nice, I owe them a lot, but on the other hand the only feedback I got was when something was not working. From the beginning, I was fully aware of how
+basic my knowledge was after the bootcamp. While catching up I realized that at this company I would not develop anymore, and I would be working with legacy
 technologies throughout the rest of my career.
 
 ## A piece of cake?
@@ -61,12 +61,12 @@ Another great thing is pair programming. During these sessions it is easier to u
 ## Unit, integration, and end-to-end testing
 
 As I wrote, unreviewed code will not be deployed to production and without tests it is not going to pass the review. At Allegro, each change in code needs
-to be tested. We conduct unit and integration tests, and we work with two test environments.
+to be tested. We write unit and integration tests, and we work with two test environments.
 
 One is totally a developer’s playground where you make your &lsquo;little Allegro&rsquo;. It is called phoenix. Every team has its own phoenix env for
 experiments. However, it has some issues. Since there are so many dependencies to other services, your already set up environment may not work properly until it
 is manually updated. So a very common situation is that before you start testing your change, you need to spend some time to get the whole environment working.
-That is frustrating, especially in the beginning.
+This is frustrating, especially in the beginning.
 
 The second one is a pre-prod sandbox &mdash; it is like normal Allegro, but unlike the dev environment, the sandbox is more consistent and works almost like
 prod. So there are a lot of possibilities to test your change and it’s good to have this feeling of confidence.
@@ -77,7 +77,7 @@ other, but we look for the best solution to the problem and fix it.
 
 ## Hack the day
 
-Sometimes teams do internal hackathons (called fedex-days) &mdash; we divide into two or three teams and we are working on subjects that we choose. We want
+Sometimes teams do internal hackathons (called fedex-days) &mdash; we divide into two or three teams and we work on subjects that we choose. We want
 to try a new programming language &mdash; we just do it; make an application for sharing memes &mdash; perfectly fine; write an extension for Slack &mdash; why
 not, go have some fun! Usually, we spend two working days getting off work. That’s very refreshing.
 
