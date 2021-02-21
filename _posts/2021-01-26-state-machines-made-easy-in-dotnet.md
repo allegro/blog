@@ -1,18 +1,18 @@
 ---
 layout: post
-title: Finite-state machines made easy — a real-life application in .NET
+title: Finite-state machines made easy
 author: [tymon.felski]
 tags: [tech, dotnet, state_machine, allegro_pay]
 ---
 
 Coordinating complex processes, both business and technical, can be a challenging issue in a distributed system.
 Especially when the complications associated with them, such as concurrency, idempotency, scalability and hindered
-testability come into play — possibly all at once.
+testability, come into play — possibly all at once.
 This is definitely something that can keep many programmers awake at night.
 
-While that may sound dramatic, in reality there are many different solutions to this problem.
-One group of such solutions extensively uses finite-state machines, also known as finite-state automata.
-As this article is meant to be for everyone, let’s start with some background information about what they are and how
+While this may sound dramatic, in reality there are many different solutions to this problem.
+One group of such solutions extensively uses finite-state machines also known as finite-state automata.
+As this article is meant for everyone, let’s start with some background information about what they are and how
 they work.
 
 ## What are finite-state machines
@@ -20,24 +20,24 @@ they work.
 For the sake of readability, I will sometimes be referring to finite-state machines as to “just” state machines.
 If you’re already familiar with their formal definition, you may skip to the next section.
 
-Formally speaking, a finite-state machine is a mathematical model of computation that describes an abstract system,
-which has a finite number of permissible states. At any given point in time, the system is in exactly one of these
+Formally speaking, a finite-state machine is a mathematical model of computation that describes an abstract system
+having a finite number of permissible states. At any given point in time, the system is in exactly one of these
 states.
 
-More practically, such a machine is described by:
+In practical terms such a machine is described by:
 
 - an initial (start) state,
 - a set of possible states,
 - a sequence of possible inputs (events),
-- a transition function, which based on the last observed input and the machine’s current state, determines the next
+- a transition function which based on the last observed input and the machine’s current state, determines the next
 state,
 - and a set of terminal (end) states — optionally.
 
 The machine starts off in the initial state and inspects all inputs in sequence.
 Upon observing each input, it uses the transition function to change its state.
 The processing ends once all inputs have been observed.
-If the machine’s state at the end of processing is one of the terminal states, it is sometimes said that the machine
-accepts the given input, and rejects it otherwise.
+If the machine’s state at the end of processing is one of the terminal states, it is said that the machine accepts the
+given input, and rejects it otherwise.
 
 As a side note, the description provided above uses the deterministic model of a finite-state automaton.
 There are also alternative, non-deterministic machines, but I won’t be delving into them too much, as they can be
@@ -104,7 +104,7 @@ operations within a distributed system.
 
 ## A more maintainable approach
 
-I would like to share our approach to this problem with you.
+Let me share our approach to this problem.
 We have come up with a framework for building state machines in .NET with very little code that is maintainable and
 testable.
 State machines built with this framework serve a purpose of orchestrating a wide range of business and technical
@@ -112,7 +112,7 @@ processes in our microservice-based distributed architecture.
 The framework is equipped with various features dictated by paradigms of distributed systems, which extend the
 standard state machine definition.
 
-Before I move to an example of its real-life application, I want to break down the state machine’s API, so that you
+Before I move on to an example of its real-life application, I want to break down the state machine’s API, so that you
 know what you’re looking at later on.
 To keep things short, I will be showing you only snippets of simplified code, as implementation details can be
 expanded upon in follow-up posts.
@@ -142,22 +142,22 @@ var stateMachine = new StateMachine<StateBase, EventBase>(new InitialState());
 Having created this object, we may start defining transitions.
 Each transtion consists of three required elements:
 
-- the state from which the trasition can be triggered,
+- the state from which the transition can be triggered,
 - the transition trigger (an event),
 - the state to which the transition leads.
 
-Optionally, a transition can have side effects, which we simply call commands.
+Optionally, a transition can have side effects, called simply commands.
 A command (or a set of commands) will be run after a successful transition.
-Those can be pretty much anything from sending a message to another state machine, to calling a specific service and
+Those can be pretty much anything from sending a message to another state machine to calling a specific service and
 delegating a task to it.
 Commands allow a seamless integration of the state machine with external components.
 There is a drawback, however.
-Command execution may fail, which requires an idempotent retry policy to be employed.
+Command execution may fail, what requires an idempotent retry policy to be employed.
 
 Transitions and commands can be conditional, meaning that a logical expression can be guarding and preventing the
 execution of the whole transition, or just a command in some cases.
 
-A builder pattern, which combines all of the aforementioned requirements, is used to compose a transition:
+A builder pattern which combines all of the aforementioned requirements is used to compose a transition:
 
 ```csharp
 stateMachine
@@ -174,13 +174,13 @@ stateMachine
 
 This structure may be overwhelming at first, but bear with me.
 It will all make sense in a bit.
-For now you need to know that if:
+As for now you need to know that:
 
-- the state machine is in a state of type `TStateFrom`,
+- if the state machine is in a state of `TStateFrom` type,
 - and an event of type `TEvent` occured,
-- and the condtition (if defined) passed to `When` method is satisfied,
+- and the condition (if defined) passed to `When` method is satisfied,
 
-the transition will fire and the state machine will switch to a new state of type `TStateTo` using the factory method
+the transition will fire up and the state machine will switch to a new state of type `TStateTo` using the factory method
 expression passed to `ToState` method.
 
 The state machine class exposes a method which can be used to trigger a transition with an event:
@@ -190,7 +190,7 @@ public TransitionResult Apply(TEventBase @event);
 ```
 
 This method applies the supplied event to the current state by trying to find a matching transition in the transition
-mapping, and changes the internal state of the machine.
+mapping and changes the internal state of the machine.
 The result contains information about the performed transition, along with commands that should be run.
 
 ```csharp
@@ -204,19 +204,19 @@ public class TransitionResult
 }
 ```
 
-If no matching transition definition was found given the machine’s current state, or if a transition was found, but its
-precondition was not met, the event application will result in an invalid transition.
+If no matching transition definition is found given the machine’s current state – or if a transition is found, but its
+precondition is not met – the event application will result in an invalid transition.
 In that case, the state machine will not react to the event and simply retain its state, possibly logging that an
-invalid event has been received.
+invalid event was received.
 
-If there are multiple matching transitions, the first one will fire (in definition order).
-We should, however, avoid designing states machines in such way, if possible.
+If there are multiple matching transitions, the first one will fire up (in definition order).
+We should, however, avoid designing states machines in such way if possible.
 
 As you can see, the representation of the machine is primarily type-based, so we can use polymorphism to our advantage.
-By calling `FromState<TStateBase>()` we can have a transition that can be fired from any state.
-Similarily, if we use a type that only some selected states derive from, we will have a transition applicable to those
+By calling `FromState<TStateBase>()` we can have a transition that can be fired up from any state.
+Similarily, if we use a type that only some selected states derive from, we will have a transition applicable to these
 states only.
-It would be equivalent to duplicating that same transition for every one of those states.
+It would be equivalent to duplicating that same transition for every one of these states.
 This syntax can be particularly useful, when dealing with processes that have an expiration date and have to be
 completed within a specific time frame.
 Receiving an event about the process’ expiration may have to be handled regardless of the machine’s current state and
@@ -237,17 +237,17 @@ If you don’t care for any of that, you may skip to the next section.
 ### Storage
 
 The state machine implementation is based on event sourcing.
-In summary, this means that we don’t save the state of our application objects, but rather a series of events, which
+In summary, this means that we don’t save the state of our application objects, but rather a series of events that
 change the object’s state.
-Those events will give us the current view of the object when aggregated (“replayed”) in the order in which they
+These events will give us the current view of the object when aggregated (“replayed”) in the order in which they
 occured.
 For this purpose we currently use an open-source library,
 [SQLStreamStore](https://github.com/SQLStreamStore/SQLStreamStore).
 
 SQLStreamStore offers an atomic and idempotent stream append operation.
 Thanks to this, we don’t have to worry about race conditions between multiple instances of the same state machine
-handling events in parallel, which is great for scalability.
-We can also recognize a situation when the same event is being fed into the state machine again, which can happen
+handling events in parallel, what is great for scalability.
+We can also recognize a situation when the same event is being fed into the state machine again, what can happen
 when dealing with retry policies.
 That, on the other hand, gives us a pretty good way of achieving deduplication.
 
@@ -255,20 +255,20 @@ That, on the other hand, gives us a pretty good way of achieving deduplication.
 
 Replaying all events every single time is an unnecessary overhead that we decided to mitigate by introducing
 a lock-free cache for state snapshots.
-After each transition, a state machine will cache its current state along with the stream version which it
+After each transition a state machine will cache its current state along with the stream version which it
 corresponds to.
 This gives us the ability to restore the state machine to the state it was in after handling `n-1` events, when we want
 to handle the `n`-th event.
 
-It requires, however, that states be immutable, or else we may end up with unexpected behaviour.
+It requires, however, that states be immutable, or else we may end up with an unexpected behaviour.
 If states were not immutable, we could not be certain that the state object we cached after handling the `n`-th event
 is still the same and has not been modified in the meantime.
-Moreover, immutability give us thread safety out of the box.
+Moreover, immutability gives us thread safety out of the box.
 
 ### Instrumentation
 
 This state machine framework is also equipped with heavy instrumentation.
-Every fired transition and state change is logged, so we can easily track any errors.
+Every fired up transition and state change is logged, so we can easily track any errors.
 This data is also useful for our data analytics team to keep track of business processes.
 A lot of different metrics come into play to measure performance of each and every state machine deployed.
 
@@ -278,20 +278,20 @@ internal back-office tools.
 Thanks to the finite nature of the state machines, we can always log the current state and trace what made the system
 to be in that state, along with all its previous states.
 This is something quite invaluable and helps immensely when diagnosing issues, especially in complex and
-inter-dependent business scenarios, where a lot of things can happen at the same time.
+inter-dependent business scenarios where a lot of things happen at the same time.
 
 ## Real-life example
 
 So finally, the big question: how is this framework used on our platform?
-To answer that we don’t have to reach far.
+To answer that we don’t need to reach far.
 
 In July of 2020 we launched a new payment method called Allegro Pay, which will eventually be available to every buyer
 on Allegro.
-This service makes it possible for users to buy items now and pay for them later in a single payment after 30 days, or
+This service allows the users to buy items now and pay for them later in a single payment after 30 days, or
 in multiple smaller monthly payments, depending on the value of purchased goods.
 
-Repayments can be easily done online using our Allegro Pay dashboard.
-Users can even choose to pay for multiple purchases at once.
+Repayments can be easily made online using our Allegro Pay dashboard.
+Users are even able to pay for multiple purchases at once.
 
 ![Allegro Pay dashboard]({% link /img/articles/2021-01-26-state-machines-made-easy-in-dotnet/allegro-pay-dashboard.png %})
 
@@ -303,30 +303,30 @@ to coordinate an actual business process of handling a repayment within Allegro 
 
 ### The process specification
 
-Before we create our state machine, we need to have a rough idea of what states and events we want to handle.
+Before we create our state machine, we need to have a rough idea of which states and events we want to handle.
 
-The repayment process can start in two different ways, but will end in the same way in both cases.
+The repayment process is started in two different ways, but will end alike in both cases.
 
-1. The user can use the Allegro Pay dashboard to initialize an immediate, online repayment.
-    They will be redirected to the payment provider’s website and complete the process there.
+1. The user can initialize an immediate online repayment via the Allegro Pay dashboard.
+    They are redirected to the payment provider’s website and complete the process there.
 
-2. Alternatively, the user can request to repay their purchase with a traditional wire transfer, which we call an
+2. Alternatively, the user can request to repay their purchase with a traditional wire transfer, what we call an
 offline repayment.
     We know nothing about it until the money actually arrives at the target bank account.
-    That method may take even a couple of days.
+    That method may take up to a couple of days.
 
-This is the point when both repayment paths merge, because from now on we can discard any knowledge about how the money
-was received, and focus on the fact that we have it.
+At this point both repayment paths merge, since from now on we can discard any knowledge about how the money
+was received and focus on the fact that we have it.
 The money source won’t be useful during the process coordination anymore.
 
 The next step is to register the repayment in our bookkeeping system.
 The registration part is important for us, because it will tell us whether the purchase was paid in full or if further
 repayments are required.
-After receiving information about successful registration, an email will be sent to the user confirming that the
-repayment has been registered.
+After receiving information about successful registration, an email is sent to the user confirming that the
+repayment was registered.
 
-After repayment is registered, we will asynchronously await feedback from the bookkeeping system that the transaction
-has been settled and the repayment can be marked as completed.
+After repayment is registered, we asynchronously await the feedback from the bookkeeping system on the transaction
+being settled and the repayment is to be marked as completed.
 
 ### Designing the state machine
 
@@ -334,7 +334,7 @@ I could show you the finished state machine and just paste a wall of text here, 
 the fun in that?
 Instead, I’d like to show you the step-by-step process I would go through when designing this kind of state machine.
 
-I’ll start off simple by creating a state machine that will handle a repayment of a single purchase and then extend it
+I’ll start off by simply creating a state machine that handles a repayment of a single purchase and then extend it
 to work for all cases.
 First we need to define the base types for all states and events:
 
@@ -358,7 +358,7 @@ public abstract class StateBase
 public abstract class EventBase { }
 ```
 
-As you can see I already equipped the base state with all the properties we will need later to orchestrate this
+As you can see, I already equipped the base state with all the properties we will need later to orchestrate this
 process:
 
 - `UserId` — tells us who is repaying,
@@ -372,7 +372,7 @@ a new one.
 
 None of the states will have any special properties, so there’s no point in painstakingly showing all individual
 subclasses representing each state.
-Here are just a few example classes of the initial state (`NotStarted`) and one of the subsequent states:
+Here are just a few sample classes of the initial state (`NotStarted`) and one of the subsequent states:
 
 ```csharp
 public class NotStarted : StateBase
@@ -386,7 +386,7 @@ public class Created : StateBase
 }
 ```
 
-All of the remaining states will be defined similarly to `Created` state.
+All of the remaining states are defined similarly to `Created` state.
 Those states are:
 
 - `Paid`,
@@ -394,10 +394,10 @@ Those states are:
 - `Registered`,
 - `Completed`.
 
-Once we have our states, we can focus on events and introduce them with new transitions, one by one.
+Once we have our states, we can focus on events and introduce transitions, one by one.
 
 We’ll start by handling an online repayment.
-It starts with the user creating a repayment entity by selecting a payment in the Allegro Pay dashboard.
+It begins with the user creating a repayment entity by selecting a payment in the Allegro Pay dashboard.
 This generates an event, let’s call it `OnlineRepaymentCreated`:
 
 ```csharp
@@ -424,12 +424,12 @@ stateMachine
     });
 ```
 
-At this point the user will see the repayment form, where they can select a payment method.
-They will then be redirected to the payment provider’s website to finish the repayment.
-In most cases it will succeed, but in some cases it can fail due to a multitude of reasons, such as insufficient
+At this point the user sees the repayment form, where they select a payment method.
+They are then redirected to the payment provider’s website to finish the repayment.
+In most cases it will succeed, but in some it fails due to a multitude of reasons, such as insufficient
 funds on the account or the user providing wrong confirmation code.
 
-Because of this we need two events:
+Therefore, we need two events:
 
 ```csharp
 public class OnlineRepaymentPaid : EventBase { }
@@ -438,8 +438,8 @@ public class OnlineRepaymentFailed : EventBase { }
 ```
 
 We could go about a single event called `RepaymentResult` with an enum property indicating a success or a failure, but
-in my opinion this approach is cleaner and more open to future changes.
-Those events will play a role in tranistions no. 2 and 3:
+in my opinion the former approach is cleaner and more open to future changes.
+These events will play a role in tranistions no. 2 and 3:
 
 ```csharp
 // 2. Created : OnlineRepaymentPaid -> Paid
@@ -456,9 +456,9 @@ stateMachine
     .ToState<Failed>((from, @event) => new Failed(from));
 ```
 
-You might notice that transition no. 2 has a command specified, that I didn’t mention earlier.
-It’s a simple class wrapping the payment identifier, which will be interpreted by the command runner to send a request
-to our bookkeeping system to register this payment.
+You might notice that transition no. 2 has a command that I didn’t mention earlier specified.
+It’s a simple class wrapping the payment identifier, which is interpreted by the command runner as a request to our
+bookkeeping system for registering this payment.
 
 This concludes the online path and we can move on to the offline repayment.
 It is significantly easier, since we are simply notified that the money has been transferred to us.
@@ -490,8 +490,8 @@ stateMachine
     .RunCommand((from, @event, to) => new RegisterPaymentCommand(@event.PaymentId));
 ```
 
-This is where the both repayment types merge and we can focus on our bookkeeping system.
-As mentioned before, we are most interested in registration events published by the bookkeeping system.
+This is where both repayment types merge and we can focus on our bookkeeping system.
+As mentioned before, we are mostly interested in registration events published by the bookkeeping system.
 
 ```csharp
 public class PaymentRegistered : EventBase
@@ -500,8 +500,8 @@ public class PaymentRegistered : EventBase
 }
 ```
 
-Once we know that a payment is registered in our bookkeeping system, we may send an email to the user with a summary of
-what they paid for and follow-up information whether they still have more payments to make.
+Once we know that a payment is registered in our bookkeeping system, we are able to send an email to the user
+summarizing what they paid for and follow-up information whether they still have more payments to be made.
 This can be done with a transition like this:
 
 ```csharp
@@ -526,7 +526,7 @@ public class PaymentCompleted : EventBase
 }
 ```
 
-It’s time create the final transition:
+It’s time to create the final transition:
 
 ```csharp
 // 6. Registered : PaymentCompleted -> Completed
@@ -541,7 +541,7 @@ Right?
 Not really.
 
 As is usually the case with event-sourced systems, the order of incoming events can’t always be relied on.
-The bookkeeping system will sometimes — for reasons I don’t want to dive into — publish events `PaymentRegistered` and
+The bookkeeping system will sometimes — for reasons I don’t want to delve into — publish events `PaymentRegistered` and
 `PaymentCompleted` at the same time.
 Due to a lack of message ordering guarantees, it’s possible for us to receive `PaymentCompleted` event before
 `PaymentRegistered`.
@@ -565,20 +565,20 @@ stateMachine
 ```
 
 In this scenario we completely skip `Registered` state, but that’s something we just have to deal with.
-Events are important from an analytics and diagnostics standpoint, states — not so much.
+Events are important from an analytics and diagnostics standpoints, states — not so much.
 
 That wraps up the event flow for this scenario.
 It can be visualized with a diagram like this:
 
 ![Repayment state machine diagram (V1)]({% link /img/articles/2021-01-26-state-machines-made-easy-in-dotnet/repayment-state-machine-v1.png %})
 
-Our state machine framework is equipped with some pretty useful visualisation extension.
-It’s a pretty neat tool that makes it easy to figure out how the state machine works, without having to dive into the
+Our state machine framework is equipped with a pretty useful visualisation extension.
+It’s a pretty neat tool that makes it easy to figure out how the state machine works, without having to delve into the
 code.
-A simple unit test that calls this extension can render a state machine diagram like the one above using PlantUML
-syntax, which in this case would be as follows:
+A simple unit test that calls this extension can render a state machine diagram like one above using PlantUML
+syntax, which in this case would go as follows:
 
-```plantuml
+```
 @startuml
 hide empty description
 [*] --> NotStarted
@@ -653,7 +653,7 @@ stateMachine
     });
 ```
 
-Transition no. 2 is similarly adjusted to the these changes by passing the set of payment identifiers to the
+Transition no. 2 is similarly adjusted to these changes by passing the set of payment identifiers to the
 bookkeeping system:
 
 ```csharp
@@ -661,7 +661,7 @@ bookkeeping system:
 ```
 
 Now we can move to the remaining transitions.
-Transition no. 5 has to be split into two transitions.
+Transition no. 5 has to be split into two.
 We want to stay in the `Paid` state until all registration events are received and only then switch to `Registered`.
 This can be achieved with:
 
@@ -694,7 +694,7 @@ stateMachine
 
 As you can see, the command is now defined only for the second transition that triggers after all payments are
 registered.
-We have to slightly adjust transition no. 8, which is responsible for sending the email too:
+We have to slightly adjust transition no. 8, which is responsible for sending the email, too:
 
 ```csharp
 // 8'. Completed : PaymentRegistered -> Completed
@@ -771,20 +771,20 @@ stateMachine
 
 And we’re done!
 This time for real.
-After all this work we ended up with something that can be visualied with a diagram like this:
+After all this work we ended up with something that can be visualized with a diagram like this:
 
 ![Repayment state machine diagram (V2)]({% link /img/articles/2021-01-26-state-machines-made-easy-in-dotnet/repayment-state-machine-v2.png %})
 
-I mentioned earlier, that we have internal back-office tools to view state machines and their transition history.
+I mentioned earlier that we have internal back-office tools to view state machines and their transition history.
 Here is an example view of a repayment process that was coordinated with the state machine we defined above (sensitive
-data has been covered, since this was taken in production):
+data was redacted, since this was taken in production):
 
 ![Back-office state machine view]({% link /img/articles/2021-01-26-state-machines-made-easy-in-dotnet/back-office-state-machine-view.png %})
 
 ### Caveats
 
 You may have noticed some problems here.
-What would happen, if we received an event with a payment identifier that was wrong?
+What would happen if we received an event with a wrong payment identifier?
 Right now the state machine is not ready for that.
 However, that can be remedied relatively easily by adding another condition to `When` methods of all transitions for
 `PaymentRegistered` and `PaymentCompleted` events, such as:
@@ -840,15 +840,15 @@ let ``Online repayment - single payment happy path`` () =
 ```
 
 A test like this is essentially a list of events with expected side effects that are then aggregated using the `apply`
-function, which feeds them one by one into the state machine and verifies the outcome.
+function that feeds them one by one into the state machine and verifies the outcome.
 
 ## Summary
 
 I hope I was able to convince you how a framework like this can make designing complex state machines easy.
-It gives us numerous advantages, such as declarative syntax, effortless testability, thorough instrumentation and
+It provides numerous advantages, such as declarative syntax, effortless testability, thorough instrumentation and
 visualization.
 
-That is precisely why state machines became an integral part of pretty much every business process architecture
+This is precisely why state machines became an integral part of pretty much every business process architecture
 in our project.
 Having such a robust and scalable solution for asynchronous process orchestration and isolation is crucial in
 distributed systems.
