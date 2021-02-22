@@ -232,7 +232,7 @@ such as specific command runners.
 I promised I would not dive deep into implementation details, but nonetheless I want to give you a little taste of
 what sits behind the scenes.
 
-If you don’t care for any of that, you may skip to the next section.
+If you don’t care for any of that, you may skip to the “Real-life example” section.
 
 ### Storage
 
@@ -263,12 +263,12 @@ to handle the `n`-th event.
 It requires, however, that states be immutable, or else we may end up with an unexpected behaviour.
 If states were not immutable, we could not be certain that the state object we cached after handling the `n`-th event
 is still the same and has not been modified in the meantime.
-Moreover, immutability gives us thread safety out of the box.
+Moreover, immutable objects are inherently thread-safe.
 
 ### Instrumentation
 
 This state machine framework is also equipped with heavy instrumentation.
-Every fired up transition and state change is logged, so we can easily track any errors.
+Every executed transition and state change is logged, so we can easily track any errors.
 This data is also useful for our data analytics team to keep track of business processes.
 A lot of different metrics come into play to measure performance of each and every state machine deployed.
 
@@ -565,7 +565,7 @@ stateMachine
 ```
 
 In this scenario we completely skip `Registered` state, but that’s something we just have to deal with.
-Events are important from an analytics and diagnostics standpoints, states — not so much.
+Events are important from analytics and diagnostics standpoints, states — not so much.
 
 That wraps up the event flow for this scenario.
 It can be visualized with a diagram like this:
