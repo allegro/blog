@@ -17,7 +17,7 @@ they work.
 
 ## What are finite-state machines
 
-For the sake of readability, I will sometimes be referring to finite-state machines as to “just” state machines.
+For the sake of readability, I will sometimes be referring to finite-state machines as simply “state machines”.
 If you’re already familiar with their formal definition, you may skip to the next section.
 
 Formally speaking, a finite-state machine is a mathematical model of computation that describes an abstract system
@@ -36,8 +36,8 @@ state,
 The machine starts off in the initial state and inspects all inputs in sequence.
 Upon observing each input, it uses the transition function to change its state.
 The processing ends once all inputs have been observed.
-If the machine’s state at the end of processing is one of the terminal states, it is said that the machine accepts the
-given input, and rejects it otherwise.
+If the machine’s state at the end of processing is one of the terminal states, the machine is assumed to accept the
+given input, and to reject it otherwise.
 
 As a side note, the description provided above uses the deterministic model of a finite-state automaton.
 There are also alternative, non-deterministic machines, but I won’t be delving into them too much, as they can be
@@ -260,7 +260,7 @@ corresponds to.
 This gives us the ability to restore the state machine to the state it was in after handling `n-1` events, when we want
 to handle the `n`-th event.
 
-It requires, however, that states be immutable, or else we may end up with an unexpected behaviour.
+It requires, however, the states to be immutable, or else we may end up with an unexpected behaviour.
 If states were not immutable, we could not be certain that the state object we cached after handling the `n`-th event
 is still the same and has not been modified in the meantime.
 Moreover, immutable objects are inherently thread-safe.
