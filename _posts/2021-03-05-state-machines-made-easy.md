@@ -293,7 +293,7 @@ in multiple smaller monthly payments, depending on the value of purchased goods.
 Repayments can be easily made online using our Allegro Pay dashboard.
 Users are even able to pay for multiple purchases at once.
 
-![Allegro Pay dashboard]({% link /img/articles/2021-01-26-state-machines-made-easy-in-dotnet/allegro-pay-dashboard.png %})
+![Allegro Pay dashboard]({% link /img/articles/2021-03-05-state-machines-made-easy/allegro-pay-dashboard.png %})
 
 For more detailed information, I encourage you to read our
 [Allegro Pay FAQ](https://allegro.pl/pomoc/dla-kupujacych/allegro-pay/).
@@ -570,7 +570,7 @@ Events are important from analytics and diagnostics standpoints, states — not 
 That wraps up the event flow for this scenario.
 It can be visualized with a diagram like this:
 
-![Repayment state machine diagram (V1)]({% link /img/articles/2021-01-26-state-machines-made-easy-in-dotnet/repayment-state-machine-v1.png %})
+![Repayment state machine diagram (V1)]({% link /img/articles/2021-03-05-state-machines-made-easy/repayment-state-machine-v1.png %})
 
 Our state machine framework is equipped with a pretty useful visualisation extension.
 It’s a pretty neat tool that makes it easy to figure out how the state machine works, without having to delve into the
@@ -773,13 +773,13 @@ And we’re done!
 This time for real.
 After all this work we ended up with something that can be visualized with a diagram like this:
 
-![Repayment state machine diagram (V2)]({% link /img/articles/2021-01-26-state-machines-made-easy-in-dotnet/repayment-state-machine-v2.png %})
+![Repayment state machine diagram (V2)]({% link /img/articles/2021-03-05-state-machines-made-easy/repayment-state-machine-v2.png %})
 
 I mentioned earlier that we have internal back-office tools to view state machines and their transition history.
 Here is an example view of a repayment process that was coordinated with the state machine we defined above (sensitive
 data was redacted, since this was taken in production):
 
-![Back-office state machine view]({% link /img/articles/2021-01-26-state-machines-made-easy-in-dotnet/back-office-state-machine-view.png %})
+![Back-office state machine view]({% link /img/articles/2021-03-05-state-machines-made-easy/back-office-state-machine-view.png %})
 
 ### Caveats
 
