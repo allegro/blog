@@ -180,7 +180,7 @@ below cache has a positive effect on execution time.
 | 2.968s                           | 0.912s                        |
 
 
-Kotlin v1.4 brought a much improved scripting integration. But until kotlin scripting interpreter isn't rich and
+Kotlin v1.4 brought a much improved scripting integration. But until Kotlin scripting interpreter isn't rich and
 versatile, Kscript will have been supported and developed.
 
 ### Conclusion
