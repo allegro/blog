@@ -181,7 +181,7 @@ below cache has a positive effect on execution time.
 
 
 Kotlin v1.4 brought a much improved scripting integration. But until kotlin scripting interpreter isn't rich and
-versatile, Kscrip will have been supported and developed.
+versatile, Kscript will have been supported and developed.
 
 ### Conclusion
 Kotlin makes scripting really easy. Powerful scripts can be created with the autocompletion and the strong typing which
