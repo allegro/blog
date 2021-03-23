@@ -156,7 +156,7 @@ script by command:
 kscript first-script.kts
 ```
 
-This tool was created in 2016. In the beginning kotlin wasn't feature-rich enough to be a viable alternative in the
+This tool was created in 2016. In the beginning Kotlin wasn't feature-rich enough to be a viable alternative in the
 shell. [The great talk on Kotlin Conf by Holger Brandl](https://www.youtube.com/watch?v=cOJPKhlRa8c) shows the
 history of the uprising and explained that initially the tool was created for data science purpose.
 
