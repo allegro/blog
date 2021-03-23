@@ -8,7 +8,7 @@ tags: [tech, kotlin, script]
 According to Wikipedia there are approximately 700 computer languages available. Seven hundred.
 This is an unbelievable number and it's the reason why programmers face the problem of
 choosing a programming language to work with, which frameworks to use and which tech stack to learn.
-All of them have pros and cons but when you are looking for all-purpose language you should take Kotlin
+All of them have pros and cons but when you are looking for an all-purpose language you should take Kotlin
 into consideration and ask yourself a question: "Do I need another programming language?".
 
 Kotlin is an open source, statically typed and powerful language. It is based on many programming languages like Java,
