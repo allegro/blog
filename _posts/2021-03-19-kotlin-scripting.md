@@ -116,7 +116,7 @@ Using kotlin-main-kts has a lot of pros. `*.main.kts` scripts are supported out 
 even outside the source directories. It gives you highlighting and navigation, autocomplete code
 and resolves dynamic dependencies. What's more, third party libraries can be used in scripts,
 including them as dependencies using directives or annotations, and specified with gradle-style with group id,
-artifact id and version. For example if you write a script which copies data from a csv file and inserts the data
+artifact id and version. For example if you write a script which copies data from a CSV file and inserts the data
 to a database you need to use a connector. You can achieve this by `@file:DependsOn` annotation. The sample below show
 how to connect to mongodb. String connection is required as argument e.g. `mongodb://localhost:27017/test-db`
 
