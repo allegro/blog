@@ -6,6 +6,44 @@ We write for smart people who are good at telling genuinely interesting and usef
 
 The blog is hosted at [blog.allegro.tech](https://blog.allegro.tech/). We also cooperate with Allegro tech hub page [allegro.tech](https://allegro.tech/).
 
+Goals:
+* Creating a technical blog valuable for the community. We focus on development and devops.
+* Letting the community know about events we organize or take part in.
+* Maintaining the image of Allegro as a technical leader and a place where great engineers work.
+* Highlighting our achievements but also describing our failures, for example by publishing outage postmortems.
+
+Rules:
+* High-quality posts (in both content and style).
+* We publish in English.
+* Posts must go through a review process.
+* Blog’s editors decide on the order posts are published. They can also reject posts deemed not fit for the blog due to subject not matching the blog’s goals,
+  low quality, inappropriate content, not following company policies, etc. In practice, this happens only very rarely.
+
+# Core team
+
+We encourage everyone to help with the blog, by becoming an author, helping with text reviews, and developing blog features.
+However, there is a core team responsible for:
+
+* the editorial process
+* ensuring high quality
+* encouraging others to publish on the blog
+* promoting the blog outside the company
+* planning and implementing new features
+
+We treat the blog as a product and take it very seriously, but we are not a Scrum team, and we work on the project as time allows rather than full-time.
+
+Currently, the team consists of:
+
+* Daniel Dopierała — editor
+* Bartosz Gałek — editor
+* Mirosław Gołda — editor
+* Tomek Gospodarczyk — helps us with web development
+* Michał Kosmulski — editor-in-chief
+* Piotrek Orłowski — founder
+* Waldemar Panas — editor
+* Wojtek Poniatowski — editor
+* Bartek Walacik — editor
+
 # Where to get help:
 * This document
 * Slack channel [#allegro-tech-blog](https://allegro.slack.com/archives/CG20RLTT2) — use `@redakcja` alias to tag the blog’s editors
@@ -75,6 +113,15 @@ The blog is hosted at [blog.allegro.tech](https://blog.allegro.tech/). We also c
 * Check if links are not broken and if the first use of project or framework names (e.g. [Mockito](https://github.com/mockito/mockito)) is a link if it makes sense.
 * If the post contains code snippets, check if they are correct and formatted as code. Is the code long enough to drive the point home but short enough to
   not make the post hard to read?
+* Does the post contain any internal information which could cause the company trouble if revealed? We can openly talk about the technologies we use, but
+  sometimes some details have to be left out. Especially sensitive areas include:
+  * Security (e.g. any information which might create a security vulnerability, enable a DDoS attack, etc.)
+  * Business plans which have not yet been publicly announced (e.g. writing that you work on a service which allows us to provide free shipping en masse before
+    we announced Allegro Smart).
+  * Any information which has not been officially released by the company but makes it possible to deduce something about our financials (e.g. the exact number
+    of transactions or their value). However, order-of-magnitude values such as _hundreds of rps_ or _a few terabytes of data_ are usually OK. This is especially
+    important since we became a public company.
+  When in doubt, consult the IT Security Team.
 * If there are any images in the post, make sure they are either our own work or we are allowed to use them (by permission from the author, the image being
   in the public domain, or otherwise being licensed in a way which allows us to use it). By default, images are copyrighted and can’t be reused without permission.
   If in doubt, get in touch with the editors.
