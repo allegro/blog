@@ -19,6 +19,10 @@ Rules:
 * Blog’s editors decide on the order posts are published. They can also reject posts deemed not fit for the blog due to subject not matching the blog’s goals,
   low quality, inappropriate content, not following company policies, etc. In practice, this happens only very rarely.
 
+# Where to get help:
+* This document
+* Slack channel [#allegro-tech-blog](https://allegro.slack.com/archives/CG20RLTT2) — use `@redakcja` alias to tag the blog’s editors
+
 # Core team
 
 We encourage everyone to help with the blog, by becoming an author, helping with text reviews, and developing blog features.
@@ -43,10 +47,6 @@ Currently, the team consists of:
 * Waldemar Panas — editor
 * Wojtek Poniatowski — editor
 * Bartek Walacik — editor
-
-# Where to get help:
-* This document
-* Slack channel [#allegro-tech-blog](https://allegro.slack.com/archives/CG20RLTT2) — use `@redakcja` alias to tag the blog’s editors
 
 # Before you begin — introduction for authors
 
