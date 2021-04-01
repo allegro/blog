@@ -13,13 +13,14 @@ Goals:
 * Highlighting our achievements but also describing our failures, for example by publishing outage postmortems.
 
 Rules:
-* High-quality posts (in both content and style).
+* We strive for high-quality posts (in both content and style).
 * We publish in English.
 * Posts must go through a review process.
 * Blog’s editors decide on the order posts are published. They can also reject posts deemed not fit for the blog due to subject not matching the blog’s goals,
   low quality, inappropriate content, not following company policies, etc. In practice, this happens only very rarely.
 
-# Where to get help:
+# Where to get help
+
 * This document
 * Slack channel [#allegro-tech-blog](https://allegro.slack.com/archives/CG20RLTT2) — use `@redakcja` alias to tag the blog’s editors
 
@@ -58,23 +59,26 @@ Currently, the team consists of:
   * an engineer from outside Allegro IT
   * an engineer who does not use Allegro
   * an engineer from outside Poland who has never heard of Allegro
-* Keep it simple, keep it short: this is a blog rather than some very formal place.
+* Keep it simple, keep it short: this is a blog rather than a very formal place.
 * Nonetheless, make sure the text’s content is correct and its form reasonably clear. We want the blog to be high-quality.
 * Read the [guidelines](#review-guidelines) in this document for a quicker code review.
 * Check your post with a Markdown viewer. Markdown preview in IntelliJ is a good start. You can also [test-render the page on your local machine](#how-to-test-render-your-post).
 
 # Editorial process
 
-* Editors do their best to use common sense over hard and fast rules whenever possible. The process is in place only in order to make everyone’s lives easier.
-* Preferably, find two reviewers who know your post’s subject matter well (for example, your teammates, or anyone within the company you see fit).
-* For first time reviewers, let them read the [review guidelines](#review-guidelines) below.
-* Blog editors also conduct a review. It focuses mostly on language and style, but we try to have a look at the content as well.
-* Standard discussion regarding any comments from the reviews follows.
-* With two approvals, the PR is (almost) ready for publication.
-* Editors will find a suitable publication time depending on the number of posts in review queue, when previous posts were published, etc.
-  Do let us know in case you care for a particular publication date, e.g. when your post talks about a very current topic, is related to a recent conference
-  or software release, etc.
-* One of the editors updates the publication date and publishes the post by merging the PR.
+0. Editors do their best to use common sense over hard and fast rules whenever possible. The process is in place only in order to make everyone’s lives easier.
+0. Preferably, find two reviewers who know your post’s subject matter well (for example, your teammates, or anyone within the company you see fit).
+0. For first time reviewers, let them read the [review guidelines](#review-guidelines) below.
+0. Blog editors also conduct a review. It focuses mostly on language and style, but we try to have a look at the content as well.
+0. Standard discussion regarding any comments from the reviews follows.
+0. With two approvals, the PR is (almost) ready for publication.
+0. Editors will find a suitable publication time depending on the number of posts in review queue, when previous posts were published, etc.
+   Do let us know in case you care for a particular publication date, e.g. when your post talks about a very current topic, is related to a recent conference
+   or software release, etc.
+0. One of the editors updates the publication date and publishes the post by merging the PR.
+0. HR team promotes posts on social media (Twitter and Facebook) on our behalf. Authors and editors suggest the best hashtags to use. We encourage authors to
+   retweet and also to promote posts via their own social media accounts. If you frequent reddit, hackernews or any other place you see fit, do not hesitate to
+   share links to your posts there.
 
 # Review guidelines
 
@@ -90,7 +94,7 @@ Currently, the team consists of:
 
 * Keep in mind the common-sense rules outlined in [Before you begin](#before-you-begin--introduction-for-authors) section.
 * Preferably, skim over the whole text before you start commenting to get a general understanding of what the text is about.
-* If you have lots of comments, consider marking them on a paper printout of the text: this may be quicker than commenting on github and will avoid generating
+* If you have lots of comments, consider marking them on a paper printout of the text: this may be quicker than commenting on GitHub and will avoid generating
   tons of e-mails. In certain cases, Google Docs may also be useful, for example if the are lots of non-controversial language fixes which you can just enter in
   “suggest mode” and the author can then easily accept.
 * The first paragraph of the text will be used as the post’s summary. Consider:
@@ -136,9 +140,9 @@ Currently, the team consists of:
 
 ## Repo permissions
 
-Until Allegro has completely migrated from Stash to github, you will probably need to apply for some permissions before you can access the repository:
-* You need a personal github account.
-* Have your account connected to the [Allegro organization on github](https://github.com/allegro). Ask for the current procedure on #help-github Slack channel.
+Until Allegro has completely migrated from Stash to GitHub, you will probably need to apply for some permissions before you can access the repository:
+* You need a personal GitHub account.
+* Have your account connected to the [Allegro organization on GitHub](https://github.com/allegro). Ask for the current procedure on #help-github Slack channel.
 * Ask for write permissions to the blog repo on #allegro-tech-blog channel.
 
 ## What goes into your PR
@@ -152,7 +156,7 @@ Until Allegro has completely migrated from Stash to github, you will probably ne
   * Your short bio in `_data/members.yml`. Your ID should match the template `firstname.lastname`. You will also use it in following steps.
   * A file called `authors/firstname.lastname/index.md`, with contents adapted from some other author’s file.
   * A file called `img/authors/firstname.lastname.jpg` which should be your picture in square format (face only).
-* Create the PR. Apart from the notifications github will send them, you can also let the editors know on Slack.
+* Create the PR. Apart from the notifications GitHub will send them, you can also let the editors know on Slack.
 
 ## Front matter
 
@@ -181,7 +185,7 @@ Text lines should not be longer than **160 characters**, for the same reason as 
 Inlined code fragments such as `user_id` should be wrapped  with backtick quotes (`).
 
 Code blocks should be formatted with syntax highlighting,
-using github style syntax -  <code>```language</code>
+using GitHub style syntax -  <code>```language</code>
 
     ```java
     public class User {
