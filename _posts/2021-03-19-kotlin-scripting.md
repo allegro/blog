@@ -56,7 +56,7 @@ Linux, Cygwin, FreeBSD, and Solaris is SDKMAN!. Install Kotlin with the command:
 sdk install kotlin
 ```
 
-Alternatively, on OS X you can install the compiler via Homebrew
+Alternatively, on OS X you can install the compiler via Homebrew:
 ```
 brew install kotlin
 ```
