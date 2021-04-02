@@ -147,13 +147,13 @@ using GitHub style syntax -  <code>```language</code>
     ```
 
 ## Links
-Avoid raw links such as: [http://docs.guava-libraries.googlecode.com/git/javadoc/com/google/common/base/Preconditions.html](http://docs.guava-libraries.googlecode.com/git/javadoc/com/google/common/base/Preconditions.html).
+Avoid raw links such as: [https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/base/Preconditions.html](https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/base/Preconditions.html).
 
 Instead, use meaningful names for links, such as: [Preconditions](http://docs.guava-libraries.googlecode.com/git/javadoc/com/google/common/base/Preconditions.html).
 
 Avoid enigmatic names for links, such as: _see it [here](https://www.youtube.com/watch?v=TUHgGK-tImY)_.
 
-When you mention some technology, library or project such as [Mockito](https://code.google.com/p/mockito/), link it at least the first time when it appears in the text.
+When you mention some technology, library or project such as [Mockito](https://github.com/mockito/mockito), link it at least the first time when it appears in the text.
 
 ## Headers
 If you use only one level of headers, use ### (h3).
