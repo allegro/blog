@@ -140,7 +140,7 @@ createConnection(mongoUrl)
 
 What’s interesting, it is also possible to execute a script exactly in the same way as an executable file - for example by
 command `./kotlin-script.main.kts`. The first line in a file makes difference. It is required to add `#!/usr/bin/env kotlin`
-at the beginning of script to run it an in such way.
+at the beginning of script to run it in such way.
 
 ```
 #!/usr/bin/env kotlin
