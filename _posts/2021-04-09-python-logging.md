@@ -6,8 +6,8 @@ tags: [tech, python, logging]
 ---
 
 This post is about small (yet useful) library that is in a way to be published in
-opensource: *LogExtraCtx*. I don't know it's address in time of writing this post, but stay
-tuned!
+opensource: *LogExtraCtx* (I don't know it's address in time of writing this post, stay
+tuned!)
 
 ## Why did I write this library?
 
