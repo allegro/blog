@@ -4,8 +4,10 @@ title: How to make context logging in Python less cumbersome
 author: [lukasz.mach]
 tags: [tech, python, logging]
 ---
+In this post, I would like to tell a story, how logging as much as possible in Python
+leads to inelegant code, and how did I cope with this problem.
 
-This post is about small (yet useful) library that is in a way to be published in
+This post is also about small (yet useful) library that is in a way to be published in
 opensource: *LogExtraCtx* (I don't know it's address in time of writing this post, stay
 tuned!)
 
@@ -19,7 +21,7 @@ And my mind literally hangs when I need to do `Ctrl-C/V`, even if it's justified
 circumstances. In such cases, I start to focus on getting rid of copypastes instead of
 how to write functionality.
 
-Combining all these "passions" is not always easy. It's hard to log eveything, without
+Combining all these "passions" is not always easy. It's hard to log everything, without
 repeating things. Even if it's possible, it usually leads to inelegant code. 
 
 Eg, if I want to log that some error happened: 
