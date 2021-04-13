@@ -182,7 +182,7 @@ def send_message(environment: str, requester: str, recipient: str, text: str) ->
     return True
 ```
 
-#### My solution - *LogExtraCtx*:
+#### My solution — *LogExtraCtx*:
 
 To use it, just replace `logging.getLogger`  with  `getLogger` from `logextractx.logger`,
 and then create local logger with local context:
@@ -295,7 +295,7 @@ And then you will have all extra in single log line.
 Logging lot of details is good, but if it leads to breaching DRY approach, I encourage you
 to use *LogExtraCtx*. 
 
-Also feel free to contribute - PRs are welcome. 
+Also feel free to contribute — PRs are welcome. 
 
 [Kibana]: https://www.elastic.co/kibana
 [Django]: https://www.djangoproject.com/
