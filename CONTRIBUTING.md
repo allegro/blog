@@ -185,7 +185,7 @@ Is your article rendered correctly?
 Check if there are any obvious errors by running the linter:
 
 ```bash
-./linter/run.sh
+./lint.sh
 ```
 
 Create a Pull Request and get some feedback.
