@@ -1,11 +1,16 @@
 ---
 layout: post
 title: How to make context logging in Python less cumbersome
-author: [lukasz.mach]
+author: lukasz.mach
 tags: [tech, python, logging]
+excerpt: >
+    I'm a big fan of logging as much extra data as possible.  I'm also a fan of the DRY
+    approach. I feel strong anxiety when I see repetition in code. 
+
+    Combining all these „passions” is not always easy. It's hard to log everything, without
+    repeating things. Even if it's possible, it usually leads to inelegant code. 
+
 ---
-In this post, I would like to tell a story, how logging as much as possible in Python
-leads to inelegant code, and how did I cope with this problem.
 
 This post is also about small (yet useful) library that is in a way to be published in
 opensource: *LogExtraCtx* (I don't know it's address in time of writing this post, stay
@@ -21,7 +26,7 @@ And my mind literally hangs when I need to do `Ctrl-C/V`, even if it's justified
 circumstances. In such cases, I start to focus on getting rid of copypastes instead of
 how to write functionality.
 
-Combining all these "passions" is not always easy. It's hard to log everything, without
+Combining all these „passions” is not always easy. It's hard to log everything, without
 repeating things. Even if it's possible, it usually leads to inelegant code. 
 
 Eg, if I want to log that some error happened: 
@@ -32,12 +37,12 @@ logger.error('Foo happened: %s', e)
 
 So far it's clean and easy.
 But wait, it would be nice to add some extra details, like `user`
-(then you could search by `user` in Kibana, if your logs goes there):
+(then you could search by `user` in [Kibana], if your logs goes there):
 
 
 ```python
 logger.error('Foo happened: %s', e, extra={'user': user,
-                                          'action_type': 'bar'})
+                                           'action_type': 'bar'})
 ```
 
 
@@ -56,8 +61,6 @@ It's a Bad Thing!. Imagine what would happen if there were another `logger.debug
 Lots of repeated code, which should be written only once ....
 
 ![I see copypastes in code](https://i.imgflip.com/54peqd.jpg)
-
-[//]: # (TODO: some meme showing disapproval, angry frown and grimace of repulsion on someone's face?)
 
 So in other words, the more details you log, the more cumbersome the code. What can we
 do?
@@ -114,7 +117,8 @@ def send_message(requester: str, recipient: str, text: str) -> bool:
     return True
 ```
 
-There are two log entries, both with extra data for easy-finding in Kibana (There is a bit of redundancy in the code,  so I already feel the desire to DRY it). 
+There are two log entries, both with extra data for easy-finding in Kibana (There is a bit
+of redundancy in the code,  so I already feel the desire to DRY it). 
 
 Then I need to need to add additional logging:
 
@@ -221,7 +225,7 @@ def send_message(environment: str, requester: str, recipient: str, text: str) ->
 ```
 
 
-## Interesting and useful "side effect"
+## Interesting and useful „side effect”
 
 Usually it's hard to distinguish log entries from various users. Eg. if you have error in
 your code and you find `IndexError`,  you cannot be **really sure** to which request does it
@@ -231,11 +235,11 @@ Of course, you can guess, based on chronology and based on many other symptoms,
 but if you have many concurrent requests, then it's hard or even impossible to associate `ERROR` log
 with previous `INFO` or `DEBUG`.
 
-So it's nice to have some kind of tracking id (`request-id`), which glues to request when it come to
+So it's nice to have some kind of tracking ID (`request-id`), which glues to request when it come to
 your application and accompany to him until the end of request processing. It's also nice
 to have `session-id` attached to all requests which belongs to given HTTP session. 
 
-To use it in your DJANGO project, you should use the following:
+To use it in your [Django] project, you should use the following:
 
 * append `logextractx.middleware.LogCtxDjangoMiddleware` to your `MIDDLEWARE` in settings: 
 ```python
@@ -292,3 +296,6 @@ Logging lot of details is good, but if it leads to breaching DRY approach, I enc
 to use *LogExtraCtx*. 
 
 Also feel free to contribute - PRs are welcome. 
+
+[Kibana]: https://www.elastic.co/kibana
+[Django]: https://www.djangoproject.com/
