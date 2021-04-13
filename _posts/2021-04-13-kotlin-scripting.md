@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Kotlin - language for everyone and for everything. Even scripts.
+title: Kotlin - a language for everyone and for everything. Even scripts.
 author: [weronika.orczyk]
 tags: [tech, kotlin, script]
 ---
