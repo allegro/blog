@@ -12,9 +12,7 @@ excerpt: >
 
 ---
 
-This post is also about small (yet useful) library that is in a way to be published in
-opensource: *LogExtraCtx* (I don't know it's address in time of writing this post, stay
-tuned!)
+This post is also about small (yet useful) library that has been released in opensource: [LogExtraCtx]
 
 ## Why did I write this library?
 
@@ -71,7 +69,7 @@ It's not what I like. I **do** want to log them!
 
 ### Method 2: store `extra` in a variable
 
-It's what I used to use sometimes, before *LogExtraCtx*. It could be something like that:
+It's what I used to use sometimes, before [LogExtraCtx]. It could be something like that:
 
 ```python
 extra = {'user': user, 'action_type': 'bar'}
@@ -84,7 +82,7 @@ logger.error('Foo happened: %s', e, extra=extra)
 
 Quite tricky, but not very elegant. 
 
-### Method 3: use *LogExtraCtx*
+### Method 3: use [LogExtraCtx]
 
 Before I describe the aforementioned library, let me show you a more realistic example.
 
@@ -299,3 +297,4 @@ Also feel free to contribute — PRs are welcome.
 
 [Kibana]: https://www.elastic.co/kibana
 [Django]: https://www.djangoproject.com/
+[LogExtraCtx]: https://github.com/allegro/logextractx
