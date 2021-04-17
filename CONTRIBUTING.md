@@ -172,12 +172,16 @@ If you're Mac user and you haven't installed Ruby yourself, then you could perfo
 * add `export PATH="/usr/local/opt/ruby/bin:$PATH"` into your `.bashrc`/`.zshrc`
 
 
-Install needed gems: `bundle install --path vendor/bundle`
+Install needed gems: 
+
+```bash
+make install
+`````
 
 Launch the site using [Jekyll](https://help.github.com/articles/using-jekyll-with-pages),
 
 ```bash
-bundle exec jekyll serve -i
+make serve
 ````
 
 Is your article rendered correctly?
@@ -185,7 +189,7 @@ Is your article rendered correctly?
 Check if there are any obvious errors by running the linter:
 
 ```bash
-./linter/run.sh
+make lint
 ```
 
 Create a Pull Request and get some feedback.
