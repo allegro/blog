@@ -1,6 +1,6 @@
 #!/bin/bash
 path=$(dirname "$0")
-files_to_check=$(git diff --name-only --diff-filter=AMC main..HEAD | grep _posts)
+files_to_check=$(git diff --name-only --diff-filter=AMC origin/main..HEAD | grep _posts)
 
 if test -z "$files_to_check"
 then
