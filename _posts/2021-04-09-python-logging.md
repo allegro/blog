@@ -235,7 +235,9 @@ to have `session-id` attached to all requests which belongs to given HTTP sessio
 To use it in your [Django] project, you should use the following:
 
 * append `logextractx.middleware.LogCtxDjangoMiddleware` to your `MIDDLEWARE` in settings:
+
 ```python
+
 MIDDLEWARE = [
     [...]
      'django.contrib.sessions.middleware.SessionMiddleware',
@@ -254,7 +256,9 @@ logger = getLogger(__name__)
 ```
 
 Also, you need to add filter into logging
+
 ```python
+
     'filters': {
         'RidFilter': {
             '()': 'logextractx.middleware.RidFilter'
@@ -266,7 +270,6 @@ And that's all. Now every log entry will contain `request-id` and `session-id` f
 which looks so nice in kibana:
 
 ![kibana-example](/img/articles/2021-04-09-python-logging/kibana-clean.png)
-
 
 ## Extra Formatter
 
