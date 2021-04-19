@@ -4,7 +4,7 @@ title: How to make context logging in Python less cumbersome
 author: lukasz.mach
 tags: [tech, python, logging]
 excerpt: >
-    I'm a big fan of logging as much extra data as possible.  I'm also a fan of the DRY
+    I'm a big fan of logging as much extra data as possible. I'm also a fan of the DRY
     approach. I feel strong anxiety when I see repetition in code. 
 
     Combining all these „passions” is not always easy. It's hard to log everything, without
