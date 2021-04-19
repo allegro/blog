@@ -21,7 +21,7 @@ a fan of `logging.debug` entries.
 
 I'm also a fan of the DRY approach. I feel strong anxiety when I see repetition in code. 
 And my mind literally hangs when I need to do `Ctrl-C/V`, even if it's justified by 
-circumstances. In such cases, I start to focus on getting rid of copypastes instead of
+circumstances. In such cases, I start to focus on getting rid of copy-pastes instead of
 how to write functionality.
 
 Combining all these „passions” is not always easy. It's hard to log everything, without
