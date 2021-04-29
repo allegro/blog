@@ -1,5 +1,11 @@
+# if you want to add remains of your favourite editor, like `.idea` or `*.swp`, consider
+# adding them to your ~/.gitignore and turning on global .gitignore by following command:
+# 
+#   git config --global core.excludesfile ~/.gitignore
+# 
+# (copied from https://gist.github.com/subfuzion/db7f57fff2fb6998a16c)
+
 .sass-cache
 .jekyll-metadata
 _site
 vendor
-.idea
