@@ -12,7 +12,7 @@ excerpt: >
 
 ---
 
-This post is also about small (yet useful) library that has been released in opensource: [LogExtraCtx]
+This post is about the reasons behind writing a small (yet practical) library that has been released as open-source:  [LogExtraCtx]
 
 ## Why did I write this library?
 
@@ -220,7 +220,7 @@ def send_message(environment: str, requester: str, recipient: str, text: str) ->
 
 ## Interesting and useful „side effect”
 
-Usually it's hard to distinguish log entries from various users. Eg. if you have error in
+Usually, it's hard to distinguish log entries from various users. Eg. if you have error in
 your code and you find `IndexError`,  you cannot be **really sure** to which request does it
 belong.
 
@@ -228,7 +228,7 @@ Of course, you can guess, based on chronology and based on many other symptoms,
 but if you have many concurrent requests, then it's hard or even impossible to associate `ERROR` log
 with previous `INFO` or `DEBUG`.
 
-So it's nice to have some kind of tracking ID (`request-id`), which glues to request when it come to
+So it's nice to have some kind of tracking ID (`request-id`), which sticks to the request when it comes to
 your application and accompany to him until the end of request processing. It's also nice
 to have `session-id` attached to all requests which belongs to given HTTP session.
 
@@ -267,7 +267,7 @@ Also, you need to add filter into logging
 ```
 
 And that's all. Now every log entry will contain `request-id` and `session-id` fields,
-which looks so nice in kibana:
+which looks so nice in Kibana:
 
 ![kibana-example](/img/articles/2021-04-09-python-logging/kibana-clean.png)
 
@@ -290,7 +290,7 @@ And then you will have all extra in single log line.
 
 ## Conclusion
 
-Logging lot of details is good, but if it leads to breaching DRY approach, I encourage you
+Logging a lot of details is good, but if it leads to breaching the DRY approach, I encourage you
 to use *LogExtraCtx*.
 
 Also feel free to contribute — PRs are welcome.
