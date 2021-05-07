@@ -172,7 +172,7 @@ If you're Mac user and you haven't installed Ruby yourself, then you could perfo
 * add `export PATH="/usr/local/opt/ruby/bin:$PATH"` into your `.bashrc`/`.zshrc`
 
 
-Install needed gems: 
+Install needed gems:
 
 ```bash
 make install
@@ -191,6 +191,13 @@ Check if there are any obvious errors by running the linter:
 ```bash
 make lint
 ```
+
+You can also run linter with `-f` parameter against specific file (or files), eg:
+
+```bash
+./lint.sh -f _posts/2020-01-01-file-to-check.md -f _posts/2020-01-02-another-file-to-check.md
+```
+
 
 Create a Pull Request and get some feedback.
 
