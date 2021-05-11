@@ -3,7 +3,6 @@ layout: post
 title: How to ruin your Elasticsearch performance in 10 easy steps
 author: [michal.kosmulski]
 tags: [tech, "full-text search", elasticsearch, elastic, es, performance]
-aaaaaaaaaaaaaaaaaa dodac ikonkę jako miniaturę per tag
 ---
 It’s relatively easy to find resources about _improving_ Elasticsearch performance, but what if you wanted to _decrease_ it? Here is a collection of select tips
 which can help you ruin ES performance in no time. Most should also be applicable to Solr, raw Lucene, or, for that matter, to any full-text search engine as well.
@@ -73,6 +72,7 @@ In the algorithms below, we'll assume each postings list is an actual list of in
 are _n_ and _m_.
 
 #### OR
+{: #or-operator }
 
 aaaaaaaaaaaaaaaaa images
 
@@ -250,22 +250,51 @@ You might be tempted to think of Elasticsearch as yet another database. If you d
 are the topic of this post. One of the main things that set ES apart from most databases, whether they be SQL or NoSQL, is the search-indexing asymmetry.
 In contrast to a normal database, in Elasticsearch you can’t just insert a bunch of documents: this process causes indexing, creates new segments, potentially
 triggers segment merges, etc. and may affect performance in interesting ways. While indices are present and configurable in many databases, in ES they play a
-more important role.
+more important role. Another important difference to databases is that Elastic data model favors, and often forces, very much denormalized data. This is
+common with NoSQL databases but in ES, it is even more prevalent.
 
-Since ES is much more about search performance than anything else, it is a common optimization to move cost from search time to indexing time when possible.
-Let’s say your index of blog posts aaaaaaaaaaaaaaaaaaa
+In particular, since ES is — in most cases — more about search performance than anything else, it is a common optimization to move cost from search time to
+indexing time when possible, and many of such optimizations result in an even more denormalized data model.
 
-aaaa search vs query time cost
-aaaaaaaaaaa ejdncozesne obciazenie klastra przezi ndeksowanie i search
+For an example, let’s consider an index of offers such as you may find in an online store. Each offer may be available with free return option, but
+there’s a catch: while the client only sees a single checkbox in the UI, internally there are several types of free returns, e.g. free return by package locker
+and free return by post. The natural way to handle this is to index each of these two flags and then to search for offers having either of those flags.
+This is also a good way towards achieving our goal of ruining Elasticsearch search performance.
+
+The reason it works this way is that there are lots and lots of offers matching any of these flags: probably around 90% match one and around 90% match the other
+(with, obviously, a large number matching both). Going back to the [section about OR operator](#or-operator), you will notice that having two very long
+input lists is about the worst case for OR operator performance. A usually reasonable trade-off in such a case is to move the cost to indexing-time, and
+index with the document just a single flag, “free return”, which will improve search performance and reduce indexing performance by just a tiny amount.
+Note that this was a very simple case and sometimes indexing denormalized data may increase index size significantly, in which case the trade-off may become
+less obvious.
+
+Another quirk is the mutual interaction between indexing and search performance. Interaction between reads and writes happens in practically any database,
+but with Elastic, it is easier for it to become an issue. Whether this happens, will depend on your access patterns, but, for example, since ES can handle quite
+a lot of updates in a unit of time, you might run into issues which you would not with other databases simply because you would not have come as far as
+generating that many writes before performance broke down in the first place. Ignoring such interactions and treating search and indexing performance as two
+independent issues is a recipe for poor performance in both areas.
 
 ## Jumping right into optimization without checking first
 
-aaaaaaaaaa always measure if there is a problem and how much there is to gain and what you gain in pracitce
-aaaaaaaaaaa optymalizacje moga dzialac roznie dla roznych typow zapytan
-aaaaaaaaaaa jaka czesc calej logiki aplikacji to czas ES?
-aaaaaaaaaaaa koszt optymalizacji vs zlozonosci kodu - premature?
+One effective method of achieving inferior performance, which works not only with Elasticsearch, but with practically any system just as well, is jumping
+right into optimization without first analyzing the problem, and, even better, not checking if there is a problem at all. It is a boring thing to repeat
+over and over, but: the only way to improve performance is to first measure the baseline you are starting from (avoiding common pitfalls along the way),
+deciding whether the values are satisfactory or not, defining target values if they are not, and then systematically measuring and improving until success
+or surrender.
+
+Optimizing without measurement and without defining goals, on the other hand, is a good method of wasting your time, and consequently, achieving sub-par
+performance. While there are some simple optimizations which amount to “don’t do stupid things” and can be applied practically always without any penalty,
+most are a trade-off: you gain something at the expense of something else. If you apply them inappropriately, you may end up with expenses but without the gains.
+Many optimizations’ effectiveness varies a lot depending on the kind of data in the index or specific query patterns generated by your users, so, for example
+you may introduce an optimization whose effect is negligible, but whose cost (e.g. in increased complexity and thus maintenance cost) is significant.
 
 ## Blindly trusting what you read on the web
-aaaaaaaaaaaaaaaaa including this post
+
+And this leads us directly to the last tip: if you really want to ruin your ES performance, always trust strangers on the internet and apply their advice
+duly and without hesitation. Obviously, this applies to this very post as well. Another good practice is to never check publication dates, or the ES versions
+that particular tips apply to since what was good for Elastic 1.0 in 2014 surely still holds for Elastic 7.x in 2021, right?
 
 ## Summary
+
+I hope this post gave you some background of how Elastic works under the hood. Armed with this knowledge, you will be able to make or break Elasticsearch
+performance: the choice is yours.
