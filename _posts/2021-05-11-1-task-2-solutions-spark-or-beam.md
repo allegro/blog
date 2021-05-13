@@ -295,8 +295,3 @@ Below you can find how we’d estimate entry level for skills that were necessar
 |                                         | Google BigQuery (Basic)                                                          ||
 |                                         | Google Composer to schedule jobs in GCP (Basic)                                  ||
 |                                         | Google Cloud Storage (Basic)                                                     ||
-
-
-
-
-
