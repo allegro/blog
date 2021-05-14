@@ -4,10 +4,10 @@ title: How to make context logging in Python less cumbersome
 author: lukasz.mach
 tags: [tech, python, logging]
 excerpt: >
-    I'm a big fan of logging as much extra data as possible. I'm also a fan of the DRY
-    approach. I feel strong anxiety when I see repetition in code.
+    I'm a big fan of logging as much extra data as possible. I'm also a DRY approach
+    believer. I feel strong anxiety when I see repetition in code.
 
-    Combining all these „passions” is not always easy. It's hard to log everything, without
+    Combining all these „passions” is not always easy. It's hard to log everything without
     repeating things. Even if it's possible, it usually leads to inelegant code.
 
 ---
@@ -16,25 +16,25 @@ This post is about the reasons behind writing a small (yet practical) library th
 
 ## Why did I write this library?
 
-I'm a big fan of logging. I'm also a fan of logging as much extra data as possible, and I'm
-a fan of `logging.debug` entries.
+I'm a big fan of logging. I like to log as much extra data as possible, and I'm
+fond of `logging.debug` entries.
 
-I'm also a fan of the DRY approach. I feel strong anxiety when I see repetition in code.
+I'm also a DRY approach believer. I feel strong anxiety when I see repetition in code.
 And my mind literally hangs when I need to do `Ctrl-C/V`, even if it's justified by
-circumstances. In such cases, I start to focus on getting rid of copy-pastes instead of
-how to write functionality.
+circumstances. In such cases I start to focus on getting rid of copy-pastes instead of
+writing new code.
 
-Combining all these „passions” is not always easy. It's hard to log everything, without
+Combining all these „passions” is not always easy. It's hard to log everything without
 repeating things. Even if it's possible, it usually leads to inelegant code.
 
-Eg, if I want to log that some error happened:
+For example, if I want to log that some error occured:
 
 ```python
 logger.error('Foo happened: %s', e)
 ```
 
 So far it's clean and easy.
-But wait, it would be nice to add some extra details, like `user`
+It would be nice to add some extra details though, like `user`
 (then you could search by `user` in [Kibana], if your logs goes there):
 
 ```python
@@ -42,7 +42,7 @@ logger.error('Foo happened: %s', e, extra={'user': user,
                                            'action_type': 'bar'})
 ```
 
-Next, during debugging of some problem, you notice that it's not nearly enough and it's worth
+Next, during debugging of a problem, you notice that it's not nearly enough and it's worth
 adding some `logging.debug`
 
 ```python
@@ -53,8 +53,8 @@ logger.debug("We're going to do SOMETHING in thread",
 ```
 
 And you notice that you have copied `user` and `action_type` in `extra=` dictionary.
-It's a Bad Thing!. Imagine what would happen if there were another `logger.debug`, and another?
-Lots of repeated code, which should be written only once ....
+It's a Bad Thing! Imagine what would happen if there was another `logger.debug`, and another?
+Lots of repeated code, that should be written only once…
 
 ![I see copypastes in code](https://i.imgflip.com/54peqd.jpg)
 
@@ -67,7 +67,7 @@ It's not what I like. I **do** want to log them!
 
 ### Method 2: store `extra` in a variable
 
-It's what I used to use sometimes, before [LogExtraCtx]. It could be something like that:
+It's what I used to do sometimes, before [LogExtraCtx]. It could go like that:
 
 ```python
 extra = {'user': user, 'action_type': 'bar'}
@@ -78,7 +78,7 @@ logger.debug("We're going to do SOMETHING in thread",
 logger.error('Foo happened: %s', e, extra=extra)
 ```
 
-Quite tricky, but not very elegant.
+Quite tricky and not very elegant.
 
 ### Method 3: use [LogExtraCtx]
 
@@ -113,10 +113,10 @@ def send_message(requester: str, recipient: str, text: str) -> bool:
     return True
 ```
 
-There are two log entries, both with extra data for easy-finding in Kibana (There is a bit
-of redundancy in the code,  so I already feel the desire to DRY it).
+There are two log entries, both with extra data for easy-finding in Kibana (there is a bit
+of redundancy in the code, so I already feel the desire to DRY it).
 
-Then I need to need to add additional logging:
+Then I need to add additional logging:
 
 ```python
 logger.debug("headers=%r", r.result.headers,
@@ -137,7 +137,7 @@ extra = {'ACTION_TYPE': 'SEND_MSG',
          }
 ```
 
-Combined all together, it becomes a big unreadable blob of code. Very simple logic has been
+Combined all together, it becomes a big, unreadable blob of code. A very simple logic has been
 spoiled by 3 log entries.
 
 ```python
@@ -180,7 +180,7 @@ def send_message(environment: str, requester: str, recipient: str, text: str) ->
 
 #### My solution — *LogExtraCtx*:
 
-To use it, just replace `logging.getLogger`  with  `getLogger` from `logextractx.logger`,
+In order to use it, just replace `logging.getLogger` with `getLogger` from `logextractx.logger`,
 and then create local logger with local context:
 
 ```python
@@ -220,17 +220,17 @@ def send_message(environment: str, requester: str, recipient: str, text: str) ->
 
 ## Interesting and useful „side effect”
 
-Usually, it's hard to distinguish log entries from various users. Eg. if you have error in
-your code and you find `IndexError`,  you cannot be **really sure** to which request does it
+Usually, it's hard to distinguish log entries from various users. For example when you have error in
+your code and you find `IndexError`, you cannot be **really sure** to which request does it
 belong.
 
-Of course, you can guess, based on chronology and based on many other symptoms,
+Of course, you can guess, based on chronology and many other symptoms,
 but if you have many concurrent requests, then it's hard or even impossible to associate `ERROR` log
 with previous `INFO` or `DEBUG`.
 
-So it's nice to have some kind of tracking ID (`request-id`), which sticks to the request when it comes to
-your application and accompany to him until the end of request processing. It's also nice
-to have `session-id` attached to all requests which belongs to given HTTP session.
+So it's nice to have some kind of tracking ID (`request-id`), that sticks to the request,
+follows it and is added to every log entry until the end of request processing. It's also worth having 
+`session-id` attached to all requests that belongs to given HTTP session.
 
 To use it in your [Django] project, you should use the following:
 
@@ -246,7 +246,7 @@ MIDDLEWARE = [
  ]
 ```
 
-And instead of `logextractx.logger` use `logextractx.middleware` so:
+And instead of `logextractx.logger` use `logextractx.middleware`:
 
 ```python
 
@@ -267,14 +267,14 @@ Also, you need to add filter into logging
 ```
 
 And that's all. Now every log entry will contain `request-id` and `session-id` fields,
-which looks so nice in Kibana:
+what looks so nice in Kibana:
 
 ![kibana-example](/img/articles/2021-04-09-python-logging/kibana-clean.png)
 
 ## Extra Formatter
 
 If you use plain logging format, instead of Kibana + JSON formatter, then you may be interested in using
-`logextractx.formatter.ExtraFormatter`.  Just add following in your formatter definition (DictConfig):
+`logextractx.formatter.ExtraFormatter`. Just add following in your formatter definition (DictConfig):
 
 ```python
 
@@ -286,11 +286,11 @@ If you use plain logging format, instead of Kibana + JSON formatter, then you ma
         }
 ```
 
-And then you will have all extra in single log line.
+And then you will have all `extra` in a single log line.
 
 ## Conclusion
 
-Logging a lot of details is good, but if it leads to breaching the DRY approach, I encourage you
+Logging a lot of details is good, but when it leads to breaching the DRY approach, I encourage you
 to use *LogExtraCtx*.
 
 Also feel free to contribute — PRs are welcome.
