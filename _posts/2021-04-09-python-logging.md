@@ -230,7 +230,7 @@ but if you have many concurrent requests, then it's hard or even impossible to a
 with previous `INFO` or `DEBUG`.
 
 So it's nice to have some kind of tracking ID (`request-id`), that sticks to the request,
-follows it and is added to every log entry until the end of request processing. It's also worth having 
+follows it and is added to every log entry until the end of request processing. It's also worth having
 `session-id` attached to all requests that belongs to given HTTP session.
 
 To use it in your [Django] project, you should use the following:
