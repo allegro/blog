@@ -1,6 +1,33 @@
 #!/bin/bash
+
 path=$(dirname "$0")
-files_to_check=$(git diff --name-only --diff-filter=AMC origin/main..HEAD | grep _posts)
+
+# exit with error when something goes wrong
+set -e
+
+while [ -n "$1" ];do
+    case "$1" in 
+        --file-to-check|-f)
+            files_to_check="$files_to_check $2";
+            shift 2;;
+        --setx|-x)
+            set -xv;
+            shift;;
+        -h|--help)
+            echo "usage: $0 [-x|--setx]  [ [--file-to-check FILE|-f FILE] ... ]"
+            echo ""
+            echo "  --file-to-check | -f .... can be specified multiple times "
+            echo "  --setx | -x  - turn on bash 'debug mode'. Warning, very, very verbose"
+            exit 0;;
+        *)
+            echo "unknown parameter '$1'"
+            exit 1;;
+    esac
+done
+
+if [ -z "$files_to_check" ];then
+    files_to_check=$(git diff --name-only --diff-filter=AMC origin/main..HEAD | grep _posts) || true
+fi
 
 if test -z "$files_to_check"
 then
