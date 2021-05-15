@@ -27,13 +27,14 @@ writing new code.
 Combining all these „passions” is not always easy. It's hard to log everything without
 repeating things. Even if it's possible, it usually leads to inelegant code.
 
-For example, if I want to log that some error occured:
+For example, if you want to log that some error occured:
 
 ```python
 logger.error('Foo happened: %s', e)
 ```
 
-So far it's clean and easy.
+Then so far it's clean and easy.
+
 It would be nice to add some extra details though, like `user`
 (then you could search by `user` in [Kibana], if your logs goes there):
 
@@ -42,7 +43,7 @@ logger.error('Foo happened: %s', e, extra={'user': user,
                                            'action_type': 'bar'})
 ```
 
-Next, during debugging of a problem, you notice that it's not nearly enough and it's worth
+Next, during debugging of a problem, you will notice that it's not nearly enough and it's worth
 adding some `logging.debug`
 
 ```python
@@ -52,7 +53,7 @@ logger.debug("We're going to do SOMETHING in thread",
                     'thread_num': thread_num})
 ```
 
-And you notice that you have copied `user` and `action_type` in `extra=` dictionary.
+After that you will notice that your code has `extra=` with duplicated `user` and `action_type`.
 It's a Bad Thing! Imagine what would happen if there was another `logger.debug`, and another?
 Lots of repeated code, that should be written only once…
 
