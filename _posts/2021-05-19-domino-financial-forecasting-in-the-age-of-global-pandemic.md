@@ -137,7 +137,6 @@ Having tested various modelling techniques, we chose the forecasting procedure o
 ![chart](/img/articles/2021-05-19-domino-financial-forecasting-in-the-age-of-global-pandemic/03-chart.png)
 ![chart](/img/articles/2021-05-19-domino-financial-forecasting-in-the-age-of-global-pandemic/04-chart.png)
 
-
 Adding our domain knowledge about the analysed time series (e.g. calendar effects) and possibility of tuning the parameters of the model (e.g. the strength of the weekly seasonality effect) makes Prophet a perfect fit for our purpose.
 
 Modelling framework
