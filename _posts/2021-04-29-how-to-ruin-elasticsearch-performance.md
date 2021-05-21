@@ -5,8 +5,8 @@ author: [michal.kosmulski]
 tags: [tech, "full-text search", elasticsearch, elastic, es, performance]
 ---
 It’s relatively easy to find resources about _improving_ Elasticsearch performance, but what if you wanted to _reduce_ it? Here is a collection of select tips
-which can help you ruin your ES performance in no time. Most should also be applicable to Solr, raw Lucene, or, for that matter, to any other full-text search
-engine as well.
+which can help you ruin your ES performance with little effort. Most should also be applicable to Solr, raw Lucene, or, for that matter, to any other full-text
+search engine as well.
 
 Surprisingly, a number of people seem to have discovered these tactics already, and you may even find some of them used in your own production code.
 
@@ -18,7 +18,8 @@ a complex topic, this introduction will be both simplified and incomplete.
 ### Index and document contents
 
 In most full-text search engines, data is split into two separate areas: the index, which makes it possible to find documents (represented by some sort of ID)
-which match specified criteria, and document storage which makes it possible to retrieve the contents (values of all fields) of a document with specified ID.
+which match specified criteria, and [document storage](https://www.elastic.co/guide/en/elasticsearch/reference/master/mapping-store.html) which makes it possible
+to retrieve the contents (values of all fields) of a document with specified ID.
 This distinction improves performance, since usually document IDs will appear multiple times in the index, and it would not make much sense to duplicate all
 document contents. IDs can also fit into fixed-width fields which makes managing certain data structures easier. This separation also enables further
 space savings: it is possible to specify that certain fields will never be searched, and therefore do not need to be in the index, while others might never
@@ -35,7 +36,7 @@ What matters, is that for a single-word query, this index can find matching docu
 structure can, of course, be used not only for words: for example in a numeric index, we may have a ready-to-use list with IDs of documents which contain
 the value 123 in a specific field.
 
-aaaaaaaaaaaaaaa images
+![Postings lists — lists of document IDs containing each individual word](img/articles/2021-04-29-how-to-ruin-elasticsearch-performance/postings-lists.webp)
 
 ### Indexing
 
@@ -75,7 +76,7 @@ are _n_ and _m_.
 #### OR
 {: #or-operator }
 
-aaaaaaaaaaaaaaaaa images
+![Example algorithm for computing results of OR operation](img/articles/2021-04-29-how-to-ruin-elasticsearch-performance/list-merging-or.webp)
 
 The way to merge two sorted lists is straightforward (and it is also the reason for the lists to be sorted in the first place).
 For each list, we need to keep a pointer which will indicate the current position. Both pointers start at the beginning of their corresponding lists.
@@ -95,7 +96,7 @@ The result does not depend on the order of lists (OR operation is symmetric), an
 
 #### AND and AND NOT
 
-aaaaaaaaaaaaaaaaa images
+![Example algorithm for computing results of AND / AND NOT operations](img/articles/2021-04-29-how-to-ruin-elasticsearch-performance/list-merging-and.webp)
 
 Calculating the intersection of two sets (which corresponds to the logical AND operator) or their difference (AND NOT) are very similar operations.
 Just as when calculating the sum of sets, we need to maintain two pointers, one for each list. In each step of the iteration, we look at the current value
@@ -281,10 +282,11 @@ performance, but in your particular case, due to a specific distribution of a fi
 to discover if you do not precisely track performance before and after each significant change. Sneakily placing such a pattern in your code can be a great way
 to end up with low performance which is difficult to explain.
 
-### Treating search and indexing as two independent problems
+### Treating search and indexing as two separate problems
 
 You might be tempted to think of Elasticsearch as yet another database. If you do, you are likely to run into many issues, including performance problems, which
-are the topic of this post. One of the main things that set ES apart from most databases, whether they be SQL or NoSQL, is the search-indexing asymmetry.
+are the topic of this post. One of the main things that set ES apart from most databases, whether they be SQL or NoSQL, is the
+[search-indexing asymmetry](https://www.elastic.co/guide/en/elasticsearch/reference/current/near-real-time.html).
 In contrast to a normal database, in Elasticsearch you can’t just insert a bunch of documents: this process triggers indexing, creates new segments, potentially
 triggers segment merges, etc. and may affect performance in interesting ways. While indices of some kind are used in pretty much all databases, in ES they play
 a central role. Another important difference to databases is that Elastic data model favors, and often forces, very much denormalized data. This is
@@ -327,7 +329,7 @@ you may introduce an optimization whose effect is negligible, but whose cost (e.
 
 ### Blindly trusting what you read on the web
 
-And this leads us directly to the last tip: if you really want to ruin your ES performance, always trust strangers on the internet and apply their advice
+This leads us directly to the last tip: if you really want to ruin your ES performance, always trust strangers on the internet and apply their advice
 duly and without hesitation. Obviously, this applies to this very post as well. Another good practice is to never check publication dates, or the ES versions
 that particular tips apply to, since, as the example about range searches shows, what was true about ES and Lucene in 2010 surely still holds in 2021, right?
 
