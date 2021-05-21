@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Domino - financial forecasting in the age of global pandemic
-author: [piotr.gabrys, julia.bluszcz]
+author: [piotr.gabrys, julia.bluszcz, klaudia.walewska-lubian]
 tags: [tech]
 ---
 
