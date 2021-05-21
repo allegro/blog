@@ -4,7 +4,7 @@ title: How to ruin your Elasticsearch performance, one step at a time
 author: [michal.kosmulski]
 tags: [tech, "full-text search", elasticsearch, elastic, es, performance]
 ---
-It’s relatively easy to find resources about _improving_ Elasticsearch performance, but what if you wanted to _reduce_ it? Here is a collection of select tips
+It’s easy to find resources about _improving_ Elasticsearch performance, but what if you wanted to _reduce_ it? Here is a collection of select tips
 which can help you ruin your ES performance with little effort. Most should also be applicable to Solr, raw Lucene, or, for that matter, to any other full-text
 search engine as well.
 
@@ -25,7 +25,7 @@ document contents. IDs can also fit into fixed-width fields which makes managing
 space savings: it is possible to specify that certain fields will never be searched, and therefore do not need to be in the index, while others might never
 need to be returned in search results and thus can be omitted in document storage.
 
-For certain operations, it may be useful to [store field values within the index itself](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-store.html),
+For certain operations, it may be necessary to [store field values within the index itself](https://www.elastic.co/guide/en/elasticsearch/reference/master/doc-values.html),
 which is yet another approach.
 
 ### Inverted index
@@ -36,7 +36,7 @@ What matters, is that for a single-word query, this index can find matching docu
 structure can, of course, be used not only for words: for example in a numeric index, we may have a ready-to-use list with IDs of documents which contain
 the value 123 in a specific field.
 
-![Postings lists — lists of document IDs containing each individual word](img/articles/2021-04-29-how-to-ruin-elasticsearch-performance/postings-lists.webp)
+![Postings lists — lists of document IDs containing each individual word](/img/articles/2021-04-29-how-to-ruin-elasticsearch-performance/postings-lists.webp)
 
 ### Indexing
 
@@ -76,7 +76,7 @@ are _n_ and _m_.
 #### OR
 {: #or-operator }
 
-![Example algorithm for computing results of OR operation](img/articles/2021-04-29-how-to-ruin-elasticsearch-performance/list-merging-or.webp)
+![Example algorithm for computing results of OR operation](/img/articles/2021-04-29-how-to-ruin-elasticsearch-performance/list-merging-or.webp)
 
 The way to merge two sorted lists is straightforward (and it is also the reason for the lists to be sorted in the first place).
 For each list, we need to keep a pointer which will indicate the current position. Both pointers start at the beginning of their corresponding lists.
@@ -96,7 +96,7 @@ The result does not depend on the order of lists (OR operation is symmetric), an
 
 #### AND and AND NOT
 
-![Example algorithm for computing results of AND / AND NOT operations](img/articles/2021-04-29-how-to-ruin-elasticsearch-performance/list-merging-and.webp)
+![Example algorithm for computing results of AND / AND NOT operations](/img/articles/2021-04-29-how-to-ruin-elasticsearch-performance/list-merging-and.webp)
 
 Calculating the intersection of two sets (which corresponds to the logical AND operator) or their difference (AND NOT) are very similar operations.
 Just as when calculating the sum of sets, we need to maintain two pointers, one for each list. In each step of the iteration, we look at the current value
