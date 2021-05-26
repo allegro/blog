@@ -18,14 +18,14 @@ a complex topic, this introduction will be both simplified and incomplete.
 ### Index and document contents
 
 In most full-text search engines, data is split into two separate areas: the index, which makes it possible to find documents (represented by some sort of ID)
-which match specified criteria, and [document storage](https://www.elastic.co/guide/en/elasticsearch/reference/master/mapping-store.html) which makes it possible
+which match specified criteria, and [document storage](https://www.elastic.co/guide/en/elasticsearch/reference/6.8/mapping-store.html) which makes it possible
 to retrieve the contents (values of all fields) of a document with specified ID.
 This distinction improves performance, since usually document IDs will appear multiple times in the index, and it would not make much sense to duplicate all
 document contents. IDs can also fit into fixed-width fields which makes managing certain data structures easier. This separation also enables further
 space savings: it is possible to specify that certain fields will never be searched, and therefore do not need to be in the index, while others might never
 need to be returned in search results and thus can be omitted from document storage.
 
-For certain operations, it may be necessary to [store field values within the index itself](https://www.elastic.co/guide/en/elasticsearch/reference/master/doc-values.html),
+For certain operations, it may be necessary to [store field values within the index itself](https://www.elastic.co/guide/en/elasticsearch/reference/6.8/doc-values.html),
 which is yet another approach.
 
 ### Inverted index
@@ -129,7 +129,7 @@ so that they are sorted by length in ascending order.
 There are lots of factors which affect Elasticsearch performance and can be exploited in order to make that performance worse, and which I haven’t mentioned
 here. These include scoring, phrase search, run-time scripting, sharding and replication, hardware, and disk vs memory access just to name a few.
 There are also lots of minor quirks which are too numerous to list here. Given that you can
-[extend ES with custom plugins](https://www.elastic.co/guide/en/elasticsearch/plugins/current/plugin-authors.html) that can execute arbitrary code, the
+[extend ES with custom plugins](https://www.elastic.co/guide/en/elasticsearch/plugins/6.8/plugin-authors.html) that can execute arbitrary code, the
 opportunities for breaking things are endless.
 
 On the other hand, search engines employ a number of optimizations which may counter some of our efforts at achieving low performance.
@@ -148,7 +148,7 @@ Anyway, even the basic knowledge presented above should allow you to deal some h
 
 Looking at the algorithms above, you can easily notice that simple queries such as finding a document containing two or three specific words, are relatively
 cheap to compute. We can easily increase the cost by making the queries more complex. This complexity is easily achieved by using
-[boolean queries](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html) which allow arbitrary boolean expressions,
+[boolean queries](https://www.elastic.co/guide/en/elasticsearch/reference/6.8/query-dsl-bool-query.html) which allow arbitrary boolean expressions,
 including nested subexpressions.
 
 A “flat” query, even with many words, boils down to a single AND/OR operation (though potentially with many lists). Since a search engine is usually
@@ -202,7 +202,7 @@ no meaning at all to the query (with rare exceptions), matching almost all docum
 
 Obviously, the longest postings list possible is the one which contains all documents in the index. And indeed, pure negative queries such as
 “all documents but those with the word x” tend to be very expensive. Surprisingly, AND-ing the full set of documents (the result of a
-[match_all query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-all-query.html)) with results of another query is very fast.
+[match_all query](https://www.elastic.co/guide/en/elasticsearch/reference/6.8/query-dsl-match-all-query.html)) with results of another query is very fast.
 This is because of a [special optimization](https://github.com/apache/lucene/blob/5e0e7a5479bca798ccfe385629a0ca2ba5870bc0/lucene/core/src/java/org/apache/lucene/search/BooleanQuery.java#L449)
 which uses the identity `ALL AND a = a` to simplify those queries so that the expensive computation can be completely avoided.
 This kind of query rewriting can transform a number of query patterns to queries with the same result but better performance characteristics.
@@ -213,7 +213,7 @@ Thinking about indexing and index segments, you have to notice that merging part
 additionally has to account for document removal and updates). This leads to the conclusion that having many segments hurts search performance, especially
 for popular keywords whose postings lists are large to start with. Indeed, this happens in practice. Performance may vary significantly depending on the number
 of segments, and the optimum is just a single segment in your index. In Elastic, you can use the
-[force merge](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-forcemerge.html) API to reduce the number of segments after indexing.
+[force merge](https://www.elastic.co/guide/en/elasticsearch/reference/6.8/indices-forcemerge.html) API to reduce the number of segments after indexing.
 I have actually worked with a product in which data was never indexed incrementally, but instead the whole index was rebuilt from scratch and force-merged to a single
 segment after each update. This was a relatively small index with high search traffic and big gains in search performance (on the order of twice shorter response
 times) were the reason for this seemingly wasteful indexation process.
@@ -232,7 +232,7 @@ document IDs. If each value in the index corresponds to a single day, and the do
 with the OR operator. If the data is indexed with millisecond resolution, there will be many more, with performance becoming even worse.
 
 Fortunately, these issues have been known for a long time, and there are a number of solutions in place. For text fields, you can enable
-[prefix indexing](https://www.elastic.co/guide/en/elasticsearch/reference/current/index-prefixes.html) which creates special structures in the index which
+[prefix indexing](https://www.elastic.co/guide/en/elasticsearch/reference/6.8/index-prefixes.html) which creates special structures in the index which
 contain merged postings lists so that they don’t have to be computed at query time. Range queries on numeric and date fields are now optimized by default
 in Elasticsearch by creating [additional structures in the index](https://lucene.apache.org/core/2_9_4/api/core/org/apache/lucene/search/NumericRangeQuery.html#precisionStepDesc)
 as well, though with a particularly nasty data set, you might still be able to trigger some issues. Note that these solutions are space-time tradeoffs
@@ -244,7 +244,7 @@ recommending optimizations which made sense ten years ago, but may be counterpro
 not need to worry about them too much now.
 
 As a side note, ES tries to protect you from yourself and by default disables some types of queries which are likely to be costly: you have to
-[explicitly enable them](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html#query-dsl-allow-expensive-queries) if you know what
+[explicitly enable them](https://www.elastic.co/guide/en/elasticsearch/reference/7.x/query-dsl.html#query-dsl-allow-expensive-queries) if you know what
 you’re doing and want to use them.
 
 ### Returning lots of search results
@@ -266,7 +266,7 @@ The problem is that in order to find documents on positions 991-1000, Elastic ha
 and aggregations as well as memory usage is still proportional to 1000.
 
 So, if you think you can have millions of documents in ES and can just retrieve them all (or some large subset) using a simple query, you may be in for a surprise.
-There are [specialized APIs for such a use case](https://www.elastic.co/guide/en/elasticsearch/reference/master/paginate-search-results.html), but they all have
+There are [specialized APIs for such a use case](https://www.elastic.co/guide/en/elasticsearch/reference/7.x/paginate-search-results.html), but they all have
 their limitations.
 
 ### Assuming Elastic knows as much about your data as you do
@@ -305,9 +305,10 @@ to end up with low performance which is difficult to explain.
 
 You might be tempted to think of Elasticsearch as yet another database. If you do, you are likely to run into many issues, including performance problems.
 One of the main things that set ES apart from most databases, whether they be SQL or NoSQL, is the
-[search-indexing asymmetry](https://www.elastic.co/guide/en/elasticsearch/reference/current/near-real-time.html).
+[search-indexing asymmetry](https://www.elastic.co/guide/en/elasticsearch/reference/7.x/near-real-time.html).
 In contrast to a normal database, in Elasticsearch you can’t just insert a bunch of documents: this process triggers indexing, creates new segments, potentially
-triggers segment merges, etc. and may affect performance in interesting ways. While indices of some kind are used in pretty much all databases, in ES they play
+triggers segment merges, has to [propagate replicas and handle consistency within the cluster](https://www.alibabacloud.com/blog/elasticsearch-distributed-consistency-principles-analysis-3---data_594360),
+etc. This may all affect performance in interesting ways. While indices of some kind are used in pretty much all databases, in ES they play
 a central role. Another important difference to databases is that Elastic data model favors, and often forces, very much denormalized data. This is
 common with NoSQL databases but in ES, it is even more extreme.
 
@@ -338,7 +339,7 @@ over and over, but: the only way to improve performance is to first measure the 
 deciding whether the values are satisfactory or not, defining target values if they are not, and then systematically measuring and improving until success
 or surrender.
 
-Optimizing without measurement and without defining goals, on the other hand, is a good method of wasting your time, and consequently, achieving sub-par
+Optimizing without [measurement](https://esrally.readthedocs.io/en/stable/) and without defining goals, on the other hand, is a good method of wasting your time, and consequently, achieving sub-par
 performance. While there are some simple optimizations which amount to “don’t do stupid things” and can be applied practically always without any risk,
 most are a trade-off: you gain something at the expense of something else. If you apply them inappropriately, you may end up with expenses but without the gains.
 Many optimizations’ effectiveness varies a lot depending on the kind of data in the index or specific query patterns generated by your users, so, for example
