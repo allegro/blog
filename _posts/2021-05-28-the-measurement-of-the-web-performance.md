@@ -2,11 +2,11 @@
 layout: post
 title: The Measurement of the Web Performance
 author: jerzy.jelinek
-tags: [tech, webperf, frontend, performance, perfmatters, javascript]]
+tags: [tech, webperf, frontend, performance, perfmatters, javascript]
 ---
 Some time ago we announced that Allegro passes Core Web Vitals assessment and thanks to that we were awarded in "Core Web Vitals Hall of Fame".
 It means that Allegro is in the group of the 27% fastest websites in Polish Internet.
-In this series of articles, we want to tell you what our daily work has been like over the years, 
+In this series of articles, we want to tell you what our daily work has been like over the years,
 what we've optimized and what we've failed at,and how the perception of web performance has changed in our company.
 
 ![Allegro passes Core Web Vitals Assessment](/img/articles/2021-05-28-the-measurement-of-the-web-performance/allegro-twitter.png "Allegro passes Core Web Vitals Assessment")
@@ -18,7 +18,7 @@ We want to show that there is no magical `{ perf: true }` option and that some t
 
 It all started with a group of enthusiasts concerned about the poor performance of Allegro and the lack of actions to improve it.
 Their grassroots initiative was appreciated and the core of the technical team (Webperf) was formed.
-There was one major problem – it is relatively easy to make micro-optimizations in the code of one component, 
+There was one major problem – it is relatively easy to make micro-optimizations in the code of one component,
 however, it is much more difficult to push through a major change involving different teams or business areas.
 The company needed to know how the change would affect not only performance but also the business.
 At that time there were many success stories from various companies on the internet about how improvements in loading speed have impacted their business results.
@@ -45,9 +45,9 @@ We collect two types of measures in Pinter:
 * Standard e.g. Web Vitals,
 * Custom e.g. Time To Component Interactive.
 
-#### Principle of operation
+#### Principle of operation of the Pinter
 
-![Pinter principle of operation](/img/articles/2021-05-28-the-measurement-of-the-web-performance/pinter-diagram.jpg "Pinter principle of operation")
+![Pinter principle of operation of Pinter](/img/articles/2021-05-28-the-measurement-of-the-web-performance/pinter-diagram.jpg "Pinter principle of operation of Pinter")
 
 In general metrics’ changes are tracked using PerformanceObserver from which values are collected, processed into a performance event and sent to the backend.
 
@@ -82,7 +82,7 @@ Below is a slice of what we are collecting and why:
 All collected performance data is sent to the backend where it is anonymized, aggregated and prepared to be displayed on charts.
 It is a complex system which allows us to operate only on the necessary portion of data.
 
-#### Principle of operation
+#### Principle of operation of the backend
 
 ![backend principle of operation](/img/articles/2021-05-28-the-measurement-of-the-web-performance/backend-diagram.jpg "backend principle of operation")
 
