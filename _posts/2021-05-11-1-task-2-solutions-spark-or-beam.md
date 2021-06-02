@@ -132,7 +132,7 @@ we must also consider how to do it in a better way.
         </td>
     </tr>
     <tr>
-        <td>Integration tests (validation proper read/write from/to BigQuery)</td>
+        <td>Integration tests (validation of proper reads/writes from/to BigQuery)</td>
         <td colspan="2">No official support for mocking BigQuery/Google Storage or embedded/test container version</td>
     </tr>
     <tr>
