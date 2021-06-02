@@ -286,7 +286,7 @@ Below you can find how we’d estimate entry level for skills that were necessar
 |                                         | Apache Spark                            | Apache Beam                             |
 |-----------------------------------------|-----------------------------------------|-----------------------------------------|
 | Programming languages                   |Scala (Intermediate)                     |Python (Intermediate)                    |
-|                                         |Python(Basic)                            |                                         |
+|                                         |Python (Basic)                            |                                         |
 |                                         |SQL (depends on your data and constraints in the executed query, generally it is recommended to load only necessary data)||
 | Technology stack                        |Apache Spark (Advanced)                  |Apache Beam (Intermediate)               |
 |                                         |Google Dataproc (Intermediate)           |BigFlow (Advanced)                       |
