@@ -146,7 +146,7 @@ we must also consider how to do it in a better way.
     </tr>
     <tr>
         <td colspan="3">
-        Summary: a solution is to minimize the ratio of missing test coverage and isolate classes responsible for loading/writing data from/to these
+        Summary: A solution is to minimize the ratio of missing test coverage and isolate classes responsible for loading/writing data from/to these
         dependencies as much as possible. Another issue is to inject all this stuff into CI pipeline but this is completely another story. So, in both cases, it
         was a quite tedious process. To ensure there are no performance issues and jobs are not broken we run them on a dev environment using the production
         data which also took us a lot of time.
