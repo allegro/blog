@@ -139,7 +139,7 @@ we must also consider how to do it in a better way.
         <td>E2E tests (ensure job is executed, run in Cloud and has integration with GCP infrastructure)</td>
         <td colspan="2">
         Due to the missing implementation of testing the whole flow, we were running jobs locally to load production data, process them and store into BigQuery
-        tables for development purposes. In this way we were ensuring introduced changes did not impact performance and both return identical results. Note:
+        tables for development purposes. This way we were ensuring introduced changes did not impact performance and both return identical results. Note:
         recently BigFlow added a <a href="https://github.com/allegro/bigflow/blob/master/docs/e2e_testing.md">solution</a> by setting real Dataflow/BigQuery
         infrastructure while running e2e tests
         </td>
