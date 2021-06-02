@@ -42,13 +42,9 @@ Note: Below I described our solution and used tools and technologies which do no
         deployment processes).
         </td>
     </tr>
-    <tr>
-        <td colspan="2">
-        Summary: Apache Beam looks more like a framework as it abstracts the complexity of processing and hides technical details, and Spark is the technology
-        where you literally need to dive deeper.
-        </td>
-    </tr>
 </table>
+<strong>Summary</strong>: Apache Beam looks more like a framework as it abstracts the complexity of processing and hides technical details, and Spark is the
+technology where you literally need to dive deeper.
 
 #### Programming languages and build tools
 
@@ -69,8 +65,9 @@ Note: Below I described our solution and used tools and technologies which do no
     </tr>
     <tr>
         <td>
-        Because of Scala, <a href="https://www.scala-sbt.org">sbt</a> is used for building the package and running the tests. Java developers can associate it with Gradle, it also has a build.sbt file
-        which is similar to build.gradle as it contains dependencies, Scala version, etc.
+        Because of Scala, <a href="https://www.scala-sbt.org">sbt</a> is used for building the package and running the tests. This can be more beneficial for
+        Java developers who are familiar with Gradle: it uses the build.sbt configuration file, which like build.gradle declares dependencies, the Scala version
+        to use, etc.
         </td>
         <td>
         <a href="https://packaging.python.org/key_projects/#setuptools">Setuptools</a> (tool for building Python packages) is run by script.py build script
@@ -78,14 +75,10 @@ Note: Below I described our solution and used tools and technologies which do no
         <a href="https://github.com/jazzband/pip-tools">pip-tool</a>. Additionally running tests with BigFlow CLI is more convenient and faster compared with sbt.
         </td>
     </tr>
-    <tr>
-        <td colspan="2">
-        Summary: Scala is much closer to our team (mostly Java developers), especially at the beginning when we needed to get used to working with Python
-        without static typing. Also Scala is more natural for Spark, so all upcoming features will be firstly supported for this programming language,
-        educational resources and examples in Scala for Spark are more exhaustive.
-        </td>
-    </tr>
 </table>
+<strong>Summary</strong>: Scala is much closer to our team (mostly Java developers), especially at the beginning when we needed to get used to working with Python
+without static typing. Also Scala is more natural for Spark, so all upcoming features will be firstly supported for this programming language, educational
+resources and examples in Scala for Spark are more exhaustive.
 
 #### Batch and stream data processing
 
@@ -107,13 +100,9 @@ we must also consider how to do it in a better way.
         windowing (a way to split data during stream processing), watermarks and triggers (handling events that come late or out-of-order).
         </td>
     </tr>
-    <tr>
-        <td colspan="2">
-        Summary: Although we didn't try it ourselves, we’d bet on Apache Beam in this comparison. It looks more adapted for Streaming than Spark. Despite there
-        is Streaming extension since Spark 2.2 but libraries of streaming functions are quite limited. For us this means more efforts to apply.
-        </td>
-    </tr>
 </table>
+<strong>Summary</strong>: although we didn't try it ourselves, we’d bet on Apache Beam in this comparison. It looks more adapted for Streaming than Spark.
+Although there is a streaming extension since Spark 2.2 but libraries of streaming functions are quite limited. For us this means more efforts to apply.
 
 #### Testing
 <table>
@@ -138,25 +127,21 @@ we must also consider how to do it in a better way.
     <tr>
         <td>E2E tests (ensure job is executed, run in Cloud and has integration with GCP infrastructure)</td>
         <td colspan="2">
-        Due to the missing implementation of testing the whole flow, we were running jobs locally to load production data, process them and store into BigQuery
-        tables for development purposes. This way we were ensuring introduced changes did not impact performance and both return identical results. Note:
-        recently BigFlow added a <a href="https://github.com/allegro/bigflow/blob/master/docs/e2e_testing.md">solution</a> by setting real Dataflow/BigQuery
-        infrastructure while running e2e tests
-        </td>
-    </tr>
-    <tr>
-        <td colspan="3">
-        Summary: A solution is to minimize the ratio of missing test coverage and isolate classes responsible for loading/writing data from/to these
-        dependencies as much as possible. Another issue is to inject all this stuff into CI pipeline but this is completely another story. So, in both cases, it
-        was a quite tedious process. To ensure there are no performance issues and jobs are not broken we run them on a dev environment using the production
-        data which also took us a lot of time.
+        Due to the missing implementation of testing the whole flow, we were running locally jobs to load production data, process them and store into BigQuery
+        tables for development purposes. This way we were ensuring introduced changes did not impact performance and both return identical results.
+        Note: recently BigFlow added a <a href="https://github.com/allegro/bigflow/blob/master/docs/e2e_testing.md">solution</a> by setting real Dataflow/BigQuery
+        infrastructure while running E2E tests
         </td>
     </tr>
 </table>
+<strong>Summary</strong>: a solution is to minimize the ratio of missing test coverage and isolate classes responsible for I/O operations in external storages (GCP
+Storage and BigQuery) as much as possible. Another issue is to inject all this stuff into CI pipeline but this is completely another story. So, in both cases,
+it was a quite tedious process. To ensure there are no performance issues and jobs are not broken we run them on a dev environment using the production data
+which also took us a lot of time.
 
 #### Local run
 
-Note: local run in our case does not mean 100% execution on the laptop: job is triggered from the local machine, but actually it takes place on the real cluster
+Local run in our case does not mean 100% execution on the laptop: job is triggered from the local machine, but actually it has a place on the real cluster
 in Google Cloud.
 
 <table>
@@ -173,13 +158,9 @@ in Google Cloud.
         BigFlow CLI
         </td>
     </tr>
-    <tr>
-        <td colspan="2">
-        Summary: No absolute winner here, depends on your preferences. Beside this we found Terraform to be a fine separate tool to set up a local environment for
-        running the job and could be used for Apache Beam job as well.
-        </td>
-    </tr>
 </table>
+<strong>Summary</strong>: no absolute winner here, depends on your preferences. Beside this we found Terraform to be a fine separate tool to set up a local
+environment for running the job and could be used for Apache Beam job as well.
 
 #### Running on the GCP
 
@@ -204,15 +185,11 @@ in Google Cloud.
         to be a self-managed platform, so less effort is required to configure it compared to Dataproc.
         </td>
     </tr>
-    <tr>
-        <td colspan="2">
-        Summary: Dataflow wins in terms of ease of the setup. However, there is one more drawback here: limitation to run on the public cloud. It was so
-        convenient for us to profit from Dataflow services that it would be hard to find appropriate substitution for them. Moreover, BigFlow framework
-        positions itself as a Python framework for data processing pipelines on GCP. So if we want to migrate to another platform, this would enforce us to
-        configure another runner so that we are able to run the job properly.
-        </td>
-    </tr>
 </table>
+<strong>Summary</strong>: Dataflow wins in terms of ease of the setup. However, there is one more drawback here: limitation to run on the public cloud. It was so
+convenient for us to profit from Dataflow services that it would be hard to find appropriate substitution for them. Furthermore, BigFlow framework
+positions itself as a Python framework for data processing pipelines on GCP. So if we want to migrate to another platform, this would enforce us to
+configure another runner so that we are able to run the job properly.
 
 #### Monitoring
 
@@ -235,12 +212,8 @@ In addition to the process itself, it is crucial to have an option to observe it
         Logs from workers and metrics are displayed on the same UI and are available even after the job is finished.
         </td>
     </tr>
-    <tr>
-        <td colspan="2">
-        Summary: Dataflow beats Dataproc here and that is it. No comments are required.
-        </td>
-    </tr>
 </table>
+<strong>Summary</strong>: Dataflow beats Dataproc here and that is it. No comments are required.
 
 #### Cost
 
@@ -265,20 +238,16 @@ non-optimized jobs to see how much it is without significant tuning.
         <td>1.5h</td>
         <td>1h</td>
     </tr>
-    <tr>
-        <td colspan="3">
-        Summary: cost is almost the same, however we need to highlight that Spark job has much more space to optimize while Apache Beam job already
-        contains Dataflow optimizations out-of-the-box. For example: playing more with Spark configuration, experimenting with Dataproc workers number, etc, so
-        probably it would cost less and run faster if you know how to tune it properly.
-        </td>
-    </tr>
 </table>
+<strong>Summary</strong>: cost is almost the same, however we need to highlight that Spark job has much more space to optimize while Apache Beam job already
+contains Dataflow optimizations out-of-the-box. For example: playing more with Spark configuration, experimenting with Dataproc workers number, etc, so
+probably it would cost less and run faster if you know how to tune it properly.
 
 #### Conclusion
 
 At the end we’d like to say that Spark Job could be more beneficial if you know it well. Additionally, Dataproc requires advanced skills close to
 the experienced DevOps engineer to organize all necessary infrastructure. But if you do not have a good BigData engineer in your team or you run out of time and
-you are ready to pay a little bit more for out-of-the-box optimizations, then Apache Beam + Dataflow is your choice. Also remember even if you pay a little bit
+you are ready to pay a little bit more for out-of-the-box features, then Apache Beam + Dataflow is your choice. Also remember even if you pay a little bit
 more, it means that you are saving developers' time spent on the Spark tweaking that may bring some value.
 
 Below you can find how we’d estimate entry level for skills that were necessary for us to develop using the two technologies.
