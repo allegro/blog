@@ -10,7 +10,7 @@ It means that Allegro is in the group of the 27% fastest websites in Polish Inte
 In this series of articles, Webperf team and I want to tell you what our daily work has been like over the years,
 what we’ve optimized and what we’ve failed at, and how the perception of web performance has changed at our company.
 
-![Allegro passes Core Web Vitals Assessment](/img/articles/2021-05-28-the-measurement-of-the-web-performance/allegro-twitter.png "Allegro passes Core Web Vitals Assessment")
+![Allegro passes Core Web Vitals Assessment](/img/articles/2021-05-28-measuring-web-performance/allegro-twitter.png "Allegro passes Core Web Vitals Assessment")
 
 Our path to a quite fast page (we’re still hoping for more) was winding, bumpy, more than once ended in a dead end and forced us to rethink our solutions.
 We want to show that there is no magical `{ perf: true }` option and that some things you just have to figure out by trial and error.
@@ -43,16 +43,16 @@ The first commits to the library collecting performance measures (called Pinter)
 
 We collect two types of measures in Pinter:
 
-* Standard e.g., Web Vitals,
-* Custom e.g., Time To Component Interactive.
+* Standard, e.g., Web Vitals,
+* Custom, e.g., Time To Component Interactive.
 
 #### Principle of operation of the Pinter
 
-![Pinter principle of operation of Pinter](/img/articles/2021-05-28-the-measurement-of-the-web-performance/pinter-diagram.jpg "Pinter principle of operation of Pinter")
+![Pinter principle of operation of Pinter](/img/articles/2021-05-28-measuring-web-performance/pinter-diagram.jpg "Pinter principle of operation of Pinter")
 
 In general, metrics’ changes are tracked using PerformanceObserver from which values are collected, processed into a performance event and sent to the backend.
 
-However, there are several metrics e.g., Navigation Timing, Resource Timing or Benchmark that are only sent once, after the document has loaded.
+However, there are several metrics, e.g., Navigation Timing, Resource Timing or Benchmark that are only sent once, after the document has loaded.
 
 Our script, like any other, can affect web performance. This is why the traffic is sampled and the library itself is not served to all users.
 
@@ -68,7 +68,7 @@ Below is a slice of what we are collecting and why:
   * **Cumulative Layout Shift** — layout stability.
   * **First Input Delay** — how quickly the first user interaction is handled.
 * **Custom Marks**
-  * **Time To Component Interactive** — when the critical component is fully interactive and can handle all user actions e.g. after React rehydration.
+  * **Time To Component Interactive** — when the critical component is fully interactive and can handle all user actions, e.g. after React rehydration.
 * **Navigation**
   * **Type** — what [type of navigation](https://developer.mozilla.org/en-US/docs/Web/API/PerformanceNavigationTiming/type) the user was using. Useful when analyzing metrics.
   * **Timing** — data from `window.performance.timing` about connection, response time, load time etc.
@@ -85,7 +85,7 @@ It is a complex system which allows us to operate only on the necessary portion 
 
 #### Principle of operation of the backend
 
-![backend principle of operation](/img/articles/2021-05-28-the-measurement-of-the-web-performance/backend-diagram.jpg "backend principle of operation")
+![backend principle of operation](/img/articles/2021-05-28-measuring-web-performance/backend-diagram.jpg "backend principle of operation")
 
 Initially, all events (including performance ones) are gathered and stored in a single [HIVE](https://hive.apache.org/) table.
 We want to be able to quickly analyze as well as compare historical records, but this amount of data would effectively prevent us from doing so.
@@ -108,7 +108,7 @@ It is worth noting that we display data only for mobile devices. We do this for 
 are not as efficient as desktops and the share of phones in Allegro traffic is growing day by day.
 We assume that improving performance on mobile devices would have a positive impact on desktops as well.
 
-![Grafana screenshot](/img/articles/2021-05-28-the-measurement-of-the-web-performance/grafana-screen.png "Grafana screenshot")
+![Grafana screenshot](/img/articles/2021-05-28-measuring-web-performance/grafana-screen.png "Grafana screenshot")
 
 ##### Turnilo
 
@@ -116,7 +116,7 @@ It is a business intelligence, data exploration and visualization web applicatio
 and metrics we are able to pinpoint found issues to particular pages, device types or even browser versions
 and then check if the applied solution actually worked.
 
-![Turnilo screenshot](/img/articles/2021-05-28-the-measurement-of-the-web-performance/turnilo-screen.png "Turnilo screenshot")
+![Turnilo screenshot](/img/articles/2021-05-28-measuring-web-performance/turnilo-screen.png "Turnilo screenshot")
 
 ### Monitoring
 
@@ -124,7 +124,7 @@ Checking measures on the dashboard is our daily routine, but we are only humans 
 or we won’t be able to notice a changing trend so we decided to automate our work as much as possible.
 We have created a range of detectors that notify us on Slack or mail when a predetermined threshold is exceeded.
 
-![Monitoring screenshot](/img/articles/2021-05-28-the-measurement-of-the-web-performance/monitoring-screen.png "Monitoring screenshot")
+![Monitoring screenshot](/img/articles/2021-05-28-measuring-web-performance/monitoring-screen.png "Monitoring screenshot")
 
 ## Summary
 
