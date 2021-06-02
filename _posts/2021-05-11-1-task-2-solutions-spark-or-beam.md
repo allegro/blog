@@ -156,7 +156,7 @@ we must also consider how to do it in a better way.
 
 #### Local run
 
-Note: local run in our case does not mean 100% execution on the laptop: job is triggered from the local machine, but actually it has a place on the real cluster
+Note: local run in our case does not mean 100% execution on the laptop: job is triggered from the local machine, but actually it takes place on the real cluster
 in Google Cloud.
 
 <table>
