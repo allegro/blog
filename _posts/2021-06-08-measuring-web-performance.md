@@ -48,7 +48,7 @@ We collect two types of measures in Pinter:
 
 #### Principle of operation of the Pinter
 
-![Pinter principle of operation of Pinter](/img/articles/2021-05-28-measuring-web-performance/pinter-diagram.jpg "Pinter principle of operation of Pinter")
+![Pinter principle of operation of Pinter](/img/articles/2021-06-08-measuring-web-performance/pinter-diagram.jpg "Pinter principle of operation of Pinter")
 
 In general, metrics’ changes are tracked using PerformanceObserver from which values are collected, processed into a performance event and sent to the backend.
 
@@ -85,7 +85,7 @@ It is a complex system which allows us to operate only on the necessary portion 
 
 #### Principle of operation of the backend
 
-![backend principle of operation](/img/articles/2021-05-28-measuring-web-performance/backend-diagram.jpg "backend principle of operation")
+![backend principle of operation](/img/articles/2021-06-08-measuring-web-performance/backend-diagram.jpg "backend principle of operation")
 
 Initially, all events (including performance ones) are gathered and stored in a single [HIVE](https://hive.apache.org/) table.
 We want to be able to quickly analyze as well as compare historical records, but this amount of data would effectively prevent us from doing so.
@@ -108,7 +108,7 @@ It is worth noting that we display data only for mobile devices. We do this for 
 are not as efficient as desktops and the share of phones in Allegro traffic is growing day by day.
 We assume that improving performance on mobile devices would have a positive impact on desktops as well.
 
-![Grafana screenshot](/img/articles/2021-05-28-measuring-web-performance/grafana-screen.png "Grafana screenshot")
+![Grafana screenshot](/img/articles/2021-06-08-measuring-web-performance/grafana-screen.png "Grafana screenshot")
 
 ##### Turnilo
 
@@ -116,7 +116,7 @@ It is a business intelligence, data exploration and visualization web applicatio
 and metrics we are able to pinpoint found issues to particular pages, device types or even browser versions
 and then check if the applied solution actually worked.
 
-![Turnilo screenshot](/img/articles/2021-05-28-measuring-web-performance/turnilo-screen.png "Turnilo screenshot")
+![Turnilo screenshot](/img/articles/2021-06-08-measuring-web-performance/turnilo-screen.png "Turnilo screenshot")
 
 ### Monitoring
 
@@ -124,7 +124,7 @@ Checking measures on the dashboard is our daily routine, but we are only humans 
 or we won’t be able to notice a changing trend so we decided to automate our work as much as possible.
 We have created a range of detectors that notify us on Slack or mail when a predetermined threshold is exceeded.
 
-![Monitoring screenshot](/img/articles/2021-05-28-measuring-web-performance/monitoring-screen.png "Monitoring screenshot")
+![Monitoring screenshot](/img/articles/2021-06-08-measuring-web-performance/monitoring-screen.png "Monitoring screenshot")
 
 ## Summary
 
