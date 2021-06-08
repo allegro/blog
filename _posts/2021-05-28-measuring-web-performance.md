@@ -75,7 +75,7 @@ Below is a slice of what we are collecting and why:
 * **Resources**
   * **Transfer Size** — the total size of scripts and styles transferred over the network.
   * **Total Encoded Body Size** — the total size of scripts and styles on the page. Is not distorted by cache.
-  * **Resource count** — number of assets with breakdown into styles, internal scripts and 3rd parties scripts.
+  * **Resource count** — number of assets with breakdown into styles, internal scripts and 3rd party scripts.
 * **Benchmark** — information about the performance of a given device. We want to know if weaker devices perform worse and if our fixes have a positive impact on them.
 
 ### The backend
