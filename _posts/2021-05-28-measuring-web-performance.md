@@ -10,7 +10,7 @@ It means that Allegro is in the group of the 27% fastest websites in Polish Inte
 In this series of articles, Webperf team and I want to tell you what our daily work has been like over the years,
 what we’ve optimized and what we’ve failed at, and how the perception of web performance has changed at our company.
 
-![Allegro passes Core Web Vitals Assessment](/img/articles/2021-05-28-measuring-web-performance/allegro-twitter.png "Allegro passes Core Web Vitals Assessment")
+<blockquote class="twitter-tweet tw-align-center"><p lang="en" dir="ltr">We are happy to share that as of today <a href="https://t.co/SsPqZ0TxIT">https://t.co/SsPqZ0TxIT</a> passes Core Web Vitals assessment for the whole origin 🎉 on mobile. This is great news for all our teams involved in the effort and users who are getting faster and better experience! <a href="https://t.co/exxRB4UoPB">pic.twitter.com/exxRB4UoPB</a></p>&mdash; allegro.tech (@allegrotech) <a href="https://twitter.com/allegrotech/status/1331547521139822592?ref_src=twsrc%5Etfw">November 25, 2020</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 Our path to a quite fast page (we’re still hoping for more) was winding, bumpy, more than once ended in a dead end and forced us to rethink our solutions.
 We want to show that there is no magical `{ perf: true }` option and that some things you just have to figure out by trial and error.
