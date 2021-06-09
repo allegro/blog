@@ -31,7 +31,7 @@ the decision was made to collect performance measures that could be linked to bu
 The idea was simple, we wanted to:
 
 * create a library which would use Performance API to create marks on the client side,
-* use an existing mechanizm for sending events to the backend,
+* use an existing mechanism for sending events to the backend,
 * store the information in a database so we could easily operate on it,
 * and finally display basic metrics on a dashboard.
 
