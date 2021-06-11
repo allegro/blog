@@ -12,7 +12,7 @@ excerpt: >
 
 ---
 
-This post is about the reasons behind writing a small (yet practical) library that has been released as open-source:  [LogExtraCtx]
+This post is about the reasons behind writing a small (yet practical) library that has just been released as open-source:  [LogExtraCtx]
 
 ## Why did I write this library?
 
@@ -55,7 +55,7 @@ logger.debug("We're going to do SOMETHING in thread",
 
 After that you will notice that your code has `extra=` with duplicated `user` and `action_type`.
 It’s a Bad Thing! Imagine what would happen if there was another `logger.debug`, and another?
-Lots of repeated code, that should be written only once…
+Lots of repeated code that should be written only once…
 
 ![I see copypastes in code](https://i.imgflip.com/54peqd.jpg)
 
@@ -99,14 +99,14 @@ def send_message(requester: str, recipient: str, text: str) -> bool:
         r.raise_for_status()
     except requests.exceptions.RequestException as e:
         logger.error('Sending message failed. Response text: "%s"', e,
-                     extra={   # extra data to be indexed
+                     extra={  # extra data to be logged and indexed by Kibana
                          'ACTION_TYPE': 'SEND_MSG',
                          'requester': requester,
                          'recipient': recipient,
                      })
         return False
     logger.info('Sending MSG success.',
-                extra={  # the same extra data to be indexed
+                extra={  # the same extra data to be logged/indexed
                     'ACTION_TYPE': 'SEND_MSG',
                     'requester': requester,
                     'recipient': recipient,
@@ -138,7 +138,7 @@ extra = {'ACTION_TYPE': 'SEND_MSG',
          }
 ```
 
-Combined all together, it becomes a big, unreadable blob of code. A very simple logic has been
+Combined all together, it becomes a big, unreadable blob of code. A very simple piece of logic has been
 spoiled by 3 log entries.
 
 ```python
@@ -153,7 +153,7 @@ def send_message(environment: str, requester: str, recipient: str, text: str) ->
         r.raise_for_status()
     except requests.exceptions.RequestException as e:
         logger.error('Sending MSG failed. Response text: "%s"', e,
-                     extra={   # extra data to be indexed
+                     extra={   # extra data to be logged and indexed by Kibana
                          'ACTION_TYPE': 'SEND_MSG',
                          'requester': requester,
                          'recipient': recipient,
@@ -169,7 +169,7 @@ def send_message(environment: str, requester: str, recipient: str, text: str) ->
                             })
         return False
     logger.info('Sending MSG success.',
-                extra={  # the same extra data to be indexed
+                extra={  # the same extra data to be logged/indexed
                     'ACTION_TYPE': 'SEND_MSG',
                     'requester': requester,
                     'recipient': recipient,
@@ -200,7 +200,7 @@ logger = getLogger(__name__)
 def send_message(environment: str, requester: str, recipient: str, text: str) -> bool:
     """ Function send_message sends MSG to the specified recipient.  """
 
-    # extra data to be indexed
+    # extra data to be logged/indexed
     loclogger = logger.local(extra={'ACTION_TYPE': 'SEND_MSG',
                                     'requester': requester,
                                     'recipient': recipient,
@@ -221,9 +221,8 @@ def send_message(environment: str, requester: str, recipient: str, text: str) ->
 
 ## Interesting and useful “side effect”
 
-Usually, it’s hard to distinguish log entries from various users. For example when you have error in
-your code and you find `IndexError`, you cannot be **really sure** to which request does it
-belong.
+Usually, it’s hard to distinguish log entries from various users. For example when you have an error in
+your code and you find `IndexError`, you cannot be **really sure** to which request it belongs.
 
 Of course, you can guess, based on chronology and many other symptoms,
 but if you have many concurrent requests, then it’s hard or even impossible to associate `ERROR` log
