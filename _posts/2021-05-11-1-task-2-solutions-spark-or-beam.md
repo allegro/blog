@@ -19,7 +19,7 @@ Note: Below I described our solution and used tools and technologies which do no
 
 ### Programming model
 
-The first comparison is about the way how do these technologies are built as understanding the general concept plays the first role in writing the code for data
+The first comparison is about the way how do these technologies are built as capturing the general concept plays the first role in writing the code for data
 processing.
 
 <table>
@@ -52,8 +52,8 @@ technology where you literally need to dive deeper.
 ### Programming languages and build tools
 
 Here I do not want to spread hate and discuss which programming language is the best one for data processing, it is the matter of taste. I just would like to
-provide some context of our team members to give you better understanding of our preferences: most of us are specialised in the software development in JVM-based
-languages so we were a little bit biased before starting this task.
+provide some context of our team's background to give you better understanding of our preferences: most of us are specialised in the software development in
+Kotlin so we were a little bit biased against non JVM-based languages before starting this task.
 
 <table>
     <tr>
@@ -89,8 +89,8 @@ resources and examples in Scala for Spark are more exhaustive.
 
 ### Batch and stream data processing
 
-In our projects we did not implement stream data processing, since we have batch processing only, but anyway it is probable that business requirements could change so
-we must also consider how to do it in a better way.
+In our projects we did not implement stream data processing, since we have batch processing only, but anyway it is probable that business requirements could
+change so we must also consider how to do it in a better way.
 
 <table>
     <tr>
@@ -175,6 +175,9 @@ environment for running the job and could be used for Apache Beam job as well.
 
 ### Running on the GCP
 
+Once we are done with the local development, we are good to go to the Cloud! However, even here, not everything is so clear as we have two services to run our
+jobs and we described our considerations about them below.
+
 <table>
     <tr>
         <th style="width:50%;">Apache Spark</th>
@@ -192,7 +195,7 @@ environment for running the job and could be used for Apache Beam job as well.
         <td style="width:50%;">
         <a href="https://cloud.google.com/dataflow">Dataflow</a>. Due to its serverless nature we didn’t need to set up a cluster each time we wanted to process data. The next big advantage
         of Dataflow is the Shuffle service, which addresses the shuffle issue on Spark executors as it moves heavy operation out of the worker virtual machine
-        to the service backend. Moreover there is autoscaling out-of-the-box, Streaming engine for streaming pipeline support. Generally, Dataflow is supposed
+        to the service backend. Besides, there is autoscaling out-of-the-box, Streaming engine for streaming pipeline support. Generally, Dataflow is supposed
         to be a self-managed platform, so less effort is required to configure it compared to Dataproc.
         </td>
     </tr>
