@@ -145,10 +145,10 @@ are our researches how to ensure the jobs will be able to handle big load in a p
         </td>
     </tr>
 </table>
-<strong>Summary</strong>: a solution is to minimize the ratio of missing test coverage and isolate classes responsible for I/O operations in external storages (GCP
-Storage and BigQuery) as much as possible. Another issue is to inject all this stuff into CI pipeline but this is completely another story. So, in both cases,
-it was a quite tedious process. To ensure there are no performance issues and jobs are not broken we run them on a dev environment using the production data
-which also took us a lot of time.
+<strong>Summary</strong>: a solution is to minimize the ratio of missing test coverage and isolate classes responsible for I/O operations to external storages
+(Google Storage and BigQuery) as much as possible. Big issue is to provide these dependencies while running tests inside CI pipeline but this is completely
+another story. In both cases, it is not trivial task. So, for the sake of simplicity we were ensuring there are no performance issues and jobs are not broken by
+running them on a dev environment using the production data which also took us a lot of time.
 
 ### Local run
 
