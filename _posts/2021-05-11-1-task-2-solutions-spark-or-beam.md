@@ -244,7 +244,7 @@ non-optimized jobs to see how much it is without significant tuning.
     <tr>
         <td style="width:20%;">Cost</td>
         <td style="width:80%; text-align: center;" colspan="2">
-        Approximately on the same level
+        Approximately on the same level, slightly in favour of Apache Spark
         </td>
     </tr>
     <tr>
