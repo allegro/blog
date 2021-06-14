@@ -24,8 +24,8 @@ processing.
 
 <table>
     <tr>
-        <th style="width:50%;">Apache Spark</th>
-        <th style="width:50%;">Apache Beam</th>
+        <th style="width:50%; text-align: center;">Apache Spark</th>
+        <th style="width:50%; text-align: center;">Apache Beam</th>
     </tr>
     <tr>
         <td style="width:50%;">
@@ -57,8 +57,8 @@ Kotlin so we were a little bit biased against non JVM-based languages before sta
 
 <table>
     <tr>
-        <th style="width:50%;">Apache Spark</th>
-        <th style="width:50%;">Apache Beam</th>
+        <th style="width:50%; text-align: center;">Apache Spark</th>
+        <th style="width:50%; text-align: center;">Apache Beam</th>
     </tr>
     <tr>
         <td style="width:50%;">
@@ -94,8 +94,8 @@ change so we must also consider how to do it in a better way.
 
 <table>
     <tr>
-        <th style="width:50%;">Apache Spark</th>
-        <th style="width:50%;">Apache Beam</th>
+        <th style="width:50%; text-align: center;">Apache Spark</th>
+        <th style="width:50%; text-align: center;">Apache Beam</th>
     </tr>
     <tr>
         <td style="width:50%;">
@@ -119,24 +119,24 @@ are our researches how to ensure the jobs will be able to handle big load in a p
 <table>
     <tr>
         <th style="width:20%;"></th>
-        <th style="width:40%;">Apache Spark</th>
-        <th style="width:40%;">Apache Beam</th>
+        <th style="width:40%; text-align: center;">Apache Spark</th>
+        <th style="width:40%; text-align: center;">Apache Beam</th>
     </tr>
     <tr>
-        <td style="width:20%;">Unit tests (local environment without access to real infrastructure, validation of business logic)</td>
-        <td style="width:40%;">
+        <td style="width:20%; text-align: center;">Unit tests (local environment without access to real infrastructure, validation of business logic)</td>
+        <td style="width:40%; text-align: center;">
         <a href="http://spark.apache.org/docs/latest">Embedded Spark</a>
         </td>
-        <td style="width:40%;">
+        <td style="width:40%; text-align: center;">
         <a href="https://beam.apache.org/documentation/pipelines/test-your-pipeline/">TestPipeline</a>
         </td>
     </tr>
     <tr>
-        <td style="width:20%;">Integration tests (validation of proper reads/writes from/to BigQuery)</td>
+        <td style="width:20%; text-align: center;">Integration tests (validation of proper reads/writes from/to BigQuery)</td>
         <td style="width:80%; text-align: center;" colspan="2">No official support for mocking BigQuery/Google Storage or embedded/test container version</td>
     </tr>
     <tr>
-        <td style="width:20%;">E2E tests (ensure job is executed, run in Cloud and has integration with GCP infrastructure)</td>
+        <td style="width:20%; text-align: center;">E2E tests (ensure job is executed, run in Cloud and has integration with GCP infrastructure)</td>
         <td style="width:80%; text-align: center;" colspan="2">
         Due to the missing implementation of testing the whole flow, we were running locally jobs to load production data, process them and store into BigQuery
         tables for development purposes. This way we were ensuring introduced changes did not impact performance and both return identical results.
@@ -157,15 +157,15 @@ in Google Cloud.
 
 <table>
     <tr>
-        <th style="width:50%;">Apache Spark</th>
-        <th style="width:50%;">Apache Beam</th>
+        <th style="width:50%; text-align: center;">Apache Spark</th>
+        <th style="width:50%; text-align: center;">Apache Beam</th>
     </tr>
     <tr>
         <td style="width:50%;">
         Natively via Spark submit command. In our case we automated this by using Terraform: setting necessary infrastructure in GCP and running the job on the
         cluster.
         </td>
-        <td style="width:50%;">
+        <td style="width:50%; text-align: center;">
         BigFlow CLI
         </td>
     </tr>
@@ -180,11 +180,11 @@ jobs and we described our considerations about them below.
 
 <table>
     <tr>
-        <th style="width:50%;">Apache Spark</th>
-        <th style="width:50%;">Apache Beam</th>
+        <th style="width:50%; text-align: center;">Apache Spark</th>
+        <th style="width:50%; text-align: center;">Apache Beam</th>
     </tr>
     <tr>
-        <td style="width:50%;">
+        <td style="width:50%; vertical-align: top;">
         <a href="https://cloud.google.com/dataproc">Dataproc</a> (Hadoop under the hood which is required to run Spark). As we do not need to have it running all the time, we deployed it for each job
         execution, luckily we again have benefited from Terraform to do it. Also we used it to spin up the network, subnetwork, router and other things that are
         needed to run the Spark job within Dataproc, so I would generally recommend it as a useful tool to automate things in GCP. Dataproc has autoscaling
@@ -211,8 +211,8 @@ In addition to the process itself, it is crucial to have an option to observe it
 
 <table>
     <tr>
-        <th style="width:50%;">Apache Spark</th>
-        <th style="width:50%;">Apache Beam</th>
+        <th style="width:50%; text-align: center;">Apache Spark</th>
+        <th style="width:50%; text-align: center;">Apache Beam</th>
     </tr>
     <tr>
         <td style="width:50%;">
@@ -317,4 +317,19 @@ Below you can find how we’d estimate entry level for skills that were necessar
         <td style="width:80%; text-align: center;" colspan="2">Google Cloud Storage (Basic)</td>
     </tr>
 </table>
-<style type="text/css">.post img{margin: 0 auto;display: block;}</style>
+<style type="text/css">
+.post img{margin: 0 auto;display: block;}
+td {
+  vertical-align: top;
+}
+@media (max-width: 400px) {
+  table {
+    font-size: 0.8em;
+  }
+}
+@media (max-width: 350px) {
+  table {
+    font-size: 0.6em;
+  }
+}
+</style>
