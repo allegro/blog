@@ -19,7 +19,7 @@ Note: Below I described our solution and used tools and technologies which do no
 
 ### Programming model
 
-The first comparison is about the way how do these technologies are built as capturing the general concept plays the first role in writing the code for data
+The first comparison is about showing the way these technologies are built as capturing the general concept plays the first role in writing the code for data
 processing.
 
 <table>
