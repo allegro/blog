@@ -269,7 +269,7 @@ Also, you need to add filter into logging
 And that’s all. Now every log entry will contain `request-id` and `session-id` fields,
 what looks so nice in Kibana:
 
-![kibana-example](/img/articles/2021-04-09-python-logging/kibana-clean.png)
+![kibana-example](/img/articles/2021-06-17-python-logging/kibana-clean.png)
 
 ## Extra Formatter
 
