@@ -188,7 +188,7 @@ and then create local logger with local context:
 from logextractx.logger import getLogger
 logger = getLogger(__name__)
 [...]
-loclogger = logger.local(extra={'DATA_IN': 'CURRENT_CONTEXT})
+loclogger = logger.local(extra={'DATA_IN': 'CURRENT_CONTEXT'})
 ```
 
 so the previous example is reduced to the following clean code:
