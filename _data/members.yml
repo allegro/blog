@@ -635,7 +635,7 @@ anna.stanislawska:
 piotr.gabrys:
     name: Piotr Gabryś
     bio: I’m a Senior Data Scientist with over 10 years of experience in data analysis and modeling. I worked on main products at SambaTV, Growbots, and PAYBACK Polska. At Allegro I focus on predictive projects which help stakeholders make data-driven decisions.
-    
+
 julia.bluszcz:
     name: Julia Bluszcz
     bio: Julia holds degrees in statistics and quantitative methods in economics from the Humboldt University in Berlin and Warsaw School of Economics. She has gathered work experience in tech start-ups Nethone and Omni:us where she worked on fraud detection in credit card transactions and organized tech-related events, e.g. Machine Intelligence Summit in Berlin. Her scientific interests include machine learning, data visualization, and econometrics. Julia works as a Senior Data Scientist at Allegro, where she specializes in forecasting and analysing consumer buying behavior.
@@ -648,3 +648,7 @@ jerzy.jelinek:
     name: Jerzy Jelinek
     bio: Webperf Team member. Performance enthusiast. Short sentences lover.
     twitter: jerzyjelinek
+
+yevgeniya.li:
+    name: Yevgeniya Li
+    bio: Software engineer with interests in the world of Machine Learning and BigData. Full of enthusiasm and willing to help, open to new ideas and technologies.
