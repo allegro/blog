@@ -13,7 +13,7 @@ process the same data using these technologies. Below you can get to know the ar
 * Task: join and clean data.
 * Result: 4 output tables.
 
-![scripting](/img/articles/2021-05-11-1-task-2-solutions-spark-or-beam/bigdata-projects-architecture.png)
+![scripting](/img/articles/2021-06-28-1-task-2-solutions-spark-or-beam/bigdata-projects-architecture.png)
 
 Note: Below I described our solution and used tools and technologies which do not pretend to be 100% the right approach so your results might be different.
 
