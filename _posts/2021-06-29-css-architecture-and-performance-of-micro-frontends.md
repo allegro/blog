@@ -12,7 +12,7 @@ Handling all the dependencies, libraries and visual compatibility when the entir
 
 ![Metrum Design System](/img/articles/2021-06-29-css-architecture-and-performance-of-micro-frontends/metrum-design-system.png "Metrum Design System")
 
-In its initial form — apart from visual examples and design resources — Metrum was providing reusable Less mixins that every developer could install via separate npm packages and include in the component they were working on.
+In its initial form — apart from visual examples and design resources — Metrum was providing reusable PostCSS mixins that every developer could install via separate npm packages and include in the component they were working on.
 
 ![Mixins usage in CSS](/img/articles/2021-06-29-css-architecture-and-performance-of-micro-frontends/mixins-usage-in-css.png "Mixins usage in CSS")
 ![Mixins usage in HTML](/img/articles/2021-06-29-css-architecture-and-performance-of-micro-frontends/mixins-usage-in-html.png "Mixins usage in HTML")
@@ -29,8 +29,9 @@ If we try to evaluate that approach we could come up with following pros and con
 **Cons**
 
 * Including mixins introduces duplication of CSS rules between components used on the same page;
-* More files — every component brings at least one request for its styles.
-* No sharing of CSS — no cache reuse between pages built from different components.
+* More files — every component brings at least one request for its styles;
+* No sharing of CSS — no cache reuse between pages built from different components;
+* Clashing of class names within the global namespace.
 
 In summary, while being very flexible and easy to use, mixins-based approach was not ideal from a performance point of view. Every time when somebody would like to use a button, input, link etc., they would have to include a mixin for it pulling the entire set of CSS rules to their stylesheet. This resulted in our users downloading unnecessary kilobytes during the first visit while bringing no caching benefit when navigating through other pages which in turn increased rendering times. We knew we could do better.
 
@@ -41,7 +42,7 @@ After a lot of brainstorming, a decision was made that the next step should invo
 ![CSS modules usage in CSS](/img/articles/2021-06-29-css-architecture-and-performance-of-micro-frontends/modules-usage-in-css.png "CSS modules usage in CSS")
 ![CSS modules usage in HTML](/img/articles/2021-06-29-css-architecture-and-performance-of-micro-frontends/modules-usage-in-html.png "CSS modules usage in HTML")
 
-Thanks to the fact that all of our micro frontends run on Node.js, this approach can be used quite easily with the majority of tooling available. The only thing left to do is to collect all of the required Metrum stylesheets during render in our facade server called opbox-web and embed them on the page. Lets see what all of those changes did to our list of tradeoffs:
+Thanks to the fact that all of our micro frontends run on Node.js, this approach can be used quite easily with the majority of tooling available. The only thing left to do is to collect all of the required Metrum stylesheets during render in our facade server called opbox-web and embed them on the page with the correct order. Ordering requirement is important, because we follow atomic design and more complicated components (molecules, organisms) are built using simpler ones (atoms). Lets see what all of those changes did to our list of tradeoffs:
 
 **Pros**
 
@@ -55,6 +56,7 @@ Thanks to the fact that all of our micro frontends run on Node.js, this approach
 
 * Additional logic has to be maintained that extracts needed Metrum stylesheets from components and adds them to the page once;
 * Above logic has to also take care of sorting so the order of styles is correct and we don’t run into problems with cascade;
+* Multiple versions of the same Metrum component may be needed on the page;
 * More and more requests have to be made as components transition to the new approach.
 
 Judging from the upsides the transition was worth it, despite higher maintenance effort we were finally able to share common CSS code between components, the amount of downloaded data as well as render times started decreasing. Unfortunately, after some time we started to see a worrying trend related to the number of embedded stylesheets. Prior to this change, it was roughly equal to the number of components used on the page. Afterwards, with additional Metrum modules plus the fact that multiple versions of them may be needed we ended up with as much as around 100 requests for render-blocking CSS.
@@ -88,7 +90,7 @@ In the beginning of 2021 another idea started to form, this time we wanted to un
 
 First option we had to verify was the possibility to prepare all of the bundles beforehand so they can be picked and served from CDN. Sadly, taking into account that there are around 500 components, any of which can either be used as a building block of a certain page or not, gives us 2500 combinations which is way more than we can handle. Additionally, it would not only be a waste of time and storage (some components have higher possibility to be used then others) but also at least a portion of the work would have to be redone every time a component is updated, which can happen multiple times a day.
 
-Finally, we went with a different approach by implementing bundler microservice. Every time a user makes a request for a page, it is asked for an URL to the bundle containing the provided list of files. Initially, we send an empty response resulting in all assets being embedded separately, while already preparing what’s needed. After that, all subsequent requests are fulfilled with cached URLs. This is where we are now — concatenating required files only for combinations that are actually needed. A lot of thought and multiple iterations went into making it possible, so I think you can expect a completely separate article about this microservice in the future. Most important thing for us is that the trend of constant improvement for our users continues which is confirmed by [Chrome UX Report](https://developers.google.com/web/tools/chrome-user-experience-report/):
+Finally, we went with a different approach by implementing bundler microservice. Every time a user makes a request for a page, our API is asked for an URL to the bundle containing the provided list of files. Initially, we send an empty response resulting in all assets being embedded separately, while already preparing what’s needed. After that, all subsequent requests are fulfilled with URLs cached in the memory registry. This is where we are now — concatenating required files only for combinations that are actually needed. A lot of thought and multiple iterations went into making it possible, so I think you can expect a completely separate article about this microservice in the future. Most important thing for us is that the trend of constant improvement for our users continues which is confirmed by [Chrome UX Report](https://developers.google.com/web/tools/chrome-user-experience-report/):
 
 ![FCP according to CrUX over last 10 months](/img/articles/2021-06-29-css-architecture-and-performance-of-micro-frontends/fcp-in-crux.png "FCP according to CrUX over last 10 months")
 
