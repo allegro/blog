@@ -14,8 +14,18 @@ Handling all the dependencies, libraries and visual compatibility when the entir
 
 In its initial form — apart from visual examples and design resources — Metrum was providing reusable PostCSS mixins that every developer could install via separate npm packages and include in the component they were working on.
 
-![Mixins usage in CSS](/img/articles/2021-06-29-css-architecture-and-performance-of-micro-frontends/mixins-usage-in-css.png "Mixins usage in CSS")
-![Mixins usage in HTML](/img/articles/2021-06-29-css-architecture-and-performance-of-micro-frontends/mixins-usage-in-html.png "Mixins usage in HTML")
+```scss
+@import 'node_modules/@metrum/button/css/mixins.css';
+
+.button {
+    @mixin m-button;
+    background-color: black;
+}
+```
+
+```html
+<button class="button"></button>
+```
 
 If we try to evaluate that approach we could come up with following pros and cons:
 
@@ -39,8 +49,22 @@ In summary, while being very flexible and easy to use, mixins-based approach was
 
 After a lot of brainstorming, a decision was made that the next step should involve Metrum making use of CSS Modules. While the technical aspects and usage were changing as the adoption grew, the main principles stayed the same up to this day. Currently, whenever any developer would like to assemble a new component out of Metrum building blocks, they can install desired packages, compose styles from them and declare used classes in their markup:
 
-![CSS modules usage in CSS](/img/articles/2021-06-29-css-architecture-and-performance-of-micro-frontends/modules-usage-in-css.png "CSS modules usage in CSS")
-![CSS modules usage in HTML](/img/articles/2021-06-29-css-architecture-and-performance-of-micro-frontends/modules-usage-in-html.png "CSS modules usage in HTML")
+```scss
+.button {
+    composes: m-button from '@metrum/button';
+    composes: m-background-color-black from '@metrum/color';
+}
+```
+
+```javascript
+import * as styles from './styles.css';
+
+export default function render() {
+    return `
+        <button class="${styles.button}">...</button>
+    `;
+}
+```
 
 Thanks to the fact that all of our micro frontends run on Node.js, this approach can be used quite easily with the majority of tooling available. The only thing left to do is to collect all of the required Metrum stylesheets during render in our facade server called opbox-web and embed them on the page with the correct order. Ordering requirement is important, because we follow atomic design and more complicated components (molecules, organisms) are built using simpler ones (atoms). Lets see what all of those changes did to our list of tradeoffs:
 
