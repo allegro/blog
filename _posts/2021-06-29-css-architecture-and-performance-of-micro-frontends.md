@@ -10,7 +10,7 @@ It’s been over 5 years since the introduction of the [article describing the o
 
 Handling all the dependencies, libraries and visual compatibility when the entire website resides in a single repository is a challenge by itself. The level of difficulty increases even more, when there are hundreds of said repositories, each managed by a different team and tooling. When in such a situation, one of the things that quickly become apparent is the need for some kind of guidelines around the look of various aspects of components being developed like color scheme, spacing, fonts etc. — those are exactly the reasons why the Metrum Design System came to life.
 
-![Metrum Design System](/img/articles/2021-06-29-css-architecture-and-performance-of-micro-frontends/metrum-design-system.png "Metrum Design System")
+![Metrum Design System](/img/articles/2021-06-29-css-architecture-and-performance-of-micro-frontends/metrum-design-system.jpg "Metrum Design System")
 
 In its initial form — apart from visual examples and design resources — Metrum was providing reusable PostCSS mixins that every developer could install via separate npm packages and include in the component they were working on.
 
