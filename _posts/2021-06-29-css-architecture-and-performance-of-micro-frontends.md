@@ -6,7 +6,7 @@ tags: [tech, webperf, frontend, performance, perfmatters, css]
 ---
 It’s been over 5 years since the introduction of the [article describing the ongoing transformation of Allegro’s frontend architecture](https://blog.allegro.tech/2016/03/Managing-Frontend-in-the-microservices-architecture.html) — an approach that was later formalized by the industry under the name of Micro Frontends. I think that after all this time we can safely say that this direction was correct and remained almost entirely unchanged in relation to the original idea. Still, some of the challenges foreseen in the publication soon became the reality. In this article I would like to focus on the CSS part of the whole adventure to tell you about how we manage consistency and frontend performance across over half a thousand components, and what it took us to get to where we stand today.
 
-## New Approach — New Challenges
+### New Approach — New Challenges
 
 Handling all the dependencies, libraries and visual compatibility when the entire website resides in a single repository is a challenge by itself. The level of difficulty increases even more, when there are hundreds of said repositories, each managed by a different team and tooling. When in such a situation, one of the things that quickly become apparent is the need for some kind of guidelines around the look of various aspects of components being developed like color scheme, spacing, fonts etc. — those are exactly the reasons why the Metrum Design System came to life.
 
@@ -45,7 +45,7 @@ If we try to evaluate that approach we could come up with following pros and con
 
 In summary, while being very flexible and easy to use, mixins-based approach was not ideal from a performance point of view. Every time when somebody would like to use a button, input, link etc., they would have to include a mixin for it pulling the entire set of CSS rules to their stylesheet. This resulted in our users downloading unnecessary kilobytes during the first visit while bringing no caching benefit when navigating through other pages which in turn increased rendering times. We knew we could do better.
 
-## Enter CSS Modules
+### Enter CSS Modules
 
 After a lot of brainstorming, a decision was made that the next step should involve Metrum making use of CSS Modules. While the technical aspects and usage were changing as the adoption grew, the main principles stayed the same up to this day. Currently, whenever any developer would like to assemble a new component out of Metrum building blocks, they can install desired packages, compose styles from them and declare used classes in their markup:
 
@@ -87,7 +87,7 @@ Judging from the upsides the transition was worth it, despite higher maintenance
 
 Usually, when we bring up the issue of excessive number of requests people respond with “So what? You have HTTP/2, right?” and we do. User agent will reuse existing connections for multiple files but the limit of concurrent streams does exist, latency is still going to affect each one of them and compression efficiency will be worse especially for those relatively small files like ours. We had to come up with yet another idea for improvement.
 
-## Let the Bundle Begin
+### Let the Bundle Begin
 
 As I touched briefly earlier, we have this opbox-web — a place that’s already responsible for extracting, sorting and embedding Metrum dependencies. We figured that instead of adding each of them separately, we could prepare predefined bundles that would serve as replacements. We did as planned and, after deployment on 6th of July 2020, achieved 15% improvement in FCP metric time, which means that our users saw the first render of content faster by almost half a second.
 
@@ -108,7 +108,7 @@ Improvement was satisfactory, but it came at a certain cost. From that time on w
 
 We knew there is going to be additional effort to maintain this solution but the performance gains outweigh the cost at that time. It would take almost a year of tedious work from multiple teams to keep the look and feel of Allegro up to date with newest changes, until we came up with another idea.
 
-## Just In Time Bundling
+### Just In Time Bundling
 
 In the beginning of 2021 another idea started to form, this time we wanted to unlock the agile nature of our Micro Frontends and their deployment. We came to the understanding that it would be ideal if instead of serving bundles containing a predefined list of components, we could send one composed of only the files that were actually required to render a certain page. Collecting the list of CSS that’s needed was not the problem — we were generating the HEAD section after all but generating those unique bundles, well that was something different.
 
@@ -118,6 +118,6 @@ Finally, we went with a different approach by implementing bundler microservice.
 
 ![FCP according to CrUX over last 10 months](/img/articles/2021-06-29-css-architecture-and-performance-of-micro-frontends/fcp-in-crux.png "FCP according to CrUX over last 10 months")
 
-## Summary
+### Summary
 
 CSS architecture is one of the most important factors influencing performance, which makes ignoring it harder and harder as the page grows. Fortunately, our experience shows that even in higher-scale systems built using micro frontends, it is still possible to improve successfully. By solving problems of existing solutions and experimenting with new ideas we are able to constantly raise the bar of our metrics which makes browsing Allegro a better experience for our users month by month.
