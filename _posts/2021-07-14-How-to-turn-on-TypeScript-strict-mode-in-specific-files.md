@@ -23,7 +23,7 @@ Ok, so what can we do to improve this workflow?
 
 `typescript-strict-plugin` eliminates all the above problems by allowing you to specify exactly what files you want to be strictly checked. You can do that by simply putting a single comment on the top of the file and typescript will strictly check it. Now every member of your team will have strict errors shown to them in the editor of their choosing (yes, this plugin works with webstorm, vscode, vim, and more).
 
-Unfortunately, typescript plugins do not work in compilation time, they work only in IDE’s. Another nice feature that comes in the package is a compile-time tool that allows you to connect the strict plugin to your CI pipeline, or a pre-commit hook. It checks marked files with strict mode and prints to the console all strict errors found. If a single strict error is found, the tool exits with an error, so you can be sure that all specified files are really strict (strict, strict, strict... ahh).
+Unfortunately, typescript plugins do not work in compilation time, they work only in IDEs. Another nice feature that comes in the package is a compile-time tool that allows you to connect the strict plugin to your CI pipeline, or a pre-commit hook. It checks marked files with strict mode and prints to the console all strict errors found. If a single strict error is found, the tool exits with an error, so you can be sure that all specified files are really strict (strict, strict, strict... ahh).
 
 ## How to use it?
 
