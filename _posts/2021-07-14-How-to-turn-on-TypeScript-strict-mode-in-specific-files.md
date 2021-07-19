@@ -11,7 +11,7 @@ Imagine you have to migrate your JavaScript project to TypeScript. It’s fairly
 
 ### Turning strict-mode in development only?
 
-You could think of turning on strict mode during development, catching strict errors that way, and then turning off before pushing your changes, but this approach a few downsides.
+You could think of turning on strict mode during development, catching strict errors that way, and then turning it off before pushing your changes, but this approach has a few downsides.
 
 1. You’ve got to remember to change the `tsconfig.json` every time you make changes — without automation, this could get tedious.
 2. It won’t work in your CI pipeline
