@@ -46,7 +46,7 @@ We carefully weighed the pros and cons of each of those options and finally deci
 
 The algorithm is based on counters that hold a number of requests in their respective time frames. At each point of time, an abstract window is calculated from two neighbouring frames: current and previous. The further away the window is from the previous frame, the more important is the counter from the current frame. The weight is based strictly on proportions. If for example, the span of the current window is 75% previous frame and 25% current frame, then the value of current rate-limit counter is a sum of 75% previous frame counter and 25% current frame counter. The results are put into the hashmap of the user:counter pair, that acts as a cache.
 
-![Sliding window algorithm](/img/articles/2021-06-11-oauth-rate-limiting/sliding-window-algorithm.png "Sliding window")
+![Sliding window algorithm](/img/articles/2021-06-11-oauth-rate-limiting/sliding-window-algorithm.png)
 On the picture above the current counter value would be:
 
 ```
@@ -204,12 +204,13 @@ Before actually blocking the clients we needed a way to check real outputs from 
 ### Observability
 To monitor and verify our solution we needed a bunch of metrics telling us how many clients are affected by rate limit policy and which of them are getting closer to being blocked. Actually we need only two charts to monitor clients’ behaviour:
 
-(TODO obrazek wykresu)
+![Ratelimit Denied Rate](/img/articles/2021-06-11-oauth-rate-limiting/ratelimit-denied-rate.png)
 
-This chart shows clients and their blocked rate.
+This chart shows clients and their blocked rate. Each color depicts different blocked client.
 
-(TODO drugi obrazek)
+![Ratelimit Allowed Rate](/img/articles/2021-06-11-oauth-rate-limiting/ratelimit-allowed-rate.png)
 
 This one on the other hand depicts the allowed rate. The limit line is helpful to see if any client is getting closer to it and will be blocked soon.
+
 
 (TODO zakończenie)
