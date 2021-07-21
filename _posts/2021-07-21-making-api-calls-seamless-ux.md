@@ -2,7 +2,7 @@
 layout: post
 title: Making API calls a seamless user experience
 author: [pawel.wolak]
-tags: [javascript, frontend, ajax, rest, http]
+tags: [javascript, frontend, ajax, restapi, http]
 ---
 
 Almost every modern web application somehow interacts with a backend - be it loading data, doing background sync, submitting a form, or publishing the metrics.
