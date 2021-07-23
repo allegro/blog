@@ -23,7 +23,6 @@ We cannot block clients that should never be blocked (allegro apps)
 Rate limiting should not negatively affect performance
 Rate limiting should be configurable per client, since different clients have different traffic characteristics
 Rate limiting should be able to distinguish between user and non-user use of OAuth. Client credential grant, for example, should be treated differently than authorization code grant. In effect, the limiting “per user” should be introduced in the second case.
-# TODO Czemu nie ratelimit na gateway ?
 Rate limiting should directly cause an improvement in traffic spikes
 Should work well in highly distributed environment with dozens of instances and Mongo nodes
 The solution cannot be too costly or require too much additional infrastructure (additional databases, external systems etc.)
@@ -181,10 +180,6 @@ If the query returns 0 elements updated we know there was a collision and there 
 3. Save the state
 4. If the query returns 1 element updated the save was successful without any collisions.
 
-(TODO - Czemu nie CAS Mongo?)
-
-## TODO LINE
-
 #### Saving in batches
 
 As we already mentioned, a single instance of the OAuth server handles many clients. So it has to synchronize state for each of them. Doing the above save operation for each client individually would cause a massive number of queries and would quickly saturate our resources. That’s why we use [Mongo bulk operations](https://docs.mongodb.com/manual/core/bulk-write-operations/#bulk-write-operations). It allows defining many operations in a single query.
@@ -201,8 +196,9 @@ Before actually blocking the clients we needed a way to check real outputs from 
 
 ### Canary deployment
 
-It would be risky to deploy this kind of feature to the whole OAuth cluster without ensuring it's properly working on a few instances. We use canary deployment
-which allows deploy special version of a service
+It would be risky to deploy this kind of feature to the whole OAuth cluster without ensuring it's properly working on a few instances. We used canary deployment
+which allows deploying a version of a service to only a few production instances. During this deployment we monitored CPU usage and
+response time metrics. After ensuring there is no meaningful disparity we rolled out the full feature to all production instances.
 
 ### Observability
 To monitor and verify our solution we needed a bunch of metrics telling us how many clients are affected by rate limit policy and which of them are getting closer to being blocked. Actually we need only two charts to monitor clients’ behaviour:
@@ -217,4 +213,4 @@ This one on the other hand depicts the allowed rate. The limit line is helpful t
 It's worth mentioning that the default rate limit policy isn't enough for all clients. Some of them need special treatment, so we can configure different thresholds per client.
 That's why few clients go beyond the actual default limit (the red line).
 
-(TODO zakończenie)
+## Conclusion
