@@ -199,7 +199,10 @@ Before actually blocking the clients we needed a way to check real outputs from 
 3. Communicated with clients abusing our future rate limit policy and gave them a chance to optimize the way they use the OAuth server.
 4. Turned off the dry-run mode and started blocking the clients.
 
-(TODO - canary, CPU usage monitoring, test wydajnościowy)
+### Canary deployment
+
+It would be risky to deploy this kind of feature to the whole OAuth cluster without ensuring it's properly working on a few instances. We use canary deployment
+which allows deploy special version of a service
 
 ### Observability
 To monitor and verify our solution we needed a bunch of metrics telling us how many clients are affected by rate limit policy and which of them are getting closer to being blocked. Actually we need only two charts to monitor clients’ behaviour:
@@ -211,6 +214,7 @@ This chart shows clients and their blocked rate. Each color depicts different bl
 ![Ratelimit Allowed Rate](/img/articles/2021-06-11-oauth-rate-limiting/ratelimit-allowed-rate.png)
 
 This one on the other hand depicts the allowed rate. The limit line is helpful to see if any client is getting closer to it and will be blocked soon.
-
+It's worth mentioning that the default rate limit policy isn't enough for all clients. Some of them need special treatment, so we can configure different thresholds per client.
+That's why few clients go beyond the actual default limit (the red line).
 
 (TODO zakończenie)
