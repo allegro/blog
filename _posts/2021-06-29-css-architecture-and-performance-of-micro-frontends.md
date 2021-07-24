@@ -8,7 +8,7 @@ It’s been over 5 years since the introduction of the [article describing the o
 
 ### New Approach — New Challenges
 
-Handling all the dependencies, libraries and visual compatibility when the entire website resides in a single repository is a challenge by itself. The level of difficulty increases even more, when there are hundreds of said repositories, each managed by a different team and tooling. When in such a situation, one of the things that quickly become apparent is the need for some kind of guidelines around the look of various aspects of components being developed like color scheme, spacing, fonts etc. — those are exactly the reasons why the Metrum Design System came to life.
+Handling all the dependencies, libraries and visual compatibility when the entire website resides in a single repository is a challenge by itself. The level of difficulty increases even more, when there are hundreds of said repositories, each managed by a different team and tooling. When in such situation, one of the things that quickly become apparent is the need for some kind of guidelines around the look of various aspects of components being developed like color scheme, spacing, fonts etc. — those are exactly the reasons why the Metrum Design System came to life.
 
 ![Metrum Design System](/img/articles/2021-06-29-css-architecture-and-performance-of-micro-frontends/metrum-design-system.jpg "Metrum Design System")
 
@@ -43,11 +43,11 @@ If we try to evaluate that approach we could come up with following pros and con
 * No sharing of CSS — no cache reuse between pages built from different components;
 * Clashing of class names within the global namespace.
 
-In summary, while being very flexible and easy to use, mixins-based approach was not ideal from a performance point of view. Every time when somebody would like to use a button, input, link etc., they would have to include a mixin for it pulling the entire set of CSS rules to their stylesheet. This resulted in our users downloading unnecessary kilobytes during the first visit while bringing no caching benefit when navigating through other pages which in turn increased rendering times. We knew we could do better.
+In summary, while being very flexible and easy to use, mixins-based approach was not ideal from a performance point of view. Every time when somebody wanted to use a button, input, link etc., they would have to include a mixin for it pulling the entire set of CSS rules to their stylesheet. This resulted in our users downloading unnecessary kilobytes during the first visit while bringing no caching benefit when navigating through other pages which in turn increased rendering times. We knew we could do better.
 
 ### Enter CSS Modules
 
-After a lot of brainstorming, a decision was made that the next step should involve Metrum making use of CSS Modules. While the technical aspects and usage were changing as the adoption grew, the main principles stayed the same up to this day. Currently, whenever any developer would like to assemble a new component out of Metrum building blocks, they can install desired packages, compose styles from them and declare used classes in their markup:
+After a lot of brainstorming, a decision was made that the next step should involve Metrum making use of CSS Modules. While the technical aspects and usage were changing as the adoption grew, the main principles stayed the same up to this day. Currently, whenever any developer wants to assemble a new component out of Metrum building blocks, they can install desired packages, compose styles from them and declare used classes in their markup:
 
 ```scss
 .button {
@@ -83,7 +83,7 @@ Thanks to the fact that all of our micro frontends run on Node.js, this approach
 * Multiple versions of the same Metrum component may be needed on the page;
 * More and more requests have to be made as components transition to the new approach.
 
-Judging from the upsides the transition was worth it, despite higher maintenance effort we were finally able to share common CSS code between components, the amount of downloaded data as well as render times started decreasing. Unfortunately, after some time we started to see a worrying trend related to the number of embedded stylesheets. Prior to this change, it was roughly equal to the number of components used on the page. Afterwards, with additional Metrum modules plus the fact that multiple versions of them may be needed we ended up with as much as around 100 requests for render-blocking CSS.
+Judging from the upsides the transition was worth it: despite higher maintenance effort we were finally able to share common CSS code between components, the amount of downloaded data as well as render times started decreasing. Unfortunately, after some time we started to see a worrying trend related to the number of embedded stylesheets. Prior to this change, it was roughly equal to the number of components used on the page. Afterwards, with additional Metrum modules, plus the fact that multiple versions of them may be needed, we ended up with as much as around 100 requests for render-blocking CSS.
 
 Usually, when we bring up the issue of excessive number of requests people respond with “So what? You have HTTP/2, right?” and we do. User agent will reuse existing connections for multiple files but the limit of concurrent streams does exist, latency is still going to affect each one of them and compression efficiency will be worse especially for those relatively small files like ours. We had to come up with yet another idea for improvement.
 
@@ -112,12 +112,21 @@ We knew there is going to be additional effort to maintain this solution but the
 
 In the beginning of 2021 another idea started to form, this time we wanted to unlock the agile nature of our Micro Frontends and their deployment. We came to the understanding that it would be ideal if instead of serving bundles containing a predefined list of components, we could send one composed of only the files that were actually required to render a certain page. Collecting the list of CSS that’s needed was not the problem — we were generating the HEAD section after all but generating those unique bundles, well that was something different.
 
-First option we had to verify was the possibility to prepare all of the bundles beforehand so they can be picked and served from CDN. Sadly, taking into account that there are around 500 components, any of which can either be used as a building block of a certain page or not, gives us 2500 combinations which is way more than we can handle. Additionally, it would not only be a waste of time and storage (some components have higher possibility to be used then others) but also at least a portion of the work would have to be redone every time a component is updated, which can happen multiple times a day.
+First option we had to verify was the possibility to prepare all of the bundles beforehand so they can be picked and served from CDN. Sadly, taking into account that there are around 500 components, any of which can either be used as a building block of a certain page or not, gives us 2<sup>500</sup> combinations which is way more than we can handle. Even if we optimistically assumed that each stylesheet required around 50ms to generate, it would take us roughly 5x10<sup>141</sup> years to cover everything. Additionally, it would not only be a waste of time and storage (some components have higher possibility to be used than others) but also at least a portion of the work would have to be redone every time a component is updated, what can happen multiple times a day.
 
-Finally, we went with a different approach by implementing bundler microservice. Every time a user makes a request for a page, our API is asked for an URL to the bundle containing the provided list of files. Initially, we send an empty response resulting in all assets being embedded separately, while already preparing what’s needed. After that, all subsequent requests are fulfilled with URLs cached in the memory registry. This is where we are now — concatenating required files only for combinations that are actually needed. A lot of thought and multiple iterations went into making it possible, so I think you can expect a completely separate article about this microservice in the future. Most important thing for us is that the trend of constant improvement for our users continues which is confirmed by [Chrome UX Report](https://developers.google.com/web/tools/chrome-user-experience-report/):
+Finally, we went with a different approach by implementing a bundler microservice. Its operating principle can be explained in a few steps:
+
+1. When user makes a request for a page, our server collects a list of CSS files that would normally be added to the HEAD section;
+2. It sends this list of files to our microservice asking for an URL to the corresponding bundle that contains them;
+3. The microservice checks if it has the bundle in its cache:
+    1. If it does, then bundle URL is immediately returned;
+    2. Otherwise, it also responds right away with empty result, triggering bundle generation in the background;
+4. Based on the response from the microservice, the server either embeds separate CSS files as usual or replaces them with a single bundle.
+
+This is where we are now – generating only what is actually needed and keeping the duration overhead minimal. A lot of thought and multiple iterations went into making it possible, so I think you can expect a completely separate article about this microservice in the future. Most important thing for us is that the trend of constant improvement for our users continues as confirmed by [Chrome UX Report](https://developers.google.com/web/tools/chrome-user-experience-report/):
 
 ![FCP according to CrUX over last 10 months](/img/articles/2021-06-29-css-architecture-and-performance-of-micro-frontends/fcp-in-crux.png "FCP according to CrUX over last 10 months")
 
 ### Summary
 
-CSS architecture is one of the most important factors influencing performance, which makes ignoring it harder and harder as the page grows. Fortunately, our experience shows that even in higher-scale systems built using micro frontends, it is still possible to improve successfully. By solving problems of existing solutions and experimenting with new ideas we are able to constantly raise the bar of our metrics which makes browsing Allegro a better experience for our users month by month.
+CSS architecture is one of the most important factors influencing performance, what makes ignoring it harder and harder as the page grows. Fortunately, our experience shows that even in higher-scale systems built using micro frontends, it is still possible to improve successfully. By solving problems of existing solutions and experimenting with new ideas we are able to constantly raise the bar of our metrics making browsing Allegro a better experience for our users month by month.
