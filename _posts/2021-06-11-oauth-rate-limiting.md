@@ -4,36 +4,37 @@ title: OAuth rate-limiting
 author: [marek.walkowiak, daniel.faderski]
 tags: [tech, architecture, oauth, microservices]
 ---
+
+
 Every e-commerce platform needs some kind of central authorization system. In Allegro we use OAuth. We have our own implementation of OAuth based on RFC. Since there are millions of users in Allegro, there are also a lot of requests that go through OAuth services. According to OAuth RFC, to use OAuth you need to be a registered client. Some of the clients are very small external integrators (simple shops), while others are from a whole different league and can produce millions of requests per day (Allegro mobile apps, big partner). Every user can create their own OAuth client and use it to integrate with Developers API. Unfortunately, not all of them do that correctly as per RFC.
 
 Normally such clients are not a big issue, but in certain cases they can generate a lot of unwanted and unneeded traffic. This traffic includes (but is not limited to) creating big amounts of new access tokens, that are then thrown away instead of being reused.
 
-According to RFC the access tokens generated with most of the grant types (e.g. authorization code grant) should be reused up until their expiration period. When they expire, the provided refresh token should be used to receive a new access token (via refresh token grant).
+According to RFC, the access tokens generated with most of the grant types (e.g. authorization code grant) should be reused up until their expiration period. When they expire, the provided refresh token should be used to receive a new access token (via refresh token grant).
 
-Some of the clients do not reuse the tokens and rarely use refresh tokens. This causes a lot of unnecessary traffic and can lead to potential issues (on both sides). That traffic often took the forms of sudden spikes. We had a pretty good monitoring of this issue, but we needed better tools to deal with that problem as well as educate the clients to make proper use of OAuth.
+Some of the clients do not reuse the tokens and rarely use refresh tokens. This causes a lot of unnecessary traffic and can lead to potential issues (on both sides). That traffic often took the forms of sudden spikes. We had pretty good monitoring of this issue, but we needed better tools to deal with that problem as well as educate the clients to make proper use of OAuth.
 
-The idea of rate limiting was born.
-
+The idea of rate-limiting was born.
 
 ## Planning the solution
 
-Before tackling the problem directly, first we needed some more information and careful planning. First of all, we wanted to make sure that our solution would solve the problem. Secondly, blocking too many clients could end in disaster. To be certain that our solution is error-free, we started with making sure that we know what we want to achieve.
+Before tackling the problem directly we needed some more information and careful planning. First of all, we wanted to make sure that our solution would solve the problem. Secondly, blocking too many clients could end in disaster. To be certain that our solution is error-free, we started by making sure that we know what we want to achieve.
 
 We cannot block clients that should never be blocked (allegro apps)
 Rate limiting should not negatively affect performance
-Rate limiting should be configurable per client, since different clients have different traffic characteristics
+Rate limiting should be configurable per client since different clients have different traffic characteristics
 Rate limiting should be able to distinguish between user and non-user use of OAuth. Client credential grant, for example, should be treated differently than authorization code grant. In effect, the limiting “per user” should be introduced in the second case.
 Rate limiting should directly cause an improvement in traffic spikes
-Should work well in highly distributed environment with dozens of instances and Mongo nodes
-The solution cannot be too costly or require too much additional infrastructure (additional databases, external systems etc.)
+Should work well in a highly distributed environment with dozens of instances and Mongo nodes
+The solution cannot be too costly or require too much additional infrastructure (additional databases, external systems, etc.)
 
 
 ## Tackling the problem
-To meet those needs we needed a robust solution. Since RFC leaves a lot to the implementation, it does not specify how such rate limiting should work.
+To meet those needs we needed a robust solution. Since RFC leaves a lot to the implementation, it does not specify how such rate-limiting should work.
 
-As with every problem of such kind it’s worth starting with an in-depth research of existing solutions to this problem. There are various strategies and approaches to this problem in many different scenarios, but only a few of them were realistic in our case and enabled us to fulfil our goals.
+As with every problem of such kind, it’s worth starting with in-depth research of existing solutions to this problem. There are various strategies and approaches to this problem in many different scenarios, but only a few of them were realistic in our case and enabled us to fulfill our goals.
 
-As usual, we also explored the existing implementations of such solutions in the form of enterprise or open source libraries and frameworks. Unfortunately, we did not find any that would fulfill all of our goals and at the same time was flexible enough to easily integrate it in our ecosystem. It’s also worth noting that we were bound by certain constraints like costs of additional resources.
+As usual, we also explored the existing implementations of such solutions in the form of enterprise or open-source libraries and frameworks. Unfortunately, we did not find any that would fulfill all of our goals and at the same time was flexible enough to easily integrate it into our ecosystem. It’s also worth noting that we were bound by certain constraints like costs of additional resources.
 
 In the end, we were left with implementing our own solution and a couple of algorithms:
 1. Precise query-based per-user counter - query the database for token count for each query. Not suitable, because it would cause way too much database traffic.
@@ -136,20 +137,20 @@ As we’ve already mentioned we use optimistic locking to prevent from overwriti
 Before save to the database:
 ```json
 {
-	"_id" : {...}
-	"version" : 0
-	"requestCount": 0
-	...
+   "_id" : {...}
+   "version" : 0
+   "requestCount": 0
+   ...
 }
 ```
 
 After the save:
 ```json
 {
-	"_id" : {...},
-	"version" : 1
+   "_id" : {...},
+   "version" : 1
      "requestCount": "5"
-	...
+   ...
 }
 ```
 
