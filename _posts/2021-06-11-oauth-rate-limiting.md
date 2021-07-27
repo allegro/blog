@@ -36,14 +36,14 @@ As with every problem of such kind, it’s worth starting with in-depth research
 As usual, we also explored the existing implementations of such solutions in the form of enterprise or open-source libraries and frameworks. Unfortunately, we did not find any that would fulfill all of our goals and at the same time was flexible enough to easily integrate it into our ecosystem. It’s also worth noting that we were bound by certain constraints like costs of additional resources.
 
 In the end, we were left with implementing our own solution and a couple of algorithms:
-1. Precise query-based per-user counter - query the database for token count for each query. Not suitable, because it would cause way too much database traffic.
-2. Fixed window based on TTL documents. - uses a rate-limit counter that is cleared every fixed period of time. While less challenging for the database, it shares a common vulnerability with the first algorithm: sudden TTL-caused spikes in allowed requests, that consequently cause all the following requests to be blocked (rate-limit exhaustion).
+1. Precise query-based per-user counter - query the database for a token count for each query. Not suitable, because it would cause way too much database traffic.
+2. Fixed window based on TTL documents. - uses a rate-limit counter that is cleared every fixed period. While less challenging for the database, it shares a common vulnerability with the first algorithm: sudden TTL-caused spikes in allowed requests, that consequently cause all the following requests to be blocked (rate-limit exhaustion).
 3. Sliding window log - stores each request as a timestamped log entry in a database, that are later aggregated when needed. Too costly, because again it would cause too heavy a load on the database.
 4. Sliding window - uses a rate-limit counter that is a time-based weighted moving window. It has the advantage of relatively low database load of the fixed window algorithm without its spike-related flaws.
 
 We carefully weighed the pros and cons of each of those options and finally decided to make a PoC of the fourth option: the sliding window algorithm.
 
-The algorithm is based on counters that hold a number of requests in their respective time frames. At each point of time, an abstract window is calculated from two neighbouring frames: current and previous. The further away the window is from the previous frame, the more important is the counter from the current frame. The weight is based strictly on proportions. If for example, the span of the current window is 75% previous frame and 25% current frame, then the value of current rate-limit counter is a sum of 75% previous frame counter and 25% current frame counter. The results are put into the hashmap of the user:counter pair, that acts as a cache.
+The algorithm is based on counters that hold a count of requests in their respective time frames. At each point of time, an abstract window is calculated from two neighboring frames: current and previous. The further away the window is from the previous frame, the more important is the counter from the current frame. The weight is based strictly on proportions. If for example, the span of the current window is 75% previous frame and 25% current frame, then the value of the current rate-limit counter is a sum of 75% previous frame counter and 25% current frame counter. The results are put into the hashmap of the user:counter pair, which acts as a cache.
 
 ![Sliding window algorithm](/img/articles/2021-06-11-oauth-rate-limiting/sliding-window-algorithm.png)
 On the picture above the current counter value would be:
@@ -53,27 +53,27 @@ currentCounter = prevCounter * partOfPreviousFrame + currentCounter * partOfCurr
 currentCounter = 12 * 0.75 + 5 * 0.25 = 10.25
 ```
 
-It’s time complexity is O(1) since it’s a simple hashmap get operation, while it’s space complexity is O(n) where n is the number of user counters held by an instance. It works well in distributed systems because it’s based on simple counters that are relatively easy to synchronize. It’s cost is low since we only need to store simple counters and can easily minimize database queries, as well as easily improve performance with caching. Its main disadvantage is that it indirectly relies on the even of requests distribution in time, which makes it less sensitive to spike traffic within one time window.
+Its time complexity is O(1) since it’s a simple hashmap get operation, while its space complexity is O(n) where n is the number of user counters held by an instance. It works well in distributed systems because it’s based on simple counters that are relatively easy to synchronize. Its cost is low since we only need to store simple counters and can easily minimize database queries, as well as easily improve performance with caching. Its main disadvantage is that it indirectly relies on the even of requests distribution in time, which makes it less sensitive to spike traffic within one time window.
 
-It’s main benefits are performance (it’s crazy quick) and memory complexity (it takes little to no memory). It’s also easy to distribute and does not come with any serious blockers in our use case. Thanks to the fact that the sliding window takes into account relative time to the current timestamp, we can flatten the token creation spikes.
+Its main benefits are performance (it’s crazy quick) and memory complexity (it takes little to no memory). It’s also easy to distribute and does not come with any serious blockers in our use case. Thanks to the fact that the sliding window takes into account relative time to the current timestamp, we can flatten the token creation spikes.
 
 ## Putting into action
 
 ### Remote state synchronization
-There are two kinds of states that need to be tracked for the rate limiting to work. The first one is the global state. It’s basically a global counter of all requests made by a client to ratelimited OAuth endpoints within a certain period. This state is persisted in the database (MongoDB) and represents the most recent rate limiting status from the database perspective.
+There are two kinds of states that need to be tracked for the rate-limiting to work. The first one is the global state. It’s basically a global counter of all requests made by a client to rate-limited OAuth endpoints within a certain period. This state is persisted in the database (MongoDB) and represents the most recent rate-limiting status from the database perspective.
 
-The second state is the local state of each instance. One part of that state is the local counter of incoming requests for a client within a certain period. Since instances are not directly connected to a client and each client can make requests to different instances concurrently, the local counter of each instance for that client will most probably have a different value. Rate Limiting is a global functionality in a sense that we are interested in the value of global counters and not of individual counters. Consider the following scenario: we would like to set a rate-limit of 50 RPS for a client while having 10 instances. If we relied only on local counters to do the rate-limiting, it would be possible for the traffic of 500 RPS to be split evenly between instances and not trigger rate-limiting - and it’s not the result we are aiming for.
+The second state is the local state of each instance. One part of that state is the local counter of incoming requests for a client within a certain period. Since instances are not directly connected to a client and each client can make requests to different instances concurrently, the local counter of each instance for that client will most probably have a different value. Rate Limiting is a global functionality in the sense that we are interested in the value of global counters and not of individual counters. Consider the following scenario: we would like to set a rate limit of 50 RPS for a client while having 10 instances. If we relied only on local counters to do the rate-limiting, it would be possible for the traffic of 500 RPS to be split evenly between instances and not trigger rate-limiting - and it’s not the result we are aiming for.
 
 To decide whether to reject the incoming request or not, the local instance needs a second part of the state: a global counter. When making a decision, it sums the local counter with the global counter to check whether new requests would go beyond the rate-limit boundaries.
 
-The instances need to be aware of the requests that came for the other instances though. For that to work, the global counter needs to be updated regularly. Each instance will periodically try to flush the sum of global and local counters from their state to the database. Here is where things get tricky. If there are several instances trying to save different global counters, there is a risk that one of the instances will attempt to overwrite the changes that were just saved by the other instance. To counter that, we use a mechanism called optimistic locking that is described [later in this post](#resolving-the-conflicts). Once the state is persisted successfully, the local state is cleared. At this point the local state consists of the incoming requests counter that is equal to 0 and the global snapshot counter that is equal to the value persisted in the database for that client.
+The instances need to be aware of the requests that came for the other instances though. For that to work, the global counter needs to be updated regularly. Each instance will periodically try to flush the sum of global and local counters from their state to the database. Here is where things get tricky. If several instances are trying to save different global counters, there is a risk that one of the instances will attempt to overwrite the changes that were just saved by the other instance. To counter that, we use a mechanism called optimistic locking that is described [later in this post](#resolving-the-conflicts). Once the state is persisted successfully, the local state is cleared. At this point, the local state consists of the incoming requests counter that is equal to 0 and the global snapshot counter that is equal to the value persisted in the database for that client.
 
 ### Caching clients’ global state
-Any instance should be aware of the rate limit state for the whole cluster. It represents the global number of requests made by a particular client and its users. So we keep a mapping of a pair (client_id, username) to the number of requests made in memory. This makes our algorithm efficient. There is one caveat: keeping all the clients and its users would cost too much memory. That’s why we only keep that clients and users actually making requests to the OAuth server. If they stop calling our servers we delete them from the instance's cache.
+Any instance should be aware of the rate limit state for the whole cluster. It represents the global number of requests made by a particular client and its users. So we keep a mapping of a pair (client_id, username) to the number of requests made in memory. This makes our algorithm efficient. There is one caveat: keeping all the clients and its users would cost too much memory. That’s why we only keep those clients and users who are making requests to the OAuth server. If they stop calling our servers we delete them from the instance's cache.
 
 ### Sharing the state
 
-Our internal oauth service works in a distributed manner. There are many instances of the OAuth servers and we should have mechanisms to coordinate rate limiting between them. In practice it means that if a client is making a request to server instance A, the server instance B should take it into consideration when calculating allowed count of requests in the current time window.
+Our internal OAuth service works in a distributed manner. There are many instances of the OAuth servers and we should have mechanisms to coordinate rate-limiting between them. In practice, it means that if a client is making a request to server instance A, the server instance B should consider it when calculating the allowed count of requests in the current time window.
 
 We have a global request counter per each client/user.
 The counter is stored in the Mongo database.
@@ -96,20 +96,20 @@ The counter depicts the window in the current timestamp.
 ```
 
 It consists of few fields:
-- _id - the filed to uniquely identify client (and user the request is made in his context)
+- _id - to uniquely identify the client (and the user connected with the request)
 - version - for the optimistic locking purposes
 - expire - used to remove the counter if it has no updates (means that client does not creates new tokens)
-- requestCounters - mapping of number of requests in particular timestamps
+- requestCounters - mapping of the number of requests in particular timestamps
 
-The counter is cached so we don’t have to fetch it each time the request from client is made (it would kill performance)
+The counter is cached so we don’t have to fetch it each time the request from a client is made, since it would kill performance.
 Each instance refreshes the counter asynchronously (reads and writes to the Mongo database are made in a dedicated thread).
-Each instance holds the counters for the clients that made at least one request to it.
-If the client stops making requests to a particular instance, the instance removes its state from the cache after some configured time.
+Each instance also holds the counters only for the clients that made at least one request to it.
+If the client stops making requests to a particular instance, the instance removes his state from the cache after some configured time.
 
 ![Sharing the state example](/img/articles/2021-06-11-oauth-rate-limiting/sharing-the-state.png)
 ![Sharing the state example table](/img/articles/2021-06-11-oauth-rate-limiting/sharing-the-state-table.png)
 
-This table depicts an example flow of counters on two instances (A, B) of our OAuth service. Each instance has its own counter (accordingly cnt1 and cnt2), mng is a state in the sharder database (Mongo) and total req is the sum of all requests made to all instances.
+This table depicts an example flow of counters on two instances (A, B) of our OAuth service. Each instance has its own counter (accordingly cnt1 and cnt2), mng is a state in the sharded Mongo database and total req is the sum of all requests made to all instances.
 
 The state of each instance consists of two counters (x / y). The first one (x) describes how many requests have been globally made that are persisted in the database. The second one tracks how many requests have come to that instance since the last flush (y). The total number of requests from the instance perspective is the sum of x and y and that is the counter that the instance will try to persist.
 
@@ -118,15 +118,15 @@ Below is the description of what happens in that scenario, step by step:
 2. One request is made to instance A and its y counter is increased to 1.
 3. Next, instance A pushes its total counter to the database, setting its x counter to 1 and its y counter to 0.
 4. Instance B periodically pulls the x counter from the database. Now, the new counter is pulled and the instance’s current state is x = 1, y = 0.
-5. Next, instance A receives one request and at the same time instance B receives three requests. At this time instance A knows of 2 requests, 1 of which came since the last flush. Instance B knows of 4 requests, 3 of them came since the last flush.
-6. Instance B pushes its total counter (3+1=4) to Mongo. As a consequence its state is set to (4 / 0). Instance A has not yet flushed its counter to persistent storage. Remember that both instances do it independently whenever a fixed interval passes.
-7. Now, Instance A tries to push its state (1+1=2) to the database. If the push was successful, it would overwrite the state previously written by the instance B (in step 5), resulting in data loss. We want our counters to be precise so we need to use optimistic locking here. It causes the push to fail, if the version of its state differs from the version persisted in the database. If that scenario occurs, the instance knows that it should refresh it’s global counter before trying to save it again.
-8. Instance A refreshed its state. It is now equal to (4/1), which means there are 4 requests that are persisted in the database and 1 that has not been flushed yet. Now it can safely push its total counter (4+1=5) to the database and set its state to (5/0).
-9. At this point both instances have pushed its state to the database. Notice however, that instance B has not yet pulled the counter written by instance B in the previous step.
+5. Next, instance A receives one request, and at the same time, instance B receives three requests. At this time instance A knows of 2 requests, 1 of which came since the last flush. Instance B knows of 4 requests, 3 of them came since the last flush.
+6. Instance B pushes its total counter (3+1=4) to Mongo. As a consequence, its state is set to (4 / 0). Instance A has not yet flushed its counter to persistent storage. Remember that both instances do it independently whenever a fixed interval passes.
+7. Now, Instance A tries to push its state (1+1=2) to the database. If the push was successful, it would overwrite the state previously written by the instance B (in step 5), resulting in data loss. We want our counters to be precise so we need to use optimistic locking here. It causes the push to fail, if the version of its state differs from the version persisted in the database. If that scenario occurs, the instance knows that it should refresh its global counter before trying to save it again.
+8. Instance A refreshed its state. It is now equal to (4/1), which means 4 requests are persisted in the database and 1 that has not been flushed yet. Now it can safely push its total counter (4+1=5) to the database and set its state to (5/0).
+9. At this point both instances have pushed their state to the database. Notice, however, that instance B has not yet pulled the counter written by instance B in the previous step.
 10. After the last pull, the counter states on both instances are consistent with the database state and reflect the global number of requests made by a client.
 
 ### Persisting the state
-To properly persist the state in a distributed environment with minimal impact on application performance we need take into consideration some strategies.
+To properly persist the state in a distributed environment with minimal impact on application performance we need to take into consideration some strategies.
 
 #### Resolving the conflicts
 As we’ve already mentioned we use optimistic locking to prevent from overwriting the state by instances. It’s quite a common problem in a distributed systems’ world. It works by using version numbers. The mongo document keeps the version which designates how many updates were made from the beginning of the document creation. After each update the version increases by one:
@@ -153,7 +153,7 @@ After the save:
 }
 ```
 
-But how do a particular instance save the document atomically ? How does it know there was an update made by another instance in the meantime ? We use a Mongo query to do a CAS update that looks like:
+But how does a particular instance save the document atomically ? How does it know there was an update made by another instance in the meantime ? We use a Mongo query to do a CAS update that looks like:
 
 ```
 
@@ -174,7 +174,7 @@ db.ratelimits.update(
 )
 ```
 
-If the query returns 0 elements updated we know there was a collision and there was a concurrent save which changed the state. It this happens we need to:
+If the query returns 0 elements updated we know there was a collision and there was a concurrent save which changed the state. If this happens we need to:
 1. Update state from database to local instance.
 2. Apply inflight recorded changes (the ones not yet persisted to the database).
 3. Save the state
@@ -182,12 +182,12 @@ If the query returns 0 elements updated we know there was a collision and there 
 
 #### Saving in batches
 
-As we already mentioned, a single instance of the OAuth server handles many clients. So it has to synchronize state for each of them. Doing the above save operation for each client individually would cause a massive number of queries and would quickly saturate our resources. That’s why we use [Mongo bulk operations](https://docs.mongodb.com/manual/core/bulk-write-operations/#bulk-write-operations). It allows defining many operations in a single query.
+As we already mentioned, a single instance of the OAuth server handles many clients. So it has to synchronize the state for each of them. Doing the above save operation for each client individually would cause a massive number of queries and would quickly saturate our resources. That’s why we use [Mongo bulk operations](https://docs.mongodb.com/manual/core/bulk-write-operations/#bulk-write-operations). It allows defining many operations in a single query.
 
 ## Going into production
 ### Dry-run
 
-Before actually blocking the clients we needed a way to check real outputs from our solution. In the first step we wanted to do this without affecting any clients. That’s why we implemented the dry-run mode. It gives us metrics depicting which of them would be blocked given a particular limit and time window. We took the following steps:
+Before actually blocking the clients we needed a way to check real outputs from our solution. In the first step, we wanted to do this without affecting any clients. That’s why we implemented the dry-run mode. It gives us metrics depicting which of them would be blocked given a particular limit and time window. We took the following steps:
 
 1. Set high rate limit up to the point when no clients would be blocked (running in dry-run mode all the time)
 2. Lowered the threshold to the point that showed us the outstanding clients, while not blocking the others.
@@ -197,7 +197,7 @@ Before actually blocking the clients we needed a way to check real outputs from 
 ### Canary deployment
 
 It would be risky to deploy this kind of feature to the whole OAuth cluster without ensuring it's properly working on a few instances. We used canary deployment
-which allows deploying a version of a service to only a few production instances. During this deployment we monitored CPU usage and
+which allows deploying a version of a service to only a few production instances. During this deployment, we monitored CPU usage and
 response time metrics. After ensuring there is no meaningful disparity we rolled out the full feature to all production instances.
 
 ### Observability
@@ -205,7 +205,7 @@ To monitor and verify our solution we needed a bunch of metrics telling us how m
 
 ![Ratelimit Denied Rate](/img/articles/2021-06-11-oauth-rate-limiting/ratelimit-denied-rate.png)
 
-This chart shows clients and their blocked rate. Each color depicts different blocked client.
+This chart shows clients and their blocked rate. Each color depicts a different blocked client.
 
 ![Ratelimit Allowed Rate](/img/articles/2021-06-11-oauth-rate-limiting/ratelimit-allowed-rate.png)
 
