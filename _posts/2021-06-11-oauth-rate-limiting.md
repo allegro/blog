@@ -28,7 +28,6 @@ Rate limiting should directly cause an improvement in traffic spikes
 Should work well in a highly distributed environment with dozens of instances and Mongo nodes
 The solution cannot be too costly or require too much additional infrastructure (additional databases, external systems, etc.)
 
-
 ## Tackling the problem
 To meet those needs we needed a robust solution. Since RFC leaves a lot to the implementation, it does not specify how such rate-limiting should work.
 
@@ -96,7 +95,6 @@ The counter depicts the window in the current timestamp.
 }
 ```
 
-
 It consists of few fields:
 - _id - the filed to uniquely identify client (and user the request is made in his context)
 - version - for the optimistic locking purposes
@@ -127,7 +125,6 @@ Below is the description of what happens in that scenario, step by step:
 9. At this point both instances have pushed its state to the database. Notice however, that instance B has not yet pulled the counter written by instance B in the previous step.
 10. After the last pull, the counter states on both instances are consistent with the database state and reflect the global number of requests made by a client.
 
-
 ### Persisting the state
 To properly persist the state in a distributed environment with minimal impact on application performance we need take into consideration some strategies.
 
@@ -135,21 +132,23 @@ To properly persist the state in a distributed environment with minimal impact o
 As we’ve already mentioned we use optimistic locking to prevent from overwriting the state by instances. It’s quite a common problem in a distributed systems’ world. It works by using version numbers. The mongo document keeps the version which designates how many updates were made from the beginning of the document creation. After each update the version increases by one:
 
 Before save to the database:
+
 ```json
 {
-   "_id" : {...}
-   "version" : 0
-   "requestCount": 0
+   "_id" : {...},
+   "version" : 0,
+   "requestCount": 0,
    ...
 }
 ```
 
 After the save:
+
 ```json
 {
    "_id" : {...},
-   "version" : 1
-     "requestCount": "5"
+   "version" : 1,
+     "requestCount": "5",
    ...
 }
 ```
@@ -216,3 +215,4 @@ That's why few clients go beyond the actual default limit (the red line).
 
 ## Conclusion
 Rate-limiting is a common problem, but surprisingly not so trivial to solve, especially in a high-scale, distributed environment. Plenty of popular solutions can be found, but most of them deal with it only from a perspective of a single machine and are not well-suited for our system. Coming up with the above solution took quite a bit of research and planning, but in the end, its deployment allowed us to effectively achieve our goal. We are pretty content with the final product, as it is both effective and fast, but are constantly tweaking it and looking for new ways to optimize that process. 
+  
