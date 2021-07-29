@@ -10,7 +10,7 @@ It’s been over 5 years since the introduction of the [article describing the o
 
 Handling all the dependencies, libraries and visual compatibility when the entire website resides in a single repository is a challenge by itself. The level of difficulty increases even more, when there are hundreds of said repositories, each managed by a different team and tooling. When in such situation, one of the things that quickly become apparent is the need for some kind of guidelines around the look of various aspects of components being developed like color scheme, spacing, fonts etc. — those are exactly the reasons why the Metrum Design System came to life.
 
-![Metrum Design System](/img/articles/2021-06-29-css-architecture-and-performance-of-micro-frontends/metrum-design-system.jpg "Metrum Design System")
+![Metrum Design System](/img/articles/2021-07-29-css-architecture-and-performance-of-micro-frontends/metrum-design-system.jpg "Metrum Design System")
 
 In its initial form — apart from visual examples and design resources — Metrum was providing reusable PostCSS mixins that every developer could install via separate npm packages and include in the component they were working on.
 
@@ -91,7 +91,7 @@ Usually, when we bring up the issue of excessive number of requests people respo
 
 As I touched briefly earlier, we have the opbox-web — a place that’s already responsible for extracting, sorting and embedding Metrum dependencies. We figured that instead of adding each of them separately, we could prepare predefined bundles that would serve as replacements. We did as planned and, after deployment on 6th of July 2020, achieved 15% improvement in FCP metric time, which means that our users saw the first render of content faster by almost half a second.
 
-![FCP metric chart before and after deployment of Metrum bundle](/img/articles/2021-06-29-css-architecture-and-performance-of-micro-frontends/fcp-after-metrum-bundle.png "FCP metric chart before and after deployment of Metrum bundle")
+![FCP metric chart before and after deployment of Metrum bundle](/img/articles/2021-07-29-css-architecture-and-performance-of-micro-frontends/fcp-after-metrum-bundle.png "FCP metric chart before and after deployment of Metrum bundle")
 
 Improvement was satisfactory, but it came at a certain cost. From that time on we had to make sure all of the components used on a certain page share the same versions of Metrum modules supported by the bundle and I assure you, it was bothersome to say the least. Monitoring that nobody updated their dependency by accident was one thing (especially that we managed to automate it) but undergoing a process of actually wanting to do this was another. In addition, every time we failed within that area we had to bail and serve every stylesheet separately, preventing incorrect order of CSS and bringing performance to the previous low.
 
@@ -125,7 +125,7 @@ Finally, we went with a different approach by implementing a bundler microservic
 
 This is where we are now – generating only what is actually needed and keeping the duration overhead minimal. A lot of thought and multiple iterations went into making it possible, so I think you can expect a completely separate article about this microservice in the future. Most important thing for us is that the trend of constant improvement for our users continues as confirmed by [Chrome UX Report](https://developers.google.com/web/tools/chrome-user-experience-report/):
 
-![FCP according to CrUX over last 10 months](/img/articles/2021-06-29-css-architecture-and-performance-of-micro-frontends/fcp-in-crux.png "FCP according to CrUX over last 10 months")
+![FCP according to CrUX over last 10 months](/img/articles/2021-07-29-css-architecture-and-performance-of-micro-frontends/fcp-in-crux.png "FCP according to CrUX over last 10 months")
 
 ### Summary
 
