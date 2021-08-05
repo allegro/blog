@@ -5,8 +5,6 @@ tags: [typescript, scrict mode, typescript plugin, code quality]
 author: [kamil.krysiak, jaroslaw.glegola]
 ---
 
-## The problem
-
 Imagine you have to migrate your JavaScript project to TypeScript. It’s fairly simple to convert one file from JS to TS, but if
 you want to take type checking to the next level (going for TypeScript’s strict mode) it is not that easy. The only solution you
 have is turning on strict mode for the whole project resulting in thousands of errors. For most projects that are not strict yet,
@@ -25,8 +23,8 @@ Ok, so what can we do to improve this workflow?
 
 ## Introducing typescript-strict-plugin
 
-typescript-strict-plugin eliminates all the above problems by allowing you to specify exactly what files you want to be strictly
-checked. You can do that by simply putting a single comment on the top of the file and typescript will strictly check it. Now
+[typescript-strict-plugin](https://github.com/allegro/typescript-strict-plugin) eliminates all the above problems by allowing you to specify exactly what files you want to be strictly
+checked. You can do that by simply putting a single comment at the top of the file and typescript will strictly check it. Now
 every member of your team will have strict errors shown to them in the editor of their choosing (yes, this plugin works with
 webstorm, vscode, vim, and more).
 
