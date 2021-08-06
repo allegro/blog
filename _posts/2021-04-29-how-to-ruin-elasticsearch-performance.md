@@ -301,6 +301,22 @@ performance, but in your particular case, due to a specific distribution of a fi
 to discover if you do not precisely track performance before and after each significant change. Sneakily placing such a pattern in your code can be a great way
 to end up with low performance which is difficult to explain.
 
+For a real life example, consider the rule of thumb that if you don’t care about a subquery’s score, using `filter` subqueries within a [bool query](https://www.elastic.co/guide/en/elasticsearch/reference/7.x/query-dsl-bool-query.html)
+results in faster response times than using `must` subqueries since the former [do not need to update matching documents’ scores](https://www.elastic.co/guide/en/elasticsearch/reference/7.x/query-filter-context.html).
+In our advertising system, we match ads in a way mostly consistent with the way we match organic results. We match ads by keywords, but we also take
+into account criteria such as delivery methods selected by the user. In the latter case, the fact that a sponsored offer
+is available with some delivery method only affects which offers match, but does not affect their scores. This is a perfect use case for `filter` queries.
+However, we also use [function score query](https://www.elastic.co/guide/en/elasticsearch/reference/7.x/query-dsl-function-score-query.html).
+Function score query allows us to combine a document’s score resulting from how well it matches our keywords with additional factors.
+Function score query accepts an embedded query — only documents matching this query have their scores modified. Symbolically, we could express it as our
+complete query being: `function_score_query(keyword_subquery AND filters_subquery)`. At one point, I wanted to optimize the performance of this query, and
+following the abovementioned rule of thumb, thought that it would make sense to move `filters_subquery` outside of `function_score_query` since filters need
+not participate in score calculations. This resulted in the query `filters_subquery AND function_score_query(keyword_subquery)` and should have
+improved search performance. However, upon running performance tests, to my surprise I realized these changes actually made performance worse. The reason was,
+with the filters moved outside `function_score_query`, `function_score_query` had to modify the scores of a larger number of documents and for the particular
+data I had in my index, the added cost of rescoring more documents was greater than the savings achieved by not having to calculate the score for these
+documents in the first place. This just shows that with performance tuning, [YMMV](https://en.wiktionary.org/wiki/your_mileage_may_vary), always.
+
 ### Treating search and indexing as two separate problems
 
 You might be tempted to think of Elasticsearch as yet another database. If you do, you are likely to run into many issues, including performance problems.
