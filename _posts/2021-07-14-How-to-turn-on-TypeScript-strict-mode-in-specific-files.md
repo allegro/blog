@@ -7,15 +7,15 @@ author: [kamil.krysiak, jaroslaw.glegola]
 
 Imagine you have to migrate your JavaScript project to TypeScript. It’s fairly simple to convert one file from JS to TS, but if
 you want to take type checking to the next level (going for TypeScript’s strict mode) it is not that easy. The only solution you
-have is turning on strict mode for the whole project resulting in thousands of errors. For most projects that are not strict yet,
+have is turning on strict mode for the whole project which may result in thousands of errors. For most projects that are not strict yet,
 it would take quite a bit of time and effort to fix all the strict errors at once.
 
-### Turning strict-mode in development only?
+## Turning strict-mode on in development only?
 
 You could think of turning on strict mode during development, catching strict errors that way, and then turning it off before
 pushing your changes, but this approach has a few downsides.
 
-1. You’ve got to remember to change the `tsconfig.json` every time you make changes — without automation, this could get tedious.
+1. You’ve got to remember to change `tsconfig.json` every time you make changes — without automation, this could get tedious.
 2. It won’t work in your CI pipeline
 3. It will show errors in files you don’t want to make strict yet
 
@@ -28,7 +28,7 @@ checked. You can do that by simply putting a single comment at the top of the fi
 every member of your team will have strict errors shown to them in the editor of their choosing (yes, this plugin works with
 webstorm, vscode, vim, and more).
 
-Unfortunately, typescript plugins do not work in compilation time, they work only in IDEs. Another nice feature that comes in the
+Unfortunately, typescript plugins do not work at compilation time, they work only in IDEs. Another nice feature that comes in the
 package is a compile-time tool that allows you to connect the strict plugin to your CI pipeline, or a pre-commit hook. It checks
 marked files with strict mode and prints to the console all strict errors found. If a single strict error is found, the tool
 exits with an error, so you can be sure that all specified files are really strict (strict, strict, strict... ahh).
@@ -112,7 +112,7 @@ directories will be strictly checked.
 
 Otherwise, the plugin will not work outside your IDE.
 
-> `tsc-strict` script uses TypeScript’s `tsc` under the hood, so the full type checking time in this scenario would double.
+**Note:** `tsc-strict` script uses TypeScript’s `tsc` under the hood, so the full type checking time in this scenario would double.
 
 ## Conclusion
 
