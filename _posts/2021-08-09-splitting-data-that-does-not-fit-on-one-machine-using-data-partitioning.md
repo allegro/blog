@@ -36,9 +36,7 @@ Because of that reason, offline big data systems tend to partition the data in a
 
 To sum up, our 10 billion records will be partitioned in the following way:
 
-
 ![Figure 2](/img/articles/2021-08-09-splitting-data-that-does-not-fit-on-one-machine-using-data-partitioning/img2.png)
-
 
 ## Date based data partitioning
 
