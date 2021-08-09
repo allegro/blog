@@ -23,7 +23,6 @@ Because of these reasons, the most often used data partitioning scheme for big d
 
 The partitioning scheme that we pick is based on the date. It means that our partition identifier starts with the year. We will have 2017, 2018, 2019, and 2020 partitions. If we would have smaller data requirements, partitioning by year may be enough. In such a scenario, the file system path for our user's data would be /users/2017, /users/2018, and so on. It will be analogical for clicks: /clicks/2017, /clicks/2018, and so on.
 
-
 ![Figure 1](/img/articles/2021-08-09-splitting-data-that-does-not-fit-on-one-machine-using-data-partitioning/img1.png)
 
 ## Four data partitions
