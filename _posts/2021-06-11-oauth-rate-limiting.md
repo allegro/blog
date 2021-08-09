@@ -96,29 +96,29 @@ Our internal OAuth service works in a distributed manner. There are many instanc
 }
 ```
 
-It consists of few fields:
+It consists of a few fields:
 - _id - to uniquely identify the client and the user connected with the request.
 - version - for the optimistic locking purposes.
 - expire - used to remove the counter if it has no updates, which means that the client is not currently creating new tokens.
 - requestCounters - mapping of the number of requests in consecutive timestamps.
 
 The counter is cached so we don’t have to fetch it each time the request from a client is made, since it would kill performance.
-Each instance refreshes the counter asynchronously (reads and writes to the Mongo database are made in a dedicated thread).
-Each instance also holds the counters only for the clients that made at least one request to it.
-If the client stops making requests to a particular instance, the instance removes his state from the cache after some configured time.
+Each instance refreshes the counter asynchronously - reads and writes to the Mongo database are made in a dedicated thread.
+Each of them also holds the counters only for the clients that made at least one request to it.
+If the client stops making requests to a particular instance, it removes its state from the cache after configured time.
 
 ![Sharing the state example](/img/articles/2021-06-11-oauth-rate-limiting/sharing-the-state.png)
 ![Sharing the state example table](/img/articles/2021-06-11-oauth-rate-limiting/sharing-the-state-table.png)
 
-This table depicts an example flow of counters on two instances (A, B) of our OAuth service. Each instance has its own counter (accordingly cnt1 and cnt2), mng is a state in the sharded Mongo database and total req is the sum of all requests made to all instances.
+This table depicts an example flow of counters on two instances (A, B) of our OAuth service. Each instance has its own counter (accordingly **cnt1** and **cnt2**), **mng** is a state in the sharded Mongo database and **total req** is the sum of all requests made to all instances.
 
-The state of each instance consists of two counters (x / y). The first one (x) describes how many requests have been globally made that are persisted in the database. The second one tracks how many requests have come to that instance since the last flush (y). The total number of requests from the instance perspective is the sum of x and y and that is the counter that the instance will try to persist.
+The state of each instance consists of two counters (`g` / `i`). The first one (`g` for "global") describes how many requests have been globally made and are persisted in the database. The second one tracks how many requests have come to that instance since the last flush (`i` for "in-flight"). The total number of requests from the instance perspective is the sum of `g` and `i` and it is the counter that the instance will try to persist.
 
 Below is the description of what happens in that scenario, step by step:
 1. Initial state with no requests made to either instance.
-2. One request is made to instance A and its y counter is increased to 1.
-3. Next, instance A pushes its total counter to the database, setting its x counter to 1 and its y counter to 0.
-4. Instance B periodically pulls the x counter from the database. Now, the new counter is pulled and the instance’s current state is x = 1, y = 0.
+2. One request is made to instance A and its `i` counter is increased to 1.
+3. Next, instance A pushes its total counter to the database, setting its `g` counter to 1 and its `i` counter to 0.
+4. Instance B periodically pulls the `g` counter from the database. Now, the new counter is pulled and the instance’s current state is `g` = 1, `i` = 0.
 5. Next, instance A receives one request, and at the same time, instance B receives three requests. At this time instance A knows of 2 requests, 1 of which came since the last flush. Instance B knows of 4 requests, 3 of them came since the last flush.
 6. Instance B pushes its total counter (3+1=4) to Mongo. As a consequence, its state is set to (4 / 0). Instance A has not yet flushed its counter to persistent storage. Remember that both instances do it independently whenever a fixed interval passes.
 7. Now, Instance A tries to push its state (1+1=2) to the database. If the push was successful, it would overwrite the state previously written by the instance B (in step 5), resulting in data loss. We want our counters to be precise so we need to use optimistic locking here. It causes the push to fail, if the version of its state differs from the version persisted in the database. If that scenario occurs, the instance knows that it should refresh its global counter before trying to save it again.
@@ -127,7 +127,7 @@ Below is the description of what happens in that scenario, step by step:
 10. After the last pull, the counter states on both instances are consistent with the database state and reflect the global number of requests made by a client.
 
 ### Persisting the state
-To properly persist the state in a distributed environment with minimal impact on application performance we need to take into consideration some strategies.
+To properly persist the state in a distributed environment with minimal impact on application performance we needed to take into consideration some strategies.
 
 #### Resolving the conflicts
 As we’ve already mentioned we use optimistic locking to prevent from overwriting the state by instances. It’s quite a common problem in a distributed systems’ world. It works by using version numbers. The mongo document keeps the version which designates how many updates were made from the beginning of the document creation. After each update the version increases by one:
