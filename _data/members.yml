@@ -658,3 +658,15 @@ mateusz.krzeszowiak:
     bio: Webperf Team member. Likes to constantly optimize and improve existing solutions. Finds it hard to stop talking about his work and sharing knowledge.
     twitter: krzksz
     github: krzksz
+
+jon.skeet:
+    name: Jon Skeet
+    bio: Jon Skeet is a Staff Developer Relations Engineer at Google, currently working on the .NET Client Libraries for Google Cloud Platform. Jon is best known for his contributions to Stack Overflow, along with his previous Manning books including C# in Depth.
+
+tomasz.lelek:
+    name: Tomasz Lelek
+    bio: 'Tomasz is a former Allegro engineer. He currently works at Datastax, building products around Cassandra, one of the world’s favourite distributed databases. Published author of "Software Mistakes and Tradeoffs: Making good programming decisions"'
+    twitter: tomekl007
+    github: tomekl007
+    linkedin: tomaszlelek
+
