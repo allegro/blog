@@ -2,7 +2,7 @@
 layout: post
 title: "Splitting data that does not fit on one machine using data partitioning"
 author: [tomasz.lelek,jon.skeet]
-tags: [tech]
+tags: [tech,performance,sharding,bigdata,dba,distributed]
 ---
 The following article is an excerpt from [Software Mistakes and Trade-offs](https://www.manning.com/books/software-mistakes-and-tradeoffs) book.
 In real-world big data applications, the amount of data that we need to store and process can be often counted in the hundreds of terabytes or petabytes. It is not feasible to store such an amount of data on one physical node. We need a way to split that data into N data nodes.
@@ -23,7 +23,7 @@ Because of these reasons, the most often used data partitioning scheme for big d
 
 The partitioning scheme that we pick is based on the date. It means that our partition identifier starts with the year. We will have 2017, 2018, 2019, and 2020 partitions. If we would have smaller data requirements, partitioning by year may be enough. In such a scenario, the file system path for our user’s data would be /users/2017, /users/2018, and so on. It will be analogical for clicks: /clicks/2017, /clicks/2018, and so on.
 
-![Figure 1](/img/articles/2021-08-09-splitting-data-that-does-not-fit-on-one-machine-using-data-partitioning/img1.png)
+![Figure 1](/img/articles/2021-08-10-splitting-data-that-does-not-fit-on-one-machine-using-data-partitioning/img1.png)
 
 ## Four data partitions
 
@@ -35,7 +35,7 @@ Because of that reason, offline big data systems tend to partition the data in a
 
 To sum up, our 10 billion records will be partitioned in the following way:
 
-![Figure 2](/img/articles/2021-08-09-splitting-data-that-does-not-fit-on-one-machine-using-data-partitioning/img2.png)
+![Figure 2](/img/articles/2021-08-10-splitting-data-that-does-not-fit-on-one-machine-using-data-partitioning/img2.png)
 
 ## Date based data partitioning
 
@@ -49,7 +49,7 @@ Our user’s data is partitioned into N partitions (logical shards). Let’s ass
 
 Let’s assume that we have three physical nodes. In that case, we can say that our user’s data for the year 2020 is partitioned into 12 partitions. Next, they are assigned to 3 shards (nodes). Each of the nodes stores 4 partitions for 2020 (12 partitions / 3 nodes = 4 partitions/node).
 
-![Figure 8.6. Sharding](/img/articles/2021-08-09-splitting-data-that-does-not-fit-on-one-machine-using-data-partitioning/img1.png)
+![Figure 8.6. Sharding](/img/articles/2021-08-10-splitting-data-that-does-not-fit-on-one-machine-using-data-partitioning/img1.png)
 
 In our diagram, the physical shard is the same as the physical node. The partition keys (logical shards) are distributed evenly to physical shards. In case a new node is added to a cluster, each physical shard needs to re-assign one of its logical shards to a new physical node.
 
