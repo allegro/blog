@@ -41,14 +41,14 @@ the value 123 in a specific field.
 ### Indexing
 
 The mechanism for finding all documents containing a single word, described above, is very neat, but it can be so fast and simple only because
-there is a ready answer for our query in the index. However, in order for it to end up in there, we need to perform a rather complex operation called _indexing_. We won’t get
+there is a ready answer for our query in the index. However, in order for it to end up in there, ES needs to perform a rather complex operation called _indexing_. We won’t get
 into the details here, but you can easily imagine that this process is both complex when it comes to the logic it implements, and resource-intensive, since
 it requires information about all documents to be gathered in a single place.
 
-This has further-reaching consequences. Adding a new document, which may contain hundreds or thousands of words, to the index, would mean that hundreds or thousands
+This has far-reaching consequences. Adding a new document, which may contain hundreds or thousands of words, to the index, would mean that hundreds or thousands
 of postings lists would have to be updated. This would be prohibitively expensive in terms of performance. Therefore, full-text search engines usually employ
 a different strategy: once built, an index is effectively immutable. When documents are added, removed, or modified, a new tiny index containing just the changes
-is created. At query time, results from the main and the incremental indices are merged. Any number of these incremental indices, called _segments_ in
+is created. At query time, results from the main and the incremental indices are merged. Any number of these incremental indices, called [segments](https://lucene.apache.org/core/8_9_0/core/org/apache/lucene/codecs/lucene87/package-summary.html#Segments) in
 Elastic parlance, can be created, but the cost of merging results at search time grows quickly with their number. Therefore, a special process of segment merging
 must be present in order to ensure that the number of segments (and thus also search latency) does not get out of control. This, obviously, further increases
 complexity of the whole system.
@@ -56,7 +56,7 @@ complexity of the whole system.
 ### Operations on postings lists
 
 So far we talked about the relatively simple case of searching for documents matching a single search term. But what if we wanted to find documents
-containing multiple search terms at once? This is where Elastic needs to combine several postings lists into a single one. Interestingly, the same issue arises
+containing multiple search terms? This is where Elastic needs to combine several postings lists into a single one. Interestingly, the same issue arises
 even for a single search term if your index has multiple segments.
 
 A postings list represents a set of document IDs, and most ways of matching documents to search terms correspond to boolean operations on those sets.
@@ -69,7 +69,7 @@ There are many ways these operations can be implemented in practice, with search
 complexity remain. Let’s take a look at one possible implementation and see what conclusions can be drawn.
 
 While the operations described below can be generalized to work on multiple lists at once, for simplicity we’ll just discuss operations which are binary,
-i.e. which take two arguments. Conclusions remain the same.
+i.e. which take two arguments. Conclusions remain the same for higher arity.
 
 In the algorithms below, we'll assume each postings list is an actual list of integers (doc IDs), sorted in ascending order, and that their sizes
 are _n_ and _m_.
@@ -79,7 +79,7 @@ are _n_ and _m_.
 
 ![Example algorithm for computing results of OR operation](/img/articles/2021-04-29-how-to-ruin-elasticsearch-performance/list-merging-or.webp)
 
-The way to merge two sorted lists is straightforward (and it is also the reason for the lists to be sorted in the first place).
+The way to merge two sorted lists in an OR operation is straightforward (and it is also the reason for the lists to be sorted in the first place).
 For each list we need to keep a pointer which will indicate the current position. Both pointers start at the beginning of their corresponding lists.
 In each step we compare the values (integer IDs) indicated by the pointers, and add the smaller one to the result list. Then, we move that pointer forward. If the values
 are equal, we add the value to the result just once and move both pointers. When one pointer reaches the end of its list, we copy the remainder of the second
@@ -106,14 +106,15 @@ to the result list, and move the second list’s pointer to the corresponding po
 item after which the searched-for value would be. Once the second list’s pointer reaches the end, we are done.
 
 The algorithmic complexity of these two operations differs quite a bit from that of OR operation. First of all, a new sub-operation of searching for a value
-in the second list is used. It can be implemented in a number of ways depending on the data structures, but for a simple sorted list as used here, we could
-use binary search whose complexity is O(log(_m_)). Things get a little more complicated since we only search starting from current position rather than from
-the beginning, but let’s skim over this for now. What matters is that we perform a search in the second list for each item from the first one: the complexity is no longer
-symmetric between the two lists. If we change the order of the lists, the result of AND operation does not change, but the cost of performing the calculation
-does. It pays to have the shorter of the two list as the first in order, and the difference can be huge. The cost also depends very much on the data, i.e. how
+in the second list is used. It can be implemented in a number of ways depending on the data structures (flat array, skip list, various trees, etc.). For a simple
+sorted list stored in an array, we could use binary search whose complexity is O(log(_m_)). Things get a little more complicated since we only search starting
+from current position rather than from the beginning, but let’s skim over this for now. What matters is that we perform a search in the second list
+for each item from the first one: the complexity is no longer symmetric between the two lists. If we change the order of the lists, the result of AND operation
+does not change, but the cost of performing the calculation does.
+It pays to have the shorter of the two list as the first in order, and the difference can be huge. The cost also depends very much on the data, i.e. how
 big the intersection of the two lists is. If the intersection is empty, looking for even the first element of first list in the second list will move the second
 list’s pointer to the end, and the algorithm will finish very quickly. The upper limit on the size of the result list (which in turn puts a lower limit on
-algorithmic complexity) is _min(m, n)_ which also shows the asymmetry.
+algorithmic complexity) is _min(m, n)_.
 
 If we’re performing the AND NOT rather than AND operation, the match condition has to be reversed from _found_ to _not found_. While the result changes if
 we exchange the two lists, algorithmic properties are the same as for AND, especially the asymmetry in how the first and second list’s size affects the
@@ -132,7 +133,7 @@ There are also lots of minor quirks which are too numerous to list here. Given t
 [extend ES with custom plugins](https://www.elastic.co/guide/en/elasticsearch/plugins/6.8/plugin-authors.html) that can execute arbitrary code, the
 opportunities for breaking things are endless.
 
-On the other hand, search engines employ a number of optimizations which may counter some of our efforts at achieving low performance.
+On the other hand, search engines employ [a number of optimizations](https://www.elastic.co/blog/elasticsearch-query-execution-order) which may counter some of our efforts at achieving low performance.
 
 Then again, some of these optimizations may themselves lead to surprising results. For example, often there are two different ways of performing a task,
 and a heuristic is used to choose one or the other. Such heuristics are often simple threshold values: for example, if the number of sub-clauses in a
@@ -223,7 +224,7 @@ times) were the reason for this seemingly wasteful indexation process.
 Some queries seem simple, but are actually very complex for the search engine to handle. One example is prefix queries such as `cat*` which match documents
 containing any words starting with `cat`. It turns out that unless you do something special, such a query is likely to be handled as an OR-query with all words
 matching the prefix: `(cat OR catamaran OR catapult OR category OR ...)`. Keeping in mind that queries with the OR operator can be expensive, you can notice the
-risk here: there may be lots and lots of words which increases the cost of merging their corresponding postings lists. In most datasets, a query such as `a*`,
+risk here: there may be lots and lots of words in the resulting expression, and this increases the cost of merging their corresponding postings lists. In most datasets, a query such as `a*`,
 with probably thousands of individual postings lists, each containing millions of documents, can take ages to finish and even bring down the whole cluster.
 
 Another type of query which looks simple at first glance but can (or rather, used to) be very costly is range searches in numeric and date fields. Let’s say you want to limit
@@ -333,8 +334,8 @@ indexing time when possible, and many such optimizations result in an even more 
 
 For an example, let’s consider an index of offers such as you may find in an online store. Each offer may be available with a free return option, but
 there’s a catch: while the client only sees a single checkbox in the UI, internally there are several types of free returns, e.g. free return by package locker
-and free return by post. The natural way to handle this is to index each of these two flags and then to search for offers having either of those flags.
-This is also a good way towards achieving our goal of ruining Elasticsearch search performance, especially if the number of values was 200 rather than 2.
+and free return by post. The natural way to handle this would be to index each of these two flags and then to search for offers having either of those flags.
+It would also be a step towards our goal of ruining Elasticsearch search performance, especially if the number of values was 200 rather than 2.
 
 The reason it works this way is that there are lots and lots of offers matching any of these flags: probably around 90% match one and around 90% match the other
 (with, obviously, a large number matching both). Going back to the [section about OR operator](#or-operator), you will notice that having two very long
@@ -369,5 +370,5 @@ that particular tips apply to, since, as the example about range searches shows,
 
 ## Summary
 
-I hope this post gave you some background of how Elastic works under the hood. Armed with this knowledge, you will be able to make or break Elasticsearch
+I hope this post gave you some background on how Elastic works under the hood. Armed with this knowledge, you will be able to make or break Elasticsearch
 performance: the choice is yours.
