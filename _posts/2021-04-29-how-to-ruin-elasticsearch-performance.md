@@ -1,17 +1,17 @@
 ---
 layout: post
-title: How to ruin your Elasticsearch performance — Part II: Breaking things, one at a time
+title: "How to ruin your Elasticsearch performance — Part II: Breaking things, one at a time"
 author: [michal.kosmulski]
 tags: [tech, "full-text search", elasticsearch, elastic, es, performance]
 ---
 It’s easy to find resources about _improving_ [Elasticsearch](https://www.elastic.co/elastic-stack) performance, but what if you wanted to _reduce_ it?
-In Part I of this two-part series we looked ES under the hood in order to learn how it works internally. Now, in Part II, is the time to apply this knowledge
+In [Part I]{% TODO LINK %} of this two-part series we looked ES under the hood in order to learn how it works internally. Now, in Part II, is the time to apply this knowledge
 in practice and ruin our ES performance. Most tips should also be applicable to [Solr](https://solr.apache.org/), raw [Lucene](https://lucene.apache.org/), or,
 for that matter, to any other full-text search engine as well.
 
 ## Using complex boolean queries
 
-Looking at the algorithms outlines in Part I, you can easily notice that simple queries, such as finding a document containing two or three specific words,
+Looking at the algorithms outlined in Part I, you can easily notice that simple queries, such as finding a document containing two or three specific words,
 are relatively cheap to compute. We can easily increase the cost by making the queries more complex. This complexity is easily achieved by using
 [boolean queries](https://www.elastic.co/guide/en/elasticsearch/reference/6.8/query-dsl-bool-query.html) which allow arbitrary boolean expressions,
 including nested subexpressions.
@@ -202,7 +202,7 @@ and free return by post. The natural way to handle this would be to index each o
 It would also be a step towards our goal of ruining Elasticsearch search performance, especially if the number of values was 200 rather than 2.
 
 The reason it works this way is that there are lots and lots of offers matching any of these flags: probably around 90% match one and around 90% match the other
-(with, obviously, a large number matching both). Going back to the [section about OR operator](#or-operator), you will notice that having two very long
+(with, obviously, a large number matching both). Going back to the [section about OR operator]{% TODO LINK #or-operator in part I %}, you will notice that having two very long
 input lists is about the worst case for OR operator performance. A usually reasonable trade-off in such a case is to move the cost to indexing-time, and
 to index with the document just a single flag, “free return”, which will improve search performance (at the cost of reducing indexing performance by just a tiny amount).
 Note that this was a very simple case and sometimes indexing denormalized data may increase index size significantly, in which case the trade-off may become
@@ -234,5 +234,5 @@ that particular tips apply to, since, as the example about range searches shows,
 
 ## Summary
 
-I hope Part I gave you some background on how Elastic works under the hood. In Part II, we discussed various techniques which can affect its performance in
+I hope [Part I]{% TODO LINK %} gave you some background on how Elastic works under the hood. In Part II, we discussed various techniques which can affect its performance in
 real-world scenarios. Armed with this knowledge, you will be able to make or break Elasticsearch performance: the choice is yours.
