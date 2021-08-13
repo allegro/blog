@@ -147,4 +147,4 @@ Anyway, even the basic knowledge presented above should allow you to deal some h
 
 ## Summary
 I hope the first part of this post gave you some background on how Elastic works under the hood. In Part II, we’ll look at how to apply this knowledge in
-practice for making Elasticsearch performance as bad as possible.
+practice to making Elasticsearch performance as bad as possible.
