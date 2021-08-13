@@ -11,12 +11,12 @@ for that matter, to any other full-text search engine as well.
 
 Surprisingly, a number of people seem to have discovered these tactics already, and you may even find some of them used in your own production code.
 
-## Know your enemy
+## Know your enemy, know your battlefield
 
 In order to deal a truly devastating blow to Elastic’s performance, we first need to understand what goes on under the hood. Since full-text search is
 a complex topic, this introduction will be both simplified and incomplete.
 
-### Index and document contents
+## Index and document contents
 
 In most full-text search engines data is split into two separate areas: the index, which makes it possible to find documents (represented by some sort of ID)
 matching specified criteria, and [document storage](https://www.elastic.co/guide/en/elasticsearch/reference/6.8/mapping-store.html) which makes it possible
@@ -29,7 +29,7 @@ need to be returned in search results and thus can be omitted from document stor
 For certain operations it may be necessary to [store field values within the index itself](https://www.elastic.co/guide/en/elasticsearch/reference/6.8/doc-values.html),
 which is yet another approach.
 
-### Inverted index
+## Inverted index
 
 The basic data structure full-text search uses is the [inverted index](https://en.wikipedia.org/wiki/Inverted_index). Basically, it is a map from keywords
 to sorted lists of document IDs, so-called postings lists. The specific data structures used to implement this mapping are many, but are not relevant here.
@@ -39,7 +39,7 @@ the value 123 in a specific field.
 
 ![Postings lists — lists of document IDs containing each individual word](/img/articles/2021-04-29-how-to-ruin-elasticsearch-performance/postings-lists.webp)
 
-### Indexing
+## Indexing
 
 The mechanism for finding all documents containing a single word, described above, is very neat, but it can be so fast and simple only because
 there is a ready answer for our query in the index. However, in order for it to end up in there, ES needs to perform a rather complex operation called _indexing_. We won’t get
@@ -54,7 +54,7 @@ Elastic parlance, can be created, but the cost of merging results at search time
 must be present in order to ensure that the number of segments (and thus also search latency) does not get out of control. This, obviously, further increases
 complexity of the whole system.
 
-### Operations on postings lists
+## Operations on postings lists
 
 So far we talked about the relatively simple case of searching for documents matching a single search term. But what if we wanted to find documents
 containing multiple search terms? This is where Elastic needs to combine several postings lists into a single one. Interestingly, the same issue arises
@@ -75,7 +75,7 @@ i.e. which take two arguments. Conclusions remain the same for higher arity.
 In the algorithms below, we'll assume each postings list is an actual list of integers (doc IDs), sorted in ascending order, and that their sizes
 are _n_ and _m_.
 
-#### OR
+### OR
 {: #or-operator }
 
 ![Example algorithm for computing results of OR operation](/img/articles/2021-04-29-how-to-ruin-elasticsearch-performance/list-merging-or.webp)
@@ -96,7 +96,7 @@ complexity of O(n+m) is expected.
 
 The result does not depend on the order of lists (OR operation is symmetric), and performance is not (much) affected by their order, either.
 
-#### AND and AND NOT
+### AND and AND NOT
 
 ![Example algorithm for computing results of AND / AND NOT operations](/img/articles/2021-04-29-how-to-ruin-elasticsearch-performance/list-merging-and.webp)
 
@@ -126,7 +126,7 @@ This is an example of _query rewriting_. In particular, Lucene (and thus also El
 [reorder lists passed to AND operator](https://github.com/apache/lucene/blob/5e0e7a5479bca798ccfe385629a0ca2ba5870bc0/lucene/core/src/java/org/apache/lucene/search/ConjunctionDISI.java#L153)
 so that they are sorted by length in ascending order.
 
-### Beyond the basics
+## Beyond the basics
 
 There are lots of factors which affect Elasticsearch performance and can be exploited in order to make that performance worse, and which I haven’t mentioned
 here. These include scoring, phrase search, run-time scripting, sharding and replication, hardware, and disk vs memory access just to name a few.
@@ -134,7 +134,8 @@ There are also lots of minor quirks which are too numerous to list here. Given t
 [extend ES with custom plugins](https://www.elastic.co/guide/en/elasticsearch/plugins/6.8/plugin-authors.html) that can execute arbitrary code, the
 opportunities for breaking things are endless.
 
-On the other hand, search engines employ [a number of optimizations](https://www.elastic.co/blog/elasticsearch-query-execution-order) which may counter some of our efforts at achieving low performance.
+On the other hand, search engines employ [a number of optimizations](https://www.elastic.co/blog/elasticsearch-query-execution-order) which may counter
+some of our efforts at achieving low performance.
 
 Then again, some of these optimizations may themselves lead to surprising results. For example, often there are two different ways of performing a task,
 and a heuristic is used to choose one or the other. Such heuristics are often simple threshold values: for example, if the number of sub-clauses in a
