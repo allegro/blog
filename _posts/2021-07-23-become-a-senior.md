@@ -1,12 +1,14 @@
 ---
-layout: post title: How to choose skills in order to become a senior author: [piotr.prusinski]
+layout: post
+title: "How to choose skills in order to become a senior"
+author: [piotr.prusinski]
 tags: [education, skills, startup, mvp]
 ---
 
-If you are a junior or mid-level engineer, You are probably thinking about the question "How to become a senior?" How much knowledge you have to gain or what
+If you are a junior or mid-level engineer, You are probably thinking about the question “How to become a senior?” How much knowledge you have to gain or what
 has to be done to become one. Below you can read my insight about it. We will discuss what skills you could develop in order to make more impact on an imaginary
 new project. [Lean startup](https://en.wikipedia.org/wiki/The_Lean_Startup)
-There is also a second aspect. Maybe you know people with a "senior" job title, that have much less experience and knowledge than you? You are asking yourself
+There is also a second aspect. Maybe you know people with a “senior” job title, that have much less experience and knowledge than you? You are asking yourself
 what the hell is wrong with me? Why am I not a senior? I also asked myself these questions. Everything is fine with you and I will explain it further. It is not
 an article about how I became a senior because it is still ahead of me. I will offer some insights about finding your strengths and which development strategy
 to choose that helps you be closer to the senior level. There is also one mysterious aspect - which strengths will be valuable for your leader, team, and
@@ -21,16 +23,16 @@ little part of the wall. The better solution is to ask her what her needs are an
 
 Let's treat your main skill as a valuable product. To develop a good product you should meet the expectations of your clients. Who is the client of you as a
 product? You? You are certainly a minor stakeholder. Your main stakeholder is your team leader, your team, and the company that you are working in. If you know
-the expectations, and you achieve them you will be very valuable for your company which means a higher level of your career. Expectations are the key.
+the expectations, and you achieve them, you will be very valuable to your company which means a higher level of your career. Expectations are the key.
 Expectations differ between companies and even teams.
 ![Expectations](/img/articles/2021-07-23-become-a-senior/expectations.png)
-The status of a senior is difficult to compare between companies and teams. The same person may be a senior in one company and a junior in another. In one
-company where I worked the senior was expected to have good knowledge about products and the business and that's why the seniority length was the main factor
-there. On the other hand, in another company there was a person with excellent knowledge about the product and business, but she did not carry out large tasks -
-and did not take tasks that no one wanted to take, had the poor status of mid. In Allegro, we also have expectations for a senior. There is a list of
-expectations made by the internal leader's community. Such a list of expectations is a good start to begin the development process towards a senior. This is
-where I started my journey, and you should start from a similar place too if you want to focus on developing the skills that have the greatest impact on your
-efficiency.
+The status of a senior is difficult to compare between companies and teams. The same person may be a senior at one company and a junior in another. At one
+company where I worked the senior was expected to have good knowledge about products and the business and that's why the tenure length was the main factor
+there. On the other hand, at another company there was a person with excellent knowledge about the product and business, but she did not carry out large tasks -
+and did not take tasks that no one wanted to take, stayed at the less attractive post of a mid-level engineer. In Allegro, we also have expectations for a
+senior. There is a list of expectations made by the internal leader's community. Such a list of expectations is a good start to begin the development process
+towards a senior. This is where I started my journey, and you should start from a similar place too if you want to focus on developing the skills that have the
+greatest impact on your efficiency.
 
 ### Assess yourself with some evaluation sheets
 
@@ -78,7 +80,7 @@ develop.
 ![Gallup](/img/articles/2021-07-23-become-a-senior/gallup.png)
 
 Practical example:
-I took the Gallup test and I have a "learner" talent - I like learning and I should share my knowledge. Following the evaluation, the process sheet came out
+I took the Gallup test and I have a “learner” talent - I like learning and I should share my knowledge. Following the evaluation, the process sheet came out
 that I do not share knowledge. I decided to make a presentation about a subject that I know. I prepared a presentation about JMH (Java Microbenchmark Harness).
 I'm not a good speaker so I signed myself up for training about presentation. After that, I had the subject, knowledge and skills to do this. Estimates for this
 project were also achievable. It took me 6 weeks. In the middle of preparing this presentation, I discovered that is not what I have always wanted to do!
