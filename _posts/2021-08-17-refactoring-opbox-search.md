@@ -4,11 +4,7 @@ title: "How did we refactor the search UI component?"
 author: [volodymyr.khytskyi]
 tags: [tech, frontend, architecture, refactoring, developmentexperience, typescript]
 ---
-This article describes a classic case of refactoring a search form UI component, that is a critical part of every e-commerce platform. In it I’ll explain the precursor for change, analysis process, as well as, aspects to pay attention to and principles to apply while designing a new solution.
-
-If you find yourself in a similar situation or just curious to learn more about frontend internals at Allegro, you might learn a thing or two from the article.
-
-Sounds interesting? Hop on!
+This article describes a classic case of refactoring a search form UI component, a critical part of every e-commerce platform. In it I’ll explain the precursor for change, analysis process, as well as, aspects to pay attention to and principles to apply while designing a new solution. If you find yourself in a similar situation or just curious to learn more about frontend internals at Allegro, you might learn a thing or two from the article. Sounds interesting? Hop on!
 
 ## How does the search form function at Allegro?
 
@@ -86,7 +82,7 @@ With all the above conclusions, we can start the actual work and start it from t
 
 * Store should hold current runtime state
 * Store should be initialized with a default state
-* Store should provide a public API that allows dependents to update its state in runtime in a controlled way
+* Store should provide a public API that allows dependents to update its state in runtime in a _controlled way_
 * Store should expose information channels to propagate the state change to every subscriber
 * Store should not expose any implementation details
 
@@ -111,6 +107,7 @@ class Store {
        (state: State) => void
     >>,
   ) {}
+
   public on(...args) { return this.emitter.on(...args);
 }
 ```
@@ -151,7 +148,7 @@ We are going to start with a search input as it doesn’t have any dependencies 
 * Proxying DOM events such as focus, blur, click, keydown, etc.
 * Notifying the store whenever input value changes
 
-Since updating the store is pretty much straightforward, let’s take a look at how we handle DOM events. Such events as “click”, “focus”, “blur” convey the fact that there was some sort of interaction with the input HTML element. Unlike “input” event, where one is interested in knowing what current value is, the above-mentioned ones don’t include any related information. We only need to be able to communicate to dependents the fact that such an event took place and that is why, similarly to store, search input has an event emitter of its own. Now, you might be thinking: why would you want to have multiple sources of information given you already have the event driven store solution? There are couple of reasons:
+Since updating the store is pretty much straightforward, let’s take a look at how we handle DOM events. Such events as `click`, `focus`, `blur` convey the fact that there was some sort of interaction with the input HTML element. Unlike `input` event, where one is interested in knowing what current value is, the above-mentioned ones don’t include any related information. We only need to be able to communicate to dependents the fact that such an event took place and that is why, similarly to store, search input has an event emitter of its own. Now, you might be thinking: why would you want to have multiple sources of information given you already have the event driven store solution? There are couple of reasons:
 
 * Because those DOM events don’t contain additional information, there is nothing we need to put into our store. It aligns well with single-responsibility principle, according to which store only fulfills its primary function and has no hint of existence of search input
 * By bypassing the store we shortened an event message travel distance from a source to a subscriber
@@ -198,6 +195,7 @@ class SuggestionsList {
       this.renderVisible();
     });
   }
+
   private async fetchItemsList() {
     this.store.suggesiontsListData = await fetchSuggestions(this.store.input);
   }
@@ -205,9 +203,9 @@ class SuggestionsList {
 }
 ```
 
-When a ‘click’ or “focus” event message arrives from search input, SuggestionsList renders a dropdown UI element. Opposite to that, ‘blur’ event occurrence hides it. A change of input value in the store leads to fetching suggestions over the network and lastly, whenever suggestions data is available, SuggestionsList renders the item list and makes the dropdown visible.
+When a `click` or `focus` event message arrives from search input, `SuggestionsList` renders a dropdown UI element. Opposite to that, `blur` event occurrence hides it. A change of input value in the store leads to fetching suggestions over the network and lastly, whenever suggestions data is available, `SuggestionsList` renders the item list and makes the dropdown visible.
 
-Note that because we apply the separation of concerns principle, the “fetchItemsList” method only delegates a job to an external dependency that is responsible for network communication. Upon successful response, SuggestionsList doesn’t immediately start rendering the data, instead the data is put into the store and SuggestionList listens to that data change. With a such data circulation we ensure that:
+Note that because we apply the separation of concerns principle, the `fetchItemsList` method only delegates a job to an external dependency that is responsible for network communication. Upon successful response, SuggestionsList doesn’t immediately start rendering the data, instead the data is put into the store and SuggestionList listens to that data change. With a such data circulation we ensure that:
 
 * Store is a single source of truth (and data)
 * Suggestions’ data is propagated to every dependent
@@ -219,7 +217,7 @@ With that, our functional requirement is implemented.
 
 Reapplying the above principles and techniques to develop the remaining functional requirements, we ended up with a solution that can be illustrated as following:
 
-![Architecture Diagram](/img/articles/2021-08-17-refactoring-opbox-search/architecture-diagram.png)
+<img src="/img/articles/2021-08-17-refactoring-opbox-search/architecture-diagram.png" alt="Architecture Diagram" style="max-width: 600px;">
 
 Were we able to meet our expectations? At the end of the day, after careful problem analysis, testing out POCs and development preparations, the implementation process itself went quite smoothly. Multiple people participated in it and we are quite satisfied with the end result. Will it withstand future challenges? Only time will tell.
 
