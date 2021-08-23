@@ -219,4 +219,3 @@ That's why few clients go beyond the actual default limit (the red line).
 
 ## Conclusion
 Rate-limiting is a common problem, but surprisingly not so trivial to solve, especially in a high-scale, distributed environment. Plenty of popular solutions can be found, but most of them deal with it only from a perspective of a single machine and are not well-suited for our system. Coming up with the above solution took quite a bit of research and planning, but in the end, its deployment allowed us to effectively achieve our goal. We are pretty content with the final product, as it is both effective and fast, but are constantly tweaking it and looking for new ways to optimize that process.
-
