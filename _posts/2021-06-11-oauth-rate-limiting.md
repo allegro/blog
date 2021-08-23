@@ -7,7 +7,7 @@ tags: [tech, architecture, oauth, microservices]
 
 Every e-commerce platform needs some kind of central authorization system. In Allegro we use OAuth and have our own implementation that stays true to RFC. Since there are millions of users in Allegro, there are also a lot of requests that go through OAuth services. At some point there comes a need to have a better control over how much traffic we want to allow in a certain time window, while maintaining full effectiveness of the platform. Here is where the idea of rate-limiting comes in handy.
 
-## Prologue 
+## Prologue
 
 According to OAuth RFC, to use OAuth you need to be a registered client. Some of the clients are very small external integrators (simple shops), while others are from a whole different league and can produce millions of requests per day (Allegro mobile apps, large partner apps). Every user can create their own OAuth client and use it to integrate with Developers API. Unfortunately, not all of them do that correctly as per RFC.
 
@@ -74,7 +74,7 @@ Any instance should be aware of the rate limit state for the whole cluster. It r
 
 ### Sharing the state
 
-Our internal OAuth service works in a distributed manner. There are many instances of the OAuth servers and we should have mechanisms to coordinate rate-limiting between them. In practice, it means that if a client is making a request to server instance A, the server instance B should consider it when calculating the allowed count of requests in the current time window. The following are key points that sum up this description: 
+Our internal OAuth service works in a distributed manner. There are many instances of the OAuth servers and we should have mechanisms to coordinate rate-limiting between them. In practice, it means that if a client is making a request to server instance A, the server instance B should consider it when calculating the allowed count of requests in the current time window. The following are key points that sum up this description:
 
 - We have a global request counter per each client/user.
 - The counter is stored in the Mongo database.
@@ -127,10 +127,12 @@ Below is the description of what happens in that scenario, step by step:
 10. After the last pull, the counter states on both instances are consistent with the database state and reflect the global number of requests made by a client.
 
 ### Persisting the state
-To properly persist the state in a distributed environment with minimal impact on application performance we needed to take into consideration some strategies.
+To properly persist the state in a distributed environment with minimal impact on application performance, we needed to take into consideration several strategies.
 
 #### Resolving the conflicts
-As we’ve already mentioned we use optimistic locking to prevent from overwriting the state by instances. It’s quite a common problem in a distributed systems’ world. It works by using version numbers. The mongo document keeps the version which designates how many updates were made from the beginning of the document creation. After each update the version increases by one:
+As we’ve already mentioned we use optimistic locking to prevent from overwriting the state by instances. It’s quite a common problem in a distributed systems’ world.
+It works by using version numbers. The mongo document keeps the version which designates how many updates have been made from the beginning of the document creation.
+After each update the version increases by one:
 
 Before save to the database:
 
@@ -149,14 +151,15 @@ After the save:
 {
    "_id" : {...},
    "version" : 1,
-     "requestCount": "5",
+   "requestCount": "5",
    ...
 }
 ```
 
-But how does a particular instance save the document atomically ? How does it know there was an update made by another instance in the meantime ? We use a Mongo query to do a CAS update that looks like:
+But how does a particular instance save the document atomically ? How does it know that there was an update made by another instance in the meantime?
+For this purpose, we use a Mongo query to do the CAS update that looks like:
 
-```
+```js
 
 db.ratelimits.update(
  <filter query>
@@ -166,10 +169,10 @@ db.ratelimits.update(
 db.ratelimits.update(
  {
    "_id": {...},
-   "version": 2
+   "version": 1
  },
  {
-   "version": 3,
+   "version": 2,
    "requestCount": 10
  }
 )
@@ -216,4 +219,4 @@ That's why few clients go beyond the actual default limit (the red line).
 
 ## Conclusion
 Rate-limiting is a common problem, but surprisingly not so trivial to solve, especially in a high-scale, distributed environment. Plenty of popular solutions can be found, but most of them deal with it only from a perspective of a single machine and are not well-suited for our system. Coming up with the above solution took quite a bit of research and planning, but in the end, its deployment allowed us to effectively achieve our goal. We are pretty content with the final product, as it is both effective and fast, but are constantly tweaking it and looking for new ways to optimize that process.
-  
+
