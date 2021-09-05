@@ -353,6 +353,9 @@ figcaption {
     font-size: 15px;
     overflow: auto;
 }
+.post code, tt {
+    word-break: break-word;
+}
 
 .post p code,
 .post li code {
