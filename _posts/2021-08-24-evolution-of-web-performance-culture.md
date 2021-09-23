@@ -83,7 +83,7 @@ However, the best way to learn is to work with us directly, so we encourage ever
 In our team we believe that we should automate every task possible. We want our tools to support
 the work of our engineers, so that they don't have to remember to run performance tests,
 check the size of the resulting files, etc. That is why we have prepared several checks that apply to components development
-in our [Micro Frontends architecture](/Managing-Frontend-in-the-microservices-architecture.html).
+in our [Micro Frontends architecture](/2016/03/Managing-Frontend-in-the-microservices-architecture.html).
 
 #### Automatic page scanner
 
