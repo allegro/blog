@@ -144,7 +144,7 @@ for such analysis, but would like to know what to improve.
 
 ### Research and development
 
-Keep in mind that working on web performance is a continuous work. Every now and then new solutions, 
+Keep in mind that working on web performance is a continuous work. Every now and then new solutions,
 which may have a positive impact on the loading speed, appear on the market. Therefore, together with our team,
 we run a series of tests to see if it makes sense to adopt a given solution.
 
