@@ -53,9 +53,9 @@ GMV indirectly through SEO then are we able to prove a direct correlation as wel
 but we lacked the analytical expertise to process it, therefore, we asked our business analysts to help us.
 Based on historical performance* and business data, they were able to confirm the impact on business metrics!
 
-> Each 100ms slowdown of First Input Delay results in an average drop in GMV of 3%.  
-> Each 100ms slowdown of First Contenful Paint results in an average drop in GMV of 1.5%.  
-> Each 100ms slowdown of Largest Contentful Paint results in an average drop in GMV of 0.5%.  
+> Each 100ms slowdown of First Input Delay results in an average drop in GMV of 3%.
+> Each 100ms slowdown of First Contenful Paint results in an average drop in GMV of 1.5%.
+> Each 100ms slowdown of Largest Contentful Paint results in an average drop in GMV of 0.5%.
 
 *The data comes from our real user measurements, not from synthetic tests.
 
@@ -98,14 +98,14 @@ This was neither convenient nor scalable, so we created our first bot, which use
 
 After detecting problems, we checked the owners of the asset or part of the page and notified them on Slack.
 
-![Brylant Bot](/img/articles/2021-08-24-evolution-of-web-performance-culture/brylant-bot.png "Brylant Bot")
+![Brylant Bot](/img/articles/2021-09-23-evolution-of-web-performance-culture/brylant-bot.png "Brylant Bot")
 
 #### Automatic comments in pull requests
 
 Two comments are generated while building the component. The first one presents a comparison of assets size
 with the target branch and the estimated cost of the change.
 
-![Asset size comparison](/img/articles/2021-08-24-evolution-of-web-performance-culture/gh-sizes.png "Asset size comparison")
+![Asset size comparison](/img/articles/2021-09-23-evolution-of-web-performance-culture/gh-sizes.png "Asset size comparison")
 
 If the size exceeds the declared threshold, our entire team is automatically added as reviewers to the pull request.
 
@@ -117,19 +117,19 @@ Each component has a list of predefined presets (input data) and a server that d
 This functionality is used for: development, visual regression, snapshot and performance testing.
 Lighthouse report is generated for one or more predefined states every time the component is built.
 
-![Lighthouse report](/img/articles/2021-08-24-evolution-of-web-performance-culture/lighthouse-report.png "Lighthouse report")
+![Lighthouse report](/img/articles/2021-09-23-evolution-of-web-performance-culture/lighthouse-report.png "Lighthouse report")
 
 #### Automatic notifications
 
 My team is notified on Slack every time a new dependency is added to any of the components.
 We want to make sure that the libraries used are optimal and have no better (smaller, faster) replacements.
 
-![Dependencies notification](/img/articles/2021-08-24-evolution-of-web-performance-culture/bot-deps.png "Dependencies notification")
+![Dependencies notification](/img/articles/2021-09-23-evolution-of-web-performance-culture/bot-deps.png "Dependencies notification")
 
 We get similar notifications when assets size changes by at least 5% compared to the target branch.
 We want to make sure that, for example, treeshaking hasn't broken down or some other change affecting the size has not occurred.
 
-![Size notification](/img/articles/2021-08-24-evolution-of-web-performance-culture/bot-sizes.png "Size notification")
+![Size notification](/img/articles/2021-09-23-evolution-of-web-performance-culture/bot-sizes.png "Size notification")
 
 #### ESlint
 
