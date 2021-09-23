@@ -54,7 +54,7 @@ but we lacked the analytical expertise to process it, therefore, we asked our bu
 Based on historical performance* and business data, they were able to confirm the impact on business metrics!
 
 > Each 100ms slowdown of First Input Delay results in an average drop in GMV of 3%.
-> Each 100ms slowdown of First Contenful Paint results in an average drop in GMV of 1.5%.
+> Each 100ms slowdown of First Contentful Paint results in an average drop in GMV of 1.5%.
 > Each 100ms slowdown of Largest Contentful Paint results in an average drop in GMV of 0.5%.
 
 *The data comes from our real user measurements, not from synthetic tests.
