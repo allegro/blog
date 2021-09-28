@@ -94,7 +94,7 @@ _m + n_ (in the case the two sets are disjoint). Due to the fact that the cursor
 algorithm’s complexity is O(n+m). Even for any other algorithm, since the size of the result list may reach _m + n_, and we have to generate that list,
 complexity of O(n+m) is expected.
 
-The result does not depend on the order of lists (OR operation is symmetric), and performance is not (much) affected by their order, either.
+The result does not depend on the order of lists (OR operation is symmetric), and performance is not (much) affected by it, either.
 
 ### AND and AND NOT
 
