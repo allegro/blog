@@ -14,11 +14,11 @@ Surprisingly, a number of people seem to have discovered these tactics already, 
 ## Know your enemy, know your battlefield
 
 In order to deal a truly devastating blow to Elastic’s performance, we first need to understand what goes on under the hood. Since full-text search is
-a complex topic, this introduction will be both simplified and incomplete.
+a complex topic, consider this introduction both simplified and incomplete.
 
 ## Index and document contents
 
-In most full-text search engines data is split into two separate areas: the index, which makes it possible to find documents (represented by some sort of ID)
+In most full-text search engines data is split into two separate areas: the index, which makes it possible to find documents (represented by some sort of document ID)
 matching specified criteria, and [document storage](https://www.elastic.co/guide/en/elasticsearch/reference/6.8/mapping-store.html) which makes it possible
 to retrieve the contents (values of all fields) of a document with specified ID.
 This distinction improves performance, since usually document IDs will appear multiple times in the index, and it would not make much sense to duplicate all
@@ -42,15 +42,15 @@ the value 123 in a specific field.
 ## Indexing
 
 The mechanism for finding all documents containing a single word, described above, is very neat, but it can be so fast and simple only because
-there is a ready answer for our query in the index. However, in order for it to end up in there, ES needs to perform a rather complex operation called _indexing_. We won’t get
-into the details here, but you can easily imagine that this process is both complex when it comes to the logic it implements, and resource-intensive, since
+there is a ready answer for our query in the index. However, in order for it to end up in there, ES needs to perform a rather complex operation called _indexing_.
+We won’t get into the details here, but suffice to say this process is both complex when it comes to the logic it implements, and resource-intensive, since
 it requires information about all documents to be gathered in a single place.
 
 This has far-reaching consequences. Adding a new document, which may contain hundreds or thousands of words, to the index, would mean that hundreds or thousands
 of postings lists would have to be updated. This would be prohibitively expensive in terms of performance. Therefore, full-text search engines usually employ
 a different strategy: once built, an index is effectively immutable. When documents are added, removed, or modified, a new tiny index containing just the changes
 is created. At query time, results from the main and the incremental indices are merged. Any number of these incremental indices, called [segments](https://lucene.apache.org/core/8_9_0/core/org/apache/lucene/codecs/lucene87/package-summary.html#Segments) in
-Elastic parlance, can be created, but the cost of merging results at search time grows quickly with their number. Therefore, a special process of segment merging
+Elastic jargon, can be created, but the cost of merging results at search time grows quickly with their number. Therefore, a special process of segment merging
 must be present in order to ensure that the number of segments (and thus also search latency) does not get out of control. This, obviously, further increases
 complexity of the whole system.
 
@@ -86,8 +86,7 @@ In each step we compare the values (integer IDs) indicated by the pointers, and 
 are equal, we add the value to the result just once and move both pointers. When one pointer reaches the end of its list, we copy the remainder of the second
 list to the end of result list, and we’re done. Like each of the input lists, the result is a sorted list without duplicates.
 
-If you are familiar with [merge sort](https://en.wikipedia.org/wiki/Merge_sort), you will notice that this algorithm corresponds to the merge phase of this
-algorithm.
+If you are familiar with [merge sort](https://en.wikipedia.org/wiki/Merge_sort), you will notice that this algorithm corresponds to its merge phase.
 
 Since the result is a sum of the two sets, its size is at least _max(m, n)_ (in the case one set is a subset of the other) and at most
 _m + n_ (in the case the two sets are disjoint). Due to the fact that the cursor has to go through all entries in each of the lists, the
@@ -103,7 +102,7 @@ The result does not depend on the order of lists (OR operation is symmetric), an
 Calculating the intersection of two sets (what corresponds to the logical AND operator) or their difference (AND NOT) are very similar operations.
 Just as when calculating the sum of sets, we need to maintain two pointers, one for each list. In each step of the iteration we look at the current value
 in the first list and then try to find that value in the second list, starting from the second list’s pointer’s position. If we find the value, we add it
-to the result list, and move the second list’s pointer to the corresponding position. If the value could not be found, we advance the pointer to the first
+to the result list, and move the second list’s pointer to the corresponding position. If the value can’t be found, we advance the pointer to the first
 item after which the searched-for value would be. Once the second list’s pointer reaches the end, we are done.
 
 The algorithmic complexity of these two operations differs quite a bit from that of OR operation. First of all, a new sub-operation of searching for a value
@@ -113,11 +112,11 @@ from current position rather than from the beginning, but let’s skim over this
 for each item from the first one: the complexity is no longer symmetric between the two lists. If we change the order of the lists, the result of AND operation
 does not change, but the cost of performing the calculation does.
 It pays to have the shorter of the two list as the first in order, and the difference can be huge. The cost also depends very much on the data, i.e. how
-big the intersection of the two lists is. If the intersection is empty, looking for even the first element of first list in the second list will move the second
+big the intersection of the two lists is. If the intersection is empty, even looking for the first list’s first element in the second list will move the second
 list’s pointer to the end, and the algorithm will finish very quickly. The upper limit on the size of the result list (which in turn puts a lower limit on
 algorithmic complexity) is _min(m, n)_.
 
-If we’re performing the AND NOT rather than AND operation, the match condition has to be reversed from _found_ to _not found_. While the result changes if
+If we’re performing the AND NOT rather than AND operation, the match condition has to be reversed from _found_ to _not found_. While the result changes when
 we exchange the two lists, algorithmic properties are the same as for AND, especially the asymmetry in how the first and second list’s size affects the
 computational cost.
 
