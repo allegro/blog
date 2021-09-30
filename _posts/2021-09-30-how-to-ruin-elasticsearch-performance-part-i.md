@@ -4,7 +4,6 @@ title: "How to ruin your Elasticsearch performance — Part I: Know your enemy"
 author: [michal.kosmulski]
 tags: [tech, "full-text search", elasticsearch, elastic, es, performance]
 ---
-
 It’s easy to find resources about _improving_ [Elasticsearch](https://www.elastic.co/elastic-stack) performance, but what if you wanted to _reduce_ it?
 This is Part I of a two-post series, and will present some ES internals. In Part II we’ll deduce from them a collection of select tips which can help you ruin
 your ES performance in no time. Most should also be applicable to [Solr](https://solr.apache.org/), raw [Lucene](https://lucene.apache.org/), or,
@@ -77,7 +76,6 @@ In the algorithms below, we'll assume each postings list is an actual list of in
 are _n_ and _m_.
 
 ### OR
-
 {: #or-operator }
 
 ![Example algorithm for computing results of OR operation](/img/articles/2021-09-30-how-to-ruin-elasticsearch-performance/list-merging-or.webp)
@@ -147,6 +145,5 @@ Such behaviors may be confusing since they make performance analysis more diffic
 Anyway, even the basic knowledge presented above should allow you to deal some heavy damage to your search performance, so let’s get started.
 
 ## Summary
-
 I hope the first part of this post gave you some background on how Elastic works under the hood. In Part II, we’ll look at how to apply this knowledge in
 practice to making Elasticsearch performance as bad as possible.
