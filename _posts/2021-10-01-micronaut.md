@@ -69,6 +69,7 @@ of course led us to more work, but in the end we think it was worth it. The conv
 
 One of the things not covered at all by [micronaut-spring](https://micronaut-projects.github.io/micronaut-spring/latest/guide/) is exception handling in MVC.
 In Spring our handlers looked something like this:
+
 ```kotlin
 import org.springframework.http.HttpStatus.BAD_REQUEST
 
@@ -84,6 +85,7 @@ class DefaultExceptionHandler {
 
 In Micronaut exception handling can be done locally (i.e. functions handling exception will only be used for the exceptions thrown by the controller the
 functions are defined in) or globally. Since our Spring handlers acted globally, the equivalent Micronaut code is as follows:
+
 ```kotlin
 import io.micronaut.http.HttpStatus.BAD_REQUEST
 import io.micronaut.http.annotation.Error as HttpError
@@ -113,6 +115,7 @@ Fortunately some good people created [kmongo](https://litote.org/kmongo/) - a li
 At the end of the day, however, we had to create some support code to ease the migration.
 
 The original application database access code was in a form of reactive repositories:
+
 ```kotlin
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
@@ -163,6 +166,7 @@ class KMongoFactory {
     }
 }
 ```
+
 `MongoDB` driver expects a `CodecRegistry` which defines how to encode a Java object into Mongo `BSON`, so that it can be persisted in a database. By default
 [kmongo](https://litote.org/kmongo/) supports a simple, [Jackson](https://github.com/FasterXML/jackson) based converter. However, there were a few issues in
 our application which forced us to create some customizations:
@@ -170,50 +174,52 @@ our application which forced us to create some customizations:
 * [Joda](https://www.joda.org/joda-time/) date types in entity classes - our app has a long history and it still uses [Joda](https://www.joda.org/joda-time/) date types.
   Unfortunately they do not work with [kmongo](https://litote.org/kmongo/), so we had to teach it how to handle it. It required a few steps.
   * (1) [kmongo](https://litote.org/kmongo/) had to know how to serialize a [Joda](https://www.joda.org/joda-time/) date type to a `MongoDB` date type:
-```kotlin
-object JodaDateSerializationCodec : Codec<DateTime> {
-    override fun encode(writer: BsonWriter, value: DateTime?, encoderContext: EncoderContext?) {
-        if (value == null) {
-            writer.writeNull()
-        } else {
-            writer.writeDateTime(value.millis)
+
+    ```kotlin
+    object JodaDateSerializationCodec : Codec<DateTime> {
+        override fun encode(writer: BsonWriter, value: DateTime?, encoderContext: EncoderContext?) {
+            if (value == null) {
+                writer.writeNull()
+            } else {
+                writer.writeDateTime(value.millis)
+            }
+        }
+
+        override fun getEncoderClass(): Class<DateTime> {
+            return DateTime::class.java
+        }
+
+        override fun decode(reader: BsonReader, decoderContext: DecoderContext?): DateTime {
+            return DateTime(reader.readDateTime())
         }
     }
+    ```
 
-    override fun getEncoderClass(): Class<DateTime> {
-        return DateTime::class.java
-    }
-
-    override fun decode(reader: BsonReader, decoderContext: DecoderContext?): DateTime {
-        return DateTime(reader.readDateTime())
-    }
-}
-```
   * (2) [Jackson](https://github.com/FasterXML/jackson) used by [kmongo](https://litote.org/kmongo/) also had to know how to handle [Joda](https://www.joda.org/joda-time/) date types,
   * (3) to make things harder sometimes we stored a datetime as a long value, therefore we had to add support for that as well:
 
-```kotlin
-object JodaDateSerializationModule : SimpleModule() {
-    init {
-        addSerializer(DateTime::class.java, JodaDateSerializer())
-        addDeserializer(DateTime::class.java, JodaDateDeserializer())
-    }
-}
-
-class JodaDateSerializer : JsonSerializer<DateTime>() {
-    override fun serialize(value: DateTime, gen: JsonGenerator, serializers: SerializerProvider?) {
-        gen.writeObject(value.toDate())
-    }
-}
-
-class JodaDateDeserializer : JsonDeserializer<DateTime>() {
-    override fun deserialize(parser: JsonParser, ctxt: DeserializationContext?): DateTime =
-        when (parser.currentToken) {
-            JsonToken.VALUE_NUMBER_INT -> parser.readValueAs(Long::class.java).let(::DateTime)
-            else -> parser.readValueAs(Date::class.java).let(::DateTime)
+    ```kotlin
+    object JodaDateSerializationModule : SimpleModule() {
+        init {
+            addSerializer(DateTime::class.java, JodaDateSerializer())
+            addDeserializer(DateTime::class.java, JodaDateDeserializer())
         }
-}
-```
+    }
+
+    class JodaDateSerializer : JsonSerializer<DateTime>() {
+        override fun serialize(value: DateTime, gen: JsonGenerator, serializers: SerializerProvider?) {
+            gen.writeObject(value.toDate())
+        }
+    }
+
+    class JodaDateDeserializer : JsonDeserializer<DateTime>() {
+        override fun deserialize(parser: JsonParser, ctxt: DeserializationContext?): DateTime =
+            when (parser.currentToken) {
+                JsonToken.VALUE_NUMBER_INT -> parser.readValueAs(Long::class.java).let(::DateTime)
+                else -> parser.readValueAs(Date::class.java).let(::DateTime)
+            }
+    }
+    ```
 
   * (4) finally we stored `BigDecimal` values as plain `String`, which is not a default behaviour of [kmongo](https://litote.org/kmongo/), so we had to change it.
 
@@ -224,6 +230,7 @@ type, which we gladly used in our application. But here a new issue came up - to
 not conformant to [`ObjectId`](https://docs.mongodb.com/manual/reference/method/ObjectId/) restrictions (so for example our user id were `user-1`, `user-2`, etc.).
 [Spring Data](https://spring.io/projects/spring-data) handles this transparently, but here we had to introduce one more customization. Our entity classes now
 had to contain a special annotation which indicated what serializer to use for our ID fields:
+
 ```kotlin
 import org.bson.codecs.pojo.annotations.BsonId
 
