@@ -622,3 +622,61 @@ weronika.orczyk:
     name: Weronika Orczyk
     bio: Junior software engineer and an enthusiast of new technologies who pays attention to details.
     linkedin: worczyk
+
+lukasz.mach:
+    name: Łukasz Mach
+    bio: Still surprised by the fact that sequences of words in a computer can do various things.
+    github: maho
+
+anna.stanislawska:
+    name: Anna Stanisławska
+    bio: Junior Product Manager in Transaction area, taking care of purchase and post-purchase processes. Product design and technology enthusiast focused on buyers’ needs.
+    linkedin: anna-stanisławska-487844169
+
+piotr.gabrys:
+    name: Piotr Gabryś
+    bio: I’m a Senior Data Scientist with over 10 years of experience in data analysis and modeling. I worked on main products at SambaTV, Growbots, and PAYBACK Polska. At Allegro I focus on predictive projects which help stakeholders make data-driven decisions.
+
+julia.bluszcz:
+    name: Julia Bluszcz
+    bio: Julia holds degrees in statistics and quantitative methods in economics from the Humboldt University in Berlin and Warsaw School of Economics. She has gathered work experience in tech start-ups Nethone and Omni:us where she worked on fraud detection in credit card transactions and organized tech-related events, e.g. Machine Intelligence Summit in Berlin. Her scientific interests include machine learning, data visualization, and econometrics. Julia works as a Senior Data Scientist at Allegro, where she specializes in forecasting and analysing consumer buying behavior.
+
+klaudia.walewska-lubian:
+    name: Klaudia Walewska-Łubian
+    bio: Data Scientist with 9 years of experience in applying statistical methods to socio-economic research, marketing, and e-commerce data. Worked in international policy research organizations (Coffey International, NatCen Social Research) and top FMCG companies (Procter&Gamble, Unilever). A year ago moved to Allegro to support its experimentation platform and predictive projects.
+
+jerzy.jelinek:
+    name: Jerzy Jelinek
+    bio: Webperf Team member. Performance enthusiast. Short sentences lover.
+    twitter: jerzyjelinek
+
+yevgeniya.li:
+    name: Yevgeniya Li
+    bio: Software engineer with interests in the world of Machine Learning and BigData. Full of enthusiasm and willing to help, open to new ideas and technologies.
+
+kamil.krysiak:
+    name: Kamil Krysiak
+    bio: Front-end software engineer and enthusiast of new web technologies. So frugal that he built his own keyboard.
+    linkedin: kamil-krysiak-732a0818a
+
+jaroslaw.glegola:
+    name: Jarosław Glegoła
+    bio: Front-end software person. Loves TypeScript so much that he uses it in real life.
+    linkedin: jarosław-glegoła-389382204
+
+mateusz.krzeszowiak:
+    name: Mateusz Krzeszowiak
+    bio: Webperf Team member. Likes to constantly optimize and improve existing solutions. Finds it hard to stop talking about his work and sharing knowledge.
+    twitter: krzksz
+    github: krzksz
+
+jon.skeet:
+    name: Jon Skeet
+    bio: Jon Skeet is a Staff Developer Relations Engineer at Google, currently working on the .NET Client Libraries for Google Cloud Platform. Jon is best known for his contributions to Stack Overflow, along with his previous Manning books including C# in Depth.
+
+tomasz.lelek:
+    name: Tomasz Lelek
+    bio: 'Tomasz is a former Allegro engineer. He currently works at Datastax, building products around Cassandra, one of the world’s favourite distributed databases. Published author of "Software Mistakes and Tradeoffs: Making good programming decisions"'
+    twitter: tomekl007
+    github: tomekl007
+    linkedin: tomaszlelek
