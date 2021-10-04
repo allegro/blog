@@ -5,16 +5,16 @@ author: [michal.kosmulski]
 tags: [tech, "full-text search", elasticsearch, elastic, es, performance]
 ---
 It’s easy to find resources about _improving_ [Elasticsearch](https://www.elastic.co/elastic-stack) performance, but what if you wanted to _reduce_ it?
-In [Part I]{% TODO LINK %} of this two-part series we looked ES under the hood in order to learn how it works internally. Now, in Part II, is the time to apply this knowledge
-in practice and ruin our ES performance. Most tips should also be applicable to [Solr](https://solr.apache.org/), raw [Lucene](https://lucene.apache.org/), or,
-for that matter, to any other full-text search engine as well.
+In [Part I]({% post_url 2021-09-30-how-to-ruin-elasticsearch-performance-part-i %}) of this two-part series we looked ES under the hood in order to learn how
+it works internally. Now, in Part II, is the time to apply this knowledge in practice and ruin our ES performance. Most tips should also be applicable to
+[Solr](https://solr.apache.org/), raw [Lucene](https://lucene.apache.org/), or, for that matter, to any other full-text search engine as well.
 
 ## Using complex boolean queries
 
-Looking at the algorithms outlined in Part I, you can easily notice that simple queries, such as finding a document containing two or three specific words,
-are relatively cheap to compute. We can easily increase the cost by making the queries more complex. This complexity is easily achieved by using
-[boolean queries](https://www.elastic.co/guide/en/elasticsearch/reference/6.8/query-dsl-bool-query.html) which allow arbitrary boolean expressions,
-including nested subexpressions.
+A consequence of the algorithms outlined in [Part I]({% post_url 2021-09-30-how-to-ruin-elasticsearch-performance-part-i %}) is that simple queries, such as finding
+a document containing two or three specific words, are relatively cheap to compute. We can easily increase the cost by making the queries more complex. This
+complexity is easily achieved by using [boolean queries](https://www.elastic.co/guide/en/elasticsearch/reference/6.8/query-dsl-bool-query.html) which allow
+arbitrary boolean expressions, including nested subexpressions.
 
 A “flat” query, even with many words, boils down to a single AND/OR operation (though potentially with many lists). Since a search engine is usually
 smart enough to sort these lists by length, it can execute such queries really fast. But what happens if we use a complex boolean expression? Let’s compare
@@ -34,8 +34,8 @@ we only added a few filters, the complexity of the query rose dramatically. For 
 
 Let’s start analyzing this query from the bottom up.
 
-The expression `2020 OR 2021` is a little gem which looks innocent but is actually quite costly. As you remember, the cost of an OR operation is proportional
-to the sum of the sizes of input lists. The lists of books published in a year are probably quite long already, so the cost of merging two will be quite high.
+The expression `2020 OR 2021` is a little gem which looks innocent but is actually quite expensive. As you remember, the cost of an OR operation is proportional
+to the sum of the sizes of input lists. The lists of books published in a year are probably quite long, so the cost of merging two will be quite high.
 As a bonus, we get an even longer list as a result and this long list will take part in any computations that follow. So here are the takeaways:
 * OR operations are costly,
 * even more so when inputs are large document sets;
@@ -45,12 +45,12 @@ As a bonus, we get an even longer list as a result and this long list will take 
 Looking further at our query, we see that even more temporary document ID lists will have to be created: one for each pair of parentheses. These results have
 to be computed, and since they are temporary partial results, they will have to be stored in memory since they cannot be retrieved from the index directly.
 
-Also note that subqueries can hinder many optimizations search engines employ. I mentioned earlier that Lucene will sort postings lists by length when AND-ing
-them together, but this only works reliably if the lengths of the lists are known. For a postings list of a single word, its length is stored in the index and
-known exactly. For a nested subexpression, Lucene would either need to evaluate the whole subquery first to learn the size of the results (which is usually not
-possible since the query plan needs to be ready before the query starts executing) or, not knowing the size, it tries to estimate the size based on the sizes
-of its constituents. For example, it may estimate the result size of a subquery with OR-s as the sum of its inputs. However, this estimate may be off,
-and thus cause suboptimal query performance further up the stack. Takeaway:
+Also note that subqueries can hinder many optimizations search engines employ. I mentioned earlier that Lucene sorts postings lists by length when AND-ing
+them together. This can only work reliably if list lengths are known. For a postings list of a single word, its length is stored in the index and known exactly
+up-front. For a nested subexpression, however, the number of matches is not known before the subexpression is evaluated. But, Lucene needs the number of matches
+in order to prepare the optimal query plan. This leads to a chicken-and-egg problem which Lucene solves by estimating the size of subquery results list based
+on the sizes of its constituents. For example, it estimates the result size of a subquery with OR-s as the sum of its input sizes. Being just an estimate, this
+number may differ from the actual value, and thus cause suboptimal query performance further up the stack. Takeaway:
 * subqueries are great at hindering global query optimizations.
 
 Another reason why subqueries may negatively affect performance becomes apparent with queries such as `(a AND b) AND (c AND d)`. Since AND is an associative
@@ -77,18 +77,18 @@ to match all documents, this optimization will not be triggered. Complex query s
 Thinking about indexing and index segments, you have to notice that merging partial results from each segment is an operation similar to OR-ing (though it
 additionally has to account for document removal and updates). This leads to the conclusion that having many segments hurts search performance, especially
 for popular keywords whose postings lists are large to start with. Indeed, this actually happens. Performance may vary significantly depending on the number
-of segments, and the optimum is just a single segment in your index. In Elastic, you can use the
+of segments, and the optimum is having just a single segment in your index. In Elastic, you can use the
 [force merge](https://www.elastic.co/guide/en/elasticsearch/reference/6.8/indices-forcemerge.html) API to reduce the number of segments after indexing.
 I have actually worked with a product in which data was never indexed incrementally, but instead the whole index was rebuilt from scratch and force-merged to a single
-segment after each update. This was a relatively small index with high search traffic and big gains in search performance (on the order of two times shorter response
-times) were the reason for this seemingly wasteful indexation process.
+segment after each update. This was a relatively small index with high search traffic, so big gains in search performance (on the order of two times shorter response
+times) were a justifiable reason for this seemingly wasteful indexation process.
 
 ## Complex queries in disguise
 
-Some queries seem simple, but are actually very complex for the search engine to handle. One example is prefix queries such as `cat*` which match documents
-containing any words starting with `cat`. It turns out that unless you do something special, such a query is likely to be handled as an OR-query with all words
-matching the prefix: `(cat OR catamaran OR catapult OR category OR ...)`. Keeping in mind that queries with the OR operator can be expensive, you can notice the
-risk here: there may be lots and lots of words in the resulting expression, and this increases the cost of merging their corresponding postings lists. In most datasets, a query such as `a*`,
+Some queries seem simple, but are actually very complex for the search engine to handle. One example is prefix queries such as `cat*` (which matches documents
+containing any words starting with `cat`). It turns out that unless you do something special, such a query is likely to be handled as an OR-query with all words
+matching the prefix: `(cat OR catamaran OR catapult OR category OR ...)`. Keeping in mind that queries with the OR operator can be expensive, you see the risk:
+there may be lots and lots of words in the resulting expression, increasing the cost of merging their corresponding postings lists. In most datasets, a query such as `a*`,
 with probably thousands of individual postings lists, each containing millions of documents, can take ages to finish and even bring down the whole cluster.
 
 Another type of query which looks simple at first glance but can (or rather, used to) be very costly is range searches in numeric and date fields. Let’s say you want to limit
@@ -101,8 +101,8 @@ Fortunately, these issues have been known for a long time, and there are a numbe
 contain merged postings lists so that they don’t have to be computed at query time. Range queries on numeric and date fields are now optimized by default
 in Elasticsearch by creating [additional structures in the index](https://lucene.apache.org/core/2_9_4/api/core/org/apache/lucene/search/NumericRangeQuery.html#precisionStepDesc)
 as well, though with a particularly nasty data set, you might still be able to trigger some issues. Note that these solutions are space-time tradeoffs
-(speeding up searches at the cost of larger index), and as with any tradeoff, there is always potential for shooting yourself in the foot. Also, new versions
-bring with them new optimizations, so [behavior may well change between ES versions](https://www.elastic.co/blog/apache-lucene-numeric-filters).
+(speeding up searches at the cost of larger index), and as with any tradeoff, there is always some risk of shooting yourself in the foot. Also, new versions
+introduce new optimizations, so [behavior may well change between ES versions](https://www.elastic.co/blog/apache-lucene-numeric-filters).
 Interestingly, some preconceptions related to performance are very persistent (not only in the full-text search field), and you may run into people
 recommending optimizations which made sense ten years ago, but may be counterproductive now. For example,
 [range searches have been efficient for ten years](https://discuss.elastic.co/t/efficient-date-range-handling/3465), and apart from extreme cases, you should
@@ -119,11 +119,11 @@ criteria, and out of those, only a handful (10 or so) are returned to the end us
 in many ways:
 * Some algorithms, such as [finding the top N results](https://en.wikipedia.org/wiki/Partial_sorting) when sorting, have complexity which depends on N:
   they are faster if N is much smaller than the total number of matches, and become slower as N grows.
-* Some operations a full-text search engine performs are linear in the number of documents returned. As you remember, just finding matches is very fast since it
+* Some operations a full-text search engine performs are proportional to the number of documents returned (linear complexity). As you remember, just finding matches is very fast since it
   uses inverted indices, but in order to actually return the documents’ contents, they have to be fetched from document store, and this operation scales linearly
   with the number of documents returned. So, if you fetch 100 documents instead of 10, this part takes around ten times longer. Same goes for highlighting
   query terms. The amount of data transferred over the network scales similarly.
-* Aggregations such as grouping documents by a field’s value may also have complexity linear in the number of documents returned.
+* Aggregations such as grouping documents by a field’s value may also have linear complexity (the number of documents returned being the input size).
 
 Also note that paging the results (e.g. retrieving 100 pages of 10 documents each instead of a single request asking for 1000 documents) helps only a little.
 The problem is that in order to find documents on positions 991-1000, Elastic has to find the complete list of results 1-1000 first, and only then take the last
@@ -136,7 +136,7 @@ their limitations.
 
 ## Assuming Elastic knows as much about your data as you do
 
-Much of the discussion up to this point centered on replacing boolean expressions with equivalent expressions that have different performance characteristics.
+Much of the discussion up to this point revolved around replacing boolean expressions with their equivalents that have different performance characteristics.
 Some of these transformations are always correct since both expressions can be proven equal by means of boolean algebra.
 However, sometimes two forms of a query are equivalent only within a specific data set. Despite many smart optimizations used by modern full-text search
 engines, by using knowledge about your dataset, you can often achieve more in terms of increasing or decreasing search performance than by relying on
@@ -202,14 +202,14 @@ and free return by post. The natural way to handle this would be to index each o
 It would also be a step towards our goal of ruining Elasticsearch search performance, especially if the number of values was 200 rather than 2.
 
 The reason it works this way is that there are lots and lots of offers matching any of these flags: probably around 90% match one and around 90% match the other
-(with, obviously, a large number matching both). Going back to the [section about OR operator]{% TODO LINK #or-operator in part I %}, you will notice that having two very long
-input lists is about the worst case for OR operator performance. A usually reasonable trade-off in such a case is to move the cost to indexing-time, and
+(with, obviously, a large number matching both). Going back to the [section about OR operator]({% post_url 2021-09-30-how-to-ruin-elasticsearch-performance-part-i %}#or-operator), you will notice that having two very long
+input lists is about the worst case for OR operator efficiency. A usually reasonable trade-off in such a case is to move the cost to indexing-time, and
 to index with the document just a single flag, “free return”, which will improve search performance (at the cost of reducing indexing performance by just a tiny amount).
 Note that this was a very simple case and sometimes indexing denormalized data may increase index size significantly, in which case the trade-off may become
 less obvious.
 
 Another quirk is the mutual interaction between indexing and search performance. Interaction between reads and writes happens in practically any database,
-but with Elastic, it is easier for it to become an issue due to the relatively high CPU and I/O cost of indexing. Ignoring such interactions and treating
+but with Elastic, it is easier for it to become an issue due to the relatively high CPU and I/O cost of indexing. Ignoring this fact and treating
 search and indexing performance as two independent issues is a recipe for poor performance in both areas.
 
 ## Jumping right into optimization without checking first
@@ -221,8 +221,8 @@ deciding whether the values are satisfactory or not, defining target values if t
 or surrender.
 
 Optimizing without [measurement](https://esrally.readthedocs.io/en/stable/) and without defining goals, on the other hand, is a good method of wasting your time, and consequently, achieving sub-par
-performance. While there are some simple optimizations which amount to “don’t do stupid things” and can be applied practically always without any risk,
-most are a trade-off: you gain something at the expense of something else. If you apply them inappropriately, you may end up with expenses but without the gains.
+performance. While there are some simple improvements which amount to “don’t do stupid things” and can be applied practically always without any risk,
+most are trade-offs: you gain something at the expense of something else. If you apply them inappropriately, you may end up with expenses but without the gains.
 Many optimizations’ effectiveness varies a lot depending on the kind of data in the index or specific query patterns generated by your users, so, for example
 you may introduce an optimization whose effect is negligible, but whose cost (e.g. in increased complexity and thus maintenance cost) is significant.
 
@@ -234,5 +234,5 @@ that particular tips apply to, since, as the example about range searches shows,
 
 ## Summary
 
-I hope [Part I]{% TODO LINK %} gave you some background on how Elastic works under the hood. In Part II, we discussed various techniques which can affect its performance in
+I hope [Part I]({% post_url 2021-09-30-how-to-ruin-elasticsearch-performance-part-i %}) gave you some background on how Elastic works under the hood. In Part II, we discussed various techniques which can affect its performance in
 real-world scenarios. Armed with this knowledge, you will be able to make or break Elasticsearch performance: the choice is yours.
