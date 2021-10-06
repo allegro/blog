@@ -25,7 +25,7 @@ At this point you might be wondering: sounds quite easy, how come you messed up 
 
 ## A bit of history & precursor for refactoring
 
-The initial commit took place back in 2017 and up until the point of refactoring it, there were 2292 commits spread across 189 pull requests merged to the main branch. All those contributions were made by different independent teams. Throughout time the component evolved, some external APIs have changed, some features became deprecated and new ones were added. At one point it also changed its owning development team. As expected, all those factors left some marks on the codebase.
+The initial commit took place back in 2017 and up until the point of refactoring it, there were 2292 commits spread across 189 pull requests merged to the main branch. All those contributions were made by different independent teams. Throughout time the component evolved, some external APIs have changed, some features became deprecated and new ones were added. At one point it also changed its ownership to another development team. As expected, all those factors left some marks on the codebase.
 
 One of ample examples of troublesome condition was the Store entity that is responsible for handling the runtime state. In reality, besides doing its primary function it also handles network calls and contains non-relevant pieces of business logic of search scoping and suggestions listing.
 
