@@ -5,8 +5,8 @@ author: [michal.kosmulski]
 tags: [tech, "full-text search", elasticsearch, elastic, es, performance]
 ---
 It’s easy to find resources about _improving_ [Elasticsearch](https://www.elastic.co/elastic-stack) performance, but what if you wanted to _reduce_ it?
-In [Part I]({% post_url 2021-09-30-how-to-ruin-elasticsearch-performance-part-i %}) of this two-part series we looked ES under the hood in order to learn how
-it works internally. Now, in Part II, is the time to apply this knowledge in practice and ruin our ES performance. Most tips should also be applicable to
+In [Part I]({% post_url 2021-09-30-how-to-ruin-elasticsearch-performance-part-i %}) of this two-part series we looked under the hood in order to learn how
+ES works internally. Now, in Part II, is the time to apply this knowledge in practice and ruin our ES performance. Most tips should also be applicable to
 [Solr](https://solr.apache.org/), raw [Lucene](https://lucene.apache.org/), or, for that matter, to any other full-text search engine as well.
 
 ## Using complex boolean queries
@@ -34,7 +34,7 @@ we only added a few filters, the complexity of the query rose dramatically. For 
 
 Let’s start analyzing this query from the bottom up.
 
-The expression `2020 OR 2021` is a little gem which looks innocent but is actually quite expensive. As you remember, the cost of an OR operation is proportional
+The expression `2020 OR 2021` is a little gem that looks innocent, but is actually quite expensive. As you remember, the cost of an OR operation is proportional
 to the sum of the sizes of input lists. The lists of books published in a year are probably quite long, so the cost of merging two will be quite high.
 As a bonus, we get an even longer list as a result and this long list will take part in any computations that follow. So here are the takeaways:
 * OR operations are costly,
@@ -58,20 +58,20 @@ operation, the expression above gives the same result as `a AND b AND c AND d`. 
 version without parentheses, the optimization of sorting lists by size works globally since all inputs are at the same nesting level, potentially achieving
 better performance than the version with nested subexpressions which can only sort the lists within each pair of parentheses separately.
 
-You may wonder why anyone would add those parentheses, but such constructs may arise naturally due to the way your code is structured if individual subqueries
+You may wonder why anyone would add these parentheses, but such constructs may arise naturally due to the way your code is structured if individual subqueries
 are built by separate methods or classes because they serve different business needs.
 
 Looking at how long postings lists affect query performance, especially with OR operator, you can see one of the reasons for introducing
 [stopwords](https://en.wikipedia.org/wiki/Stop_word) into search configuration. Words such as _the_ are very common and on one hand they introduce practically
-no meaning at all to the query (with rare exceptions), matching almost all documents anyway and on the other, they could add immense computational cost.
+no meaning at all to the query (with rare exceptions), matching almost all documents anyway, and on the other, they could add immense computational cost.
 
-Obviously, the longest postings list possible is the one which contains all documents in the index. And indeed, pure negative queries such as
+Obviously, the longest postings list possible is the one containing all documents in the index. And indeed, pure negative queries such as
 “all documents but those with the word x” tend to be very expensive. Surprisingly, AND-ing the full set of documents (the result of a
 [match_all query](https://www.elastic.co/guide/en/elasticsearch/reference/6.8/query-dsl-match-all-query.html)) with results of another query is very fast.
 This is because of a [special optimization](https://github.com/apache/lucene/blob/5e0e7a5479bca798ccfe385629a0ca2ba5870bc0/lucene/core/src/java/org/apache/lucene/search/BooleanQuery.java#L449)
 which uses the identity `ALL AND a = a` to simplify those queries so that the expensive computation can be completely avoided.
 This kind of query rewriting can transform a number of query patterns to queries with the same result but better performance characteristics.
-However, this only works for a set of rather simple cases: for example if you do not use `match_all` query but create some other query which also happens
+However, this only works for a set of rather simple cases: for example if you do not use `match_all` query, but create some other query which also happens
 to match all documents, this optimization will not be triggered. Complex query structure with subqueries can effectively disable such optimizations as well.
 
 Thinking about indexing and index segments, you have to notice that merging partial results from each segment is an operation similar to OR-ing (though it
@@ -91,7 +91,7 @@ matching the prefix: `(cat OR catamaran OR catapult OR category OR ...)`. Keepin
 there may be lots and lots of words in the resulting expression, increasing the cost of merging their corresponding postings lists. In most datasets, a query such as `a*`,
 with probably thousands of individual postings lists, each containing millions of documents, can take ages to finish and even bring down the whole cluster.
 
-Another type of query which looks simple at first glance but can (or rather, used to) be very costly is range searches in numeric and date fields. Let’s say you want to limit
+Another type of query that looks simple at first glance but can (or rather, used to) be very costly is range searches in numeric and date fields. Let’s say you want to limit
 your query to only documents modified between 2020-01-01 and 2020-12-31. How costly could that be? The inverted index maps individual values to lists of
 document IDs. If each value in the index corresponds to a single day, and the documents are evenly spread throughout the year, there will be 366 lists to join
 with the OR operator. If the data is indexed with millisecond resolution, there will be many more, with performance becoming even worse.
@@ -108,7 +108,7 @@ recommending optimizations which made sense ten years ago, but may be counterpro
 [range searches have been efficient for ten years](https://discuss.elastic.co/t/efficient-date-range-handling/3465), and apart from extreme cases, you should
 not need to worry about them too much now.
 
-As a side note, ES tries to protect you from yourself and by default disables some types of queries which are likely to be costly: you have to
+As a side note, ES tries to protect you from yourself and by default disables some types of queries that are likely to be costly: you have to
 [explicitly enable them](https://www.elastic.co/guide/en/elasticsearch/reference/7.x/query-dsl.html#query-dsl-allow-expensive-queries) if you know what
 you’re doing and want to use them.
 
@@ -139,7 +139,7 @@ their limitations.
 Much of the discussion up to this point revolved around replacing boolean expressions with their equivalents that have different performance characteristics.
 Some of these transformations are always correct since both expressions can be proven equal by means of boolean algebra.
 However, sometimes two forms of a query are equivalent only within a specific data set. Despite many smart optimizations used by modern full-text search
-engines, by using knowledge about your dataset, you can often achieve more in terms of increasing or decreasing search performance than by relying on
+engines, by using knowledge about your dataset you can often achieve more in terms of increasing or decreasing search performance than by relying on
 mathematics alone.
 
 A simple example of using this knowledge in practice is improving performance by removing subqueries which are redundant due to the nature of the data.
@@ -161,10 +161,10 @@ meaning effectively no filtering by type, it is probably much more efficient to 
 clause.
 
 As you may have already realized, not only boolean queries’ but also range queries’ performance may depend a lot on your data, for example on a field’s
-cardinality (the number of unique values). One of the more spectacular ways of shooting yourself in the foot is applying some pattern which normally helps
+cardinality (the number of unique values). One of the more spectacular ways of shooting yourself in the foot is applying a pattern which normally helps
 performance, but in your particular case, due to a specific distribution of a field’s values, does just the opposite. Such situations may be very difficult
 to discover if you do not precisely track performance before and after each significant change. Sneakily placing such a pattern in your code can be a great way
-to end up with low performance which is difficult to explain.
+to end up with low performance difficult to explain.
 
 For a real life example, consider the rule of thumb that if you don’t care about a subquery’s score, using `filter` subqueries within a [bool query](https://www.elastic.co/guide/en/elasticsearch/reference/7.x/query-dsl-bool-query.html)
 results in faster response times than using `must` subqueries since the former [do not need to update matching documents’ scores](https://www.elastic.co/guide/en/elasticsearch/reference/7.x/query-filter-context.html).
@@ -196,7 +196,7 @@ common with NoSQL databases but in ES, it is even more extreme.
 In particular, since ES is — in most cases — more about search performance than anything else, it is a common optimization to move cost from search time to
 indexing time when possible, and many such optimizations result in an even more denormalized data model.
 
-For an example, let’s consider an index of offers such as you may find in an online store. Each offer may be available with a free return option, but
+For example, let’s consider an index of offers such as you may find in an online store. Each offer may be available with a free return option, but
 there’s a catch: while the client only sees a single checkbox in the UI, internally there are several types of free returns, e.g. free return by package locker
 and free return by post. The natural way to handle this would be to index each of these two flags and then to search for offers having either of those flags.
 It would also be a step towards our goal of ruining Elasticsearch search performance, especially if the number of values was 200 rather than 2.
@@ -216,9 +216,11 @@ search and indexing performance as two independent issues is a recipe for poor p
 
 One effective method of achieving inferior performance, which works not only with Elasticsearch, is jumping
 right into optimization without first analyzing the problem, and, even better, not checking if there is a problem at all. It is a boring thing to repeat
-over and over, but: the only way to improve performance is to first measure the baseline you are starting from (avoiding common pitfalls along the way),
-deciding whether the values are satisfactory or not, defining target values if they are not, and then systematically measuring and improving until success
-or surrender.
+over and over, but the only way to improve performance is to:
+* first, measure the baseline you are starting from (avoiding common pitfalls along the way),
+* decide whether the values are satisfactory or not,
+* define target values if they are not, and
+* systematically measure and improve until success or surrender.
 
 Optimizing without [measurement](https://esrally.readthedocs.io/en/stable/) and without defining goals, on the other hand, is a good method of wasting your time, and consequently, achieving sub-par
 performance. While there are some simple improvements which amount to “don’t do stupid things” and can be applied practically always without any risk,
@@ -230,7 +232,7 @@ you may introduce an optimization whose effect is negligible, but whose cost (e.
 
 This leads us to the last tip: if you really want to ruin your ES performance, always trust strangers on the internet and apply their advice
 duly and without hesitation. Obviously, this applies to this very post as well. Another good practice is to never check publication dates, or the ES versions
-that particular tips apply to, since, as the example about range searches shows, what was true about ES and Lucene in 2010 is not necessarily true in 2021.
+that particular tips apply to.
 
 ## Summary
 
