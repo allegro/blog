@@ -305,7 +305,8 @@ With that, our functional requirement is implemented.
 Reapplying the above principles and techniques to develop the remaining functional requirements, we ended up with a
 solution that can be illustrated as following:
 
-<img src="/img/articles/2021-08-17-refactoring-opbox-search/architecture-diagram.png" alt="Architecture Diagram" style="max-width: 600px; width: 100%">
+<img src="/img/articles/2021-08-17-refactoring-opbox-search/architecture-diagram.png"
+  alt="Architecture Diagram" style="max-width: 600px; width: 100%">
 
 Were we able to meet our expectations? At the end of the day, after careful problem analysis, testing out POCs and
 development preparations, the implementation process itself went quite smoothly. Multiple people participated in it and
