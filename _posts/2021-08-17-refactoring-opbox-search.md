@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "How did we refactor the search UI component?"
+title: "How we refactored the search form UI component"
 author: [volodymyr.khytskyi]
 tags: [tech, frontend, architecture, refactoring, developmentexperience, typescript]
 ---
@@ -52,25 +52,25 @@ Subsequently, achieving the goal would:
 
 So by this point we learned what functional requirements are and identified the issues we have with the current solution. We also outlined refactoring expectations, hence we can start laying down the conceptual foundation of a new solution. We began by asking ourselves a few questions that could help us formalize our technical end goals.
 
-## What issues do we want to avoid this time? What do we want the new solution to improve upon?
+### What issues do we want to avoid this time? What do we want the new solution to improve upon?
 
 Going back to the store example, we clearly don’t want to allow any dependent to mutate its data in any random way nor do we want the store to contain pieces of logic that are not of its concern, e.g. networking. Instead we want to move those irrelevant pieces into more suitable locations, decrease entanglement of different parts of the codebase, structure it into logical entities that are more human readable, draw boundaries between those entities, define rules of communication and make sure we expose to the public API only what we intended to.
 
-## What development principles and design patterns could we incorporate?
+### What development principles and design patterns could we incorporate?
 
-### The single-responsibility principle (SRP)
+#### The single-responsibility principle (SRP)
 
 The “S” of the “SOLID” acronym. As the name hints, a class (or a unit of code) should be responsible only for a single piece of functionality. A simple and powerful principle, yet quite often overlooked. Say, if we build a wrapping logic around an input HTML element, its only responsibility should be to tightly interact with the element, e.g. listen to its DOM events and update its value if needed. At the same time, you don't want this wrapping logic to affect a submission behavior of a form element inside of which the input element is placed.
 
-### The separation of concerns principle (SoC)
+#### The separation of concerns principle (SoC)
 
 SoC goes well in pair with SRP and states that one should not place functionalities of different domains under the same logical entity. For example, we need to render a piece of information on the screen but beforehand the information needs to be fetched over the network. Since the view and network layers have different concerns we don’t want to place both of them under a single logical entity. Let these two be separate ones with established dependency relation to one another via a public API.
 
-### The loose coupling principle
+#### The loose coupling principle
 
-Loose coupling means that a single logical entity knows as little as possible about other entities and communication between them follows strict rules. One important characteristic we want to achieve here is to minimize negative effects on application’s runtime in case an entity malfunctions. An analogy could be a grid of airports that are connected to each other via a set of flight routes. Say, there are direct routes from airport A to B, C and D. If the airport C gets closed due to renovation of a runway, the routes to B and D are not affected in any way. Moreover, some passengers might not even know that C is not operating at that moment.
+Loose coupling means that a single logical entity knows as little as possible about other entities and communication between them follows strict rules. One important characteristic we want to achieve here is to minimize negative effects on application’s runtime in case an entity malfunctions. As an analogy, we could imagine a graph of airports that are connected to each other via a set of flight routes. Say, there are direct routes from airport A to B, C and D. If the airport C gets closed due to renovation of a runway, the routes to B and D are not affected in any way. Moreover, some passengers might not even know that C is not operating at that moment.
 
-### Event-driven dataflow
+#### Event-driven dataflow
 
 Since we are dealing with a UI component that has several moving parts, applying event-driven techniques comes in handy because of its asynchronous nature and because messaging channels are subscription-based. Here is another analogy: you are at your place waiting for a hand-to-hand package delivery. Instead of opening the door every now and then to check if there is a courier behind it you would probably wait first for a doorbell to ring, right? Only once it rings (an event occurs), you would open the door to obtain the package.
 
@@ -138,7 +138,7 @@ store.foo = true;
 store.on(Topic.Foo, (state: State) => ...);
 ```
 
-At this point the store is ready and we would like to test how well the solution performs on a battlefield.
+At this point the store is ready and we would like to test how well the solution performs in reality.
 
 ## Event-driven communication between the store and UI parts
 
