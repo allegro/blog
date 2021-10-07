@@ -5,9 +5,9 @@ author: [michal.kosmulski]
 tags: [tech, "full-text search", elasticsearch, elastic, es, performance]
 ---
 It’s easy to find resources about _improving_ [Elasticsearch](https://www.elastic.co/elastic-stack) performance, but what if you wanted to _reduce_ it?
-This is Part I of a two-post series, and will present some ES internals. In Part II we’ll deduce from them a collection of select tips which can help you ruin
-your ES performance in no time. Most should also be applicable to [Solr](https://solr.apache.org/), raw [Lucene](https://lucene.apache.org/), or,
-for that matter, to any other full-text search engine as well.
+This is Part I of a two-post series, and will present some ES internals. In [Part II]({% post_url 2021-10-07-how-to-ruin-elasticsearch-performance-part-ii %})
+we’ll deduce from them a collection of select tips which can help you ruin your ES performance in no time. Most should also be applicable to
+[Solr](https://solr.apache.org/), raw [Lucene](https://lucene.apache.org/), or, for that matter, to any other full-text search engine as well.
 
 Surprisingly, a number of people seem to have discovered these tactics already, and you may even find some of them used in your own production code.
 
@@ -145,5 +145,5 @@ Such behaviors may be confusing since they make performance analysis more diffic
 Anyway, even the basic knowledge presented above should allow you to deal some heavy damage to your search performance, so let’s get started.
 
 ## Summary
-I hope the first part of this post gave you some background on how Elastic works under the hood. In Part II, we’ll look at how to apply this knowledge in
-practice to making Elasticsearch performance as bad as possible.
+I hope the first part of this post gave you some background on how Elastic works under the hood. In [Part II]({% post_url 2021-10-07-how-to-ruin-elasticsearch-performance-part-ii %}),
+we’ll look at how to apply this knowledge in practice to making Elasticsearch performance as bad as possible.
