@@ -20,10 +20,11 @@ rafal.glowinski:
 
 michal.kosmulski:
     name: Michał Kosmulski
-    bio: Michał is interested in all things high-performance, whether it be low-level stuff like analyzing how OS caches affect I/O operations or high-level like proper application design and functional programming. At Allegro, he works in a team which develops a Pay-per-Click (PPC) advertising system.
+    bio: Michał is interested in all things high-performance, whether it be low-level stuff like analyzing how OS caches affect I/O operations or high-level like proper application design and functional programming. At Allegro, he leads one of the teams which develop our Pay-per-Click (PPC) advertising system, and is the tech blog’s editor-in-chief.
     stackOverflow:
         id: 1224016
         name: Michał Kosmulski
+    linkedin: kosmulski
 
 bartosz.walacik:
     name: Bartosz Walacik
@@ -622,6 +623,11 @@ weronika.orczyk:
     bio: Junior software engineer and an enthusiast of new technologies who pays attention to details.
     linkedin: worczyk
 
+lukasz.mach:
+    name: Łukasz Mach
+    bio: Still surprised by the fact that sequences of words in a computer can do various things.
+    github: maho
+
 anna.stanislawska:
     name: Anna Stanisławska
     bio: Junior Product Manager in Transaction area, taking care of purchase and post-purchase processes. Product design and technology enthusiast focused on buyers’ needs.
@@ -643,6 +649,37 @@ jerzy.jelinek:
     name: Jerzy Jelinek
     bio: Webperf Team member. Performance enthusiast. Short sentences lover.
     twitter: jerzyjelinek
+
+yevgeniya.li:
+    name: Yevgeniya Li
+    bio: Software engineer with interests in the world of Machine Learning and BigData. Full of enthusiasm and willing to help, open to new ideas and technologies.
+
+kamil.krysiak:
+    name: Kamil Krysiak
+    bio: Front-end software engineer and enthusiast of new web technologies. So frugal that he built his own keyboard.
+    linkedin: kamil-krysiak-732a0818a
+
+jaroslaw.glegola:
+    name: Jarosław Glegoła
+    bio: Front-end software person. Loves TypeScript so much that he uses it in real life.
+    linkedin: jarosław-glegoła-389382204
+
+mateusz.krzeszowiak:
+    name: Mateusz Krzeszowiak
+    bio: Webperf Team member. Likes to constantly optimize and improve existing solutions. Finds it hard to stop talking about his work and sharing knowledge.
+    twitter: krzksz
+    github: krzksz
+
+jon.skeet:
+    name: Jon Skeet
+    bio: Jon Skeet is a Staff Developer Relations Engineer at Google, currently working on the .NET Client Libraries for Google Cloud Platform. Jon is best known for his contributions to Stack Overflow, along with his previous Manning books including C# in Depth.
+
+tomasz.lelek:
+    name: Tomasz Lelek
+    bio: 'Tomasz is a former Allegro engineer. He currently works at Datastax, building products around Cassandra, one of the world’s favourite distributed databases. Published author of "Software Mistakes and Tradeoffs: Making good programming decisions"'
+    twitter: tomekl007
+    github: tomekl007
+    linkedin: tomaszlelek
 
 marek.walkowiak:
     name: Marek Walkowiak
