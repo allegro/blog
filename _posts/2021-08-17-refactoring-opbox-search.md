@@ -48,8 +48,8 @@ were added. At one point it also changed its ownership to another development te
 some marks on the codebase.
 
 One of ample examples of troublesome conditions was the store entity that is responsible for handling the runtime state.
-In reality, besides doing its primary function it also handled network calls and contained non-relevant pieces of
-business logic for search scoping and suggestions listing.
+In reality, besides doing its primary function it also handled network calls and contained pieces of business logic
+non-relevant for search scoping and suggestions listing.
 
 To make matters worse, the internals of the entity were publicly exposed and therefore any dependent, e.g. the search
 input or the scope selector, was free to manipulate the store randomly. Not hard to imagine, using such “shortcuts” has
@@ -208,7 +208,7 @@ to place each piece of functionality. Let’s take a look at how we shaped the s
 how these UI parts cooperate with each other and the store.
 
 Recall that functionality-wise suggestion list is a dropdown that should be rendered whenever a user types a search
-phrase or clicks/taps into the input element. We also need to fetch best matching suggestions whenever input value
+phrase or clicks/taps into the input element. We also need to fetch best matching suggestions whenever the input value
 changes.
 
 We are going to start with the search input as it doesn’t have any dependencies besides the store. With functional
@@ -219,7 +219,7 @@ requirements in mind, we want it to be good at doing just two things and these a
 
 Since updating the store is pretty much straightforward, let’s take a look at how we handle DOM events. Events such as
 `click`, `focus`, `blur` convey the fact that there was some sort of interaction with the input HTML element. Unlike
-`input` event, where one is interested in knowing what current value is, the above-mentioned ones don’t include any
+`input` event, where one is interested in knowing what the current value is, the above-mentioned ones don’t include any
 related information. We only need to be able to communicate to the dependents the fact that such an event took place
 and that is why, similarly to the store, the search input has an event emitter of its own. Now, you might be thinking:
 why would you want to have multiple sources of information given you already have the event driven store solution? There
