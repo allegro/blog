@@ -4,16 +4,16 @@ title: Moving towards Micronaut
 author: konrad.kaminski
 tags: [tech, backend, performance, micronaut, kotlin, graalvm]
 ---
-Micronaut is one of the new application frameworks that recently has showed up. It promises
-low memory usage and faster application startup. At Allegro we decided to give a try. In this article we'll learn what
+Micronaut is one of the new application frameworks that has recently shown up. It promises
+low memory usage and faster application startup. At Allegro we decided to give it a try. In this article we'll learn what
 came out of it and if it's worth considering if you create microservices-based systems.
 
 ## Paradise city
 At Allegro we run a few hundred microservices, most of which use Spring Framework. We also have services created in other technologies.
-And to make things more complicated we run it on a few different type of clouds - our own Mesos-based and private and public k8s-based ones.
+And to make things more complicated we run it on a few different types of clouds - our own Mesos-based and private and public k8s-based ones.
 Therefore in order for all of it to work consistently and smoothly we created a number of supporting libraries and at the same time we defined a kind of
 contract for all services. This way, if there is ever a need or a will to create a service with a new shiny technology it should be feasible with as little
-work as possible. You can read more about it in [a great article by Piotr Betkier](https://blog.allegro.tech/2020/07/common-code-approach.html).
+work as possible. You can read more about this approach in [a great article by Piotr Betkier](https://blog.allegro.tech/2020/07/common-code-approach.html).
 
 ## (You Gotta) Fight for Your Right (To Party!)
 In order to be up to date with current technologies, at Allegro we run hackathons where we try out the "trendy" solutions. Over a year ago
@@ -227,7 +227,7 @@ As you can see some of the problems we had to face came from using either old te
 
 For our entity IDs we usually used an artificial `String` value. `MongoDB` has special support for that in a form of [`ObjectId`](https://docs.mongodb.com/manual/reference/method/ObjectId/)
 type, which we gladly used in our application. But here a new issue came up - to make our integration tests easier to read and write we used `String`-type IDs
-not conformant to [`ObjectId`](https://docs.mongodb.com/manual/reference/method/ObjectId/) restrictions (so for example our user id were `user-1`, `user-2`, etc.).
+not conformant to [`ObjectId`](https://docs.mongodb.com/manual/reference/method/ObjectId/) restrictions (so for example our user IDs were `user-1`, `user-2`, etc.).
 [Spring Data](https://spring.io/projects/spring-data) handles this transparently, but here we had to introduce one more customization. Our entity classes now
 had to contain a special annotation which indicated what serializer to use for our ID fields:
 
@@ -296,13 +296,13 @@ class UserRepository(
 
 ### Fear of the Dark
 
-[Spock](https://spockframework.org/spock/docs/2.0/index.html) is our framework of choice when we write our tests. Even in `Kotlin` applications we still
+[Spock](https://spockframework.org/spock/docs/2.0/index.html) is our framework of choice for writing tests. Even in `Kotlin` applications we still
 tend to use it, though sometimes the resulting code is not as clear as it'd be if it wouldn't have been written in `Groovy` (coroutines!). So how does
 [Micronaut](https://micronaut.io/) work with [Spock](https://spockframework.org/spock/docs/2.0/index.html)? Actually, quite well.
 
 For testing there is a [micronaut-test](https://github.com/micronaut-projects/micronaut-test) project, which provides testing extensions for [Spock](https://spockframework.org/spock/docs/2.0/index.html)
-and many other testing libraries. [A general approach to writing test cases with Spring](https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html) which we were familiar with
-is very similar in [micronaut-test](https://github.com/micronaut-projects/micronaut-test). Let's have a look at simple test case:
+and many other testing libraries. [A general approach to writing test cases with Spring](https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html), which we were familiar with,
+is very similar in [micronaut-test](https://github.com/micronaut-projects/micronaut-test). Let's have a look at a simple test case:
 
 ```groovy
 @MicronautTest // 1
@@ -359,5 +359,5 @@ it will grow and then it becomes more and more visible and important. For large 
 
 The experience we gained during migration to [Micronaut](https://micronaut.io/) gave us more courage and assurance. So when a time came to decide what technology
 to use for a quite large greenfield project we didn't hesitate (well, we actually did, but not for long) - [Micronaut](https://micronaut.io/) was the obvious choice.
-Six months later with the system running on production environment we're happy we started that long journey. And if you ask yourself if you should use it then
+Six months later with the system running on the production environment we're happy we started that long journey. And if you ask yourself if you should use it then
 I wholeheartedly say: yes.
