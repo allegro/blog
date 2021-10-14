@@ -262,10 +262,27 @@ bulk.execute();
 ```
 
 It is worth noting here that I'm adding documents in batches. This is definitely faster than a list of single inserts
-and is useful when we need to generate a large amount of data quickly.
+and is useful when we need to generate a large amount of data quickly. Also note that I am using existing collections
+so my index on `name` and `surname` fields already exists.
 
-Then, for each collection, I prepared a script containing a list of `find` commands for 1 million documents in random
-order. Of course, the order of queries in both scripts is the same:
+I measured the execution time of both scripts using following commands (to avoid network latency I performed the
+measurements on my laptop, with a local instance of MongoDB version 4.4.0 running):
+
+```shell
+time mongo test fill1.js
+```
+
+```shell
+time mongo test fill2.js
+```
+
+Filling collections with documents took **58,95s** and **76,48s** respectively. So when it comes to `insert` operation time,
+the composite key collection clearly wins. The reason for this, of course, is a simpler document structure and only one
+index, instead of two.
+
+I was more interested in read times, because in a typical case, data is usually read more often than written. For each collection,
+I prepared a script containing a list of `find` commands for 1 million documents in random order. Of course, the order of
+queries in both scripts is the same:
 
 ```shell
 #!/bin/bash
@@ -287,8 +304,6 @@ do
 done >> find2.js
 ```
 
-Note that I am using existing collections so my index on `name` and `surname` fields already exists.
-
 Finally, I measured the execution time of both scripts using the commands:
 
 ```shell
@@ -299,14 +314,10 @@ time mongo test find1.js
 time mongo test find2.js
 ```
 
-To avoid network latency I performed the measurements on my laptop with a local instance of MongoDB version 4.4.0
-running.
-
 The results surprised me. The script running on the first collection took **11.19s** and the second took **10.15s**.
 Although the differences are small, I was sure that using a composite key would be much faster than searching
 through regular fields and would make up for all the inconvenience of less flexible keys. Meanwhile, it turns
-out that a collection built with an artificial key and a separate index on two fields wins in every aspect,
-also in terms of search speed.
+out that a collection built with an artificial key and a separate index on two fields wins in terms of search speed.
 
 I had one more idea. Maybe searching a document by a key that doesn't exist will be faster?
 To test this, I generated another 2 scripts, this time searching for non-existent documents:
