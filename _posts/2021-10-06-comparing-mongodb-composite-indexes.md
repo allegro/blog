@@ -157,12 +157,48 @@ db.getCollection('coll2').find({"name" : "John"}).explain("executionStats")
 ```
 
 In the case of the first query, the index was admittedly used, but we got no results, as evidenced by the notation:
-`"nReturned" : 0`.
+
+```json
+{
+    "executionStages": {
+        "stage": "IDHACK",
+        "nReturned": 0
+    }
+}
+```
+
 This happens because a composite key requires all its components to be used by the query, so it is impossible to search
 by a single field.
 
 The situation is different when querying the second collection, here the index was also used, however this time the
-document was found: `"nReturned" : 1`.
+document was found:
+
+```json
+{
+  "winningPlan": {
+    "stage": "FETCH",
+    "inputStage": {
+      "stage": "IXSCAN",
+      "keyPattern": {
+        "name": 1.0,
+        "surname": 1.0
+      },
+      "indexName": "name_1_surname_1"
+    }
+  }
+}
+```
+
+[...]
+
+```json
+{
+  "executionStats" : {
+    "executionSuccess": true,
+    "nReturned": 1
+  }
+}
+```
 
 What if we decide to search by `surname` only?
 
