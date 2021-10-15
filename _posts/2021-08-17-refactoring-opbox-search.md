@@ -7,19 +7,19 @@ tags: [tech, frontend, architecture, refactoring, developmentexperience, typescr
 This article describes a classic case of refactoring a search form UI component, a critical part of every e-commerce
 platform. In it I’ll explain the precursor of change, analysis process, as well as aspects to pay attention to and
 principles to apply while designing a new solution. If you are planning to conduct refactoring of a codebase or just
-curious to learn more about frontend internals at Allegro, you might learn a thing or two from this article. Sounds
-interesting? Hop on!
+curious to learn more about frontend internals at [Allegro](https://allegro.tech), you might learn a thing or two from
+this article. Sounds interesting? Hop on!
 
 ## How does the search form function at Allegro?
 
 For starters, so that we all are on the same page, let me briefly explain how the search form at Allegro works and which
 functionalities it is responsible for. Under the hood, it is one of our many
-[OpBox](https://blog.allegro.tech/2016/03/Managing-Frontend-in-the-microservices-architecture.html) components and its
+[OpBox]({% post_url 2016-03-12-Managing-Frontend-in-the-microservices-architecture %}) components and its
 technical name is opbox-search.
 
 From UI standpoint it consists of four parts:
 
-* an input
+* an input field
 * a scope selector
 * a submit button
 * a dropdown with a list of suggestions
@@ -33,7 +33,7 @@ itself, at most, consists of two sections: phrases searched in the past and popu
 fetched in real time as the user interacts with the form. Additionally, there is also a preconfigured option to search
 the phrase in products’ descriptions.
 
-The form also provides a possibility to narrow down the search scope whether it is a particular department, a certain
+The form also provides a possibility to narrow down the search scope to a particular department, a certain
 user, a charity organization, etc. Depending on the selected scope, when the user clicks the submission button, one is
 redirected to an appropriate product/user/charity listing page and the search phrase is sent as a URL query parameter.
 
@@ -92,9 +92,9 @@ of communication and make sure we expose to the public API only what we intended
 
 The “S” of the “SOLID” acronym. As the name hints, a class (or a unit of code) should be responsible only for a single
 piece of functionality. A simple and powerful principle, yet quite often overlooked. Say, if we build a wrapping logic
-around an input HTML element, its only responsibility should be to tightly interact with the element, e.g. listen to its
-DOM events and update its value if needed. At the same time, you don't want this wrapping logic to affect a submission
-behavior of a form element inside of which the input element is placed.
+associated with an input HTML element, its only responsibility should be to tightly interact with the element, e.g.
+listen to its DOM events and update its value if needed. At the same time, you don’t want this wrapping logic to affect
+the submission behavior of a form element inside of which the input element is placed.
 
 #### The separation of concerns principle (SoC)
 
@@ -115,8 +115,8 @@ passengers might not even know that C is not operating at that moment.
 
 #### Event-driven dataflow
 
-Since we are dealing with a UI component that has several moving parts, applying event-driven techniques comes in handy
-because of its asynchronous nature and because messaging channels are subscription-based. Here is another analogy: you
+Since we are dealing with a UI component that has several moving parts, applying event-driven techniques come in handy
+because of their asynchronous nature and because messaging channels are subscription-based. Here is another analogy: you
 are at your place waiting for a hand-to-hand package delivery. Instead of opening the door every now and then to check
 if there is a courier behind it you would probably wait first for a doorbell to ring, right? Only once it rings (an
 event occurs), you would open the door to obtain the package.
@@ -127,7 +127,7 @@ We want the architecture of the new solution to follow a certain set of rules in
 also want to make it harder for engineers to break those rules. In the short term it might be a drawback but we are
 interested in keeping the codebase well-maintained in the long run. By carefully designing the APIs and applying static
 type analysis we are not only able to meet the requirement but also lift some complexity from engineers’ shoulders and
-that is where TypeScript shines brightly.
+this is where TypeScript shines brightly.
 
 ## Applying all of the above in a new store solution
 
@@ -143,7 +143,7 @@ The store should:
 
 Defining the structure of the store’s data is as simple as declaring a TypeScript interface, but we need to be able to
 expose information that the state has mutated in a particular way. That is, we need to build event driven communication
-between the store and its dependents. For this purpose we can use an event emitter and define as many topics as need.
+between the store and its dependents. For this purpose we can use an event emitter and define as many topics as needed.
 In our case, having a dedicated topic per state property turns out to work perfectly as we don’t have that many
 properties in the first place. And because we want to have the state and event emitter under the same umbrella, we
 encapsulate them into the following class declaration:
@@ -223,7 +223,7 @@ Since updating the store is pretty much straightforward, let’s take a look at 
 related information. We only need to be able to communicate to the dependents the fact that such an event took place
 and that is why, similarly to the store, the search input has an event emitter of its own. Now, you might be thinking:
 why would you want to have multiple sources of information given you already have the event driven store solution? There
-is a couple of reasons:
+are a couple of reasons:
 
 * Because those DOM events don’t contain additional information, there is nothing we need to put into our store. It
 aligns well with the single-responsibility principle, according to which, the store only fulfills its primary function
@@ -292,7 +292,7 @@ the dropdown visible.
 Note that because we apply the separation of concerns principle, the `fetchItemsList` method only delegates a job to an
 external dependency responsible for network communication. Upon successful response, `SuggestionsList` doesn’t
 immediately start rendering the data, instead the data is put into the store and `SuggestionList` listens to that data
-change. With such a data circulation we ensure that:
+change. With such data circulation we ensure that:
 
 * The store is a single source of truth (and data)
 * Suggestions’ data is propagated to every dependent
@@ -303,7 +303,7 @@ With that, our functional requirement is implemented.
 ## The final solution
 
 Reapplying the above principles and techniques to develop the remaining functional requirements, we ended up with a
-solution that can be illustrated as following:
+solution that can be illustrated as follows:
 
 <img src="/img/articles/2021-08-17-refactoring-opbox-search/architecture-diagram.png"
   alt="Architecture Diagram" style="max-width: 600px; width: 100%">
@@ -316,6 +316,6 @@ we are quite satisfied with the end result. Will it withstand future challenges?
 
 At Allegro we value our customer experience and that is why we pay a lot of attention to performance of our frontend
 solutions. At the same time, as software engineers, we want to stay productive and, therefore, we also care about our
-development experience. Achieving good results from both worlds is where the challenge comes in. In this article I
-explained what development issues we had with opbox-search component and what goals did we want to achieve after
+development experience. Achieving good results in both worlds is where the challenge comes in. In this article I
+explained what development issues we had with opbox-search component and what goals we wanted to achieve after
 refactoring it. I described the analysis and implementation process, and presented the final result.
