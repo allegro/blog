@@ -18,9 +18,10 @@ all the same and it’s important to learn more about their different types in o
 I’ve had a conversation with a colleague of mine the other day, about the point of using composite keys in a MongoDB
 database. I’ve always been a firm believer that it’s a good idea to use a composite key wherever possible because
 searching this way is very fast. My colleague, on the other hand, advocates using artificial keys and creating
-separate composite indexes on fields for which I would use a composite key. After a brief disagreement, I realized that
-other than my intuition, I had no arguments to defend my beliefs. I decided to see how indexes on composite keys
-differ from composite indexes created on regular fields in practice.
+separate [composite indexes](https://docs.mongodb.com/manual/core/index-compound/) on fields for
+which I would use a composite key.
+After a brief disagreement, I realized that other than my intuition, I had no arguments to defend my beliefs.
+I decided to see how indexes on composite keys differ from composite indexes created on regular fields in practice.
 
 As an example for our considerations, we will use an entity describing a person by first and last name, let’s also
 assume that this pair is unique.
@@ -98,12 +99,34 @@ Let’s start with the second result first. We can see that the optimiser chose 
 }
 ```
 
+[...]
+
+```json
+{
+  "executionStats" : {
+    "executionSuccess": true,
+    "nReturned": 1
+  }
+}
+```
+
 In the case of a collection with a composite key, however, the plan is different; it contains the word `IDHACK`:
 
 ```json
 {
   "winningPlan": {
     "stage": "IDHACK"
+  }
+}
+```
+
+[...]
+
+```json
+{
+  "executionStats" : {
+    "executionSuccess": true,
+    "nReturned": 1
   }
 }
 ```
