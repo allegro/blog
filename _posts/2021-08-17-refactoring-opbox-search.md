@@ -25,8 +25,6 @@ From UI standpoint it consists of four parts:
 * a dropdown with a list of suggestions
 
 ![Component Breakdown](/img/articles/2021-08-17-refactoring-opbox-search/component-breakdown.png "Component Breakdown")
-<!-- <img src="/img/articles/2021-08-17-refactoring-opbox-search/component-breakdown.png"
-  alt="Component Breakdown" style="max-width: 800px; width: 100%"> -->
 
 Functionality-wise, whenever a user clicks/taps into the input or types a search phrase, a dropdown with a list of
 suggestions shows up and the user can navigate through it by using keyboard/mouse/touchscreen. The suggestion list
@@ -35,26 +33,26 @@ fetched in real time as the user interacts with the form. Additionally, there is
 the phrase in products’ descriptions.
 
 The form also provides a possibility to narrow down the search scope to a particular department, a certain
-user, a charity organization, etc. Depending on the selected scope, when the user clicks the submission button, one is
+user, a charity organization, etc. Depending on the selected scope, when users click the submission button, they are
 redirected to an appropriate product/user/charity listing page and the search phrase is sent as a URL query parameter.
 
-At this point you might be wondering: sounds quite easy, how come you messed up such a simple component?
+At this point you might be wondering: this sounds quite easy, how come you messed up such a simple component?
 
 ## A bit of history and the precursor of refactoring
 
-The initial commit took place back in 2017 and up until the point of refactoring it, there were 2292 commits spread
-across 189 pull requests merged to the main branch. All those contributions were made by different independent teams.
-Throughout time the component evolved, some external APIs have changed, some features became deprecated and new ones
-were added. At one point it also changed its ownership to another development team. As expected, all those factors left
-some marks on the codebase.
+The initial commit took place back in 2017 and up until the point of refactoring the project, there were 2292 commits
+spread across 189 pull requests merged to the main branch. All those contributions were made by different independent
+teams. Over time the component evolved, some external APIs changed, some features became deprecated and new ones were
+added. At one point it also changed its ownership to another development team. As expected, all those factors left some
+marks on the codebase.
 
 One of ample examples of troublesome conditions was the store entity that is responsible for handling the runtime state.
-In reality, besides doing its primary function it also handled network calls and contained pieces of business logic
+In reality, besides performing its primary function it also handled network calls and contained pieces of business logic
 non-relevant for search scoping and suggestions listing.
 
 To make matters worse, the internals of the entity were publicly exposed and therefore any dependent, e.g. the search
-input or the scope selector, was free to manipulate the store randomly. Not hard to imagine, using such “shortcuts” has
-lead to degradation of codebase readability and maintainability.
+input or the scope selector, was free to manipulate the store arbitrarily. Not hard to imagine, using such “shortcuts”
+has lead to degradation of codebase readability and maintainability.
 
 At one point in time it reached its critical mass and we started considering the cost of maintaining the existing
 codebase vs. the cost of redeveloping it from scratch.
@@ -79,11 +77,11 @@ So by this point we learned what functional requirements are and identified the 
 solution. We also outlined refactoring expectations, hence we can start laying down the conceptual foundation of a new
 solution. We began by asking ourselves a few questions that could help us formalize our technical end goals.
 
-### What issues do we want to avoid this time? What do we want the new solution to improve upon?
+### What issues did we want to avoid this time? What did we want the new solution to improve upon?
 
-Going back to the store example, we clearly don’t want to allow any dependent to mutate its data in any random way nor
-do we want the store to contain pieces of logic that are not of its concern, e.g. networking. Instead we want to move
-those irrelevant pieces into more suitable locations, decrease entanglement of different parts of the codebase,
+Going back to the store example, we clearly didn’t want to allow any dependent to mutate its data in any abritrary way
+nor did we want the store to contain pieces of logic that are not of its concern, e.g. networking. Instead we wanted to
+move those irrelevant pieces into more suitable locations, decrease entanglement of different parts of the codebase,
 structure it into logical entities that are more human readable, draw boundaries between those entities, define rules
 of communication and make sure we expose to the public API only what we intended to.
 
@@ -100,10 +98,10 @@ the submission behavior of a form element inside of which the input element is p
 #### The separation of concerns principle (SoC)
 
 SoC goes well in pair with SRP and states that one should not place functionalities of different domains under the same
-logical entity. For example, we need to render a piece of information on the screen but beforehand the information needs
-to be fetched over the network. Since the view and network layers have different concerns we don’t want to place both of
-them under a single logical entity. Let these two be separate ones with established dependency relation to one another
-via a public API.
+logical entity (say, a class, an object or a module). For example, we need to render a piece of information on the
+screen but beforehand the information needs to be fetched over the network. Since the view and network layers have
+different concerns we don’t want to place both of them under a single logical entity. Let these two be separate ones
+with established dependency relation to one another via a public API.
 
 #### The loose coupling principle
 
@@ -307,9 +305,6 @@ Reapplying the above principles and techniques to develop the remaining function
 solution that can be illustrated as follows:
 
 ![Architecture Diagram](/img/articles/2021-08-17-refactoring-opbox-search/architecture-diagram.png "Architecture Diagram")
-
-<!-- <img src="/img/articles/2021-08-17-refactoring-opbox-search/architecture-diagram.png"
-  alt="Architecture Diagram" style="max-width: 600px; width: 100%"> -->
 
 Were we able to meet our expectations? At the end of the day, after careful problem analysis, testing out POCs and
 development preparations, the implementation process itself went quite smoothly. Multiple people participated in it and
