@@ -4,28 +4,28 @@ title: "Comparing MongoDB composite indexes"
 author: [michal.knasiecki]
 tags: [tech, mongoDB, index, performance, "query tuning"]
 ---
-One of the key elements ensuring efficient operation of the services we work on every day in Allegro is fast responses
-from the database.
+One of the key elements ensuring efficient operation of the services we work on every day at
+[Allegro](https://allegro.tech/) is fast responses from the database.
 We spend a lot of time to properly model the data so that storing and querying take as little time as possible.
-I [recently]({% post_url 2021-01-14-impact-of-the-data-model-on-the-MongoDB-database-size %}) wrote about the
-importance of proper schema design.
-It's also equally important to make sure that all queries are covered with indexes of the correct type whenever
-possible.  Indexes are used to quickly search the database and under certain conditions even allow results to be
-returned directly from the index, without access to the data itself. However, indexes are not all the same and it's
-important to learn more about their different types in order to make a right choice later on.
+You can read more about why good schema design is important in one of my earlier
+[posts]({% post_url 2021-01-14-impact-of-the-data-model-on-the-MongoDB-database-size %}).
+It’s also equally important to make sure that all queries are covered with indexes of the correct type whenever
+possible. Indexes are used to quickly search the database and under certain conditions even allow results to be
+returned directly from the index, without the need to access the data itself. However, indexes are not
+all the same and it’s important to learn more about their different types in order to make the right choices later on.
 
-## What's the difference?
-I've had a conversation with a colleague of mine the other day, about the point of using composite keys in a MongoDB
-database. I've always been a firm believer that it's a good idea to use a composite key wherever possible because
+## What’s the difference?
+I’ve had a conversation with a colleague of mine the other day, about the point of using composite keys in a MongoDB
+database. I’ve always been a firm believer that it’s a good idea to use a composite key wherever possible because
 searching this way is very fast. My colleague, on the other hand, advocates using artificial keys and creating
 separate composite indexes on fields for which I would use a composite key. After a brief disagreement, I realized that
-other than my intuition, I had no arguments to defend my beliefs. So I decided to see how indexes on composite keys
+other than my intuition, I had no arguments to defend my beliefs. I decided to see how indexes on composite keys
 differ from composite indexes created on regular fields in practice.
 
-As an example for our considerations, we will use an entity describing a person by first and last name, let's also
+As an example for our considerations, we will use an entity describing a person by first and last name, let’s also
 assume that this pair is unique.
 
-Such data can be stored in a collection (let's call it `coll1`) with a composite key that contains both fields.
+Such data can be stored in a collection (let’s call it `coll1`) with a composite key that contains both fields.
 
 ```json
 {
@@ -36,7 +36,7 @@ Such data can be stored in a collection (let's call it `coll1`) with a composite
 }
 ```
 
-A unique index will automatically be created on both fields along with the collection.
+An unique index will be automatically created on pair of both fields along with the collection.
 
 Many developers would most likely prefer to use an artificial key, and index the `name` and `surname` fields
 separately, as shown in collection `coll2`:
@@ -49,7 +49,7 @@ separately, as shown in collection `coll2`:
 }
 ```
 
-When it comes to the second model, only the artificial key will be automatically covered by the index, to be
+When it comes to the second model, only the artificial key will be automatically covered by the index. To be
 able to efficiently search the collection by first and last name, we need to manually create a composite index on both
 fields. To maintain consistency with the first collection, of course, uniqueness also needs to be enforced:
 
@@ -62,7 +62,7 @@ of interest, and only one index is required in addition to the data. For the sec
 itself, we need to store an artificial key, moreover two indexes are required here: on the artificial key and on
 the `name` and `surname` fields.
 
-We can now move on to comparing the execution plans of queries to two collections, so let's take a look at the result
+We can now move on to comparing the execution plans of queries to two collections, so let’s take a look at the result
 of the `explain` commands:
 
 ```javascript
@@ -80,7 +80,7 @@ and:
 db.coll2.find({"name" : "John", "surname" : "Doe"}).explain("executionStats")
 ```
 
-Let's start with the second result first. We can see that the optimiser chose to use the index we manually created.
+Let’s start with the second result first. We can see that the optimiser chose to use the index we manually created.
 
 ```json
 {
@@ -109,17 +109,17 @@ In the case of a collection with a composite key, however, the plan is different
 ```
 
 It means that the optimiser skipped the index selection phase (although in our case there were no other indexes, but
-it doesn't matter) and decided to use the key index. This operation is considered to be the fastest one possible.
+it doesn’t matter) and decided to use the key index. This operation is considered to be the fastest one possible.
 Whenever there is a key in the query, its index will be used (while ignoring conditions on other fields).
 
-Let's also take a look at the notation `"nReturned" : 1`, which means that both queries returned a single document.
+Let’s also take a look at the notation `"nReturned" : 1`, which means that both queries returned a single document.
 
-We already know that queries to both collections will be handled with an index. However, I've been wondering if there
+We already know that queries to both collections will be handled with an index. However, I’ve been wondering if there
 are any differences between these indexes?
 
 The first should be search time: since whenever there is a key in the condition list, its index will be used,
-theoretically, key's index should be the fastest. We'll get to that topic in a moment. For now, let's see what happens
-if we only want to search one field at a time?
+theoretically, key’s index should be the fastest. We’ll get to that topic in a moment. For now, let’s see what happens
+if we only want to search one field at a time:
 
 ```javascript
 db.getCollection('coll1').find({
@@ -156,7 +156,7 @@ db.getCollection('coll2').find({"surname" : "Doe"}).explain("executionStats")
 ```
 
 In a collection with a composite key, we have a situation similar to the previous one - the index was used, but we
-didn't receive any document. The reason, of course, is the same: we didn't use all the key fields.
+didn’t receive any document. The reason, of course, is the same: we didn’t use all the key fields.
 
 By querying the collection with a separate composite index, we got the document we were looking for, but it turns out
 that this time the index was not used, and instead the database had to search through the entire collection:
@@ -183,13 +183,13 @@ Our index was created on the fields in the following order:
 db.coll2.createIndex({name: 1, surname: 1}, {unique: true})
 ```
 
-It is therefore possible to omit the condition on the `surname` field and search only by `name`, but it's not possible
+It is therefore possible to omit the condition on the `surname` field and search only by `name`, but it’s not possible
 the other way around.
 
 We managed to find out the first difference between two types of indexes: composite key indexes are less flexible,
 require all values to be specified, while in regular composite indexes we can omit values from the right.
 
-Let's also check if the order of conditions matter?
+Let’s also check if the order of conditions matter?
 
 ```javascript
 db.getCollection('coll1').find({
@@ -204,7 +204,7 @@ db.getCollection('coll1').find({
 db.getCollection('coll2').find({"surname" : "Doe", "name" : "John"}).explain("executionStats")
 ```
 
-And here's another surprise: even though all the components of the key were provided, but in reverse order, the
+And here’s another surprise: even though all the components of the key were provided, but in reverse order, the
 first query did not find the document.
 
 ```json
@@ -235,13 +235,13 @@ index to find the document: `"nReturned" : 1`
 }
 ```
 
-For the time being, indexes on composite keys are losing with regular ones. This is a good time to get back to the
-question about the search time of the two indexes. Now that we've established that indexes on composite keys are less
-flexible, it's a good idea to figure out what we gain in return for such limitations. We already know that `IDHACK`
+For the time being, indexes on composite keys are losing against regular ones. This is a good time to get back to the
+question about the search time of the two indexes. Now that we’ve established that indexes on composite keys are less
+flexible, it’s a good idea to figure out what we gain in return for such limitations. We already know that `IDHACK`
 skips all indexes and always uses a key, so one might think that this is the fastest available way to get to the
 document. I decided to check this on my own.
 
-## It's time to experiment
+## It’s time to experiment
 
 I filled both previously used collections with 10 million documents. I used the following scripts for this purpose:
 
@@ -261,7 +261,7 @@ for (let i = 0; i < 10000000; i++) {
 bulk.execute();
 ```
 
-It is worth noting here that I'm adding documents in batches. This is definitely faster than a list of single inserts
+It is worth noting here that I’m adding documents in batches. This is definitely faster than a list of single inserts
 and is useful when we need to generate a large amount of data quickly. Also note that I am using existing collections
 so my index on `name` and `surname` fields already exists.
 
@@ -319,8 +319,8 @@ Although the differences are small, I was sure that using a composite key would 
 through regular fields and would make up for all the inconvenience of less flexible keys. Meanwhile, it turns
 out that a collection built with an artificial key and a separate index on two fields wins in terms of search speed.
 
-I had one more idea. Maybe searching a document by a key that doesn't exist will be faster?
-To test this, I generated another 2 scripts, this time searching for non-existent documents:
+I had one more idea. Maybe searching a document by a key that doesn’t exist would be faster?
+To test this, I generated another two scripts, this time searching for non-existent documents:
 
 ```shell
 #!/bin/bash
@@ -345,7 +345,7 @@ done >> find-missing2.js
 Unfortunately, the composite key collection also lost in this case: **12.44s** vs. **10.26s**.
 
 Finally, I decided to run one more test. Since when using composite key we have to pass the entire key to the query
-and cannot search by its fragment, I decided to create a third collection, this time its key was the concatenation of
+and cannot search by its fragment, I decided to create a third collection, this time its key being the concatenation of
 first and last name:
 
 ```javascript
