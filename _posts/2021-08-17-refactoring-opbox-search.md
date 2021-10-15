@@ -74,7 +74,7 @@ Subsequently, achieving the goal would:
 ## Into the technical analysis
 
 So by this point we learned what functional requirements are and identified the issues we have with the current
-solution. We also outlined refactoring expectations, hence we can start laying down the conceptual foundation of a new
+solution. We also outlined refactoring expectations, hence we could start laying down the conceptual foundation of a new
 solution. We began by asking ourselves a few questions that could help us formalize our technical end goals.
 
 ### What issues did we want to avoid this time? What did we want the new solution to improve upon?
@@ -90,15 +90,15 @@ of communication and make sure we expose to the public API only what we intended
 #### The single-responsibility principle (SRP)
 
 The “S” of the “SOLID” acronym. As the name hints, a class (or a unit of code) should be responsible only for a single
-piece of functionality. A simple and powerful principle, yet quite often overlooked. Say, if we build a wrapping logic
+piece of functionality. A simple and powerful principle, yet quite often overlooked. Say, if we build a piece of logic
 associated with an input HTML element, its only responsibility should be to tightly interact with the element, e.g.
-listen to its DOM events and update its value if needed. At the same time, you don’t want this wrapping logic to affect
-the submission behavior of a form element inside of which the input element is placed.
+listen to its DOM events and update its value if needed. At the same time, you don’t want this logic to affect the
+submission behavior of a form element inside of which the input element is placed.
 
 #### The separation of concerns principle (SoC)
 
 SoC goes well in pair with SRP and states that one should not place functionalities of different domains under the same
-logical entity (say, a class, an object or a module). For example, we need to render a piece of information on the
+logical entity (say, an object, a class or a module). For example, we need to render a piece of information on the
 screen but beforehand the information needs to be fetched over the network. Since the view and network layers have
 different concerns we don’t want to place both of them under a single logical entity. Let these two be separate ones
 with established dependency relation to one another via a public API.
@@ -106,11 +106,11 @@ with established dependency relation to one another via a public API.
 #### The loose coupling principle
 
 Loose coupling means that a single logical entity knows as little as possible about other entities and communication
-between them follows strict rules. One important characteristic we want to achieve here is to minimize negative effects
-on application’s runtime in case an entity malfunctions. As an analogy, we could imagine a graph of airports that are
-connected to each other via a set of flight routes. Say, there are direct routes from airport A to B, C and D. If the
-airport C gets closed due to renovation of a runway, the routes to B and D are not affected in any way. Moreover, some
-passengers might not even know that C is not operating at that moment.
+between them follows strict rules. One important characteristic we wanedt to achieve here is to minimize negative
+effects on application’s runtime in case an entity malfunctions. As an analogy, we could imagine a graph of airports
+that are connected to each other via a set of flight routes. Say, there are direct routes from airport A to B, C and D.
+If the airport C gets closed due to renovation of a runway, the routes to B and D are not affected in any way. Moreover,
+some passengers might not even know that C is not operating at that moment.
 
 #### Event-driven dataflow
 
@@ -120,17 +120,17 @@ are at your place waiting for a hand-to-hand package delivery. Instead of openin
 if there is a courier behind it you would probably wait first for a doorbell to ring, right? Only once it rings (an
 event occurs), you would open the door to obtain the package.
 
-### Which development constraints (if any) do we want to introduce intentionally?
+### Which development constraints (if any) did we want to introduce intentionally?
 
-We want the architecture of the new solution to follow a certain set of rules in order to maintain its structure. We
-also want to make it harder for engineers to break those rules. In the short term it might be a drawback but we are
+We wanted the architecture of the new solution to follow a certain set of rules in order to maintain its structure. We
+also wanted to make it harder for engineers to break those rules. In the short term it might be a drawback but we are
 interested in keeping the codebase well-maintained in the long run. By carefully designing the APIs and applying static
-type analysis we are not only able to meet the requirement but also lift some complexity from engineers’ shoulders and
-this is where TypeScript shines brightly.
+type analysis we were not only able to meet the requirement but also lifted some complexity from engineers’ shoulders
+and this is where TypeScript shines brightly.
 
 ## Applying all of the above in a new store solution
 
-Based on the conclusions reached above we can start the actual work and start it from the core, which is the store
+Based on the conclusions reached above we could start the actual work and started it from the core, which is the store
 entity. As with any store solutions, let us list functional characteristics that one should provide.
 
 The store should:
@@ -142,10 +142,10 @@ The store should:
 
 Defining the structure of the store’s data is as simple as declaring a TypeScript interface, but we need to be able to
 expose information that the state has mutated in a particular way. That is, we need to build event driven communication
-between the store and its dependents. For this purpose we can use an event emitter and define as many topics as needed.
-In our case, having a dedicated topic per state property turns out to work perfectly as we don’t have that many
-properties in the first place. And because we want to have the state and event emitter under the same umbrella, we
-encapsulate them into the following class declaration:
+between the store and its dependents. For this purpose we could use an event emitter and define as many topics as needed.
+In our case, having a dedicated topic per state property turned out to work perfectly as we didn’t have that many
+properties in the first place. And because we wanted to have the state and event emitter under the same umbrella, we
+encapsulated them into the following class declaration:
 
 ```ts
 interface State {
@@ -171,10 +171,10 @@ class Store {
 }
 ```
 
-The last piece of the puzzle is that we need to automate event emission triggering. At the same time, we want to
+The last piece of the puzzle is that we needed to automate event emission triggering. At the same time, we wanted to
 minimize the size of the boilerplate code needed to set up this behavior for each state property. Since every property
 has a corresponding topic, that is where we were able to leverage the power of JavaScript’s accessor descriptor and
-within a setter we can trigger the emission:
+within a setter we could trigger the emission:
 
 ```ts
 Object
