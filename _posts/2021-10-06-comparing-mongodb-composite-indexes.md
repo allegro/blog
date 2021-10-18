@@ -26,7 +26,7 @@ I decided to see how indexes on composite keys differ from composite indexes cre
 As an example for our considerations, we will use an entity describing a person by first and last name, let’s also
 assume that this pair is unique.
 
-Such data can be stored in a collection (let’s call it `coll1`) with a composite key that contains both fields.
+Such data can be stored in a collection (let’s call it `composite`) with a composite key that contains both fields.
 
 ```json
 {
@@ -40,7 +40,7 @@ Such data can be stored in a collection (let’s call it `coll1`) with a composi
 A unique index will be automatically created on pair of both fields along with the collection.
 
 Many developers would most likely prefer to use an artificial key, and index the `name` and `surname` fields
-separately, as shown in collection `coll2`:
+separately, as shown in collection `artificial`:
 
 ```json
 {
@@ -55,7 +55,7 @@ able to efficiently search the collection by first and last name, we need to man
 fields. To maintain consistency with the first collection, of course, uniqueness also needs to be enforced:
 
 ```javascript
-db.coll2.createIndex({name: 1, surname: 1}, {unique: true})
+db.artificial.createIndex({name: 1, surname: 1}, {unique: true})
 ```
 
 At first glance, we can clearly see that the first way of storing data is more compact, since we only store two fields
@@ -67,7 +67,7 @@ We can now move on to comparing the execution plans of queries to two collection
 of the `explain` commands:
 
 ```javascript
-db.coll1.find({
+db.composite.find({
     "_id" : {
         "name" : "John",
         "surname" : "Doe"
@@ -78,7 +78,7 @@ db.coll1.find({
 and:
 
 ```javascript
-db.coll2.find({"name" : "John", "surname" : "Doe"}).explain("executionStats")
+db.artificial.find({"name" : "John", "surname" : "Doe"}).explain("executionStats")
 ```
 
 Let’s start with the second result first. We can see that the optimiser chose to use the index we manually created.
@@ -145,7 +145,7 @@ theoretically, key’s index should be the fastest. We’ll get to that topic in
 if we only want to search one field at a time:
 
 ```javascript
-db.getCollection('coll1').find({
+db.getCollection('composite').find({
     "_id" : {
         "name" : "John"
     }
@@ -153,7 +153,7 @@ db.getCollection('coll1').find({
 ```
 
 ```javascript
-db.getCollection('coll2').find({"name" : "John"}).explain("executionStats")
+db.getCollection('artificial').find({"name" : "John"}).explain("executionStats")
 ```
 
 In the case of the first query, the index was admittedly used, but we got no results, as evidenced by the notation:
@@ -203,7 +203,7 @@ document was found:
 What if we decide to search by `surname` only?
 
 ```javascript
-db.getCollection('coll1').find({
+db.getCollection('composite').find({
     "_id" : {
         "surname" : "Doe"
     }
@@ -211,7 +211,7 @@ db.getCollection('coll1').find({
 ```
 
 ```javascript
-db.getCollection('coll2').find({"surname" : "Doe"}).explain("executionStats")
+db.getCollection('artificial').find({"surname" : "Doe"}).explain("executionStats")
 ```
 
 In a collection with a composite key, we have a situation similar to the previous one - the index was used, but we
@@ -239,7 +239,7 @@ fields, it is only permissible to skip values in the reverse order, that is, rea
 Our index was created on the fields in the following order:
 
 ```javascript
-db.coll2.createIndex({name: 1, surname: 1}, {unique: true})
+db.artificial.createIndex({name: 1, surname: 1}, {unique: true})
 ```
 
 It is therefore possible to omit the condition on the `surname` field and search only by `name`, but it’s not possible
@@ -251,7 +251,7 @@ require all values to be specified, while in regular composite indexes we can om
 Let’s also check if the order of conditions matter?
 
 ```javascript
-db.getCollection('coll1').find({
+db.getCollection('composite').find({
     "_id" : {
         "surname" : "Doe",
         "name" : "John"
@@ -260,7 +260,7 @@ db.getCollection('coll1').find({
 ```
 
 ```javascript
-db.getCollection('coll2').find({"surname" : "Doe", "name" : "John"}).explain("executionStats")
+db.getCollection('artificial').find({"surname" : "Doe", "name" : "John"}).explain("executionStats")
 ```
 
 And here’s another surprise: even though all the components of the key were provided, but in reverse order, the
@@ -305,7 +305,7 @@ document. I decided to check this on my own.
 I filled both previously used collections with 10 million documents. I used the following scripts for this purpose:
 
 ```javascript
-var bulk = db.coll1.initializeUnorderedBulkOp();
+var bulk = db.composite.initializeUnorderedBulkOp();
 for (let i = 0; i < 10000000; i++) {
     bulk.insert({_id: {name: 'name_' + NumberInt(i), surname: 'surname_' + NumberInt(i)}})
 }
@@ -313,7 +313,7 @@ bulk.execute();
 ```
 
 ```javascript
-var bulk = db.coll2.initializeUnorderedBulkOp();
+var bulk = db.artificial.initializeUnorderedBulkOp();
 for (let i = 0; i < 10000000; i++) {
     bulk.insert({_id: new ObjectId(), name: 'name_' + NumberInt(i), surname: 'surname_' + NumberInt(i)})
 }
@@ -349,7 +349,7 @@ RANDOM=42
 for i in {1..1000000}
 do
   x=$(( $RANDOM % 10000000))
-    echo "db.coll1.find({_id: {name: 'name_$x', surname: 'surname_$x'}})"
+    echo "db.composite.find({_id: {name: 'name_$x', surname: 'surname_$x'}})"
 done >> find1.js
 ```
 
@@ -359,7 +359,7 @@ RANDOM=42
 for i in {1..1000000}
 do
   x=$(( $RANDOM % 10000000))
-    echo "db.coll2.find({name: 'name_$x', surname: 'surname_$x'})"
+    echo "db.artificial.find({name: 'name_$x', surname: 'surname_$x'})"
 done >> find2.js
 ```
 
@@ -387,7 +387,7 @@ RANDOM=42
 for i in {1..1000000}
 do
   x=$(( $RANDOM % 10000000))
-    echo "db.coll1.find({_id: {name: 'missing_name_$x', surname: 'missing_surname_$x'}})"
+    echo "db.composite.find({_id: {name: 'missing_name_$x', surname: 'missing_surname_$x'}})"
 done >> find-missing1.js
 ```
 
@@ -397,7 +397,7 @@ RANDOM=42
 for i in {1..1000000}
 do
   x=$(( $RANDOM % 10000000))
-    echo "db.coll2.find({name: 'missing_name_$x', surname: 'missing_surname_$x'})"
+    echo "db.artificial.find({name: 'missing_name_$x', surname: 'missing_surname_$x'})"
 done >> find-missing2.js
 ```
 
@@ -408,7 +408,7 @@ and cannot search by its fragment, I decided to create a third collection, this 
 first and last name:
 
 ```javascript
-var bulk = db.coll3.initializeUnorderedBulkOp();
+var bulk = db.concatenation.initializeUnorderedBulkOp();
 for (let i = 0; i < 10000000; i++) {
     bulk.insert({_id: 'name_' + NumberInt(i) + '-' + 'surname_' + NumberInt(i)})
 }
@@ -424,7 +424,7 @@ RANDOM=42
 for i in {1..1000000}
 do
   x=$(( $RANDOM % 10000000))
-    echo "db.coll3.find({_id: 'name_$x-surname_$x'})"
+    echo "db.concatenation.find({_id: 'name_$x-surname_$x'})"
 done >> find3.js
 ```
 
