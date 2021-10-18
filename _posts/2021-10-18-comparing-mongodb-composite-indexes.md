@@ -2,7 +2,7 @@
 layout: post
 title: "Comparing MongoDB composite indexes"
 author: [michal.knasiecki]
-tags: [tech, mongoDB, index, performance, "query tuning"]
+tags: [tech, mongodb, index, performance, "query tuning"]
 ---
 One of the key elements ensuring efficient operation of the services we work on every day at
 [Allegro](https://allegro.tech/) is fast responses from the database.
