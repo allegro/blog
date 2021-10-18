@@ -37,7 +37,7 @@ Such data can be stored in a collection (let’s call it `coll1`) with a composi
 }
 ```
 
-An unique index will be automatically created on pair of both fields along with the collection.
+A unique index will be automatically created on pair of both fields along with the collection.
 
 Many developers would most likely prefer to use an artificial key, and index the `name` and `surname` fields
 separately, as shown in collection `coll2`:
