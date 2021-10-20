@@ -12,8 +12,8 @@ this article. Sounds interesting? Hop on!
 
 ## How does the search form function at Allegro?
 
-For starters, so that we all are on the same page, let me briefly explain how the search form at Allegro works and which
-functionalities it is responsible for. Under the hood, it is one of our many
+For starters, so that we all are on the same page, let me briefly explain how the search form at Allegro works and what
+functionality it is responsible for. Under the hood, it is one of our many
 [OpBox]({% post_url 2016-03-12-Managing-Frontend-in-the-microservices-architecture %}) components and its
 technical name is opbox-search.
 
@@ -85,7 +85,7 @@ move these irrelevant pieces into more suitable locations, decrease entanglement
 structure it into logical entities that are more human readable, draw boundaries between those entities, define rules
 of communication and make sure we expose to the public API only what we intended to.
 
-### What development principles and design patterns could we have incorporate?
+### What development principles and design patterns could we have incorporated?
 
 #### The single-responsibility principle (SRP)
 
@@ -202,7 +202,7 @@ At this point the store is ready and we would like to test how well the solution
 
 ## Event-driven communication between the store and UI parts
 
-Now we can focus on developing the UI parts of our component. Luckily, business requirements provide enough hints where
+Now we could focus on developing the UI parts of our component. Luckily, business requirements provide enough hints where
 to place each piece of functionality. Let’s take a look at how we shaped the search input and the suggestion list, and
 how these UI parts cooperate with each other and the store.
 
@@ -210,13 +210,13 @@ Recall that functionality-wise the suggestion list is a dropdown that should be 
 phrase or clicks/taps into the input element. We also need to fetch best matching suggestions whenever the input value
 changes.
 
-We are going to start with the search input as it doesn’t have any dependencies besides the store. With functional
-requirements in mind, we want it to be good at doing just two things:
+We started with the search input as it doesn’t have any dependencies besides the store. With functional requirements in
+mind, we aimed it to be good at doing just two things:
 
 * Proxying DOM events such as focus, blur, click, keydown, etc.
 * Notifying the store whenever the input value changes
 
-Since updating the store is pretty much straightforward, let’s take a look at how we handle DOM events. Events such as
+Since updating the store is pretty much straightforward, let’s take a look at how we handled DOM events. Events such as
 `click`, `focus`, `blur` convey the fact that there was some sort of interaction with the input HTML element. Unlike
 `input` event, where one is interested in knowing what the current value is, the above-mentioned ones don’t include any
 related information. We only need to be able to communicate to the dependents the fact that such an event took place
