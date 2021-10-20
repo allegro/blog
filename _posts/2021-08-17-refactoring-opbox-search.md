@@ -27,13 +27,13 @@ From UI standpoint it consists of four parts:
 ![Component Breakdown](/img/articles/2021-08-17-refactoring-opbox-search/component-breakdown.png "Component Breakdown")
 
 Functionality-wise, whenever a user clicks/taps into the input or types a search phrase, a dropdown with a list of
-suggestions shows up and the user can navigate through it by using keyboard/mouse/touchscreen. The suggestion list
+suggestions shows up and the user can navigate through by using keyboard/mouse/touchscreen. The suggestion list
 itself, at most, consists of two sections: phrases searched in the past and popular/matching suggestions. Those are
 fetched in real time as the user interacts with the form. Additionally, there is also a preconfigured option to search
 the phrase in products’ descriptions.
 
 The form also provides a possibility to narrow down the search scope to a particular department, a certain
-user, a charity organization, etc. Depending on the selected scope, when users click the submission button, they are
+user, a charity organization, etc. Depending on the selected scope, when user click the submission button, they are
 redirected to an appropriate product/user/charity listing page and the search phrase is sent as a URL query parameter.
 
 At this point you might be wondering: this sounds quite easy, how come you messed up such a simple component?
@@ -73,7 +73,7 @@ Subsequently, achieving the goal would:
 
 ## Into the technical analysis
 
-So by this point we learned what functional requirements are and identified the issues we have with the current
+So by this point we learned what the functional requirements are and identified the issues we have with the current
 solution. We also outlined refactoring expectations, hence we could start laying down the conceptual foundation of a new
 solution. We began by asking ourselves a few questions that could help us formalize our technical end goals.
 
@@ -81,11 +81,11 @@ solution. We began by asking ourselves a few questions that could help us formal
 
 Going back to the store example, we clearly didn’t want to allow any dependent to mutate its data in any abritrary way
 nor did we want the store to contain pieces of logic that are not of its concern, e.g. networking. Instead we wanted to
-move those irrelevant pieces into more suitable locations, decrease entanglement of different parts of the codebase,
+move these irrelevant pieces into more suitable locations, decrease entanglement of different parts of the codebase,
 structure it into logical entities that are more human readable, draw boundaries between those entities, define rules
 of communication and make sure we expose to the public API only what we intended to.
 
-### What development principles and design patterns could we incorporate?
+### What development principles and design patterns could we have incorporate?
 
 #### The single-responsibility principle (SRP)
 
@@ -106,7 +106,7 @@ with established dependency relation to one another via a public API.
 #### The loose coupling principle
 
 Loose coupling means that a single logical entity knows as little as possible about other entities and communication
-between them follows strict rules. One important characteristic we wanedt to achieve here is to minimize negative
+between them follows strict rules. One important characteristic we wanted to achieve here is to minimize negative
 effects on application’s runtime in case an entity malfunctions. As an analogy, we could imagine a graph of airports
 that are connected to each other via a set of flight routes. Say, there are direct routes from airport A to B, C and D.
 If the airport C gets closed due to renovation of a runway, the routes to B and D are not affected in any way. Moreover,
@@ -123,15 +123,15 @@ event occurs), you would open the door to obtain the package.
 ### Which development constraints (if any) did we want to introduce intentionally?
 
 We wanted the architecture of the new solution to follow a certain set of rules in order to maintain its structure. We
-also wanted to make it harder for engineers to break those rules. In the short term it might be a drawback but we are
+also wanted to make it harder for engineers to break those rules. In the short term it might be a drawback, but we are
 interested in keeping the codebase well-maintained in the long run. By carefully designing the APIs and applying static
-type analysis we were not only able to meet the requirement but also lifted some complexity from engineers’ shoulders
+type analysis we were not only able to meet the requirement but also lifted some complexity from engineers’ shoulders,
 and this is where TypeScript shines brightly.
 
 ## Applying all of the above in a new store solution
 
-Based on the conclusions reached above we could start the actual work and started it from the core, which is the store
-entity. As with any store solutions, let us list functional characteristics that one should provide.
+Based on the conclusions reached above we were ready to start the actual work and started it from the core, that is the
+store entity. As with any store solutions, let us list functional characteristics that one should provide.
 
 The store should:
 * hold current runtime state
@@ -141,10 +141,10 @@ The store should:
 * not expose any implementation details
 
 Defining the structure of the store’s data is as simple as declaring a TypeScript interface, but we need to be able to
-expose information that the state has mutated in a particular way. That is, we need to build event driven communication
+expose information that the state has mutated in a particular way. That is, we need to build event-driven communication
 between the store and its dependents. For this purpose we could use an event emitter and define as many topics as needed.
 In our case, having a dedicated topic per state property turned out to work perfectly as we didn’t have that many
-properties in the first place. And because we wanted to have the state and event emitter under the same umbrella, we
+properties in the first place. And since we wanted to have the state and event emitter under the same umbrella, we
 encapsulated them into the following class declaration:
 
 ```ts
@@ -171,7 +171,7 @@ class Store {
 }
 ```
 
-The last piece of the puzzle is that we needed to automate event emission triggering. At the same time, we wanted to
+The last piece of the puzzle is that we needed to automate event emission triggering. At the same time, we aimed to
 minimize the size of the boilerplate code needed to set up this behavior for each state property. Since every property
 has a corresponding topic, that is where we were able to leverage the power of JavaScript’s accessor descriptor and
 within a setter we could trigger the emission:
@@ -206,12 +206,12 @@ Now we can focus on developing the UI parts of our component. Luckily, business 
 to place each piece of functionality. Let’s take a look at how we shaped the search input and the suggestion list, and
 how these UI parts cooperate with each other and the store.
 
-Recall that functionality-wise suggestion list is a dropdown that should be rendered whenever a user types a search
+Recall that functionality-wise the suggestion list is a dropdown that should be rendered whenever a user types a search
 phrase or clicks/taps into the input element. We also need to fetch best matching suggestions whenever the input value
 changes.
 
 We are going to start with the search input as it doesn’t have any dependencies besides the store. With functional
-requirements in mind, we want it to be good at doing just two things and these are:
+requirements in mind, we want it to be good at doing just two things:
 
 * Proxying DOM events such as focus, blur, click, keydown, etc.
 * Notifying the store whenever the input value changes
@@ -221,11 +221,11 @@ Since updating the store is pretty much straightforward, let’s take a look at 
 `input` event, where one is interested in knowing what the current value is, the above-mentioned ones don’t include any
 related information. We only need to be able to communicate to the dependents the fact that such an event took place
 and that is why, similarly to the store, the search input has an event emitter of its own. Now, you might be thinking:
-why would you want to have multiple sources of information given you already have the event driven store solution? There
+why would you want to have multiple sources of information given you already have the event-driven store solution? There
 are a couple of reasons:
 
-* Because those DOM events don’t contain additional information, there is nothing we need to put into our store. It
-aligns well with the single-responsibility principle, according to which, the store only fulfills its primary function
+* Since those DOM events don’t contain additional information, there is nothing we need to put into our store. It
+aligns well with the single-responsibility principle, according to which the store only fulfills its primary function
 and has no hint of existence of the search input.
 * By bypassing the store we shortened an event message travel distance from the source to a subscriber.
 * It also aligns well with a mental model, where if one wants to react to an event that happened in the search input,
@@ -307,13 +307,11 @@ solution that can be illustrated as follows:
 ![Architecture Diagram](/img/articles/2021-08-17-refactoring-opbox-search/architecture-diagram.png "Architecture Diagram")
 
 Were we able to meet our expectations? At the end of the day, after careful problem analysis, testing out POCs and
-development preparations, the implementation process itself went quite smoothly. Multiple people participated in it and
+development preparations, the implementation process itself went quite smoothly. Multiple people participated and
 we are quite satisfied with the end result. Will it withstand future challenges? Only time will tell.
 
 ## Summary
 
 At Allegro we value our customer experience and that is why we pay a lot of attention to performance of our frontend
 solutions. At the same time, as software engineers, we want to stay productive and, therefore, we also care about our
-development experience. Achieving good results in both worlds is where the challenge comes in. In this article I
-explained what development issues we had with opbox-search component and what goals we wanted to achieve after
-refactoring it. I described the analysis and implementation process, and presented the final result.
+development experience. Achieving good results in both worlds is where the real challenge lies.
