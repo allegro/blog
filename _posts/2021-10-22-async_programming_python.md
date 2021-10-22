@@ -8,101 +8,101 @@ tags: [tech, python, async, coroutines]
 ## Asynchronous programming
 
 ### Everything is a loop
-Most of the applications we create are basically loops. An average program waits 
-for an event, then processes it following some business logic. Afterwards it 
-begins waiting for another event to arrive. Popular frameworks such as Spring 
-allow us to only care about the business logic, while the framework takes care 
+Most of the applications we create are basically loops. An average program waits
+for an event, then processes it following some business logic. Afterwards it
+begins waiting for another event to arrive. Popular frameworks such as Spring
+allow us to only care about the business logic, while the framework takes care
 of the application main loop.
 
 ### Problem with blocking operations
-Imagine a very simple web application whose task is to calculate currency 
-exchange rates. It uses no framework, only operating system API or methods from 
-your favourite language standard library. It waits for a request with amount, 
-base and target currency and responds with a calculated output. In its simplest 
-form it could have all the exchange rates hardcoded, so the operation is very 
-fast and efficient. We can assume that such an application uses all the 
+Imagine a very simple web application whose task is to calculate currency
+exchange rates. It uses no framework, only operating system API or methods from
+your favourite language standard library. It waits for a request with amount,
+base and target currency and responds with a calculated output. In its simplest
+form it could have all the exchange rates hardcoded, so the operation is very
+fast and efficient. We can assume that such an application uses all the
 available processing power when processing requests.
 
-But in the next iteration we want our app to query another service for current 
-rates instead of relying on hardcoded values. We will soon discover our app is 
-spending most of its time waiting for a response from the other service. 
+But in the next iteration we want our app to query another service for current
+rates instead of relying on hardcoded values. We will soon discover our app is
+spending most of its time waiting for a response from the other service.
 
-Network communication is very slow after all. Let’s assume that a simple request 
-takes at least 1ms to complete. Modern processors have clock frequencies up to 
-5GHz and, providing the data and code are already cached, they are capable of 
-at least one simple operation per cycle. This means we could have done at least 
-5 * 10e9 simple operations while waiting for the request to complete! What a 
+Network communication is very slow after all. Let’s assume that a simple request
+takes at least 1ms to complete. Modern processors have clock frequencies up to
+5GHz and, providing the data and code are already cached, they are capable of
+at least one simple operation per cycle. This means we could have done at least
+5 * 10e9 simple operations while waiting for the request to complete! What a
 waste of resources!
 
 ### Classic approach with threads
-The most obvious solution to this issue are threads. We could refactor our 
-application so that when it receives the request it passes it to the separate 
-thread. That way we don’t have to worry about blocking operations in the 
-business logic. It is the operating system’s responsibility to allocate CPU to 
-something meaningful while our thread is blocked waiting for the other service. 
+The most obvious solution to this issue are threads. We could refactor our
+application so that when it receives the request it passes it to the separate
+thread. That way we don’t have to worry about blocking operations in the
+business logic. It is the operating system’s responsibility to allocate CPU to
+something meaningful while our thread is blocked waiting for the other service.
 This is how most of the applications I have been working on works.
 
-Unfortunately this approach has some drawbacks as well. Threads take a lot of 
-resources and you can only create a limited number of them. Very soon you 
-discover threads are a precious resource on their own and you can hardly afford 
-them sitting and waiting for a request to complete. You need to consider your 
-thread pool allocation policy in order not to starve some part of your 
-application. Add race conditions and other concurrency related issues and it 
+Unfortunately this approach has some drawbacks as well. Threads take a lot of
+resources and you can only create a limited number of them. Very soon you
+discover threads are a precious resource on their own and you can hardly afford
+them sitting and waiting for a request to complete. You need to consider your
+thread pool allocation policy in order not to starve some part of your
+application. Add race conditions and other concurrency related issues and it
 suddenly gets overcomplicated.
 
 ### How about we won’t block
-Let’s assume you decide threads are too expensive, too cumbersome or they are 
-simply not available on your platform, because for example you are writing bare 
-metal applications and there is no operating system. Apart from that we have to 
-keep in mind we cannot afford having any blocking operations in our 
+Let’s assume you decide threads are too expensive, too cumbersome or they are
+simply not available on your platform, because for example you are writing bare
+metal applications and there is no operating system. Apart from that we have to
+keep in mind we cannot afford having any blocking operations in our
 application, because they are wasting our resources.
 
 The new idea for the programm architecture is as follows:
- - Wait for an event to happen.
- - If the event is a new request arriving to an endpoint, 
- then we only setup the request to another service and return.
- - If the event is a response from the other service, then 
- we consume the received data and we setup a response to the original request.
+- Wait for an event to happen.§
+- If the event is a new request arriving to an endpoint, then we only setup
+the request to another service and return.
+- If the event is a response from the other service, then
+we consume the received data and we setup a response to the original request.
 
-This way we don’t have any blocking operation in our application, hence it is 
+This way we don’t have any blocking operation in our application, hence it is
 very efficient.
 
 ## Low level async API
-Linux and similar operating systems provide us with a convenient API for many 
-blocking operations. For example, `accept` is used to get an incoming TCP 
+Linux and similar operating systems provide us with a convenient API for many
+blocking operations. For example, `accept` is used to get an incoming TCP
 connection from a queue of pending connections or wait for one to show up.
 
-Similarly `write` and `read` are used to send and receive data over the created 
+Similarly `write` and `read` are used to send and receive data over the created
 connection. Both can also block waiting for the I/O operation to be possible.
 
-As you may have already noticed, our asynchronous application only makes sense 
-when there is only one blocking operation in the whole program. Earlier we 
-called it “waiting for an event to happen”. In Linux we can achieve such a 
-behaviour using `select` or `poll` API calls. `poll` is basically a more modern 
-version of *select*. In practise we can provide them with a set of event 
+As you may have already noticed, our asynchronous application only makes sense
+when there is only one blocking operation in the whole program. Earlier we
+called it “waiting for an event to happen”. In Linux we can achieve such a
+behaviour using `select` or `poll` API calls. `poll` is basically a more modern
+version of *select*. In practise we can provide them with a set of event
 descriptors and they will block until one of expected events occurs.
 
 ## Select in Python
-This API can be accessed in Python with a convenient wrapper provided by the 
-Python standard library. 
-[Check out selectors module here.](https://docs.python.org/3/library/selectors.html#module-selectors) 
-It hides some complicated low level aspects of the operating system API 
+This API can be accessed in Python with a convenient wrapper provided by the
+Python standard library.
+[Check out selectors module here.](https://docs.python.org/3/library/selectors.html#module-selectors)
+It hides some complicated low level aspects of the operating system API
 which is good for this presentation.
 
-Basically we can register an event we want to wait for using the `register` 
-method, then we wait for any registered event to happen using the `select` 
-method. Python standard library provides us with `DefaultSelector` which is an 
-alias for the most efficient implementation on the current platform, so that we 
+Basically we can register an event we want to wait for using the `register`
+method, then we wait for any registered event to happen using the `select`
+method. Python standard library provides us with `DefaultSelector` which is an
+alias for the most efficient implementation on the current platform, so that we
 don’t have to dive into low level details if we don’t want to.
 
 ### Simplest async application
-For the sake of simplicity of the examples I won’t use `Selector` and I won’t 
-try to create an async http client from scratch. There are simply too many 
-unrelated low level details. Suprisingly, the simplest GET request consists 
-of numerous blocking operations. Instead I propose the simplest and most easily 
+For the sake of simplicity of the examples I won’t use `Selector` and I won’t
+try to create an async http client from scratch. There are simply too many
+unrelated low level details. Suprisingly, the simplest GET request consists
+of numerous blocking operations. Instead I propose the simplest and most easily
 controllable blocking operation there is: waiting for user input.
 
-Let’s replace the complicated `selector` with a simple `input` function and 
+Let’s replace the complicated `selector` with a simple `input` function and
 model events with letters. Here is how such an app could look like:
 
 ```python
@@ -144,20 +144,20 @@ Processing event B
 Processing event C
 ```
 
-As you can see we create a mainloop listening for events (user input), then it 
-dispatches the event to the relevant handler. Note how the `input` function 
+As you can see we create a mainloop listening for events (user input), then it
+dispatches the event to the relevant handler. Note how the `input` function
 inside the mainloop is the only blocking operation in the whole program.
 
 ### Complicating flow of execution
-As I already mentioned, creating asynchronous applications is easy as long as 
-there is no blocking operation while processing events. The aforementioned 
-example was so simple because there weren’t any. When there is some blocking 
-operation we have to split our processing logic into parts, each one ending 
+As I already mentioned, creating asynchronous applications is easy as long as
+there is no blocking operation while processing events. The aforementioned
+example was so simple because there weren’t any. When there is some blocking
+operation we have to split our processing logic into parts, each one ending
 when there is a need for some blocking operation.
 
-For example imagine a `Task` which is triggered with event A, but then it has 
-to wait for events B and C in order to complete. You need separate chunks of 
-code to process each event and some way to hold the `Task` state. One could 
+For example imagine a `Task` which is triggered with event A, but then it has
+to wait for events B and C in order to complete. You need separate chunks of
+code to process each event and some way to hold the `Task` state. One could
 code it that way:
 
 ```python
@@ -249,47 +249,47 @@ Task queue size 1
 Task queue size 0
 ```
 
-Pay attention to how hard it is to extract the actual flow of the `Task` from 
-the example. The `Task` is split into three separate methods, each one 
-responsible for part of the process. There is also a state persisted through 
+Pay attention to how hard it is to extract the actual flow of the `Task` from
+the example. The `Task` is split into three separate methods, each one
+responsible for part of the process. There is also a state persisted through
 consecutive events.
 
-The bright side is the code actually works. You can go through a `Task` 
-triggering events A, B and C, but you can also start a number of *Tasks* in 
-parallel by sending a lot of A events in a row. You can then advance these 
+The bright side is the code actually works. You can go through a `Task`
+triggering events A, B and C, but you can also start a number of *Tasks* in
+parallel by sending a lot of A events in a row. You can then advance these
 *Tasks* by sending events they are waiting for.
 
-With classic threaded approach it would be most likely easy to saturate thread 
-pool even by hand. With our asynchronous example you can have a ton of *Tasks* 
+With classic threaded approach it would be most likely easy to saturate thread
+pool even by hand. With our asynchronous example you can have a ton of *Tasks*
 in progress without any overhead, so the main goal is accomplished.
 
-## Flaws of asynchronous approach 
-We learned that asynchronous approach results in efficient application, but 
-also has some drawbacks. For starters your code does not reflect your program 
-logic directly. Instead you have to manually control the flow, maintain state 
+## Flaws of asynchronous approach
+We learned that asynchronous approach results in efficient application, but
+also has some drawbacks. For starters your code does not reflect your program
+logic directly. Instead you have to manually control the flow, maintain state
 and pass requests context around which is cumbersome and error prone.
 
-Your application business logic is hidden under implementation details and the 
-architecture of your solution is determined by the way you decided to deal with 
-asynchronous operations. You have to stick to set of complicated rules when 
+Your application business logic is hidden under implementation details and the
+architecture of your solution is determined by the way you decided to deal with
+asynchronous operations. You have to stick to set of complicated rules when
 developing new features.
 
-If only there were functions that could be easily suspended! We then could 
-create our business logic in a convenient way and achieve asynchronous 
-behaviour at the same time. Instead of passing context around fragments of our 
-program, we could just suspend the execution of a function while there is some 
+If only there were functions that could be easily suspended! We then could
+create our business logic in a convenient way and achieve asynchronous
+behaviour at the same time. Instead of passing context around fragments of our
+program, we could just suspend the execution of a function while there is some
 blocking operation going on. That would be great, wouldn’t it?
 
 ## Generators
-According to the glossary of Python official documentation a generator is a 
-function which contains `yield` expressions. Each `yield` temporarily suspends 
-processing, remembering the location execution state. When the generator 
-resumes, it picks up where it left off. It seems generators are indeed 
-functions that can be easily suspended. That is exactly what we were looking 
+According to the glossary of Python official documentation a generator is a
+function which contains `yield` expressions. Each `yield` temporarily suspends
+processing, remembering the location execution state. When the generator
+resumes, it picks up where it left off. It seems generators are indeed
+functions that can be easily suspended. That is exactly what we were looking
 for!
 
 ### Closer look at generators
-Let’s take a closer look at generators. How do they work and what is their 
+Let’s take a closer look at generators. How do they work and what is their
 purpose? First let’s write a function that prints Fibonacci numbers.
 
 ```python
@@ -313,7 +313,7 @@ $ python print_fibonnaci.py
 5
 ```
 
-Next, replace the call to print function with `yield` expressions and use our 
+Next, replace the call to print function with `yield` expressions and use our
 function as an iterable.
 
 ```python
@@ -338,19 +338,19 @@ $ python yield_fibonnaci.py
 5
 ```
 
-As you can see, the function became a generator when we used `yield` expression 
-inside it. When the program reaches `yield` expression the execution is suspended 
-and a value is used as an output. From the outside, the generator behaves like 
-an iterable or even like a stream, because the values we iterate over are not 
+As you can see, the function became a generator when we used `yield` expression
+inside it. When the program reaches `yield` expression the execution is suspended
+and a value is used as an output. From the outside, the generator behaves like
+an iterable or even like a stream, because the values we iterate over are not
 stored in memory. They are generated when needed.
 
-There can be multiple `yield` expressions in the generator. When execution reaches 
-the end of the generator the `StopIteration` exception is thrown, just like 
+There can be multiple `yield` expressions in the generator. When execution reaches
+the end of the generator the `StopIteration` exception is thrown, just like
 with iterators.
 
 ### Yield from and return
-You can embed one generator inside another with `yield from` expression. In the 
-following example there is a generator using another generator twice to 
+You can embed one generator inside another with `yield from` expression. In the
+following example there is a generator using another generator twice to
 generate growing and falling numbers.
 
 ```python
@@ -385,9 +385,9 @@ $ python yield_twice.py
 1
 ```
 
-What is more, a generator can also have a return statement. The returned value 
-will be used as a payload to StopIteration exception raised when the iteration 
-is over or (much more usefully) it can be used as a result of `yield from` 
+What is more, a generator can also have a return statement. The returned value
+will be used as a payload to StopIteration exception raised when the iteration
+is over or (much more usefully) it can be used as a result of `yield from`
 expression.
 
 ```python
@@ -420,7 +420,7 @@ Generated 5 numbers
 ```
 
 ### Exception inside generators
-If an exception is raised within the generator it can be caught using the 
+If an exception is raised within the generator it can be caught using the
 regular try/except statement in the wrapping generator.
 
 ```python
@@ -449,22 +449,22 @@ Something went wrong
 ```
 
 ## Async code using generators
-So we know that generators from the outside behave like a stream of values. 
-From the inside they look very similar to regular functions. Their execution 
-flow is easy to understand, because they work just like our standard imperative 
-code. And we know they can be easily suspended. What if we model asynchronous 
-operations as generators of events to be waited for? We could `yield` all the 
+So we know that generators from the outside behave like a stream of values.
+From the inside they look very similar to regular functions. Their execution
+flow is easy to understand, because they work just like our standard imperative
+code. And we know they can be easily suspended. What if we model asynchronous
+operations as generators of events to be waited for? We could `yield` all the
 events from generators and still have readable and maintainable logic inside.
 
-Our generators could be kept in a map, connecting the generator to an event it 
-is waiting for. When the event occurs we can simply take the next event from 
+Our generators could be kept in a map, connecting the generator to an event it
+is waiting for. When the event occurs we can simply take the next event from
 the generator and again wait for it to happen.
 
-Inside the generator we can have any amount of logic among `yield` expressions as 
-long as there are no blocking operations. Basically we write our logic as if it 
+Inside the generator we can have any amount of logic among `yield` expressions as
+long as there are no blocking operations. Basically we write our logic as if it
 was synchronous code but instead of blocking on some operation we *yield* what we are waiting for.
 
-Let’s rewrite the example with tasks waiting for user input using the new 
+Let’s rewrite the example with tasks waiting for user input using the new
 approach.
 
 ```python
@@ -548,15 +548,15 @@ Task queue size 1
 Task queue size 0
 ```
 
-By simply replacing our complicated `Task` class with a short generator 
-function and queue of tasks with a map of generators and their previously 
-yielded value we manage to get very convenient, yet still very efficient 
+By simply replacing our complicated `Task` class with a short generator
+function and queue of tasks with a map of generators and their previously
+yielded value we manage to get very convenient, yet still very efficient
 asynchronous code. These actually are called coroutines!
 
 ## Replace yield with await
-Do you think I’m stretching reality a little bit by calling generators 
-coroutines? Let’s see. First replace all `yield from` expressions with *await*. 
-Next add an `async` keyword to the generator definition. Finally wrap the 
+Do you think I’m stretching reality a little bit by calling generators
+coroutines? Let’s see. First replace all `yield from` expressions with *await*.
+Next add an `async` keyword to the generator definition. Finally wrap the
 events we await into classes with the `__await__` operator method.
 
 ```python
@@ -642,38 +642,38 @@ Task queue size 1
 Task queue size 0
 ```
 
-This code still runs OK! We can have a ton of opened tasks and we won’t 
-saturate any of precious resource. What is more, you wouldn’t guess that 
+This code still runs OK! We can have a ton of opened tasks and we won’t
+saturate any of precious resource. What is more, you wouldn’t guess that
 we had implemented this ourselves by looking at the actual coroutine.
 
-Now you can just replace `input` with `select` and `yield` descriptors of 
-actual blocking operations like reading from socket and you can create your own 
+Now you can just replace `input` with `select` and `yield` descriptors of
+actual blocking operations like reading from socket and you can create your own
 asynchronous HTTP application.
 
 ## Python asyncio
-Actually the async/await syntax is present only since Python3.7. Prior to 3.7 
-coroutines were actually written as generators with special annotation attached 
+Actually the async/await syntax is present only since Python3.7. Prior to 3.7
+coroutines were actually written as generators with special annotation attached
 to them.
 
-Python standard library provides us with a ready to use mainloop to run our 
-coroutines as well as a set of convenient awaitable operations covering all the 
-lowest level blocking operations we usually deal with. If you want to learn more 
-about low level async API in Python 
+Python standard library provides us with a ready to use mainloop to run our
+coroutines as well as a set of convenient awaitable operations covering all the
+lowest level blocking operations we usually deal with. If you want to learn more
+about low level async API in Python
 [PEP3156](https://www.python.org/dev/peps/pep-3156/) is a great place to start.
 
-Furthermore, there are a huge number of libraries making use of this low level 
-API. They implement HTTP clients, web frameworks, database drivers and many 
+Furthermore, there are a huge number of libraries making use of this low level
+API. They implement HTTP clients, web frameworks, database drivers and many
 others. My favourite asynchronous libraries in Python are: aiohttp and FastAPI.
 
-In fact, the Python event loop actually runs on futures, also known as promises 
-in other languages. Coroutines are implemented with tasks which are relying on 
-futures, so our implementation is actually simplified. You should remember that 
+In fact, the Python event loop actually runs on futures, also known as promises
+in other languages. Coroutines are implemented with tasks which are relying on
+futures, so our implementation is actually simplified. You should remember that
 when looking into Python sources, so you don’t get confused!
 
-When I first started learning coroutines I had hard times trying to figure out 
-all the strange behaviours myself. It was only the understanding of how things 
-work inside that helped me finally feel it. I hope my explanation will help you 
-not only understand how to use coroutines, but also will let you gain 
-confidence and intuition about how asynchronous programming works. 
+When I first started learning coroutines I had hard times trying to figure out
+all the strange behaviours myself. It was only the understanding of how things
+work inside that helped me finally feel it. I hope my explanation will help you
+not only understand how to use coroutines, but also will let you gain
+confidence and intuition about how asynchronous programming works.
 
 Happy coding!
