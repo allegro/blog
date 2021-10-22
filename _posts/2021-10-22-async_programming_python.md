@@ -133,6 +133,7 @@ def app():
 if __name__ == "__main__":
     app()
 ```
+
 ```
 $ python manual_async_simple.py
 > A
@@ -215,6 +216,7 @@ def app():
 if __name__ == "__main__":
     app()
 ```
+
 ```
 $ python manual_async_with_state.py
 Task queue size 0
@@ -301,6 +303,7 @@ def print_fibonacci(i):
 if __name__ == "__main__":
     print_fibonacci(5)
 ```
+
 ```
 $ python print_fibonnaci.py
 1
@@ -325,6 +328,7 @@ if __name__ == "__main__":
     for f in yield_fibonacci(5):
         print(f)
 ```
+
 ```
 $ python yield_fibonnaci.py
 1
@@ -366,6 +370,7 @@ if __name__ == "__main__":
     for f in wrapper_generator(0, 5):
         print(f)
 ```
+
 ```
 $ python yield_twice.py
 0
@@ -435,6 +440,7 @@ if __name__ == "__main__":
     for f in wrapper_generator():
         print(f)
 ```
+
 ```
 $ python failing_generator.py
 0
@@ -508,6 +514,7 @@ def app():
 if __name__ == "__main__":
     app()
 ```
+
 ```
 $ python yield_based_coroutines.py
 Task queue size 0
@@ -601,6 +608,7 @@ def app():
 if __name__ == "__main__":
     app()
 ```
+
 ```
 $ python yield_based_coroutines.py
 Task queue size 0
