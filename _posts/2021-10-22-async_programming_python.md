@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "How coroutines works internally in Python?"
-author: [tomasz.szwczyk]
+author: [tomasz.szewczyk]
 tags: [tech, python, async, coroutines]
 ---
 
