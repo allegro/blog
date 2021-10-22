@@ -408,6 +408,7 @@ if __name__ == "__main__":
     for f in wrapper_generator():
         print(f)
 ```
+
 ```
 $ python returning_generator.py
 0
