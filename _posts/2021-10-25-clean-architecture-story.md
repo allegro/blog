@@ -79,7 +79,7 @@ Exactly — we do not know yet, all we can say is that it will probably be somet
 Something to discuss with our customer — but this does not prevent us from going forward with our first use case.
 Logic is indeed simple:
 
-```
+```kotlin
 fun getSchedule(scheduleDay: LocalDate): DaySchedule {
   val daySchedule = daySchedulerRepository.get(scheduleDay)
   if (daySchedule != null) {
@@ -100,7 +100,7 @@ like database, UI, framework and so on. Test only business rules, without unnece
 To finish reservation we have to add at least one more use case — one for reservation of a free slot.
 Provided that we re-use existing logic interaction is still simple:
 
-```
+```kotlin
 fun reserve(slotId: SlotId): DaySchedule {
   val daySchedule = getScheduleUseCase.getSchedule(scheduleDay = slotId.day)
 
@@ -164,12 +164,33 @@ executes logic according to the same structure:
 Well, why don’t we make some abstraction for this? Sounds like a crazy idea? Let‘s check!
 Based on our code and diagram above we can identify UseCase abstraction — something that takes some input
 (domain input, to be precise) and converts it to a (domain) output.
+
+```kotlin
+interface UseCase<INPUT, OUTPUT> {
+    fun apply(input: INPUT): OUTPUT
+}
+```
+
 ####### [github](https://github.com/michal-kowalcze/clean-architecture-example/commit/006811b49ae4531b96b300c964d3a66d725183bf)
 
 ### Use Case Executor
 Great! We have use cases and I just realized that I would like to have an email in my inbox each  time an exception
 is thrown — and I do not want to depend on a spring-specific mechanism to do this.
 A common UseCaseExecutor will be a great help to address this non-functional requirement.
+
+```kotlin
+class UseCaseExecutor(private val notificationGateway: NotificationGateway) {
+    fun <INPUT, OUTPUT> execute(useCase: UseCase<INPUT, OUTPUT>, input: INPUT): OUTPUT {
+        try {
+            return useCase.apply(input)
+        } catch (e: Exception) {
+            notificationGateway.notify(useCase, e)
+            throw e
+        }
+    }
+}
+```
+
 ####### [github](https://github.com/michal-kowalcze/clean-architecture-example/commit/54d3187aed94427bb60af9781d0eec573c8c8db0)
 
 ### Framework-independent response
@@ -177,25 +198,94 @@ In order to handle the next requirements in our plan we have to change logic a b
 returning spring-specific response entities from the executor itself.
 To make our code reusable in a non-spring world (ktor, anyone?) we separated plain executor from spring specific decorator,
 so that it is possible to easily use this code in other frameworks.
-####### [github](https://github.com/michal-kowalcze/clean-architecture-example/commit/d44f7f993fab2e749e3048561b3ac4d3cff6fd88)`
+
+```kotlin
+data class UseCaseApiResult<API_OUTPUT>(
+    val responseCode: Int,
+    val output: API_OUTPUT,
+)
+
+class SpringUseCaseExecutor(private val useCaseExecutor: UseCaseExecutor) {
+    fun <DOMAIN_INPUT, DOMAIN_OUTPUT, API_OUTPUT> execute(
+        useCase: UseCase<DOMAIN_INPUT, DOMAIN_OUTPUT>,
+        input: DOMAIN_INPUT,
+        toApiConversion: (domainOutput: DOMAIN_OUTPUT) -> UseCaseApiResult<API_OUTPUT>
+    ): ResponseEntity<API_OUTPUT> {
+        return useCaseExecutor.execute(useCase, input, toApiConversion).toSpringResponse()
+    }
+}
+
+private fun <API_OUTPUT> UseCaseApiResult<API_OUTPUT>.toSpringResponse(): ResponseEntity<API_OUTPUT> =
+    ResponseEntity.status(responseCode).body(output)
+```
+####### [github](https://github.com/michal-kowalcze/clean-architecture-example/commit/d44f7f993fab2e749e3048561b3ac4d3cff6fd88)
 
 ### Handle domain exceptions
 Ooops. Our prototype is running and we observe exceptions resulting in HTTP 500 errors.
 It would be nice to convert these to dedicated response codes in a reasonable way yet without using much of spring infrastructure,
-for simplified maintenance (and possible future changes).
+for simplified maintenance (and possible future changes). This can be easily achieved by adding another parameter to use case execution, like:
+
+```kotlin
+class UseCaseExecutor(private val notificationGateway: NotificationGateway) {
+    fun <DOMAIN_INPUT, DOMAIN_OUTPUT> execute(
+        useCase: UseCase<DOMAIN_INPUT, DOMAIN_OUTPUT>,
+        input: DOMAIN_INPUT,
+        toApiConversion: (domainOutput: DOMAIN_OUTPUT) -> UseCaseApiResult<*>,
+        handledExceptions: (ExceptionHandler.() -> Any)? = null,
+    ): UseCaseApiResult<*> {
+
+        try {
+            val domainOutput = useCase.apply(input)
+            return toApiConversion(domainOutput)
+        } catch (e: Exception) {
+            // conceptual logic
+            val exceptionHandler = ExceptionHandler(e)
+            handledExceptions?.let { exceptionHandler.handledExceptions() }
+            return UseCaseApiResult(responseCodeIfExceptionIsHandled, exceptionHandler.message ?: e.message)
+        }
+    }
+}
+```
+####### [github](https://github.com/michal-kowalcze/clean-architecture-example/commit/ac6763f19e2f3f61adc1f8b02bab6cb1e1a65c11)
 
 ### Handle DTO conversion exceptions
-### Audit data modification
-### Audit response codes
+By simply replacing input with:
+
+```kotlin
+inputProvider: Any.() -> DOMAIN_INPUT,
+```
+
+we are able to handle exceptions raised during creation of input domain objects in a uniform way, without any additional try/catches at the endpoint level.
+####### [github](https://github.com/michal-kowalcze/clean-architecture-example/commit/a9ef4bb835977a4bd4a62eb754d8563340bd3d4e)
+
 
 ## The outcome
+
+```kotlin
+@PutMapping("/schedules/{localDate}/{index}", produces = ["application/json"], consumes = ["application/json"])
+fun getSchedules(@PathVariable localDate: String, @PathVariable index: Int): ResponseEntity<*> =
+    useCaseExecutor.execute(
+        useCase = reserveSlotUseCase,
+        inputProvider = { SlotId(LocalDate.parse(localDate), index) },
+        toApiConversion = {
+            val dayScheduleDto = it.toApi()
+            UseCaseApiResult(HttpServletResponse.SC_ACCEPTED, dayScheduleDto)
+        },
+        handledExceptions = {
+            exception(InvalidSlotIndexException::class, UNPROCESSABLE_ENTITY, "INVALID-SLOT-ID")
+            exception(SlotAlreadyReservedException::class, CONFLICT, "SLOT-ALREADY-RESERVED")
+        },
+    )
+```
+
 What is the result of our journey across some functional requirements and a bit more non-functional requirements?
 By looking at the definition of an endpoint we have full documentation of its behaviour, including exceptions.
 Our code is easily portable to some API (e.g. EJB) and we have fully-auditable modifications and we can exchange layers
 quite freely — however — possibility of exchanging layers is something that is available in the hexagonal architecture
 as well.
+Also analysis of whole service is simplified, as possible use cases are explicitely stated.
 
-A simple evaluation of our solution with architecture measures from the beginning:
+A simple evaluation of our solution with measures mentioned at the beginning:
 
 | Aspect | Evaluation | Has advantage |
 | ----------- | ----------- | ----------- |
@@ -205,6 +295,7 @@ A simple evaluation of our solution with architecture measures from the beginnin
 | Maintenance | Entry threshold might be lower compared to hexagonal approach, as service is separated horizontally (into layers) and vertically (into use cases with common domain model). | ✔ |
 | Keeping options open | Similar to hexagonal architecture approach. | |
 
-**TL;DR** it is like hexagonal architecture with one additional dimension, composed of use cases,
+## TL;DR
+It is like hexagonal architecture with one additional dimension, composed of use cases,
 giving better insight into operations of a system and streamlining development and maintenance.
 Solution, that was created during this narrative allows for creation of a self-documenting API endpoint.
