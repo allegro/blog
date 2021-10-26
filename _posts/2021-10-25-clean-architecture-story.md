@@ -218,12 +218,14 @@ class SpringUseCaseExecutor(private val useCaseExecutor: UseCaseExecutor) {
 private fun <API_OUTPUT> UseCaseApiResult<API_OUTPUT>.toSpringResponse(): ResponseEntity<API_OUTPUT> =
     ResponseEntity.status(responseCode).body(output)
 ```
+
 ####### [github](https://github.com/michal-kowalcze/clean-architecture-example/commit/d44f7f993fab2e749e3048561b3ac4d3cff6fd88)
 
 ### Handle domain exceptions
 Ooops. Our prototype is running and we observe exceptions resulting in HTTP 500 errors.
 It would be nice to convert these to dedicated response codes in a reasonable way yet without using much of spring infrastructure,
-for simplified maintenance (and possible future changes). This can be easily achieved by adding another parameter to use case execution, like:
+for simplified maintenance (and possible future changes). This can be easily achieved by adding another parameter to use
+case execution, like:
 
 ```kotlin
 class UseCaseExecutor(private val notificationGateway: NotificationGateway) {
@@ -246,6 +248,7 @@ class UseCaseExecutor(private val notificationGateway: NotificationGateway) {
     }
 }
 ```
+
 ####### [github](https://github.com/michal-kowalcze/clean-architecture-example/commit/ac6763f19e2f3f61adc1f8b02bab6cb1e1a65c11)
 
 ### Handle DTO conversion exceptions
@@ -255,9 +258,9 @@ By simply replacing input with:
 inputProvider: Any.() -> DOMAIN_INPUT,
 ```
 
-we are able to handle exceptions raised during creation of input domain objects in a uniform way, without any additional try/catches at the endpoint level.
+we are able to handle exceptions raised during creation of input domain objects in a uniform way,
+without any additional try/catches at the endpoint level.
 ####### [github](https://github.com/michal-kowalcze/clean-architecture-example/commit/a9ef4bb835977a4bd4a62eb754d8563340bd3d4e)
-
 
 ## The outcome
 
@@ -287,13 +290,23 @@ Also analysis of whole service is simplified, as possible use cases are explicit
 
 A simple evaluation of our solution with measures mentioned at the beginning:
 
-| Aspect | Evaluation | Has advantage |
-| ----------- | ----------- | ----------- |
-| Development | UseCase abstraction forces unification of approach across different teams in a more significant way than standard service approach. | ✔ |
-| Deployment  | Not considered in scope of this post. | |
-| Operation   | Use case-based approach reveals operation of the system, which reduces learning curve for both development and maintenance. | ✔ |
-| Maintenance | Entry threshold might be lower compared to hexagonal approach, as service is separated horizontally (into layers) and vertically (into use cases with common domain model). | ✔ |
-| Keeping options open | Similar to hexagonal architecture approach. | |
+### Development
+UseCase abstraction forces unification of approach across different teams in a more significant way than
+standard service approach.
+
+### Deployment
+We did not consider deployment in our example. It certainly is not going to be different/harder than in case of
+hexagonal architecture.
+
+### Operation
+Use case-based approach reveals operation of the system, which reduces learning curve for both development and maintenance.
+
+### Maintenance
+Entry threshold might be lower compared to hexagonal approach, as service is separated horizontally (into layers)
+and vertically (into use cases with common domain model).
+
+### Keeping options open
+Similar to hexagonal architecture approach.
 
 ## TL;DR
 It is like hexagonal architecture with one additional dimension, composed of use cases,
