@@ -24,7 +24,7 @@ From UI standpoint it consists of four parts:
 * a submit button
 * a dropdown with a list of suggestions
 
-![Component Breakdown](/img/articles/2021-08-17-refactoring-opbox-search/component-breakdown.png "Component Breakdown")
+![Component Breakdown](/img/articles/2021-10-26-refactoring-opbox-search/component-breakdown.png "Component Breakdown")
 
 Functionality-wise, whenever a user clicks/taps into the input or types a search phrase, a dropdown with a list of
 suggestions shows up and the user can navigate through by using keyboard/mouse/touchscreen. The suggestion list
@@ -304,7 +304,7 @@ With that, our functional requirement is implemented.
 Reapplying the above principles and techniques to develop the remaining functional requirements, we ended up with a
 solution that can be illustrated as follows:
 
-![Architecture Diagram](/img/articles/2021-08-17-refactoring-opbox-search/architecture-diagram.png "Architecture Diagram")
+![Architecture Diagram](/img/articles/2021-10-26-refactoring-opbox-search/architecture-diagram.png "Architecture Diagram")
 
 Were we able to meet our expectations? At the end of the day, after careful problem analysis, testing out POCs and
 development preparations, the implementation process itself went quite smoothly. Multiple people participated and
