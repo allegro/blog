@@ -7,11 +7,11 @@ tags: [tech, architecture, clean-architecture, ddd, kotlin]
 #### a.k.a. all these abstractions
 
 ## Preface
-[Clean Architecture](https://www.goodreads.com/book/show/18043011-clean-architecture) was published in 2017
-and since then concept
-with the same name surfaces in one place or another. In this post I would like to introduce this concept — as a story.
+[Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) concept is around
+for quite a long time and this topic surfaces in one place or another.
+In this post I would like to introduce this topic in a bit different way compared to what I have found: as a story.
 Starting with a customer and going through various stages to present a solution that is clean-enough to satisfy concepts
-from aforementioned book.
+from aforementioned blog (or book with the same name).
 
 I will be using code snippets to illustrate concepts, with links to github commits containing changes for the example project.
 
