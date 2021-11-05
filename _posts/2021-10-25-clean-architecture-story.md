@@ -39,7 +39,8 @@ Is it something you are able to deliver?”
 “Of course!” — what else could a young, promising programmer answer?
 
 ## The falstart
-The customer needs a database, so what can we start with? An ERD, of course! We can identify entities with ease:
+The customer needs a database, so what can we start with? The database schema, of course!
+We can identify entities with ease:
 a transport slot, a schedule, an user (we need some authentication, right?), a … something?
 Ok, perhaps it is not the easiest way.
 So why don’t we start with something else?
