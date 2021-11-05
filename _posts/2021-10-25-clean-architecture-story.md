@@ -7,13 +7,13 @@ tags: [tech, architecture, clean-architecture, ddd, kotlin]
 #### a.k.a. all these abstractions
 
 ## Preface
-[Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) concept is around
-for quite a long time and this topic surfaces in one place or another.
+[Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) concept has been around
+for quite a long time and keeps surfacing in one place or another.
 In this post I would like to introduce this topic in a bit different way compared to what I have found: as a story.
-Starting with a customer and going through various stages to present a solution that is clean-enough to satisfy concepts
+Starting with a customer's need and going through various stages to present a solution that is clean-enough to satisfy concepts
 from aforementioned blog (or book with the same name).
 
-I will be using code snippets to illustrate concepts, with links to github commits containing changes for the example project.
+I will be using code snippets to illustrate concepts, with links to GitHub commits containing changes for the example project.
 
 ## The perspective
 Why do we need software architecture? What is it anyway? The extensive definition can be found in a place a bit unexpected
@@ -24,7 +24,7 @@ in the principles of its design and evolution. (Source: ISO/IEC/IEEE 42010:2011)
 * The structure of components, their inter-relationships, and the principles and guidelines governing their design
 and evolution over time.
 
-And what do we need such a governing structure or shape? Basically it allows us to make cost/time-efficient choices
+And what do we need such a governing structure or shape for? Basically it allows us to make cost/time-efficient choices
 when it comes to development. And deployment. And operation. And maintenance.
 
 Also it allows us to keep as many options open as possible, so our future choices are not limited by an overcommitment
