@@ -90,10 +90,11 @@ fun getSchedule(scheduleDay: LocalDate): DaySchedule {
 }
 ```
 
+(full commit: [GitHub](https://github.com/michal-kowalcze/clean-architecture-example/commit/6dfeee53554a4ccf37e81aa50a2bd24af7e02cce))
+
 However, we identified a hidden assumption regarding the schedule definition — and we can test retrieval of
 a schedule — with definition of schedule creator if required — without any irrelevant details,
 like database, UI, framework and so on. Test only business rules, without unnecessary details.
-####### [github](https://github.com/michal-kowalcze/clean-architecture-example/commit/6dfeee53554a4ccf37e81aa50a2bd24af7e02cce)
 
 ## Reserve slot
 To finish reservation we have to add at least one more use case — one for reservation of a free slot.
@@ -109,10 +110,11 @@ fun reserve(slotId: SlotId): DaySchedule {
 }
 ```
 
+(full commit: [GitHub](https://github.com/michal-kowalcze/clean-architecture-example/commit/7b7961b28107c3c89d40ce69a8383bf9f32337b0))
+
 And, as we can see — the slot reservation business rule (and constraint) is implemented at the domain model
 itself — so we are safe, that any other interaction, any other use case, is not going to break these rules.
 We can also  test these rules without any use case involved.
-####### [github](https://github.com/michal-kowalcze/clean-architecture-example/commit/7b7961b28107c3c89d40ce69a8383bf9f32337b0)
 
 ## Where is the “Clean Architecture”?
 Let‘s stop with business logic for a moment. We created quite thoughtful, extensible code for sure,
@@ -142,7 +144,20 @@ Where to put this simple implementation of the schedule creator — for now doma
 Are we going to put implementation of this interface to the infrastructure package and treat it
 as something outside the domain? Certainly not! It is simple but this is part of the domain itself,
 we simply replace interface with class specification.
-####### [github](https://github.com/michal-kowalcze/clean-architecture-example/commit/2792fc31e98d76a610561636f03073dee73fbb47)
+
+```kotlin
+package eu.kowalcze.michal.arch.clean.example.domain.model
+
+class DayScheduleCreator {
+    fun create(scheduleDay: LocalDate): DaySchedule = DaySchedule(
+        scheduleDay,
+        createStandardSlots()
+    )
+//...
+}
+```
+
+(full commit: [GitHub](https://github.com/michal-kowalcze/clean-architecture-example/commit/2792fc31e98d76a610561636f03073dee73fbb47))
 
 ## The prototype
 I will not be original here — for the first prototype version the REST API sounds like something reasonable.
@@ -153,7 +168,24 @@ of course.
 What is important at this stage? We are introducing A-P-I — this is a separate layer,
 so it is crucial to ensure that domain classes are not exposed to the outside world — and that we do not
 introduce dependency to API into the domain.
-####### [github](https://github.com/michal-kowalcze/clean-architecture-example/commit/b1d1c3fe3901d9328bdfaf560331d35131f8224b)
+
+```kotlin
+package eu.kowalcze.michal.arch.clean.example.api
+
+@Controller
+class GetScheduleEndpoint(private val getScheduleUseCase: GetScheduleUseCase) {
+
+    @GetMapping("/schedules/{localDate}")
+    fun getSchedules(@PathVariable localDate: String): DayScheduleDto {
+        val scheduleDay = LocalDate.parse(localDate)
+        val daySchedule = getScheduleUseCase.getSchedule(scheduleDay)
+        return daySchedule.toApi()
+    }
+
+}
+```
+
+(full commit: [GitHub](https://github.com/michal-kowalcze/clean-architecture-example/commit/b1d1c3fe3901d9328bdfaf560331d35131f8224b))
 
 ## The abstractions
 ### Use Case
@@ -172,7 +204,7 @@ interface UseCase<INPUT, OUTPUT> {
 }
 ```
 
-####### [github](https://github.com/michal-kowalcze/clean-architecture-example/commit/006811b49ae4531b96b300c964d3a66d725183bf)
+(full commit: [GitHub](https://github.com/michal-kowalcze/clean-architecture-example/commit/006811b49ae4531b96b300c964d3a66d725183bf))
 
 ### Use Case Executor
 Great! We have use cases and I just realized that I would like to have an email in my inbox each  time an exception
@@ -192,7 +224,7 @@ class UseCaseExecutor(private val notificationGateway: NotificationGateway) {
 }
 ```
 
-####### [github](https://github.com/michal-kowalcze/clean-architecture-example/commit/54d3187aed94427bb60af9781d0eec573c8c8db0)
+(full commit: [GitHub](https://github.com/michal-kowalcze/clean-architecture-example/commit/54d3187aed94427bb60af9781d0eec573c8c8db0))
 
 ### Framework-independent response
 In order to handle the next requirements in our plan we have to change the logic a bit — add the possibility of
@@ -220,7 +252,7 @@ private fun <API_OUTPUT> UseCaseApiResult<API_OUTPUT>.toSpringResponse(): Respon
     ResponseEntity.status(responseCode).body(output)
 ```
 
-####### [github](https://github.com/michal-kowalcze/clean-architecture-example/commit/d44f7f993fab2e749e3048561b3ac4d3cff6fd88)
+(full commit: [GitHub](https://github.com/michal-kowalcze/clean-architecture-example/commit/d44f7f993fab2e749e3048561b3ac4d3cff6fd88))
 
 ### Handle domain exceptions
 Ooops. Our prototype is running and we observe exceptions resulting in HTTP 500 errors.
@@ -250,7 +282,7 @@ class UseCaseExecutor(private val notificationGateway: NotificationGateway) {
 }
 ```
 
-####### [github](https://github.com/michal-kowalcze/clean-architecture-example/commit/ac6763f19e2f3f61adc1f8b02bab6cb1e1a65c11)
+(full commit: [GitHub](https://github.com/michal-kowalcze/clean-architecture-example/commit/ac6763f19e2f3f61adc1f8b02bab6cb1e1a65c11))
 
 ### Handle DTO conversion exceptions
 By simply replacing input with:
@@ -259,9 +291,10 @@ By simply replacing input with:
 inputProvider: Any.() -> DOMAIN_INPUT,
 ```
 
+(full commit: [GitHub](https://github.com/michal-kowalcze/clean-architecture-example/commit/a9ef4bb835977a4bd4a62eb754d8563340bd3d4e))
+
 we are able to handle exceptions raised during creation of input domain objects in a uniform way,
 without any additional try/catches at the endpoint level.
-####### [github](https://github.com/michal-kowalcze/clean-architecture-example/commit/a9ef4bb835977a4bd4a62eb754d8563340bd3d4e)
 
 ## The outcome
 
