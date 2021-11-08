@@ -41,12 +41,12 @@ Is it something you are able to deliver?”
 ## The falstart
 The customer needs a database, so what can we start with? The database schema, of course!
 We can identify entities with ease:
-a transport slot, a schedule, an user (we need some authentication, right?), a … something?
-Ok, perhaps it is not the easiest way.
+a transport slot, a schedule, a user (we need some authentication, right?), a … something?
+Okay, perhaps it is not the easiest way.
 So why don’t we start with something else?
 
 Let’s choose technology! Let’s go into React frontend, Java+Spring backend, some SQL as persistence.
-To present a clickable version to our customer we need some warmup work to set-up an environment,
+To present a clickable version to our customer we need some warm-up work to set-up an environment,
 create a deployable service version or GUI mockups, configure persistence and so on.
 In general to pay attention to technical details — a necessary code to set-up something working,
 of which non-devs are usually not aware.
@@ -54,7 +54,7 @@ It simply has to be done before we start talking about nitty-gritty for business
 
 ## The use-case-driven approach
 What if instead of starting with what we already know — how to visualize relationships,
-how to build a web-system — we started with what we do not know? Simply — by asking questions like:
+how to build a web-system — we started with what we didn’t know? Simply — by asking questions like:
 How is the system going to be used? By whom?
 
 ## Use cases
@@ -69,7 +69,7 @@ Hmm, I think that it would be good to get the current schedule in the first plac
 Why am I using “get” instead of “display”? “Display” already suggests a way of delivering output,
 hearing “display” a computer screen comes to our minds,
 with a web application. Single page web app, of course.
-“Get” is more neutral, it does not constraint our vision by a specific presentation method.
+“Get” is more neutral, it does not constrain our vision by a specific presentation method.
 Frankly — is there anything wrong with delivering the current schedule over the phone, for example?
 
 ### Get schedule
@@ -93,7 +93,7 @@ fun getSchedule(scheduleDay: LocalDate): DaySchedule {
 }
 ```
 
-However, we identified a hidden assumption regarding schedule definition — and we can test retrieval of
+However, we identified a hidden assumption regarding the schedule definition — and we can test retrieval of
 a schedule — with definition of schedule creator if required — without any irrelevant details,
 like database, UI, framework and so on. Test only business rules, without unnecessary details.
 ####### [github](https://github.com/michal-kowalcze/clean-architecture-example/commit/6dfeee53554a4ccf37e81aa50a2bd24af7e02cce)
@@ -131,7 +131,7 @@ A kind of reservation system! It is not yet another domain service with some met
 with possible uses — class list itself describes what the system can do.
 
 ## The first assumption
-We have a mocked implementation as the schedule creator. It is ok to test logic at the unit test level,
+We have a mocked implementation as the schedule creator. It is OK to test logic at the unit test level,
 but not enough to run a prototype.
 After a short call we know more — there will be six slots, two hours each, starting at 8:oo a.m.
 
@@ -139,7 +139,7 @@ We also know that this algorithm for shifts generation is very, very simple and 
 (e.g. to accommodate for holidays, etc.).
 All this later, now we are in the prototype stage and we know that this is not going to be a problem for us.
 
-Where to put this simple implementation of schedule creator — for now domain used an interface for that.
+Where to put this simple implementation of the schedule creator — for now domain used an interface for that.
 Are we going to put implementation of this interface to the infrastructure package and treat it
 as something outside the domain? Certainly not! It is simple but this is part of the domain itself,
 we simply replace interface with class specification.
@@ -153,7 +153,7 @@ of course.
 
 What is important at this stage? We are introducing A-P-I — this is a separate layer,
 so it is quite important to ensure that domain classes are not exposed to the outside world — and that we do not
-introduce dependency to api into the domain.
+introduce dependency to API into the domain.
 ####### [github](https://github.com/michal-kowalcze/clean-architecture-example/commit/b1d1c3fe3901d9328bdfaf560331d35131f8224b)
 
 ## The abstractions
@@ -196,10 +196,10 @@ class UseCaseExecutor(private val notificationGateway: NotificationGateway) {
 ####### [github](https://github.com/michal-kowalcze/clean-architecture-example/commit/54d3187aed94427bb60af9781d0eec573c8c8db0)
 
 ### Framework-independent response
-In order to handle the next requirements in our plan we have to change logic a bit — add the possibility of
+In order to handle the next requirements in our plan we have to change the logic a bit — add the possibility of
 returning spring-specific response entities from the executor itself.
 To make our code reusable in a non-spring world (ktor, anyone?) we separated plain executor from spring specific decorator,
-so that it is possible to easily use this code in other frameworks.
+so that it is possible to use this code easily in other frameworks.
 
 ```kotlin
 data class UseCaseApiResult<API_OUTPUT>(
@@ -313,4 +313,4 @@ Similar to hexagonal architecture approach.
 ## TL;DR
 It is like hexagonal architecture with one additional dimension, composed of use cases,
 giving better insight into operations of a system and streamlining development and maintenance.
-Solution, that was created during this narrative allows for creation of a self-documenting API endpoint.
+Solution that was created during this narrative allows for creation of a self-documenting API endpoint.
