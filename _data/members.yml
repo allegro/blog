@@ -676,9 +676,10 @@ jon.skeet:
 
 michal.kowalcze:
     name: Michał Kowalcze
+    bio: 'Software engineer interested in products that customers and developers love. At Allegro, he works as a development team leader (Allegro Biznes area).'
     twitter: michal_kowalcze
     github: michal-kowalcze
-    bio: Software engineer interested in products that customers and developers love.
+    linkedin: michalkowalcze
 
 tomasz.lelek:
     name: Tomasz Lelek
@@ -693,4 +694,3 @@ volodymyr.khytskyi:
     twitter: vkhytskyi
     github: vladmyr
     linkedin: volodymyrkhytskyi
-
