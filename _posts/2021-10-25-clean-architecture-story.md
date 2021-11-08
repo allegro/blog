@@ -4,20 +4,15 @@ title: "Clean Architecture Story"
 author: [michal.kowalcze]
 tags: [tech, architecture, clean-architecture, ddd, kotlin]
 ---
-#### a.k.a. all these abstractions
-
-## Preface
 [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) concept has been around
-for quite a long time and keeps surfacing in one place or another.
-In this post I would like to introduce this topic in a bit different way compared to what I have found: as a story.
-Starting with a customer's need and going through various stages to present a solution that is clean-enough to satisfy concepts
+for some time and keeps surfacing in one place or another, yet it is not widely adopted.
+In this post I would like to introduce this topic in a bit different way:
+starting with customer's needs and going through various stages to present a solution that is clean-enough to satisfy concepts
 from aforementioned blog (or book with the same name).
-
-I will be using code snippets to illustrate concepts, with links to GitHub commits containing changes for the example project.
 
 ## The perspective
 Why do we need software architecture? What is it anyway? The extensive definition can be found in a place a bit unexpected
-for an agile world — an enterprise-architecture definition from TOGAF:
+for an agile world — an enterprise-architecture definition from [TOGAF](https://en.wikipedia.org/wiki/The_Open_Group_Architecture_Framework):
 
 * The fundamental concepts or properties of a system in its environment embodied in its elements, relationships, and
 in the principles of its design and evolution. (Source: ISO/IEC/IEEE 42010:2011)
@@ -34,7 +29,8 @@ So — we have our perspective defined. Let’s dive into a real-world problem!
 
 ## The challenge
 You are a young, promising programmer sitting in a dorm and one afternoon a stranger appears.
-“I need a database that will allow reservation of slots for transporting furniture from a group of shops.
+“I run a small company that delivers packages from furniture shops to customers.
+I need a database that will allow reservation of slots.
 Is it something you are able to deliver?”
 “Of course!” — what else could a young, promising programmer answer?
 
@@ -133,11 +129,13 @@ with possible uses — class list itself describes what the system can do.
 ## The first assumption
 We have a mocked implementation as the schedule creator. It is OK to test logic at the unit test level,
 but not enough to run a prototype.
-After a short call we know more — there will be six slots, two hours each, starting at 8:oo a.m.
 
-We also know that this algorithm for shifts generation is very, very simple and it is going to be changed soon
+After a short call with our customer we know more about daily schedule — there are six slots, two hours each,
+starting at 8:oo a.m.
+We also know that this recipe for daily schedule is very, very simple and it is going to be changed soon
 (e.g. to accommodate for holidays, etc.).
-All this later, now we are in the prototype stage and we know that this is not going to be a problem for us.
+All these issues will be solved later, now we are in the prototype stage and our desired outcome
+is to have a working demo for our stranger.
 
 Where to put this simple implementation of the schedule creator — for now domain used an interface for that.
 Are we going to put implementation of this interface to the infrastructure package and treat it
@@ -148,11 +146,11 @@ we simply replace interface with class specification.
 ## The prototype
 I will not be original here — for the first prototype version the REST API sounds like something reasonable.
 Do we care about other infrastructure at the moment? Persistence? No! In the previous commits a map-based persistence
-is used for unit tests and this solution is good enough to start with. As long as the system will not be restarted,
+is used for unit tests and this solution is good enough to start with. As long as the system is not restarted,
 of course.
 
 What is important at this stage? We are introducing A-P-I — this is a separate layer,
-so it is quite important to ensure that domain classes are not exposed to the outside world — and that we do not
+so it is crucial to ensure that domain classes are not exposed to the outside world — and that we do not
 introduce dependency to API into the domain.
 ####### [github](https://github.com/michal-kowalcze/clean-architecture-example/commit/b1d1c3fe3901d9328bdfaf560331d35131f8224b)
 
@@ -164,7 +162,7 @@ executes logic according to the same structure:
 ![Use case flow](/img/articles/2021-10-25-clean-architecture-story/use_case_flow.png)
 
 Well, why don’t we make some abstraction for this? Sounds like a crazy idea? Let‘s check!
-Based on our code and diagram above we can identify UseCase abstraction — something that takes some input
+Based on our code and diagram above we can identify `UseCase` abstraction — something that takes some input
 (domain input, to be precise) and converts it to a (domain) output.
 
 ```kotlin
@@ -178,7 +176,7 @@ interface UseCase<INPUT, OUTPUT> {
 ### Use Case Executor
 Great! We have use cases and I just realized that I would like to have an email in my inbox each  time an exception
 is thrown — and I do not want to depend on a spring-specific mechanism to do this.
-A common UseCaseExecutor will be a great help to address this non-functional requirement.
+A common `UseCaseExecutor` will be a great help to address this non-functional requirement.
 
 ```kotlin
 class UseCaseExecutor(private val notificationGateway: NotificationGateway) {
@@ -285,7 +283,8 @@ fun getSchedules(@PathVariable localDate: String, @PathVariable index: Int): Res
 
 What is the result of our journey across some functional requirements and a bit more non-functional requirements?
 By looking at the definition of an endpoint we have full documentation of its behaviour, including exceptions.
-Our code is easily portable to some API (e.g. EJB) and we have fully-auditable modifications and we can exchange layers
+Our code is easily portable to some different API (e.g. EJB), we have fully-auditable modifications,
+and we can exchange layers
 quite freely — however — possibility of exchanging layers is something that is available in the hexagonal architecture
 as well.
 Also analysis of whole service is simplified, as possible use cases are explicitely stated.
