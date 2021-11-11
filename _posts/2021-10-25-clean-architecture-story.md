@@ -7,8 +7,8 @@ tags: [tech, architecture, clean-architecture, ddd, kotlin]
 [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) concept has been around
 for some time and keeps surfacing in one place or another, yet it is not widely adopted.
 In this post I would like to introduce this topic in a less conventional way:
-starting with customer's needs and going through various stages to present a solution that is clean-enough to satisfy concepts
-from aforementioned blog (or book with the same name).
+starting with customer’s needs and going through various stages to present a solution that is clean-enough to satisfy concepts
+from the aforementioned blog (or book with the same name).
 
 
 ## The perspective
@@ -43,9 +43,9 @@ Okay, perhaps it is not the easiest way.
 So why don’t we start with something else?
 
 Let’s choose technology! Let’s go into React frontend, Java+Spring backend, some SQL as persistence.
-To present a clickable version to our customer we need some warm-up work to set-up an environment,
+To present a clickable version to our customer we need some warm-up work to set up an environment,
 create a deployable service version or GUI mockups, configure persistence and so on.
-In general to pay attention to technical details — a necessary code to set-up something working,
+In general to pay attention to technical details — a necessary code to set up something working,
 of which non-devs are usually not aware.
 It simply has to be done before we start talking about nitty-gritty for business logic.
 
@@ -135,7 +135,7 @@ but not enough to run a prototype.
 
 After a short call with our customer we know more about daily schedule — there are six slots, two hours each,
 starting at 8:oo a.m.
-We also know that this recipe for daily schedule is very, very simple and it is going to be changed soon
+We also know that this recipe for the daily schedule is very, very simple and it is going to be changed soon
 (e.g. to accommodate for holidays, etc.).
 All these issues will be solved later, now we are in the prototype stage and our desired outcome
 is to have a working demo for our stranger.
@@ -326,7 +326,7 @@ Also analysis of whole service is simplified, as possible use cases are explicit
 A simple evaluation of our solution with measures mentioned at the beginning:
 
 ### Development
-UseCase abstraction forces unification of approach across different teams in a more significant way than
+`UseCase` abstraction forces unification of approach across different teams in a more significant way than
 standard service approach.
 
 ### Deployment
