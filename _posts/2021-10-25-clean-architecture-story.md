@@ -298,6 +298,14 @@ without any additional try/catches at the endpoint level.
 
 ## The outcome
 
+What is the result of our journey across some functional requirements and a bit more non-functional requirements?
+By looking at the definition of an endpoint we have full documentation of its behaviour, including exceptions.
+Our code is easily portable to some different API (e.g. EJB), we have fully-auditable modifications,
+and we can exchange layers
+quite freely — however — possibility of exchanging layers is something that is available in the hexagonal architecture
+as well.
+Also analysis of whole service is simplified, as possible use cases are explicitely stated.
+
 ```kotlin
 @PutMapping("/schedules/{localDate}/{index}", produces = ["application/json"], consumes = ["application/json"])
 fun getSchedules(@PathVariable localDate: String, @PathVariable index: Int): ResponseEntity<*> =
@@ -315,35 +323,23 @@ fun getSchedules(@PathVariable localDate: String, @PathVariable index: Int): Res
     )
 ```
 
-What is the result of our journey across some functional requirements and a bit more non-functional requirements?
-By looking at the definition of an endpoint we have full documentation of its behaviour, including exceptions.
-Our code is easily portable to some different API (e.g. EJB), we have fully-auditable modifications,
-and we can exchange layers
-quite freely — however — possibility of exchanging layers is something that is available in the hexagonal architecture
-as well.
-Also analysis of whole service is simplified, as possible use cases are explicitely stated.
+(repository: [GitHub](https://github.com/michal-kowalcze/clean-architecture-example))
 
 A simple evaluation of our solution with measures mentioned at the beginning:
 
-### Development
-`UseCase` abstraction forces unification of approach across different teams in a more significant way than
-standard service approach.
+| Syntax | Description |
+| --- | ----------- |
+| Development | `UseCase` abstraction forces unification of approach across different teams in a more significant way than standard service approach. |
+| Deployment | We did not consider deployment in our example. It certainly is not going to be different/harder than in case of hexagonal architecture. |
+| Operation | Use case-based approach reveals operation of the system, which reduces learning curve for both development and maintenance. |
+| Maintenance | Entry threshold might be lower compared to hexagonal approach, as service is separated horizontally (into layers) and vertically (into use cases with common domain model). |
+| Keeping options open | Similar to hexagonal architecture approach. |
 
-### Deployment
-We did not consider deployment in our example. It certainly is not going to be different/harder than in case of
-hexagonal architecture.
 
-### Operation
-Use case-based approach reveals operation of the system, which reduces learning curve for both development and maintenance.
 
-### Maintenance
-Entry threshold might be lower compared to hexagonal approach, as service is separated horizontally (into layers)
-and vertically (into use cases with common domain model).
-
-### Keeping options open
-Similar to hexagonal architecture approach.
-
-## TL;DR
+### TL;DR
 It is like hexagonal architecture with one additional dimension, composed of use cases,
 giving better insight into operations of a system and streamlining development and maintenance.
 Solution that was created during this narrative allows for creation of a self-documenting API endpoint.
+
+### Architecture diagram
