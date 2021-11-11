@@ -10,7 +10,6 @@ In this post I would like to introduce this topic in a less conventional way:
 starting with customer’s needs and going through various stages to present a solution that is clean-enough to satisfy concepts
 from the aforementioned blog (or book with the same name).
 
-
 ## The perspective
 Why do we need software architecture? What is it anyway? The extensive definition can be found in a place a bit unexpected
 for an agile world — an enterprise-architecture definition from [TOGAF](https://en.wikipedia.org/wiki/The_Open_Group_Architecture_Framework):
@@ -335,11 +334,7 @@ A simple evaluation of our solution with measures mentioned at the beginning:
 | Maintenance | Entry threshold might be lower compared to hexagonal approach, as service is separated horizontally (into layers) and vertically (into use cases with common domain model). |
 | Keeping options open | Similar to hexagonal architecture approach. |
 
-
-
 ### TL;DR
 It is like hexagonal architecture with one additional dimension, composed of use cases,
 giving better insight into operations of a system and streamlining development and maintenance.
 Solution that was created during this narrative allows for creation of a self-documenting API endpoint.
-
-### Architecture diagram
