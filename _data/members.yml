@@ -20,10 +20,11 @@ rafal.glowinski:
 
 michal.kosmulski:
     name: Michał Kosmulski
-    bio: Michał is interested in all things high-performance, whether it be low-level stuff like analyzing how OS caches affect I/O operations or high-level like proper application design and functional programming. At Allegro, he works in a team which develops a Pay-per-Click (PPC) advertising system.
+    bio: Michał is interested in all things high-performance, whether it be low-level stuff like analyzing how OS caches affect I/O operations or high-level like proper application design and functional programming. At Allegro, he leads one of the teams which develop our Pay-per-Click (PPC) advertising system, and is the tech blog’s editor-in-chief.
     stackOverflow:
         id: 1224016
         name: Michał Kosmulski
+    linkedin: kosmulski
 
 bartosz.walacik:
     name: Bartosz Walacik
@@ -653,6 +654,16 @@ yevgeniya.li:
     name: Yevgeniya Li
     bio: Software engineer with interests in the world of Machine Learning and BigData. Full of enthusiasm and willing to help, open to new ideas and technologies.
 
+kamil.krysiak:
+    name: Kamil Krysiak
+    bio: Front-end software engineer and enthusiast of new web technologies. So frugal that he built his own keyboard.
+    linkedin: kamil-krysiak-732a0818a
+
+jaroslaw.glegola:
+    name: Jarosław Glegoła
+    bio: Front-end software person. Loves TypeScript so much that he uses it in real life.
+    linkedin: jarosław-glegoła-389382204
+
 mateusz.krzeszowiak:
     name: Mateusz Krzeszowiak
     bio: Webperf Team member. Likes to constantly optimize and improve existing solutions. Finds it hard to stop talking about his work and sharing knowledge.
@@ -670,6 +681,20 @@ tomasz.lelek:
     github: tomekl007
     linkedin: tomaszlelek
 
+volodymyr.khytskyi:
+    name: Volodymyr Khytskyi
+    bio: Senior Frontend Software Engineer with over 10 years in the field. Strives for software correctness and automation. A Rust enthusiast. At Allegro, he works in a team responsible for smooth operation of the home page, search, navigation and everything related.
+    twitter: vkhytskyi
+    github: vladmyr
+    linkedin: volodymyrkhytskyi
+
+marek.walkowiak:
+    name: Marek Walkowiak
+    bio: Just a simple software engineer, who values everlasting concepts over transient frameworks and technologies.
+
+daniel.faderski:
+    name: Daniel Faderski
+    bio: Software engineer interested in distributed systems. Java & Python lover.
 
 piotr.prusinski:
     name: Piotr Prusiński
