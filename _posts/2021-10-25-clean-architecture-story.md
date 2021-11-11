@@ -344,7 +344,7 @@ With all this read we can switch our view to the high-level perspective:
 
 ![The Clean Architecture Diagram](/img/articles/2021-10-25-clean-architecture-story/clean_architecture_diagram.png)
 
-and describe conceptual elements. Starting from the inside we have:
+and describe abstractions. Starting from the inside we have:
 * `Domain Model` and `Services and Gateways`, which are responsible for defining
 business rules for the domain.
 * `UseCase`, which orchestrates execution of business rules.
