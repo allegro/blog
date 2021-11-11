@@ -4,7 +4,7 @@ title: "Clean Architecture Story"
 author: [michal.kowalcze]
 tags: [tech, architecture, clean-architecture, ddd, kotlin]
 ---
-[Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) concept has been around
+[The Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) concept has been around
 for some time and keeps surfacing in one place or another, yet it is not widely adopted.
 In this post I would like to introduce this topic in a less conventional way:
 starting with customer’s needs and going through various stages to present a solution that is clean-enough to satisfy concepts
@@ -326,15 +326,33 @@ fun getSchedules(@PathVariable localDate: String, @PathVariable index: Int): Res
 
 A simple evaluation of our solution with measures mentioned at the beginning:
 
-| Syntax | Description |
-| --- | ----------- |
-| Development | `UseCase` abstraction forces unification of approach across different teams in a more significant way than standard service approach. |
-| Deployment | We did not consider deployment in our example. It certainly is not going to be different/harder than in case of hexagonal architecture. |
-| Operation | Use case-based approach reveals operation of the system, which reduces learning curve for both development and maintenance. |
-| Maintenance | Entry threshold might be lower compared to hexagonal approach, as service is separated horizontally (into layers) and vertically (into use cases with common domain model). |
-| Keeping options open | Similar to hexagonal architecture approach. |
+| Aspect               | Evaluation | Has advantage |
+| :--                  | :--        | :-: |
+| Development          | `UseCase` abstraction forces unification of approach across different teams in a more significant way than standard service approach. | ✓ |
+| Deployment           | We did not consider deployment in our example. It certainly is not going to be different/harder than in case of hexagonal architecture. | |
+| Operation            | Use case-based approach reveals operation of the system, which reduces learning curve for both development and maintenance. | ✓ |
+| Maintenance          | Entry threshold might be lower compared to hexagonal approach, as service is separated horizontally (into layers) and vertically (into use cases with common domain model). | ✓ |
+| Keeping options open | Similar to hexagonal architecture approach. | |
 
 ### TL;DR
 It is like hexagonal architecture with one additional dimension, composed of use cases,
 giving better insight into operations of a system and streamlining development and maintenance.
 Solution that was created during this narrative allows for creation of a self-documenting API endpoint.
+
+## High-level overview
+With all this read we can switch our view to the high-level perspective:
+
+![The Clean Architecture Diagram](/img/articles/2021-10-25-clean-architecture-story/clean_architecture_diagram.png)
+
+and describe conceptual elements. Starting from the inside we have:
+- `Domain Model` and `Services and Gateways`, which are responsible for defining
+business rules for the domain.
+- `UseCase`, which orchestrates execution of business rules.
+- `UseCaseExecutor` providing common behavior for all use cases.
+- `API` connecting service with the outside world.
+- `Implementation of gateways`, which connects with other services or persistence providers.
+- `Configuration`, responsible for gluing all elements together.
+
+I hope that you enjoy this simple story and find concept of
+[the Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) useful.
+Thank you for reading!
