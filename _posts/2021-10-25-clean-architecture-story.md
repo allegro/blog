@@ -345,13 +345,13 @@ With all this read we can switch our view to the high-level perspective:
 ![The Clean Architecture Diagram](/img/articles/2021-10-25-clean-architecture-story/clean_architecture_diagram.png)
 
 and describe conceptual elements. Starting from the inside we have:
-- `Domain Model` and `Services and Gateways`, which are responsible for defining
+* `Domain Model` and `Services and Gateways`, which are responsible for defining
 business rules for the domain.
-- `UseCase`, which orchestrates execution of business rules.
-- `UseCaseExecutor` providing common behavior for all use cases.
-- `API` connecting service with the outside world.
-- `Implementation of gateways`, which connects with other services or persistence providers.
-- `Configuration`, responsible for gluing all elements together.
+* `UseCase`, which orchestrates execution of business rules.
+* `UseCaseExecutor` providing common behavior for all use cases.
+* `API` connecting service with the outside world.
+* `Implementation of gateways`, which connects with other services or persistence providers.
+* `Configuration`, responsible for gluing all elements together.
 
 I hope that you enjoy this simple story and find concept of
 [the Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) useful.
