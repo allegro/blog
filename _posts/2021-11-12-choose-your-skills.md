@@ -77,15 +77,16 @@ them well?
 ### How to choose skills to improve?
 
 There are many strategies on how to choose skills to develop. All in all, you need to use the right method for the right
-type of skill to get a good result. The first step is to get a mentor. Usually it will be your leader, but it can also be
-an experienced team member e.g. senior. Leaders in Allegro gain their development knowledge from many available training
-sessions. You should find a similar person in your environment. Such a person will help you on your way and will
-simulate your product customer that you will be making. Show him a list of things you should develop. Ask him, which are
-the most important for your team. It is possible that the list of things will become very short. Now just pick 2 or 3
-things and prepare prototypes. You can choose them intuitively or match them with your talents. Just take a Gallup
-test (CliftonStrengths) to discover your talents. This test will help you choose a strategy for developing a particular
-skill. This test will work well for soft skills. For hard skills a [lean startup strategy](https://en.wikipedia.org/wiki/Lean_startup) may be better. Below are two
-examples of how this can look in practice.
+type of skill to get a good result. The first step is to get a mentor. Usually it will be your leader, but it can also
+be an experienced team member e.g. senior. Leaders in Allegro gain their development knowledge from many available
+training sessions. You should find a similar person in your environment. Such a person will help you on your way and
+will simulate your product customer that you will be making. Show him a list of things you should develop. Ask him,
+which are the most important for your team. It is possible that the list of things will become very short. Now just pick
+2 or 3 things and prepare prototypes. You can choose them intuitively or match them with your talents. Just take a
+Gallup test (CliftonStrengths) to discover your talents. This test will help you choose a strategy for developing a
+particular skill. This test will work well for soft skills. For hard skills
+a [lean startup strategy](https://en.wikipedia.org/wiki/Lean_startup) may be better. Below are two examples of how this
+can look in practice.
 
 ### How Gallup test can help you find activities that improve you
 
