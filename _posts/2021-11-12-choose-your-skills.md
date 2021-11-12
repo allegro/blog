@@ -5,7 +5,7 @@ author: [piotr.prusinski]
 tags: [tech, education, skills, startup, lean startup, mvp]
 ---
 
-At some point in your career, you realize that it's time to try to advance through the hierarchy. You think you are
+At some point in your career, you realize that it’s time to try to advance through the hierarchy. You think you are
 doing a good job. You are constantly developing and learning something new. But at the same time, someone you know, with
 much less experience and knowledge than you, has long been higher up the hierarchy than you. Then you ask yourself what is
 wrong with me? In my case, the answer turned out to be a good gathering of expectations concerning my skills and work.
@@ -14,10 +14,10 @@ more valuable to your team, leader or company and how to combine all this, with 
 
 ### How to start the development
 
-As a member of a project team, you want to deliver a fully valuable solution. The key to success is to discover what's
+As a member of a project team, you want to deliver a fully valuable solution. The key to success is to discover what’s
 behind the word valuable to your client. Is it enough to gather requirements? Unfortunately not. To find out you need to
 use a prototyping method, such as an iterative [MVP](https://www.wikipedia.org/wiki/Minimum_viable_product) (Minimum
-Viable Product) approach. For example, you have to paint your daughter's room. You have several choices. You can choose
+Viable Product) approach. For example, you have to paint your daughter’s room. You have several choices. You can choose
 the colour by yourself and paint the room without asking her for her opinion. There is a small chance that she will like
 the colour. So you will make a non-compliant product. You can bring her a sampler and ask her to choose a colour. The
 final colour when applied to the wall may turn out to be different and then the product will also not be as expected.
@@ -25,16 +25,16 @@ You can also ask her about the colour and buy a few samplers, paint a piece of w
 requirements, if yes then paint the whole room with the chosen colour, if not then buy another 5 colours and so on over
 and over until you get it right. This is the MVP process. First you gather requirements, then you prototype, which means
 you make a real product. You present it and receive feedback (you learn) and decide what to do next. You repeat this
-process until you meet the client's expectations. This approach gives you the assurance that you have done exactly what
+process until you meet the client’s expectations. This approach gives you the assurance that you have done exactly what
 was needed. Imagine that your skills and the work you do is a product. We already know that to make a valuable product
 you need to gather requirements and prototype with the client. Your customer who cares most about your work and skills
 is the team, the leader and the company you work for. However, what you do must also suit you. If you want your work and
 your knowledge to be of value to them, you need to gather their requirements first. Then quickly show the result and
-make sure it's what they wanted. Are you probably wondering what this prototyping is for in the case of your work? You
+make sure it’s what they wanted. Are you probably wondering what this prototyping is for in the case of your work? You
 have done some work, it has been accepted and what is there to talk about. There could be lots of reasons, you could
-have spent too much time on it, it's even possible that what you did is wrong. You would have to put in a huge amount of
+have spent too much time on it, it’s even possible that what you did is wrong. You would have to put in a huge amount of
 time and work to improve it, which is why it was accepted as it is. Without prototyping for you, your work will appear
-to be of good quality and in reality the team may not be happy with it. Let's start with requirements gathering.
+to be of good quality and in reality the team may not be happy with it. Let’s start with requirements gathering.
 Unfortunately it is impossible to gather universal requirements for a given position, these requirements are different
 in different companies and even teams. The same person who has certain skills and performs a certain way of work may be
 a senior in one company where in another he or she may be a junior. In one of the companies I worked for, a good
@@ -68,8 +68,8 @@ knowledge looked like this:
 
 I rated each skill on a scale of 1 to 5. Ideally, I would like each skill to be close to a 5. If I rated myself
 somewhere at a 4 and my leader rated me a 3 during calibration, I found out that the requirements for that skill were
-different from I thought. He said there were things I hadn't used yet. To have a 4 at this point I need to know them
-e.g. Cassandra database. With that I learned the first relevant requirement that I didn't know about. After the whole
+different from I thought. He said there were things I hadn’t used yet. To have a 4 at this point I need to know them
+e.g. Cassandra database. With that I learned the first relevant requirement that I didn’t know about. After the whole
 process of gathering requirements in this way, I already knew what I needed to work on. Now all I had to do was select a
 few of them and start working. But how to choose those requirements, which I will implement with passion and actually do
 them well?
@@ -109,7 +109,7 @@ things you should focus on. They are so generic that you can easily match them t
 ![Gallup](/img/articles/2021-07-23-become-a-senior/gallup.png)
 What it looked like in my case. I did the Gallup test, and it came out that I am a learner. I like to learn, and I should
 share knowledge - which should make me happy. Comparing this talent to the list of skills I should develop, I found out
-that I don't share knowledge with others. I decided that a good form of knowledge transfer is to make presentations. I
+that I don’t share knowledge with others. I decided that a good form of knowledge transfer is to make presentations. I
 completed training in making presentations. Thanks to this I had everything, talent and knowledge. I also estimated the
 time for preparation and set a deadline. While preparing, I realized that this knowledge sharing strategy was not for
 me. I finished this presentation and decided to change my knowledge sharing strategy. Quite a change in strategy is
@@ -176,5 +176,5 @@ is with a list of requirements or a list of skills to start talking to your ment
 select a few skills and then choose appropriate strategies for their development. To make it easier for you to choose a
 strategy, do a talent test. Additionally, you can use the startup mvp approach. Ultimately, the key to success is to
 gather requirements from your leader, team or entire company and then show the results as quickly as possible. If the
-chosen skill or strategy doesn't suit you or the feedback collected is strongly constructive don't worry, make a pivot
+chosen skill or strategy doesn’t suit you or the feedback collected is strongly constructive don’t worry, make a pivot
 and choose something else. After a few iterations you will definitely achieve your goal.
