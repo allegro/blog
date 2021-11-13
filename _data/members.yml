@@ -681,7 +681,22 @@ tomasz.lelek:
     github: tomekl007
     linkedin: tomaszlelek
 
+volodymyr.khytskyi:
+    name: Volodymyr Khytskyi
+    bio: Senior Frontend Software Engineer with over 10 years in the field. Strives for software correctness and automation. A Rust enthusiast. At Allegro, he works in a team responsible for smooth operation of the home page, search, navigation and everything related.
+    twitter: vkhytskyi
+    github: vladmyr
+    linkedin: volodymyrkhytskyi
+
+marek.walkowiak:
+    name: Marek Walkowiak
+    bio: Just a simple software engineer, who values everlasting concepts over transient frameworks and technologies.
+
+daniel.faderski:
+    name: Daniel Faderski
+    bio: Software engineer interested in distributed systems. Java & Python lover.
+
 tomasz.szewczyk:
     name: Tomasz Szewczyk
-    bio: JVM software developer with interest in all kind of programming languages. Experiences in electronics, embedded C, Python, Java, Kotlin and JavaScript.
+    bio: JVM software developer with interest in all kind of programming languages. Experienced in electronics, embedded C, Python, Java, Kotlin and JavaScript.
     github: tomaszszewczyk
