@@ -56,9 +56,7 @@ How is the system going to be used? By whom?
 ## Use cases
 In other words — what are the use cases for the system? Let’s define the challenge once more using
 high-level actors and interactions:
-
 ![Use cases](/img/articles/2021-10-25-clean-architecture-story/use_cases.png)
-
 and pick the first required interaction: shop makes a reservation.
 What is required to make a reservation?
 Hmm, I think that it would be good to get the current schedule in the first place.
@@ -113,7 +111,7 @@ fun reserve(slotId: SlotId): DaySchedule {
 
 And, as we can see — the slot reservation business rule (and constraint) is implemented at the domain model
 itself — so we are safe, that any other interaction, any other use case, is not going to break these rules.
-We can also  test these rules without any use case involved.
+We can also test these rules without any use case involved.
 
 ## Where is the “Clean Architecture”?
 Let‘s stop with business logic for a moment. We created quite thoughtful, extensible code for sure,
@@ -121,9 +119,7 @@ but why are we talking about “Clean” architecture?
 We already used Domain-Driven Design and Hexagonal architecture concepts. Is there something more?
 Imagine that another person is going to help us with implementation.
 She is not aware yet and simply would like to take a look at the codebase. And she sees:
-
 ![Use case classes](/img/articles/2021-10-25-clean-architecture-story/use_case_classes.png)
-
 It looks like something to her, doesn‘t it?
 A kind of reservation system! It is not yet another domain service with some methods that have no clear connection
 with possible uses — class list itself describes what the system can do.
@@ -139,7 +135,7 @@ We also know that this recipe for the daily schedule is very, very simple and it
 All these issues will be solved later, now we are in the prototype stage and our desired outcome
 is to have a working demo for our stranger.
 
-Where to put this simple implementation of the schedule creator — for now domain used an interface for that.
+Where to put this simple implementation of the schedule creator? For now domain used an interface for that.
 Are we going to put implementation of this interface to the infrastructure package and treat it
 as something outside the domain? Certainly not! It is simple but this is part of the domain itself,
 we simply replace interface with class specification.
@@ -190,9 +186,7 @@ class GetScheduleEndpoint(private val getScheduleUseCase: GetScheduleUseCase) {
 ### Use Case
 Checking implementation of endpoints (see comments in the code) we can see that conceptually each endpoint
 executes logic according to the same structure:
-
 ![Use case flow](/img/articles/2021-10-25-clean-architecture-story/use_case_flow.png)
-
 Well, why don’t we make some abstraction for this? Sounds like a crazy idea? Let‘s check!
 Based on our code and diagram above we can identify `UseCase` abstraction — something that takes some input
 (domain input, to be precise) and converts it to a (domain) output.
@@ -206,7 +200,7 @@ interface UseCase<INPUT, OUTPUT> {
 (full commit: [GitHub](https://github.com/michal-kowalcze/clean-architecture-example/commit/006811b49ae4531b96b300c964d3a66d725183bf))
 
 ### Use Case Executor
-Great! We have use cases and I just realized that I would like to have an email in my inbox each  time an exception
+Great! We have use cases and I just realized that I would like to have an email in my inbox each time an exception
 is thrown — and I do not want to depend on a spring-specific mechanism to do this.
 A common `UseCaseExecutor` will be a great help to address this non-functional requirement.
 
@@ -300,9 +294,7 @@ without any additional try/catches at the endpoint level.
 What is the result of our journey across some functional requirements and a bit more non-functional requirements?
 By looking at the definition of an endpoint we have full documentation of its behaviour, including exceptions.
 Our code is easily portable to some different API (e.g. EJB), we have fully-auditable modifications,
-and we can exchange layers
-quite freely — however — possibility of exchanging layers is something that is available in the hexagonal architecture
-as well.
+and we can exchange layers quite freely.
 Also analysis of whole service is simplified, as possible use cases are explicitely stated.
 
 ```kotlin
