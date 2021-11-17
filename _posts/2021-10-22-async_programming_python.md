@@ -7,8 +7,8 @@ tags: [tech, python, async, coroutines]
 
 Most of applications we create are basically loops. An average program waits
 for an event, then processes it following some business logic. Afterwards it
-begins waiting for another event to arrive.  Java Servlets works this way too. 
-Popular frameworks such as Spring allow us to only care about the business logic, 
+begins waiting for another event to arrive.  Java Servlets works this way too.
+Popular frameworks such as Spring allow us to only care about the business logic,
 while the framework takes care of the application main loop.
 
 ### The problem with blocking operations
@@ -50,8 +50,8 @@ suddenly gets overcomplicated.
 ### How about we don't block
 Let’s assume you decide threads are too expensive, too cumbersome or they are
 simply not available on your platform, because for example you are writing bare
-metal applications and there is no operating system. When we decide not to use 
-threading we have to keep in mind we cannot afford having any blocking operations 
+metal applications and there is no operating system. When we decide not to use
+threading we have to keep in mind we cannot afford having any blocking operations
 in our application, because they are wasting our resources. Having no threads
 there is no way to use time when something blocks.
 
@@ -67,14 +67,14 @@ very efficient.
 
 ## Low level async API
 Linux and similar operating systems provide us with a convenient API for many
-blocking operations. For example, the `accept` system call is used to get an 
-incoming TCP connection from a queue of pending connections or wait for one 
+blocking operations. For example, the `accept` system call is used to get an
+incoming TCP connection from a queue of pending connections or wait for one
 to show up. You can read more about `accept` in [the Linux manual](https://man7.org/linux/man-pages/man2/accept.2.html).
 
-Similarly `write` and `read` functions, defined by POSIX standard, are used 
-to send and receive data over the created connection. Both can also block 
-waiting for the I/O operation to become possible. You can read more about these 
-functions in Linux manual: [read](https://man7.org/linux/man-pages/man2/read.2.html), 
+Similarly `write` and `read` functions, defined by POSIX standard, are used
+to send and receive data over the created connection. Both can also block
+waiting for the I/O operation to become possible. You can read more about these
+functions in Linux manual: [read](https://man7.org/linux/man-pages/man2/read.2.html),
 [write](https://man7.org/linux/man-pages/man3/write.3p.html).
 
 As you may have already noticed, our asynchronous application only makes sense
@@ -82,14 +82,14 @@ when there is only one blocking operation in the whole program. Earlier we
 called it “waiting for an event to happen”. In Linux we can achieve such a
 behaviour using `select` or `poll` system calls. `poll` is basically a more modern
 version of `select`. In practice we can provide them with a set of event
-descriptors and they will block until one of expected events occurs. You can 
-read more about these calls in Linux manual: [select](https://man7.org/linux/man-pages/man2/select.2.html), 
+descriptors and they will block until one of expected events occurs. You can
+read more about these calls in Linux manual: [select](https://man7.org/linux/man-pages/man2/select.2.html),
 [poll](https://man7.org/linux/man-pages/man2/poll.2.html).
 
 ## Select in Python
 This API can be accessed in Python with a convenient wrapper provided by the
-Python standard library. It hides some complicated low level aspects of the 
-operating system API which is good for this article. Read more about 
+Python standard library. It hides some complicated low level aspects of the
+operating system API which is good for this article. Read more about
 `selectors` module in [the Python documentation](https://docs.python.org/3/library/selectors.html#module-selectors).
 
 Basically we can register an event we want to wait for using the `register`
@@ -147,9 +147,9 @@ Processing event B
 Processing event C
 ```
 
-As you can see we create an event loop listening for events (user input), 
+As you can see we create an event loop listening for events (user input),
 then it dispatches the event to the relevant handler. Note how the `input`
-function inside the event loop is the only blocking operation in the whole 
+function inside the event loop is the only blocking operation in the whole
 program.
 
 ### More complex flow of execution
@@ -468,7 +468,7 @@ the generator and again wait for it to happen.
 
 Inside the generator we can have any amount of logic among `yield` expressions as
 long as there are no blocking operations. Basically, we write our logic as if it
-was synchronous code but instead of blocking on some operation we *yield* what we 
+was synchronous code but instead of blocking on some operation we *yield* what we
 are waiting for.
 
 Let’s rewrite the example with tasks waiting for user input using the new
@@ -670,9 +670,9 @@ about low level async API in Python,
 
 Furthermore, there are a huge number of libraries making use of this low level
 API. They implement HTTP clients, web frameworks, database drivers and many
-others. My favourite asynchronous libraries in Python are: 
-asynchronous HTTP client [aiohttp](https://docs.aiohttp.org/en/stable/), 
-web framework [FastAPI](https://fastapi.tiangolo.com/) and 
+others. My favourite asynchronous libraries in Python are:
+asynchronous HTTP client [aiohttp](https://docs.aiohttp.org/en/stable/),
+web framework [FastAPI](https://fastapi.tiangolo.com/) and
 MongoDB driver [Motor](https://motor.readthedocs.io/en/stable/).
 
 In fact, the Python event loop actually runs on futures, also known as promises
