@@ -7,7 +7,7 @@ tags: [tech, architecture, clean-architecture, ddd, kotlin]
 [The Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) concept has been around
 for some time and keeps surfacing in one place or another, yet it is not widely adopted.
 In this post I would like to introduce this topic in a less conventional way:
-starting with customer’s needs and going through various stages to present a solution that is clean-enough to satisfy concepts
+starting with customer’s needs and going through various stages to present a solution that is clean enough to satisfy concepts
 from the aforementioned blog (or book with the same name).
 
 ## The perspective
