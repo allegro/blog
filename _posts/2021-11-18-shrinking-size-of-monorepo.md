@@ -113,12 +113,11 @@ the channel that suits best their working habits (e-mails, instant messaging too
 
 ## Some final thoughts
 
-It took a lump time to prepare the migration, understand the history of the repository and select proper items and 
+It took a lump time to prepare the migration, understand the history of the repository and select proper items and
 strategies for the migration. The links here might be a good starting point if you wanted to rewrite histories of your
 over-weighted repos:
 
-- [GitHub Universe Workshops](https://githubuniverse.com/professional-services-workshop-2-how-to-keep-git-monorepos-mana
-geable/)
+- [GitHub Universe Workshops](https://githubuniverse.com/professional-services-workshop-2-how-to-keep-git-monorepos-manageable/)
 - [git-sizer](https://github.com/github/git-sizer)
 - [git filter-repo](https://github.com/newren/git-filter-repo)
 
