@@ -117,7 +117,8 @@ It took a lump time to prepare the migration, understand the history of the repo
 strategies for the migration. The links here might be a good starting point if you wanted to rewrite histories of your
 over-weighted repos:
 
-- [GitHub Universe Workshops](https://githubuniverse.com/professional-services-workshop-2-how-to-keep-git-monorepos-manageable/)
+- [GitHub Universe Workshops](https://www.youtube.com/watch?v=bk7akV8nyAM) and correspnding 
+[repository](https://github.com/githubuniverseworkshops/grafting-monorepos)
 - [git-sizer](https://github.com/github/git-sizer)
 - [git filter-repo](https://github.com/newren/git-filter-repo)
 
