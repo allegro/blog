@@ -1,8 +1,9 @@
 ---
-layout: post title: Which skills to choose in order to be more valuable author: [piotr.prusinski]
+layout: post
+title: Which skills to choose in order to be more valuable
+author: [piotr.prusinski]
 tags: [tech, education, skills, startup, lean startup, mvp]
 ---
-
 At some point in your career, you realize that it’s time to try to advance through the hierarchy. You think you are
 doing a good job. You are constantly developing and learning something new. But at the same time, someone you know, with
 much less experience and knowledge than you, has long been higher up the hierarchy than you. Then you ask yourself what
