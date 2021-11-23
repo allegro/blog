@@ -4,7 +4,7 @@ title: Moving towards Micronaut
 author: konrad.kaminski
 tags: [tech, backend, performance, micronaut, kotlin, graalvm]
 ---
-[Micronaut](https://micronaut.io) is one of the new application frameworks that have recently sprang up. It promises
+[Micronaut](https://micronaut.io) is one of the new application frameworks that have recently sprung up. It promises
 low memory usage and faster application startup. At [Allegro](https://allegro.tech/) we decided to give it a try. In this article we’ll learn what
 came out of it and if it’s worth considering when creating microservices-based systems.
 
