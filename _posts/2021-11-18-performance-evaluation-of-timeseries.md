@@ -8,23 +8,23 @@ A few years ago, I was working on a new version of Allegro purchase ratings. It 
 in the rating system when we moved this product away from our monolith, also introducing quite significant changes to
 the concept of purchase rating itself. Replacing the system with positive, neutral or negative rating, we introduced
 an approach based on “thumbs up” and “thumbs down” as well as the option to rate several elements of the purchase: the
-time and cost of delivery, or products' conformity with its description. The product-related revolution was accompanied
+time and cost of delivery, or products’ conformity with its description. The product-related revolution was accompanied
 by a major change in technology. Apart from transitioning towards the microservices architecture, we also decided to
 migrate data from Oracle to MongoDB. There were many reasons for this decision: from the non-relational nature of our
 model, through the need for an easier scaling, to the wish for cost reduction. Upon completion of the works, we were for
 the most part content with the decision that we made. The new solution was more user-friendly, easier to maintain and
 worked smoothly. The sole exception was aggregation queries, specifically: determining the average of seller ratings in
-a specified period of time. While at the level of the 99th percentile times were very low, some queries were much
+a specified period of time. While at the level of the 99th percentil’e times were very low, some queries were much
 slower. We spent a lot of time optimising both queries and the code, and had to use some programming tricks to achieve
 satisfactory results. While we were able to solve our problems in the end, the final conclusion was that the aggregation
 of data in large MongoDB collections is quite challenging.
 
-## For the rescue: Time series
+## To the rescue: Time series
 A new version of MongoDB, 5.0, has been recently launched. The list of changes included one that I found particularly
 interesting: the time series collections. It is a method of effective storing and processing of time-ordered value series.
-A classic example for this case is air temperature measuring. These measurements are taken
+A classic example for this case is measuring the temperature of air. These measurements are taken
 periodically (for instance every hour), and their sequence forms time series. We then often review such data in an
-appropriate order, as well as  calculate the maximum and minimum values, or the arithmetic mean. Therefore, in the said
+appropriate order, as well as calculate the maximum and minimum values, or the arithmetic mean. Therefore, in the said
 case of use, a database must be highly efficient when saving the data, store records in a compact manner due to the
 large number thereof, and must quickly calculate aggregates. Although in the case of temperature readings database write
 operations are made on a regular basis, it turns out that in the case of time series it is not mandatory, and the only
@@ -52,10 +52,10 @@ For the purposes of our considerations I will use a simple document describing t
 }
 ```
 
-Attentive readers will immediately notice the absence of the field containing the ID of the seller to whom the rating
+Attentive readers will immediately notice the absence of the field containing the ID of the seller whom the rating
 concerns. It was done intentionally, otherwise I would have to
 create an additional index covering this field. However, I did not want to introduce any additional elements in my
-experiment that could have any impact on the results. Let's assume for this experiment that we are rating a
+experiment that could have any impact on the results. Let’s assume for this experiment that we are rating a
 restaurant, not Allegro sellers, therefore all ratings in the collection concern the restaurant only.
 
 Now we can create two collections storing an identical set of data. One will be a standard collection, and the other will
@@ -112,7 +112,7 @@ db.createCollection("coll-ord")
 db.getCollection('coll-ord').createIndex({timestamp: 1}, {unique: true})
 ```
 
-Let's use the following scripts to fill both collections with 10 millions documents:
+Let’s use the following scripts to fill both collections with 10 millions documents:
 
 ```javascript
 // Save as fill-ts.js
@@ -153,7 +153,7 @@ time mongo test fill-ord.js
 ```
 
 As expected, the filling of the time series collection was faster: 3:30,11 vs 4:39,48. Such a difference can be essential
-if our system performs many write operations in a short period of time. At the very beginning of our experiments,
+if our system performs many write operations in a short period of time. At the very beginning of our experiments
 collection of a new type comes to the forefront.
 
 Now when our collections already contain data, we can take a look at the size of files. On the
@@ -162,7 +162,7 @@ Now when our collections already contain data, we can take a look at the size of
 > Compared to normal collections, storing time series data in time series collections improves query efficiency and
 > reduces the disk usage
 
-Let's find out how true that is.
+Let’s find out how true that is.
 
 ## A closer look at the data
 
@@ -186,7 +186,7 @@ Both documents should be similar to this one:
 The documents have the same schema. In addition, the `_id` key was automatically generated in both cases, although our
 filling script did not contain them.
 
-Let's move on to indexes now and use the commands: `db.getCollection('coll-ord').getIndexes()` and `db.getCollection('coll-ts').getIndexes()`
+Let’s move on to indexes now and use the commands: `db.getCollection('coll-ord').getIndexes()` and `db.getCollection('coll-ts').getIndexes()`
 to get the indexes of both collections.
 
 The normal collection has two indexes, one that was created automatically for the `_id` key and the one that we created manually:
@@ -230,7 +230,7 @@ also cause `COLLCSAN` and work slowly? The answer to this question can be found 
 So, there actually is an index, but it is different from those created manually, and even from indexes created
 automatically for the `_id` key.
 As I wrote in another [post]({% post_url 2021-10-18-comparing-mongodb-composite-indexes %}), indexes are not all the
-same, so it's worth taking a closer look at this one. Let's check the query execution plans:
+same, so it’s worth taking a closer look at this one. Let’s check the query execution plans:
 
 ```javascript
 db.getCollection('coll-ord').find({"timestamp" : ISODate("2021-10-22T00:00:00.000Z")}).explain('executionStats')
@@ -283,7 +283,7 @@ db.getCollection('coll-ts').find({"timestamp" : ISODate("2021-10-22T00:00:00.000
 ```
 
 It turns out that while in the case of the regular collection the plan shows the use of the index, in the time series
-collection we see the `COLLSCAN` operation. It doesn't mean that this operation is slow, though. The execution times of
+collection we see the `COLLSCAN` operation. It doesn’t mean that this operation is slow, though. The execution times of
 both operations were similar. We will move on to a more detailed time comparison in a moment; for now we should only
 note that the hidden index in the time series collection follows specific rules, it is not only invisible, but it also
 cannot be seen in the execution plan, although it clearly affects the speed of the search.
@@ -310,7 +310,7 @@ limit. It is surprising because I did not find any information on this in the do
 sort our data based on the field with time, we will need to index this field manually. It means, of
 course, that the benefits stemming from a lower disc usage and faster saving times will unfortunately diminish.
 
-Since we are talking about the use of disc space, let's check the data size:
+Since we are talking about the use of disc space, let’s check the data size:
 
 ```javascript
 db.getCollection('coll-ts').stats()
@@ -338,7 +338,7 @@ collection turns out to be the winner in the size-on-disc category. After adding
 regular collection, the difference will be even greater. Therefore, we must admit that the way time series data are
 packed on the disc is impressive.
 
-Now it's time to compare query execution times for both collections.
+Now it’s time to compare query execution times for both collections.
 
 ## Speed is all that matters
 
@@ -358,7 +358,8 @@ done >> find-$2.js
 ```
 
 The script takes as parameters: the number of queries, and the name of the collection that we want to search. I
-generated a million queries (it may take some time depending on your hardware, so you can start with lower amount of queries):
+generated a million queries (it may take some time depending on your hardware, so you can start with a lower amount of
+queries):
 
 ```shell
 ./gen-find.sh 1000000 coll-ts
@@ -373,9 +374,9 @@ time mongo test find-coll-ord.js
 ```
 
 The standard collection was a bit slower: 16,854 for `coll-ord` vs 16,038 for `coll-ts`. Although the difference is small,
-another point comes for time series: simple search is slightly faster than in the case of the regular collection.
+another point goes to time series: simple search is slightly faster than in the case of the regular collection.
 
-But we're yet to discuss the most interesting part. Time series is primarily used for quick aggregate counting. Let's
+But we’re yet to discuss the most interesting part. Time series is primarily used for quick aggregate counting. Let’s
 see what the comparison looks like when calculating the arithmetic mean in a given time interval.
 
 The script below (saved as `gen-aggregate.sh`) creates a list of queries calculating the arithmetic mean of ratings for
@@ -433,8 +434,8 @@ The results are shown in the table below:
 Although there are far fewer queries this time than in the previous experiment, the differences in times are much
 greater. It clearly proves that time series collections are indeed spreading their wings when we want to use aggregation
 queries and have been developed mainly for this purpose. The reason is probably the sequential way of writing data,
-which gives a noticeable improvement when running ranged queries. The results clearly show also how much of an impact
-query performance can have on an element that often doesn't get the adequate attention: proper modelling the data.
+which shows a noticeable improvement when running ranged queries. The results clearly show also how much of an impact
+query performance can have on an element that often doesn’t get the adequate attention: proper modelling the data.
 
 ## Limitations
 
@@ -459,7 +460,7 @@ The lack of possibility to manipulate the saved documents will probably be the m
 hesitant to use time series. We should mention, however, that the authors of MongoDB will probably add the possibility
 to edit and delete documents in the future:
 
-> While we know some of these limitations may be impactful to your current use case, we promise we're working on this
+> While we know some of these limitations may be impactful to your current use case, we promise we’re working on this
 > right now and would love for you to provide your feedback!
 
 ## Summary
@@ -468,4 +469,4 @@ cases new type of collections really do work better than the regular ones. They 
 saving and searching by the time. But high performance always comes at a cost, in this case: the cost of reduced flexibility.
 Therefore, the final decision to use time series should be preceded by an analysis of
 advantages and disadvantages of both in particular cases. We should also hope that the authors of the database are
-working on improvements it and will soon eliminate most of the limitations.
+working on improving it and will soon eliminate most of the limitations.
