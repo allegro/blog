@@ -111,7 +111,7 @@ Crucial aspect of introducing any change is communication. It‘s good to prepar
 review it. We used a few channels so that our devs would get important info about the migration and history rewrite on
 the channel that suits best their working habits (e-mails, instant messaging tool, dev forums).
 
-    ## Some final thoughts
+## Some final thoughts
 
 It took a large amount of time time to prepare the migration, understand the history of the repository and select proper
 items and
