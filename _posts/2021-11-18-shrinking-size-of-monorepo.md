@@ -31,7 +31,7 @@ the biggest BLOB stored was **100+ MB**
 
 ### New repo scale
 
-After the migration and history rewrite we shrink the repo size to:
+After the migration and history rewrite we shrank the repo size to:
 
 - **71k +** commits
 - **230k** [BLOBs](https://en.wikipedia.org/wiki/Binary_large_object), where all BLOBs unpacked would add up to
