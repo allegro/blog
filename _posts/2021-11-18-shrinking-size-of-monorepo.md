@@ -36,7 +36,7 @@ After the migration and history rewrite we shrank the repo size to:
 - **71k +** commits
 - **230k** [BLOBs](https://en.wikipedia.org/wiki/Binary_large_object), where all BLOBs unpacked would add up to
 **1.6 GB** - this
-number includes also size of source code files, whereas assets and binaries were migrated to an external storage
+number also includes size of source code files, whereas assets and binaries were migrated to an external storage
 - **455k+** git  *tree* objects
 
 ## How did we do it?
