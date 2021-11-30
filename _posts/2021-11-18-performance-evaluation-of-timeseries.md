@@ -14,7 +14,7 @@ migrate data from Oracle to MongoDB. There were many reasons for this decision: 
 model, through the need for an easier scaling, to the wish for cost reduction. Upon completion of the works, we were for
 the most part content with the decision that we made. The new solution was more user-friendly, easier to maintain and
 worked smoothly. The sole exception was aggregation queries, specifically: determining the average of seller ratings in
-a specified period of time. While at the level of the 99th percentil’e times were very low, some queries were much
+a specified period of time. While at the level of the 99th percentile times were very low, some queries were much
 slower. We spent a lot of time optimising both queries and the code, and had to use some programming tricks to achieve
 satisfactory results. While we were able to solve our problems in the end, the final conclusion was that the aggregation
 of data in large MongoDB collections is quite challenging.
@@ -112,7 +112,7 @@ db.createCollection("coll-ord")
 db.getCollection('coll-ord').createIndex({timestamp: 1}, {unique: true})
 ```
 
-Let’s use the following scripts to fill both collections with 10 millions documents:
+Let’s use the following scripts to fill both collections with 10 million documents:
 
 ```javascript
 // Save as fill-ts.js
