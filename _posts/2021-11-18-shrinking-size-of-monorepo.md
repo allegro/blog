@@ -128,5 +128,5 @@ the time that folks would not want to
 push code to the repo. We used Friday evening, and yes, we had to fix some issues over the weekend - not everything
 went smoothly.
 
-You can have on the servers a copy of your old repository in a READ ONLY mode - it will serve as a **backup** and will
+You can have a copy of your old repository in a READ ONLY mode on the servers - it will serve as a **backup** and will
 contain the actual history.
