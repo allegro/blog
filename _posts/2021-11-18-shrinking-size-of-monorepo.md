@@ -115,7 +115,7 @@ the channel that suits best their working habits (e-mails, instant messaging too
 
 It took a lump time to prepare the migration, understand the history of the repository and select proper items and
 strategies for the migration. The links here might be a good starting point if you wanted to rewrite histories of your
-over-weighted repos:
+overweight repos:
 
 - [GitHub Universe Workshops](https://www.youtube.com/watch?v=bk7akV8nyAM) and corresponding
 [repository](https://github.com/githubuniverseworkshops/grafting-monorepos)
