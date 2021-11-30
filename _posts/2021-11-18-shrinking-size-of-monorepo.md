@@ -9,7 +9,7 @@ The source code of Allegro iOS  app for buyers used to be divided into separate 
 (poyrepo). The
 source code was migrated to a monorepo a few years back along with the history of all repos that constituted the app.
 Our main
-repository for the iOS application have become our monorepo. After 9 years of development of the app the repo size have
+repository for the iOS application has become our monorepo. After 9 years of development of the app the repo size has
 grown
 enormously and the `git clone` command became a nightmare taking too much time. We had a possibility to shrink its size
 during the
