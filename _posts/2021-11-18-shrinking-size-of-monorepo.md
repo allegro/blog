@@ -11,7 +11,7 @@ source code was migrated to a monorepo a few years back along with the history o
 Our main
 repository for the iOS application has become our monorepo. After 9 years of development of the app the repo size has
 grown
-enormously and the `git clone` command became a nightmare taking too much time. We had a possibility to shrink its size
+enormously and the `git clone` command became a nightmare taking too much time. We had a possibility to shrink the project size
 during the
 migration from an on-premise to an external git repo hosting provider.
 
