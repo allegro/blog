@@ -11,8 +11,8 @@ source code was migrated to a monorepo a few years back along with the history o
 Our main
 repository for the iOS application has become our monorepo. After 9 years of development of the app the repo size has
 grown
-enormously and the `git clone` command became a nightmare taking too much time. We had a possibility to shrink the project size
-during the
+enormously and the `git clone` command became a nightmare taking too much time. We had a possibility to shrink the 
+project size during the
 migration from an on-premise to an external git repo hosting provider.
 
 ## Monorepo scale
@@ -80,7 +80,7 @@ following were a good suit for it:
 ### Reproducible procedure and dry runs
 
 We created a script that contained all commands that removed redundant items from the history. To remove items we used
-[git filter-repo](https://github.com/newren/git-filter-repo) - it's way much more performant than git's built-in
+[git filter-repo](https://github.com/newren/git-filter-repo) - it‘s way much more performant than git‘s built-in
  `git filter-branch` (do not use it!). Some examples of usage:
 
 ```
@@ -107,13 +107,14 @@ and no more files that the ones we had wanted were actually deleted.
 
 ### Communication
 
-Crucial aspect of introducing any change is communication. It's good to prepare it in advance, have team members to
+Crucial aspect of introducing any change is communication. It‘s good to prepare it in advance, have team members to
 review it. We used a few channels so that our devs would get important info about the migration and history rewrite on
 the channel that suits best their working habits (e-mails, instant messaging tool, dev forums).
 
 ## Some final thoughts
 
-It took a lump time to prepare the migration, understand the history of the repository and select proper items and
+It took a large amount of time time to prepare the migration, understand the history of the repository and select proper
+items and
 strategies for the migration. The links here might be a good starting point if you wanted to rewrite histories of your
 overweight repos:
 
