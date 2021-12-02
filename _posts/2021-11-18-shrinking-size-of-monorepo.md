@@ -80,7 +80,7 @@ following were a good suit for it:
 ### Reproducible procedure and dry runs
 
 We created a script that contained all commands that removed redundant items from the history. To remove items we used
-[git filter-repo](https://github.com/newren/git-filter-repo) - it‘s way much more performant than git‘s built-in
+[git filter-repo](https://github.com/newren/git-filter-repo) - it‘s much more performant than git‘s built-in
  `git filter-branch` (do not use it!). Some examples of usage:
 
 ```
@@ -107,13 +107,13 @@ and no more files that the ones we had wanted were actually deleted.
 
 ### Communication
 
-Crucial aspect of introducing any change is communication. It‘s good to prepare it in advance, have team members to
-review it. We used a few channels so that our devs would get important info about the migration and history rewrite on
-the channel that suits best their working habits (e-mails, instant messaging tool, dev forums).
+The crucial aspect of introducing any change is communication. It‘s good to prepare it in advance, have team members to
+review it. We used a few channels so that our devs would get important info about the migration and history rewrite
+through the channel that suits best their working habits (e-mails, instant messaging tool, dev forums).
 
 ## Some final thoughts
 
-It took a large amount of time time to prepare the migration, understand the history of the repository and select proper
+It took a large amount of time to prepare the migration, understand the history of the repository and select proper
 items and
 strategies for the migration. The links here might be a good starting point if you wanted to rewrite histories of your
 overweight repos:
