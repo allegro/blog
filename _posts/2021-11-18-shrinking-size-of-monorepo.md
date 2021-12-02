@@ -45,7 +45,7 @@ The history-rewrite process required proper planning and a few steps:
 1. Analysis of the old repo contents and its history
 1. Creating a reproducible procedure for the history rewrite
 1. Dry running the procedure to test out the process
-1. Planning and scheduling activities involved to migrate the repo
+1. Planning and scheduling activities necessary to migrate the repo
 1. Proper communication about the process to stakeholders (a.k.a. developers 👩‍💻👨‍💻)
 1. The actual migration
 
