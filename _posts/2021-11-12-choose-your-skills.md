@@ -7,7 +7,7 @@ tags: [tech, education, skills, startup, lean startup, mvp]
 At some point in your career, you realize that it’s time to try to advance through the hierarchy. You think you are
 doing a good job. You are constantly developing and learning something new. But at the same time, someone you know, with
 much less experience and knowledge than you, has long been higher up the hierarchy than you. Then you ask yourself: _
-what is wrong with me_? In my case, the answer turned out to be a good gathering of expectations concerning my skills
+what is wrong with me_? In my case, the answer turned out to be properly gathering the expectations concerning my skills
 and work.
 
 Below, you can read my insight about it. You will find out how you can steer your development, so that you become much
