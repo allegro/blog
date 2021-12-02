@@ -7,11 +7,11 @@ tags: [tech, architecture, clean-architecture, ddd, kotlin]
 [The Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) concept has been
 around for some time and keeps surfacing in one place or another, yet it is not widely adopted. In this post I would
 like to introduce this topic in a less conventional way: starting with customer’s needs and going through various
-stages to present a solution that is clean enough to satisfy concepts from the aforementioned blog (or book with the
-same name).
+stages to present a solution that is clean enough to satisfy concepts from the aforementioned blog (or
+[the book](https://www.goodreads.com/book/show/18043011-clean-architecture) with the same name).
 
 ## The perspective
-Why do we need software architecture? What is it anyway? The extensive definition can be found in a place a bit unexpected
+Why do we need software architecture? What is it anyway? An extensive definition can be found in a place a bit unexpected
 for an agile world — an enterprise-architecture definition from [TOGAF](https://en.wikipedia.org/wiki/The_Open_Group_Architecture_Framework):
 
 * The fundamental concepts or properties of a system in its environment embodied in its elements, relationships, and
@@ -22,7 +22,7 @@ evolution over time.
 And what do we need such a governing structure or shape for? Basically it allows us to make cost/time-efficient choices
 when it comes to development. And deployment. And operation. And maintenance.
 
-Also it allows us to keep as many options open as possible, so our future choices are not limited by an overcommitment
+It also allows us to keep as many options open as possible, so our future choices are not limited by an overcommitment
 from the past.
 
 So — we have our perspective defined. Let’s dive into a real-world problem!
@@ -32,31 +32,32 @@ You are a young, promising programmer sitting in a dorm and one afternoon a stra
 that delivers packages from furniture shops to customers. I need a database that will allow reservation of slots. Is it
 something you are able to deliver?” “Of course!” — what else could a young, promising programmer answer?
 
-## The falstart
+## The false start
 The customer needs a database, so what can we start with? The database schema, of course! We can identify entities with
 ease: a transport slot, a schedule, a user (we need some authentication, right?), a … something? Okay, perhaps it is
 not the easiest way. So why don’t we start with something else?
 
-Let’s choose technology! Let’s go into React frontend, Java+Spring backend, some SQL as persistence. To present a
-clickable version to our customer we need some warm-up work to set up an environment, create a deployable service
-version or GUI mockups, configure persistence and so on. In general to pay attention to technical details — a necessary
-code to set up something working, of which non-devs are usually not aware. It simply has to be done before we start
-talking about nitty-gritty for business logic.
+Let’s choose the technology to use! Let’s go with React frontend, Java+Spring backend, some SQL as persistence. To
+present a clickable version to our customer we need some warm-up work to set up an environment, create a deployable
+service version or GUI mockups, configure persistence and so on. In general: to pay attention to technical details —
+code necessary to set up something working, of which non-devs are usually not aware. It simply has to be done before we
+start talking about nitty-gritty for business logic.
 
 ## The use-case-driven approach
 What if instead of starting with what we already know — how to visualize relationships, how to build a web-system — we
-started with what we didn’t know? Simply — by asking questions like: How is the system going to be used? By whom?
+started with what we didn’t know? Simply — by asking questions such as: How is the system going to be used? By whom?
 
 ## Use cases
 In other words — what are the use cases for the system? Let’s define the challenge once more using high-level actors
 and interactions: ![Use cases](/img/articles/2021-10-25-clean-architecture-story/use_cases.png) and pick the first
 required interaction: shop makes a reservation. What is required to make a reservation? Hmm, I think that it would be
 good to get the current schedule in the first place. Why am I using “get” instead of “display”? “Display” already
-suggests a way of delivering output, hearing “display” a computer screen comes to our minds, with a web application.
-Single page web app, of course. “Get” is more neutral, it does not constrain our vision by a specific presentation
-method. Frankly — is there anything wrong with delivering the current schedule over the phone, for example?
+suggests a way of delivering output, when we hear “display” a computer screen comes to our minds, with a web
+application. Single page web app, of course. “Get” is more neutral, it does not constrain our vision by a specific
+presentation method. Frankly — is there anything wrong with delivering the current schedule over the phone, for
+example?
 
-### Get schedule
+### Getting the schedule
 So, we can start thinking about our schedule model — let it be a single instance representing a day with slots inside.
 Great, we have our entities! How to get one? Well, we need to check if there is already a stored schedule and if so
 — retrieve it from the repository. If the schedule is not available we have to create one. Based on...? Exactly — we do
@@ -81,9 +82,9 @@ However, we identified a hidden assumption regarding the schedule definition —
 — with definition of schedule creator if required — without any irrelevant details, like database, UI, framework and so
 on. Test only business rules, without unnecessary details.
 
-## Reserve slot
-To finish reservation we have to add at least one more use case — one for reservation of a free slot. Provided that we
-re-use existing logic interaction is still simple:
+## Reserving the slot
+To finish the reservation we have to add at least one more use case — one for reservation of a free slot. Provided that
+we re-use existing logic, the interaction is still simple:
 
 ```kotlin
 fun reserve(slotId: SlotId): DaySchedule {
@@ -98,29 +99,30 @@ fun reserve(slotId: SlotId): DaySchedule {
 (full commit: [GitHub](https://github.com/michal-kowalcze/clean-architecture-example/commit/7b7961b28107c3c89d40ce69a8383bf9f32337b0))
 
 And, as we can see — the slot reservation business rule (and constraint) is implemented at the domain model itself — so
-we are safe, that any other interaction, any other use case, is not going to break these rules. We can also test these
-rules without any use case involved.
+we are safe, that any other interaction, any other use case, is not going to break these rules. This approach
+simplifies also testing, as business rules can be verified in separation from the use case interaction logic.
 
 ## Where is the “Clean Architecture”?
 Let‘s stop with business logic for a moment. We created quite thoughtful, extensible code for sure, but why are we
 talking about “Clean” architecture? We already used Domain-Driven Design and Hexagonal architecture concepts. Is there
-something more? Imagine that another person is going to help us with implementation. She is not aware yet and simply
-would like to take a look at the codebase. And she sees: ![Use case classes](/img/articles/2021-10-25-clean-architecture-story/use_case_classes.png)
+anything more? Imagine that another person is going to help us with implementation. She is not aware of the source code
+yet and simply would like to take a look at the codebase. And she sees: ![Use case classes](/img/articles/2021-10-25-clean-architecture-story/use_case_classes.png)
 It looks like something to her, doesn‘t it? A kind of reservation system! It is not yet another domain service with
-some methods that have no clear connection with possible uses — class list itself describes what the system can do.
+some methods that have no clear connection with possible uses — the list of classes itself describes what the system
+can do.
 
 ## The first assumption
 We have a mocked implementation as the schedule creator. It is OK to test logic at the unit test level, but not enough
 to run a prototype.
 
-After a short call with our customer we know more about daily schedule — there are six slots, two hours each, starting
-at 8:oo a.m. We also know that this recipe for the daily schedule is very, very simple and it is going to be changed
-soon (e.g. to accommodate for holidays, etc.). All these issues will be solved later, now we are in the prototype stage
-and our desired outcome is to have a working demo for our stranger.
+After a short call with our customer we know more about the daily schedule — there are six slots, two hours each,
+starting at 8:oo a.m. We also know that this recipe for the daily schedule is very, very simple and it is going to be
+changed soon (e.g. to accommodate for holidays, etc.). All these issues will be solved later, now we are in the
+prototype stage and our desired outcome is to have a working demo for our stranger.
 
-Where to put this simple implementation of the schedule creator? For now domain used an interface for that. Are we
-going to put implementation of this interface to the infrastructure package and treat it as something outside the
-domain? Certainly not! It is simple but this is part of the domain itself, we simply replace interface with class
+Where to put this simple implementation of the schedule creator?So far, the domain used an interface for that. Are we
+going to put an implementation of this interface to the infrastructure package and treat it as something outside the
+domain? Certainly not! It is simple but this is part of the domain itself, we simply replace the interface with class
 specification.
 
 ```kotlin
@@ -139,11 +141,12 @@ class DayScheduleCreator {
 
 ## The prototype
 I will not be original here — for the first prototype version the REST API sounds like something reasonable. Do we care
-about other infrastructure at the moment? Persistence? No! In the previous commits a map-based persistence is used for
-unit tests and this solution is good enough to start with. As long as the system is not restarted, of course.
+about other infrastructure at the moment? Persistence? No! In the previous commits a map-based persistence layer is
+used for unit tests and this solution is good enough to start with. As long as the system is not restarted, of course.
 
-What is important at this stage? We are introducing A-P-I — this is a separate layer, so it is crucial to ensure that
-domain classes are not exposed to the outside world — and that we do not introduce dependency to API into the domain.
+What is important at this stage? We are introducing an A-P-I — this is a separate layer, so it is crucial to ensure
+that domain classes are not exposed to the outside world — and that we do not introduce a dependency on the API into
+the domain.
 
 ```kotlin
 package eu.kowalcze.michal.arch.clean.example.api
@@ -165,11 +168,11 @@ class GetScheduleEndpoint(private val getScheduleUseCase: GetScheduleUseCase) {
 
 ## The abstractions
 ### Use Case
-Checking implementation of endpoints (see comments in the code) we can see that conceptually each endpoint executes
+Checking the implementation of endpoints (see comments in the code) we can see that conceptually each endpoint executes
 logic according to the same structure: ![Use case flow](/img/articles/2021-10-25-clean-architecture-story/use_case_flow.png)
-Well, why don’t we make some abstraction for this? Sounds like a crazy idea? Let‘s check! Based on our code and diagram
-above we can identify `UseCase` abstraction — something that takes some input (domain input, to be precise) and
-converts it to a (domain) output.
+Well, why don’t we make some abstraction for this? Sounds like a crazy idea? Let‘s check! Based on our code and the
+diagram above we can identify the `UseCase` abstraction — something that takes some input (domain input, to be precise)
+and converts it to a (domain) output.
 
 ```kotlin
 interface UseCase<INPUT, OUTPUT> {
@@ -202,8 +205,8 @@ class UseCaseExecutor(private val notificationGateway: NotificationGateway) {
 ### Framework-independent response
 In order to handle the next requirements in our plan we have to change the logic a bit — add the possibility of returning
 spring-specific response entities from the executor itself. To make our code reusable in a non-spring world (ktor,
-anyone?) we separated plain executor from spring specific decorator, so that it is possible to use this code easily in
-other frameworks.
+anyone?) we separated the plain executor from spring specific decorator, so that it is possible to use this code easily
+in other frameworks.
 
 ```kotlin
 data class UseCaseApiResult<API_OUTPUT>(
@@ -231,7 +234,7 @@ private fun <API_OUTPUT> UseCaseApiResult<API_OUTPUT>.toSpringResponse(): Respon
 Ooops. Our prototype is running and we observe exceptions resulting in HTTP 500 errors. It would be nice to convert
 these to dedicated response codes in a reasonable way yet without using much of spring infrastructure, for simplified
 maintenance (and possible future changes). This can be easily achieved by adding another parameter to use case
-execution, like:
+execution, like this:
 
 ```kotlin
 class UseCaseExecutor(private val notificationGateway: NotificationGateway) {
@@ -316,14 +319,14 @@ With all this read we can switch our view to the high-level perspective:
 ![The Clean Architecture Diagram](/img/articles/2021-10-25-clean-architecture-story/clean_architecture_diagram.png)
 
 and describe abstractions. Starting from the inside we have:
-* `Domain Model` and `Services and Gateways`, which are responsible for defining
+* **Domain Model**, **Services** and **Gateways**, which are responsible for defining
 business rules for the domain.
-* `UseCase`, which orchestrates execution of business rules.
-* `UseCaseExecutor` providing common behavior for all use cases.
-* `API` connecting service with the outside world.
-* `Implementation of gateways`, which connects with other services or persistence providers.
-* `Configuration`, responsible for gluing all elements together.
+* **UseCase**, which orchestrates execution of business rules.
+* **UseCaseExecutor** providing common behavior for all use cases.
+* **API** connecting service with the outside world.
+* **Implementation of gateways**, which connects with other services or persistence providers.
+* **Configuration**, responsible for gluing all elements together.
 
-I hope that you enjoy this simple story and find concept of
+I hope that you enjoy this simple story and find the concept of
 [the Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) useful.
 Thank you for reading!
