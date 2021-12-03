@@ -33,7 +33,7 @@ Imagine that your skills and the work you do are products. We already know that 
 gather requirements and prototype with the client. Your customer who cares most about your work and skills are the team,
 the leader and the company you work for. However, what you do must also suit you. If you want your work and your
 knowledge to be of value to them, you need to gather their requirements first. Then quickly show the result and make
-sure it’s what they wanted. Are you probably wondering what this prototyping is for in the case of your work? You have
+sure it’s what they wanted. You are probably wondering what this prototyping is for in the case of your work? You have
 done some work, it has been accepted so what more is there to talk about. There could be lots of reasons. You could have
 spent too much time on it, it’s even possible that what you did is wrong. You would have to put in a huge amount of time
 and work to improve it, which is why it was accepted as it is. Without prototyping, your work might appear to be of good
@@ -41,12 +41,12 @@ quality to you, but the team might not be happy with it.
 
 Let’s start with requirements gathering. Unfortunately it is impossible to gather universal requirements for a given
 position since these requirements are different at different companies and even teams. The same person who has certain
-skills and performs a certain way of work may be a senior in one company, where in another, he or she may be a junior.
-In one of the companies I worked for, a good programmer was required to know the products and the business, then the
-tenure at the company mattered as well and being a support for the business. Performing a large number of tasks was not
-so important. In another company, there were people who knew their product very well and were an excellent support to
-the business. However, they did not perform their tasks on time and did not take on issues that required them to take on
-a lot of responsibility. They still had junior or mid-level status.
+skills and performs certain tasks may be a senior in one company, where in another, he or she may be a junior. In one of
+the companies I worked for, a good programmer was required to know the products and the business, then the tenure at the
+company mattered as well and being a support for the business. Performing a large number of tasks was not so important.
+In another company, there were people who knew their product very well and were an excellent support to the business.
+However, they did not perform their tasks on time and did not take on issues that required them to undertake a lot of
+responsibility. They still had junior or mid-level status.
 
 ![Expectations](/img/articles/2021-07-23-become-a-senior/expectations.png)
 This begs the question: how do I gather my skills requirements?
@@ -66,19 +66,19 @@ main parts:
 * Attitude
 * Product knowledge
 
-Each part has a list of skills, which has an extensive description. For example, one of the descriptions of technical
+Each part has a list of skills, each with an extensive description. For example, one of the descriptions of technical
 knowledge looked like this:
 
-* You know your technological stack very well (systems, applications, languages, tools) Having a given technical problem
-  you know what your technological abilities are, and you know how to use them to achieve your goal.
+* You know your technological stack very well (systems, applications, languages, tools). Having a technical problem to
+  solve, you know what your technological abilities are, and you know how to use them to achieve your goal.
 
 I rated each skill on a scale of 1 to 5. Ideally, I would like each skill to be close to a 5. If I rated myself
 somewhere at a 4 and my leader rated me a 3, during calibration, I found out that the requirements for that skill were
-different from I thought. He said, there were things I hadn’t used yet. To have a 4 at this point I need to know them
-e.g. Cassandra database. With that I learned the first relevant requirement that I didn’t know about. After the whole
-process of gathering requirements in this way, I already knew what I needed to work on. Now all I had to do was select a
-few of them and start working. But how to choose those requirements, which I will implement with passion and actually do
-them well?
+different from what I thought. He said, there were things I hadn’t used yet. To have a 4 at this point I need to know
+them e.g. Cassandra database. With that I learned the first relevant requirement that I didn’t know about. After the
+whole process of gathering requirements this way, I already knew what I needed to work on. Now all I had to do was
+select a few of them and start working. But how to choose these requirements, which I will implement with passion and
+actually do them well?
 
 ## How to choose skills to improve?
 
@@ -88,9 +88,9 @@ be an experienced team member, e.g. a senior.
 
 Leaders at Allegro gain their development knowledge from many available training sessions. You should find a similar
 person in your environment. Such a person will help you on your way and will simulate the customer of the product that
-you will be making. Show him a list of things you should develop. Ask him which are the most important for your team. It
-is possible that the list of things will become very short. Now just pick two or three things and prepare prototypes.
-You can choose them intuitively or match them with your talents. Just take a Gallup
+you will be making. Show him or her a list of things you should develop. Ask him which are the most important for your
+team. It is possible that the list of things will become very short. Now just pick two or three things and prepare
+prototypes. You can choose them intuitively or match them with your talents. Just take a Gallup
 test ([CliftonStrengths](https://www.gallup.com/cliftonstrengths/en/home.aspx)) to discover them. This test will help
 you choose a strategy for developing a particular skill. This test will work well for soft skills. For hard skills
 a [lean startup strategy](https://en.wikipedia.org/wiki/Lean_startup) may be better. Below are two examples of what this
@@ -100,7 +100,7 @@ can look like in practice.
 
 The [Gallup test](https://www.gallup.com/cliftonstrengths/en/home.aspx)
 helps you find activities that you naturally enjoy doing. This natural response to certain types of information,
-situations and people in the context of the Gallup test is called talent. The test result is divided into four main
+situations and people in the context of the Gallup test is called a talent. The test result is divided into four main
 domains:
 
 * Executing
@@ -110,12 +110,12 @@ domains:
 
 Some of these will have a direct impact on your work, others will not. For example a description of your character in
 the context of building relationships with people will be interesting information and will certainly raise your
-awareness, but will not help us, in our challenge. Other talents that come out of the challenge may fit into the skill
+awareness, but will not help us in our challenge. Other talents that come out of the challenge may fit into the skill
 you are developing or show how you should develop it.
 
-Of course with these talents, the knowledge itself that you have a talent, does not immediately translate into skills,
-for example if you find out that you have a talent for standing on your head does not mean that you will immediately
-stand on your head. You have to develop this talent, and probably you are already doing similar things because you
+Of course with these talents, the knowledge itself that you have a talent does not immediately translate into skills,
+for example finding out that you have a talent for standing on your head, it does not mean that you will immediately
+stand on your head. You have to develop this talent, and you probably are already doing similar things because you
 simply have a talent for it, and you enjoy it. So the Gallup test shows the things you should focus on. They are so
 generic that you can easily match them to your problems.
 
@@ -129,7 +129,7 @@ deadline. While preparing, I realized that this knowledge sharing strategy was n
 and decided to change my knowledge sharing strategy. Such a change in strategy is called a pivot. I discussed the
 problem with my mentor and decided to make a pivot towards writing articles. Being in this situation you have two
 choices: either you do a pivot, which means you change your strategy, or you persevere, which means you continue to
-develop using your current strategy of course after getting proper feedback from your mentor and team. Let us now look
+develop using your current strategy, after getting proper feedback from your mentor and team of course. Let us now look
 at the second type of skill.
 
 ## How startup method can help you develop your skills
@@ -186,10 +186,10 @@ will do a `persevere` and continue using the chosen strategy.
 
 If you feel that you should already be in a higher position it is likely that the expectations for your job are quite
 different than you think. To change this you should first find a mentor and then, with their help, gather the
-requirements. A good place to start is with a list of requirements or a list of skills to start discussing with your
+requirements. A good place to start is with a list of requirements or a list of skills to begin discussing with your
 mentor. From this list you should select a few skills and then choose appropriate strategies for their development. To
 make it easier for you to choose a strategy, do a Gallup test. Additionally, you can use the startup MVP approach.
 Ultimately, the key to success is to gather requirements from your leader, team or entire company and then show the
 results as quickly as possible. If the chosen skill or strategy doesn’t suit you or the feedback collected is strongly
-negative don’t worry, make a pivot and choose something else. After a few iterations you will definitely achieve your
+negative, don’t worry, make a pivot and choose something else. After a few iterations you will definitely achieve your
 goal.
