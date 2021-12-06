@@ -88,7 +88,7 @@ be an experienced team member, e.g. a senior.
 
 Leaders at Allegro gain their development knowledge from many available training sessions. You should find a similar
 person in your environment. Such a person will help you on your way and will simulate the customer of the product that
-you will be making. Show him or her a list of things you should develop. Ask him which are the most important for your
+you will be making. Show him or her a list of things you should develop. Ask them which are the most important for your
 team. It is possible that the list of things will become very short. Now just pick two or three things and prepare
 prototypes. You can choose them intuitively or match them with your talents. Just take a Gallup
 test ([CliftonStrengths](https://www.gallup.com/cliftonstrengths/en/home.aspx)) to discover them. This test will help
