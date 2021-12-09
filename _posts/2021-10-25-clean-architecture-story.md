@@ -99,8 +99,8 @@ fun reserve(slotId: SlotId): DaySchedule {
 (full commit: [GitHub](https://github.com/michal-kowalcze/clean-architecture-example/commit/7b7961b28107c3c89d40ce69a8383bf9f32337b0))
 
 And, as we can see — the slot reservation business rule (and constraint) is implemented at the domain model itself — so
-we are safe, that any other interaction, any other use case, is not going to break these rules. This approach
-simplifies also testing, as business rules can be verified in separation from the use case interaction logic.
+we are safe, that any other interaction, any other use case, is not going to break these rules. This approach also
+simplifies testing, as business rules can be verified in separation from the use case interaction logic.
 
 ## Where is the “Clean Architecture”?
 Let‘s stop with business logic for a moment. We created quite thoughtful, extensible code for sure, but why are we
