@@ -6,7 +6,7 @@ tags: [tech, ios, git, mobile, swift, objectivec]
 ---
 
 The source code of Allegro iOS  app for buyers used to be divided into separate modules hosted on multiple repositories
-(poyrepo). The
+(polyrepo). The
 source code was migrated to a monorepo a few years back along with the history of all repos that constituted the app.
 Our main
 repository for the iOS application has become our monorepo. After 9 years of development of the app the repo size has
