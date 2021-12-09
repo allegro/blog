@@ -48,7 +48,7 @@ In another company, there were people who knew their product very well and were 
 However, they did not perform their tasks on time and did not take on issues that required them to undertake a lot of
 responsibility. They still had junior or mid-level status.
 
-![Expectations](/img/articles/2021-07-23-become-a-senior/expectations.png)
+![Expectations](/img/articles/2021-12-09-choose-your-skills/expectations.png)
 This begs the question: how do I gather my skills requirements?
 
 ## Assess yourself with some evaluation sheets
@@ -119,7 +119,7 @@ stand on your head. You have to develop this talent, and you probably are alread
 simply have a talent for it, and you enjoy it. So the Gallup test shows the things you should focus on. They are so
 generic that you can easily match them to your problems.
 
-![Gallup](/img/articles/2021-07-23-become-a-senior/gallup.png)
+![Gallup](/img/articles/2021-12-09-choose-your-skills/gallup.png)
 
 Here’s what it was like for me. I did the Gallup test, and it came out that I am a learner. I like to learn, and I
 should share knowledge - which should make me happy. Comparing this talent to the list of skills I should develop, I
@@ -138,7 +138,7 @@ Let us divide hard skills into two groups. In the first group there are skills y
 e.g. a new programming language. For this you need internal motivation and discipline to achieve the expected high
 level. The second group is the one where you acquire skills automatically e.g. you use some framework in your project.
 For the first group you can use the startup method.
-![Startup](/img/articles/2021-07-23-become-a-senior/startup.png)
+![Startup](/img/articles/2021-12-09-choose-your-skills/startup.png)
 An example scenario of what the process of developing hard skills might look like:
 
 1. Choose one skill with your mentor (the order does not matter). Additionally, collect the requirements.
