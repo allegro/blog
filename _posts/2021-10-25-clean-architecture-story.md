@@ -120,7 +120,7 @@ starting at 8:oo a.m. We also know that this recipe for the daily schedule is ve
 changed soon (e.g. to accommodate for holidays, etc.). All these issues will be solved later, now we are in the
 prototype stage and our desired outcome is to have a working demo for our stranger.
 
-Where to put this simple implementation of the schedule creator?So far, the domain used an interface for that. Are we
+Where to put this simple implementation of the schedule creator? So far, the domain used an interface for that. Are we
 going to put an implementation of this interface to the infrastructure package and treat it as something outside the
 domain? Certainly not! It is simple but this is part of the domain itself, we simply replace the interface with class
 specification.
