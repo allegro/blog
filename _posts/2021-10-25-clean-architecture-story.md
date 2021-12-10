@@ -78,9 +78,10 @@ fun getSchedule(scheduleDay: LocalDate): DaySchedule {
 
 (full commit: [GitHub](https://github.com/michal-kowalcze/clean-architecture-example/commit/6dfeee53554a4ccf37e81aa50a2bd24af7e02cce))
 
-However, we identified a hidden assumption regarding the schedule definition — and we can test retrieval of a schedule
-— with definition of schedule creator if required — without any irrelevant details, like database, UI, framework and so
-on. Test only business rules, without unnecessary details.
+And even with this simple logic we identified a hidden assumption regarding the schedule definition: that there is a
+recipe for creating a daily schedule. What is more we can test retrieval of a schedule — with definition of schedule
+creator if required — without any irrelevant details, like database, UI, framework and so on. Test only business rules,
+without unnecessary details.
 
 ## Reserving the slot
 To finish the reservation we have to add at least one more use case — one for reservation of a free slot. Provided that
