@@ -144,7 +144,7 @@ I will not be original here — for the first prototype version the REST API sou
 about other infrastructure at the moment? Persistence? No! In the previous commits a map-based persistence layer is
 used for unit tests and this solution is good enough to start with. As long as the system is not restarted, of course.
 
-What is important at this stage? We are introducing an A-P-I — this is a separate layer, so it is crucial to ensure
+What is important at this stage? We are introducing an **API** — this is a separate layer, so it is crucial to ensure
 that domain classes are not exposed to the outside world — and that we do not introduce a dependency on the API into
 the domain.
 
