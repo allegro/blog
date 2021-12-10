@@ -4,20 +4,20 @@ title: "Evaluating performance of time series collections"
 author: [michal.knasiecki]
 tags: [tech, mongodb, performance, "time series"]
 ---
-A few years ago, I was working on a new version of Allegro purchase ratings. It was a time of a pretty large revolution
-in the rating system when we moved this product away from our monolith, also introducing quite significant changes to
-the concept of purchase rating itself. Replacing the system with positive, neutral or negative rating, we introduced
-an approach based on “thumbs up” and “thumbs down” as well as the option to rate several elements of the purchase: the
-time and cost of delivery, or products’ conformity with its description. The product-related revolution was accompanied
-by a major change in technology. Apart from transitioning towards the microservices architecture, we also decided to
-migrate data from Oracle to MongoDB. There were many reasons for this decision: from the non-relational nature of our
-model, through the need for an easier scaling, to the wish for cost reduction. Upon completion of the works, we were for
-the most part content with the decision that we made. The new solution was more user-friendly, easier to maintain and
-worked smoothly. The sole exception was aggregation queries, specifically: determining the average of seller ratings in
-a specified period of time. While at the level of the 99th percentile times were very low, some queries were much
-slower. We spent a lot of time optimising both queries and the code, and had to use some programming tricks to achieve
-satisfactory results. While we were able to solve our problems in the end, the final conclusion was that the aggregation
-of data in large MongoDB collections is quite challenging.
+A few years ago, I was working on a new version of [Allegro](https://allegro.tech) purchase ratings.
+It was a time of a pretty large revolution in the rating system when we moved this product away from our monolith, also
+introducing quite significant changes to the concept of purchase rating itself. Replacing the system of positive, neutral
+or negative rating, we introduced an approach based on “thumbs up” and “thumbs down” as well as the option to rate several
+elements of the purchase separately: the time and cost of delivery, or products’ conformity with its description. The
+product-related revolution was accompanied by a major change in technology. Apart from transitioning towards the
+microservices architecture, we also decided to migrate data from a large relational database to MongoDB. There were many
+reasons for this decision: from the non-relational nature of our model, through the need for easier scaling, to the wish
+for cost reduction. Upon completion of the works, we were for the most part content with the decision that we made. The
+new solution was more user-friendly, easier to maintain and worked smoothly. The sole exception was aggregation queries,
+specifically: determining the average of seller ratings in a specified period of time. While at the level of the 99th
+percentile times were very low, some queries were much slower. We spent a lot of time optimising both queries and the
+code, and had to use some programming tricks to achieve satisfactory results. While we were able to solve our problems in
+the end, the final conclusion was that the aggregation of data in large MongoDB collections is quite challenging.
 
 ## To the rescue: Time series
 A new version of MongoDB, 5.0, has been recently launched. The list of changes included one that I found particularly
@@ -447,7 +447,7 @@ few people. Of course, we can create this index ourselves.
 It is also not possible to sort by time field, which is another inconvenience. If we want to have
 sorting queries, we have to create an additional index.
 
-Although these two lacking indexes may seem to be an easy thing to fix, we must remember that it involves additional use
+Although these two missing indexes may seem to be an easy thing to fix, we must remember that it involves additional use
 of disc space as well as longer indexing time during the saving of the document, which means that the benefits
 stemming from the use of time series will be somewhat reduced.
 
@@ -464,9 +464,9 @@ to edit and delete documents in the future:
 > right now and would love for you to provide your feedback!
 
 ## Summary
-Adding the ability to store time series in MongoDB is a step in the right direction. First tests show that in a certain
-cases new type of collections really do work better than the regular ones. They use less disc space, are faster at
+Adding the ability to store time series in MongoDB is a step in the right direction. First tests show that in certain
+cases the new type of collections really does work better than the regular ones. They use less disc space, are faster at
 saving and searching by the time. But high performance always comes at a cost, in this case: the cost of reduced flexibility.
 Therefore, the final decision to use time series should be preceded by an analysis of
 advantages and disadvantages of both in particular cases. We should also hope that the authors of the database are
-working on improving it and will soon eliminate most of the limitations.
+working on improving it and will soon eliminate most limitations.
