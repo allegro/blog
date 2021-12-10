@@ -117,7 +117,7 @@ to run a prototype.
 
 After a short call with our customer we know more about the daily schedule — there are six slots, two hours each,
 starting at 8:oo a.m. We also know that this recipe for the daily schedule is very, very simple and it is going to be
-changed soon (e.g. to accommodate for holidays, etc.). All these issues will be solved later, now we are in the
+changed soon (e.g. to accommodate for holidays, etc.). All these issues will be solved later, now we are at the
 prototype stage and our desired outcome is to have a working demo for our stranger.
 
 Where to put this simple implementation of the schedule creator? So far, the domain used an interface for that. Are we
