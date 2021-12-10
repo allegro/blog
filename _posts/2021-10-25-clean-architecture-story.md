@@ -122,8 +122,8 @@ prototype stage and our desired outcome is to have a working demo for our strang
 
 Where to put this simple implementation of the schedule creator? So far, the domain used an interface for that. Are we
 going to put an implementation of this interface to the infrastructure package and treat it as something outside the
-domain? Certainly not! It is not complicated and this is part of the domain itself, we simply replace the interface
-with class specification.
+domain? Certainly not! It is not complicated and this is part of the domain itself, we simply replace the mocked
+implementation of the schedule creator with class specification.
 
 ```kotlin
 package eu.kowalcze.michal.arch.clean.example.domain.model
