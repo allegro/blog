@@ -60,27 +60,29 @@ Jego głównym zadaniem jest monitorowanie odkładanych danych telemetrycznych i
 nim reguł. W przypadku ich naruszenia wykonana musi zostać odpowiednia akcja, na przykład powiadomienie osoby
 pełniącej dyżur.
 
-Ta akcja domyka cykl. Zaangażowany zostaje człowiek. Nie pozostaje on jednak pozostawiony sam. W tym momencie
-znanych jest już wiele szczegółów. Wiadomo, w którym miejscu systemu wystąpiła sytuacja, która reguła została naruszona,
-gdzie należy szukać przyczyny. Mamy zgromadzone logi. Możemy działać.
-
 Tu trzeba zwrócić uwagę na to, jak określona została reguła uruchamiająca całą akcję. Informowanie, że usługa zużyła
 całą dostępną przestrzeń na dysku i już nie działa, nie ma żadnego sensu. Mleko się rozlało, błąd wystąpił. Dużo
 lepszym pomysłem jest informacja typu: "Wyczerpane zostało 75% procent dostępnego miejsca. Zareaguj, a unikniesz
 kłopotów". I właśnie to jest cała tajemnica skutecznego utrzymywania rozległego systemu. Mamy przesłankę, by sądzić
 że za X czasu miejsce zostanie wyczerpane, a usługa przestanie działać. Ten X to czas na skuteczną interwencję.
 
+Ta akcja domyka cykl. Zaangażowany zostaje człowiek. Nie pozostaje on jednak pozostawiony sam. W tym momencie
+znanych jest już wiele szczegółów. Wiadomo, w którym miejscu systemu wystąpiła sytuacja, która reguła została naruszona,
+gdzie należy szukać przyczyny. Mamy zgromadzone logi. Możemy działać.
+
 # Service Mesh
 
-![](../img/articles/2021-12-09-metrics/storage_metric.png)
+# Friday evening
 
-![](../img/articles/2021-12-09-metrics/Zrzut ekranu 2021-12-8 o 13.57.53.png)
-![](../img/articles/2021-12-09-metrics/Zrzut ekranu 2021-12-8 o 13.59.36.png)
-![](../img/articles/2021-12-09-metrics/Zrzut ekranu 2021-12-8 o 14.01.32.png)
-![](../img/articles/2021-12-09-metrics/Zrzut ekranu 2021-12-8 o 14.04.19.png)
-![](../img/articles/2021-12-09-metrics/Zrzut ekranu 2021-12-8 o 14.05.51.png)
-![](../img/articles/2021-12-09-metrics/Zrzut ekranu 2021-12-8 o 14.06.59.png)
-![](../img/articles/2021-12-09-metrics/Zrzut ekranu 2021-12-8 o 14.08.22.png)
+![](../img/articles/2021-12-09-observability_and_monitoring/storage_metric.png)
+
+![](../img/articles/2021-12-09-observability_and_monitoring/Zrzut ekranu 2021-12-8 o 13.57.53.png)
+![](../img/articles/2021-12-09-observability_and_monitoring/Zrzut ekranu 2021-12-8 o 13.59.36.png)
+![](../img/articles/2021-12-09-observability_and_monitoring/Zrzut ekranu 2021-12-8 o 14.01.32.png)
+![](../img/articles/2021-12-09-observability_and_monitoring/Zrzut ekranu 2021-12-8 o 14.04.19.png)
+![](../img/articles/2021-12-09-observability_and_monitoring/Zrzut ekranu 2021-12-8 o 14.05.51.png)
+![](../img/articles/2021-12-09-observability_and_monitoring/Zrzut ekranu 2021-12-8 o 14.06.59.png)
+![](../img/articles/2021-12-09-observability_and_monitoring/Zrzut ekranu 2021-12-8 o 14.08.22.png)
 
 I tak właśnie działamy w Allegro. Zbieramy ogromne ilości danych telemetrycznych, przetwarzamy je, staramy się wyciągać
 właściwe wnioski. Ciężko mi wyobrazić sobie jakiekolwiek planowanie bez odniesienia do metryk i logów.
