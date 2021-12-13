@@ -43,7 +43,7 @@ com/tip/The-basics-of-monitoring-and-observability-in-microservices]
 * Metryki aplikacyjne - Mają postać danych telemetrycznych informujących o kondycji poszczególnych komponentów
   składających się na system.
 * Health check - Jest to wzorzec zachowania polegający na tym, że wszystkie komponenty należące do danego systemu są w
-  stanie poinformować go czy w danej chwili są zdolne do przetwarzania danych. Można wyobrazić sobie sytuację, że jakiś
+  stanie poinformować go czy w danej chwili są zdolne do przetwarzania danych. Można wyobrazić sobie sytuację, że
   komponent sterujący ruchem co jakiś czas odpytuje zarejestrowane usługi i upewnia się, że może im bezpiecznie
   przekazać sterowanie.
 
@@ -52,25 +52,35 @@ Harmonijny rozwój tych obszarów zapewnia utrzymanie dobrej obserwalności dla 
 # System monitorowania i informowania
 
 Tu należy zwrócić uwagę na jeszcze jeden szczegół. Omówione wcześniej rozwiązania nie są wystarczające do skutecznego
-działania w czasie rzeczywistym. Narzędzia realizujące te wzorce wyspecjalizowane są do gromadzenia i
-przetwarzania danych. Nic więcej. Nie są w stanie ich samodzielnie interpretować, a co za tym idzie, nie potrafią
-odróżnić sytuacji normalnej od wyjątkowej. Potrzebny jest jeszcze jeden gracz - _system monitorujący_.
+działania w czasie rzeczywistym. Narzędzia realizujące te wzorce wyspecjalizowane są do gromadzenia i przetwarzania
+danych. Nic więcej. Nie są w stanie ich samodzielnie interpretować, a co za tym idzie, nie potrafią odróżnić sytuacji
+normalnej od wyjątkowej. Potrzebny jest jeszcze jeden gracz - _system monitorujący_.
 
-Jego głównym zadaniem jest monitorowanie odkładanych danych telemetrycznych i sprawdzanie określonych, zapisanych w
-nim reguł. W przypadku ich naruszenia wykonana musi zostać odpowiednia akcja, na przykład powiadomienie osoby
-pełniącej dyżur.
+Jego głównym zadaniem jest monitorowanie odkładanych danych telemetrycznych i sprawdzanie określonych reguł. W przypadku
+ich naruszenia wykonana musi zostać odpowiednia akcja, na przykład powiadomienie osoby pełniącej dyżur.
 
-Tu trzeba zwrócić uwagę na to, jak określona została reguła uruchamiająca całą akcję. Informowanie, że usługa zużyła
-całą dostępną przestrzeń na dysku i już nie działa, nie ma żadnego sensu. Mleko się rozlało, błąd wystąpił. Dużo
-lepszym pomysłem jest informacja typu: "Wyczerpane zostało 75% procent dostępnego miejsca. Zareaguj, a unikniesz
-kłopotów". I właśnie to jest cała tajemnica skutecznego utrzymywania rozległego systemu. Mamy przesłankę, by sądzić
-że za X czasu miejsce zostanie wyczerpane, a usługa przestanie działać. Ten X to czas na skuteczną interwencję.
+Musimy zwrócić uwagę na to, jak określona została reguła uruchamiająca całą akcję. Informowanie, że usługa zużyła całą
+dostępną przestrzeń na dysku i już nie działa, nie ma żadnego sensu. Mleko się rozlało, błąd wystąpił, system nie
+działa (dowiedzielibyśmy się o tym nawet bez skomplikowanych pomiarów ;). Dużo lepszym pomysłem jest informacja typu: "
+Wyczerpane zostało 80% procent dostępnego miejsca. Zareaguj, a unikniesz kłopotów". I właśnie to jest cała tajemnica
+skutecznego utrzymywania rozległego systemu. Mamy przesłankę, by sądzić, że za X czasu miejsce zostanie wyczerpane, a
+usługa przestanie działać. Ten X to czas na skuteczną interwencję.
 
-Ta akcja domyka cykl. Zaangażowany zostaje człowiek. Nie pozostaje on jednak pozostawiony sam. W tym momencie
-znanych jest już wiele szczegółów. Wiadomo, w którym miejscu systemu wystąpiła sytuacja, która reguła została naruszona,
-gdzie należy szukać przyczyny. Mamy zgromadzone logi. Możemy działać.
+Ta akcja domyka cykl. Zaangażowany zostaje człowiek. Nie pozostaje on jednak pozostawiony sam. W tym momencie znanych
+jest już wiele szczegółów. Wiadomo, w którym miejscu systemu wystąpiła sytuacja wyjątkowa, która reguła została
+naruszona, gdzie należy szukać przyczyny. Mamy zgromadzone logi. Możemy działać.
 
 # Service Mesh
+
+Gdy wyobrazimy sobie kod odpowiedzialny za zbieranie metryk i gromadzenie logów, to możemy dojść do słusznego wniosku,
+że musi on być bardzo generyczny. Czy można uniknąć zatem poowtarzania go dla każdej usłgi z osobna ? Okazuje się, że
+tak. Z pomocą przychodzi kolejny potężny wzorzec architektury mikroserwisowej nazywany Service Mesh. Jest on bardzo
+skomplikowany i pełni wiele różnorakich funkcji, szczegóły można poznać w innym artykule TODO. Z punktu widzenia
+observability najważniejsze jest to, że zakłada on istnienie tzw. siedecars. Są to komponenty proxy, przez
+które przechodzi cały ruch skierowany do usługi. Jest to punkt, w którym można dokonać wszelkich pomiarów, odczytać
+komunikaty wejściowe i wyjściowe, a potem skomunikować się z odpowiednimi systemami gromadzącymi je. Takie usługi
+proxy mogą być generowane całkowicie automatycznie, bez wiedzy dewelopera. Dzięki nim uzyskuje się
+całkowitą separację kodu biznesowego i kodu technicznego.
 
 # Friday evening
 
