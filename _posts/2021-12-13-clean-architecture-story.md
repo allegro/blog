@@ -49,7 +49,7 @@ started with what we didn’t know? Simply — by asking questions such as: How 
 
 ## Use cases
 In other words — what are the use cases for the system? Let’s define the challenge once more using high-level actors
-and interactions: ![Use cases](/img/articles/2021-10-25-clean-architecture-story/use_cases.png) and pick the first
+and interactions: ![Use cases](/img/articles/2021-12-13-clean-architecture-story/use_cases.png) and pick the first
 required interaction: shop makes a reservation. What is required to make a reservation? Hmm, I think that it would be
 good to get the current schedule in the first place. Why am I using “get” instead of “display”? “Display” already
 suggests a way of delivering output, when we hear “display” a computer screen comes to our minds, with a web
@@ -107,7 +107,7 @@ simplifies testing, as business rules can be verified in separation from the use
 Let‘s stop with business logic for a moment. We created quite thoughtful, extensible code for sure, but why are we
 talking about “Clean” architecture? We already used Domain-Driven Design and Hexagonal architecture concepts. Is there
 anything more? Imagine that another person is going to help us with implementation. She is not aware of the source code
-yet and simply would like to take a look at the codebase. And she sees: ![Use case classes](/img/articles/2021-10-25-clean-architecture-story/use_case_classes.png)
+yet and simply would like to take a look at the codebase. And she sees: ![Use case classes](/img/articles/2021-12-13-clean-architecture-story/use_case_classes.png)
 It looks like something to her, doesn‘t it? A kind of reservation system! It is not yet another domain service with
 some methods that have no clear connection with possible uses — the list of classes itself describes what the system
 can do.
@@ -170,7 +170,7 @@ class GetScheduleEndpoint(private val getScheduleUseCase: GetScheduleUseCase) {
 ## The abstractions
 ### Use Case
 Checking the implementation of endpoints (see comments in the code) we can see that conceptually each endpoint executes
-logic according to the same structure: ![Use case flow](/img/articles/2021-10-25-clean-architecture-story/use_case_flow.png)
+logic according to the same structure: ![Use case flow](/img/articles/2021-12-13-clean-architecture-story/use_case_flow.png)
 Well, why don’t we make some abstraction for this? Sounds like a crazy idea? Let‘s check! Based on our code and the
 diagram above we can identify the `UseCase` abstraction — something that takes some input (domain input, to be precise)
 and converts it to a (domain) output.
@@ -317,7 +317,7 @@ allows for creation of a self-documenting API endpoint.
 ## High-level overview
 With all this read we can switch our view to the high-level perspective:
 
-![The Clean Architecture Diagram](/img/articles/2021-10-25-clean-architecture-story/clean_architecture_diagram.png)
+![The Clean Architecture Diagram](/img/articles/2021-12-13-clean-architecture-story/clean_architecture_diagram.png)
 
 and describe abstractions. Starting from the inside we have:
 * **Domain Model**, **Services** and **Gateways**, which are responsible for defining
