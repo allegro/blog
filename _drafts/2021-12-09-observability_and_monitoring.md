@@ -35,7 +35,7 @@ zdekomponowana na kilka silnie współpracujących ze sobą, bardziej wyspecjali
 com/tip/The-basics-of-monitoring-and-observability-in-microservices]
 -->
 
-!![](../img/articles/2021-12-09-observability_and_monitoring/observability.drawio.png)
+!![](../img/articles/2021-12-09-observability_and_monitoring/observability.png)
 
 * Logowanie - Polega na odkładaniu w specjalnych bazach informacji tekstowych opisujących działanie poszczególnych
   komponentów. Są one opatrywane przez metadane pozwalające na późniejsze ich wyszukiwanie i przetwarzanie.
