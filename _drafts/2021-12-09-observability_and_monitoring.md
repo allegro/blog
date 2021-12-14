@@ -88,14 +88,6 @@ całkowitą separację kodu biznesowego i kodu technicznego.
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/storage_metric.png)
 
-![](../img/articles/2021-12-09-observability_and_monitoring/Zrzut ekranu 2021-12-8 o 13.57.53.png)
-![](../img/articles/2021-12-09-observability_and_monitoring/Zrzut ekranu 2021-12-8 o 13.59.36.png)
-![](../img/articles/2021-12-09-observability_and_monitoring/Zrzut ekranu 2021-12-8 o 14.01.32.png)
-![](../img/articles/2021-12-09-observability_and_monitoring/Zrzut ekranu 2021-12-8 o 14.04.19.png)
-![](../img/articles/2021-12-09-observability_and_monitoring/Zrzut ekranu 2021-12-8 o 14.05.51.png)
-![](../img/articles/2021-12-09-observability_and_monitoring/Zrzut ekranu 2021-12-8 o 14.06.59.png)
-![](../img/articles/2021-12-09-observability_and_monitoring/Zrzut ekranu 2021-12-8 o 14.08.22.png)
-
 I tak właśnie działamy w Allegro. Zbieramy ogromne ilości danych telemetrycznych, przetwarzamy je, staramy się wyciągać
 właściwe wnioski. Ciężko mi wyobrazić sobie jakiekolwiek planowanie bez odniesienia do metryk i logów.
 
