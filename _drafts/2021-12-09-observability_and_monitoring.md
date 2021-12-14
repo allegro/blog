@@ -35,6 +35,8 @@ zdekomponowana na kilka silnie współpracujących ze sobą, bardziej wyspecjali
 com/tip/The-basics-of-monitoring-and-observability-in-microservices]
 -->
 
+!![](../img/articles/2021-12-09-observability_and_monitoring/observability.drawio.png)
+
 * Logowanie - Polega na odkładaniu w specjalnych bazach informacji tekstowych opisujących działanie poszczególnych
   komponentów. Są one opatrywane przez metadane pozwalające na późniejsze ich wyszukiwanie i przetwarzanie.
 * Śledzenie - Jest to koncept polegający przekazywaniu wspólnego identyfikatora do wszystkich komponentów realizujących
@@ -47,7 +49,7 @@ com/tip/The-basics-of-monitoring-and-observability-in-microservices]
   komponent sterujący ruchem co jakiś czas odpytuje zarejestrowane usługi i upewnia się, że może im bezpiecznie
   przekazać sterowanie.
 
-Harmonijny rozwój tych obszarów zapewnia utrzymanie dobrej obserwalności dla całego systemu.
+Harmonijny rozwój tych obszarów zapewnia utrzymanie dobregit j obserwalności dla całego systemu.
 
 # System monitorowania i informowania
 
