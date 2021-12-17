@@ -37,14 +37,15 @@ com/tip/The-basics-of-monitoring-and-observability-in-microservices]
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/observability.png)
 
-* Logowanie - Polega na odkładaniu w specjalnych bazach informacji tekstowych opisujących działanie poszczególnych
+* Logowanie -Polega na odkładaniu w specjalnych bazach informacji tekstowych opisujących działanie poszczególnych
   komponentów. Są one opatrywane przez metadane pozwalające na późniejsze ich wyszukiwanie i przetwarzanie.
-* Śledzenie - Jest to koncept polegający przekazywaniu wspólnego identyfikatora do wszystkich komponentów realizujących
-  daną akcję biznesową użytkownika. Identyfikator ten trafia do logów przez nie generowanych. Dzięki temu zyskujemy
-  element korelujący i możliwe staje się dokładne prześledzenie przepływu danych w systemie.
-* Metryki aplikacyjne - Mają postać danych telemetrycznych informujących o kondycji poszczególnych komponentów
+* Śledzenie -Jest to pojęcie określające przekazywanie wspólnego identyfikatora do wszystkich komponentów realizujących
+  daną akcję biznesową użytkownika. Każdy z nich loguje wykonywane przez siebie akcje i opatruje je otrzymanym
+  identyfikatorem. Dzięki temu zyskujemy element korelujący i możliwe staje się dokładne prześledzenie przepływu danych
+  w systemie.
+* Metryki aplikacyjne -Mają postać danych telemetrycznych informujących o kondycji poszczególnych komponentów
   składających się na system.
-* Health check - Jest to wzorzec zachowania polegający na tym, że wszystkie komponenty należące do danego systemu są w
+* Health check -Jest to wzorzec zachowania polegający na tym, że wszystkie komponenty należące do danego systemu są w
   stanie poinformować go czy w danej chwili są zdolne do przetwarzania danych. Można wyobrazić sobie sytuację, że
   komponent sterujący ruchem co jakiś czas odpytuje zarejestrowane usługi i upewnia się, że może im bezpiecznie
   przekazać sterowanie.
@@ -75,24 +76,32 @@ naruszona, gdzie należy szukać przyczyny. Mamy zgromadzone logi. Możemy dzia�
 # Service Mesh
 
 Gdy wyobrazimy sobie kod odpowiedzialny za zbieranie metryk i gromadzenie logów, to możemy dojść do słusznego wniosku,
-że musi on być bardzo generyczny. Czy można uniknąć zatem poowtarzania go dla każdej usłgi z osobna ? Okazuje się, że
+że musi on być bardzo generyczny. Czy można uniknąć zatem powtarzania go dla każdej usłgi z osobna ? Okazuje się, że
 tak. Z pomocą przychodzi kolejny potężny wzorzec architektury mikroserwisowej nazywany Service Mesh. Jest on bardzo
 skomplikowany i pełni wiele różnorakich funkcji, szczegóły można poznać w innym artykule TODO. Z punktu widzenia
-observability najważniejsze jest to, że zakłada on istnienie tzw. siedecars. Są to komponenty proxy, przez
-które przechodzi cały ruch skierowany do usługi. Jest to punkt, w którym można dokonać wszelkich pomiarów, odczytać
-komunikaty wejściowe i wyjściowe, a potem skomunikować się z odpowiednimi systemami gromadzącymi je. Takie usługi
-proxy mogą być generowane całkowicie automatycznie, bez wiedzy dewelopera. Dzięki nim uzyskuje się
-całkowitą separację kodu biznesowego i kodu technicznego.
+observability najważniejsze jest to, że zakłada on istnienie tzw. siedecars. Są to komponenty proxy, przez które
+przechodzi cały ruch skierowany do usługi. Jest to punkt, w którym można dokonać wszelkich pomiarów, odczytać komunikaty
+wejściowe i wyjściowe, a potem skomunikować się z odpowiednimi systemami gromadzącymi je. Takie usługi proxy mogą być
+generowane całkowicie automatycznie, bez wiedzy dewelopera. Dzięki nim uzyskuje się całkowitą separację kodu biznesowego
+i kodu technicznego.
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/service-mesh-observability.png)
 
-TODO GLUE
-# Friday evening
+#
 
-<!--
-I tak właśnie działamy w Allegro. Zbieramy ogromne ilości danych telemetrycznych, przetwarzamy je, staramy się wyciągać
-właściwe wnioski. Ciężko mi wyobrazić sobie jakiekolwiek planowanie bez odniesienia do metryk i logów.
--->
+W systemie Allegro obserwowalność ma kluczowe znaczenie. Nasze usługi cały czas raportują o swoim stanie do
+aplikacji gromadzących logi i dane telemetryczne. Aplikacje monitorujące sprawdzają czy dane te mieszczą się w
+zadanych przedziałach i w razie stwierdzenia nieprawidłowości automatycznie powiadamiają o tym dyżurantów.
+
+Czasami wszystko jest oczywiste. Od razu widać gdzie leży przyczyna problemu. Niestety nie zawsze tak jest. Czasami
+
+# Piątkowe popołudnie
+
+<!-- I właśnie na tym drugim aspekcie chciałbym się teraz skupić i
+opowiedzieć Wam historię jaka wydarzyła mi się podczas pierwszego samodzielnego dyżuru produkcyjnego właśnie w piątkowe
+popołudnie.
+
+Pierwsza informacja-->
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/storage_metric.png)
 
@@ -104,19 +113,18 @@ właściwe wnioski. Ciężko mi wyobrazić sobie jakiekolwiek planowanie bez odn
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/kibana.png)
 
-```java
+```
 exception java.lang.RuntimeException: Hystrix circuit short-circuited and is OPEN
     at com.netflix.hystrix.AbstractCommand.handleShortCircuitViaFallback(AbstractCommand.java:979)
     at com.netflix.hystrix.AbstractCommand.applyHystrixSemantics(AbstractCommand.java:557)
 ```
 
-```java
+```
 feign.codec.DecodeException: Error while extracting response for type
     [java.util.List<xxx.xxx.xxx.Dto>] and content type [application/vnd.allegro.public.v1+json]; nested exception is
     org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error
     ...
 ```
-
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/gc_spent_per_minute_after_fail.png)
 
