@@ -13,12 +13,13 @@ Spróbujmy odpowiedzieć sobie, jak rozumieć należy pojęcie *Observability*.
 > Observability is the ability to collect data about program execution, internal states of modules, and communication
 > between components. Wikipedia()
 
-System obserwowalny jest przede wszystkim poznany i oswojony. Dostarcza precyzyjnych danych opisujących stan i kondycję
-swoich komponentów. Dane te mogą one mieć bardzo różną postać. Są to zarówno liczbowe dane telemetryczne, jak i tekstowe
-zapisy logów. Dzięki nim jesteśmy w stanie zrozumieć charakterystykę zachowań systemu i sposób przepływu danych. To z
-kolei pozwala na wychwytywanie subtelnych anomalii, które w chwili wystąpienia nie stanowią problemu, ale są przesłanki,
-że wkrótce nim się staną. Skuteczna reakcja w tym właśnie momencie pozwala na zachowanie stabilności i ciągłości
-działania. I o to właśnie chodzi. Mamy możliwość zadziałania na przyczynę, zanim pojawi się jej negatywny skutek.
+System obserwowalny jest przede wszystkim poznany i zrozumiany. Dostarcza precyzyjnych danych opisujących stan i
+kondycję swoich komponentów. Dane te mogą one mieć bardzo różną postać. Są to zarówno liczbowe dane telemetryczne, jak i
+tekstowe zapisy logów. Dzięki nim jesteśmy w stanie zrozumieć charakterystykę zachowań systemu i sposób przepływu
+danych. To z kolei pozwala na wychwytywanie subtelnych anomalii, które w chwili wystąpienia nie stanowią problemu, ale
+są przesłanki, że wkrótce nim się staną. Skuteczna reakcja w tym właśnie momencie pozwala na zachowanie stabilności i
+ciągłości działania. I o to właśnie chodzi. Mamy możliwość zadziałania na przyczynę, zanim pojawi się jej negatywny
+skutek.
 
 Zachowanie systemu jest dobrym przybliżeniem zachowań jego użytkowników. Ten naturalnie stworzony model pozwala na
 wyciągnięcie wniosków co do oczekiwanych kierunków rozwoju. Może stanowić zatem podstawę do podejmowania decyzji nie
@@ -87,21 +88,15 @@ i kodu technicznego.
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/service-mesh-observability.png)
 
-#
-
-W systemie Allegro obserwowalność ma kluczowe znaczenie. Nasze usługi cały czas raportują o swoim stanie do
-aplikacji gromadzących logi i dane telemetryczne. Aplikacje monitorujące sprawdzają czy dane te mieszczą się w
-zadanych przedziałach i w razie stwierdzenia nieprawidłowości automatycznie powiadamiają o tym dyżurantów.
-
-Czasami wszystko jest oczywiste. Od razu widać gdzie leży przyczyna problemu. Niestety nie zawsze tak jest. Czasami
-
 # Piątkowe popołudnie
 
-<!-- I właśnie na tym drugim aspekcie chciałbym się teraz skupić i
-opowiedzieć Wam historię jaka wydarzyła mi się podczas pierwszego samodzielnego dyżuru produkcyjnego właśnie w piątkowe
-popołudnie.
+Dla systemu działającego w Allegro aspekt obserwowalności ma kluczowe znaczenie. Nasze usługi cały czas zbierają ogromne
+ilości danych telemetrycznych. Aplikacje monitorujące na bieżąco sprawdzają, czy mieszczą się w one w zadanych
+przedziałach, a w razie stwierdzenia nieprawidłowości automatycznie powiadamiani są dyżuranci.
 
-Pierwsza informacja-->
+Aby pokazać Wam, jak system ten działa w praktyce, posłużę się przykładem. Opiszę awarię, która przydarzyła mi się
+podczas mojego pierwszego, samodzielnego dyżuru produkcyjnego, nomen omen w piątkowe popołudnie.
+
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/storage_metric.png)
 
