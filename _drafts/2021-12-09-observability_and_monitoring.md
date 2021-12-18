@@ -102,6 +102,8 @@ podczas mojego pierwszego, samodzielnego dyÅ¼uru produkcyjnego, nomen omen w piÄ
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/incomming_traffic.png)
 
+![](../img/articles/2021-12-09-observability_and_monitoring/p99_response_time_before_failure..png)
+
 ![](../img/articles/2021-12-09-observability_and_monitoring/gc_spent_per_minute_before_fail.png)
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/clients.png)
