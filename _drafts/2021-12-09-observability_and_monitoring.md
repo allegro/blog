@@ -134,7 +134,8 @@ pracuje wirtualna maszyna. Sięgnęliśmy po kolejną metrykę -tym razem obrazu
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/gc_spent_per_minute_before_fail.png)
 
-Od przełomu listopada do grudnia pracuje on o wiele gorzej niż wcześniej.
+Bez trudu dało się zauważyć, że od przełomu listopada i grudnia pracuje on o wiele gorzej niż wcześniej. Ma on coraz
+większe problemy ze zwolnieniem zasobów.
 
 Pojawiła się kolejna hipoteza. Może błąd leży w samej usłudze. Może odbyło jakieś wdrożenie, wraz z którym do kodu
 trafiła zmiana pogarszająca działanie aplikacji.
@@ -176,8 +177,7 @@ Wprowadziliśmy szybką poprawkę i oczekiwaliśmy znaczącej poprawy, która ni
 Do logów cały czas trafiały ogromne ilości stosów wyjątków, których źródłem był Hystrix. Więc przyczyną nie mógł być
 timeout.
 
-I wtedy okazało się, że mamy jeszcze jeden problem -nie jesteśmy w stanie odczytać zwracanej nam
-odpowiedzi:
+I wtedy okazało się, że mamy jeszcze jeden problem -nie jesteśmy w stanie odczytać zwracanej nam odpowiedzi:
 
 ```
 Error while extracting response for type
@@ -186,23 +186,33 @@ Error while extracting response for type
     ...
 ```
 
-Szybko okazało się że doszło do złamania kontraktu. I to była pierwotna przyczyna naszych kłopotów. Nasza
-usługa stała się niestabilna przez błąd, którego źródłem była inna usługa.
+Szybko okazało się, że doszło do złamania kontraktu. I właśnie to była pierwotna przyczyna całego zamieszania. Nasza
+usługa stała się niestabilna przez błąd, którego źródłem była inna usługa. Tylko to wcale nie było takie oczywiste.
 
 Po naprawieniu awarii od razu można zaobserwować poprawę wydajności pracy GC
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/gc_spent_per_minute_after_fail.png)
 
-Oraz znaczne zmiejszenie przyrostu pliku logów.
+oraz znaczne zmiejszenie przyrostu pliku logów.
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/storage_after_fail.png)
 
+Pożar został ugaszony, trzeba było jednak poszukać odpowiedzi na zasadnicze pytanie:
 
+Jak to się stało, że tak poważna awaria została niezauważona przez systemy monitorujące ?
 
-<!--Jak to się stało, że nie zauważyliśmy tego wyjątku już wcześniej ?
+Jak zwykle w takich sytuacjach okazało się, że nie ma jednej zasadniczej przyczyny.
 
-Okazało się, że ramki wyjątków logowane były nie na poziomie ERROR lecz WARN, dodatkowo przy takiej ilości komunikatów
-nie zwróciliśmy po prostu uwagi, że mamy do czynienia z dwoma ich rodzajami!-->
+Przede wszystkim okazało się, że ramki wyjątków logowane były nie na poziomie ERROR lecz WARN. Tylko czy to jest
+błąd? Przecież wszystko zadziałało poprawnie, usługa zewnętrzna zwróciła swoją odpowiedź ze statusem 200. Z jej punktu
+widzenia było wszystko w porządku. Nam nie udało się odczytać odpowiedzi i co prawda pojawił się wyjątek, ale został
+on obsłużony przez Circuit Breaker. Stack trace trafił do logu, a komunikacja została ponowiona.  Nasz klient nie
+otrzymał informacji o błędzie, lecz zwrócony mu został domyślny obiekt odpowiedzi tzw. fallback.
+
+Nie ulega wątpliwości, że zabrakło nam bardzo ważnej metryki. Gdybyśmy monitorowali ilość odpowiedzi typu fallback,
+to bez wątpienia wykrylibyśmy problem dużo wcześniej.
+
+Uniknęlibyśmy kłopotów, a o pierwszym samodzielnym dyżurze produkcyjnym dawno bym już zapomniał ;)
 
 
 
