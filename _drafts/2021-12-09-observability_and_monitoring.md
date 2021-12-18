@@ -94,15 +94,37 @@ Dla systemu działającego w Allegro aspekt obserwowalności ma kluczowe znaczen
 ilości danych telemetrycznych. Aplikacje monitorujące na bieżąco sprawdzają, czy mieszczą się w one w zadanych
 przedziałach, a w razie stwierdzenia nieprawidłowości automatycznie powiadamiani są dyżuranci.
 
-Aby pokazać Wam, jak system ten działa w praktyce, posłużę się przykładem. Opiszę awarię, która przydarzyła mi się
-podczas mojego pierwszego, samodzielnego dyżuru produkcyjnego, nomen omen w piątkowe popołudnie.
+Aby pokazać Wam, jak system ten działa w praktyce, opowiem o awarii, która przydarzyła mi się podczas mojego pierwszego,
+samodzielnego dyżuru produkcyjnego, nomen omen w piątkowe popołudnie.
 
+Wszystko rozpoczęło się telefonem od dyżurnego jednego z zespołów infrastrukturalnych z informacją, że od jakiegoś czasu
+jedna z naszych usług zachowuje się bardzo niestabilnie. Zaobserwowany został nienaturalny, skokowy przyrost odkładanych
+przez nią logów. Sytuacja ta została odnotowana przez system monitoringu i uruchomiła alarm.
+
+Rozpoczęliśmy analizę sytuacji. Pierwszą metryką, po którą sięgnęliśmy to ta, która wizualizuje dzienne przyrosty
+rozmiaru pliku z logami.
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/storage_metric.png)
 
+Sytuacja wyglądała bardzo dziwnie. Gdzieś pomiędzy 30.11 a 01.12 niewątpliwie coś wpłynęło na naszą usługą. Na wykresie
+widać dramatyczny wzrost tempa odkładania logów. Tylko czy to od razu musi być awaria ? Przecież weszliśmy w okres
+wzmożonego ruchu, a usługa standardowo gromadzi sporo logów. Może ich przyrost wynika ze zwiększonej ilości
+obsługiwanych żądań? Ta hipoteza wydawała się mało realna ze względu na zobserwowaną skalę anomalii, ale jednak trzeba
+było ją zweryfikować. Sięgnęliśmy zatem po drugą metrykę - tym razem obrazującą rozkład ruchu przychodzącego do usługi.
+
 ![](../img/articles/2021-12-09-observability_and_monitoring/incomming_traffic.png)
 
+Tym razem krzywa nie pokazywała żadnych anomalii. Usługa w obserwowanym okresie obsługiwała normalny, typowy dla siebie
+ruch. Nie tutaj więc należy szukać przyczyny problemu.
+
+Ciekawych informacji dostarczyła analiza kolejnej zależności. Tym razem przyjrzeliśmy się czasom odpowiedzi naszej
+usługi.
+
 ![](../img/articles/2021-12-09-observability_and_monitoring/p99_response_time_before_failure..png)
+
+I tu niespodzianka bo w interesującym nas przedziale parametry naszej usługi wyraźnie się pogorszyły. Opóźnienia nie
+były na tyle duże, by uruchomić alarm, ale stały się wyraźnie zauważalne. Coś niedobrego działo się z naszą usługą.
+Postanowiliśmy jeszcze bardziej zawęzić i doszczegółowić obaszar patrzenia.
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/gc_spent_per_minute_before_fail.png)
 
