@@ -122,11 +122,20 @@ usługi.
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/p99_response_time_before_failure..png)
 
-I tu niespodzianka bo w interesującym nas przedziale parametry naszej usługi wyraźnie się pogorszyły. Opóźnienia nie
+I tu niespodzianka, bo w interesującym nas przedziale parametry naszej usługi wyraźnie się pogorszyły. Opóźnienia nie
 były na tyle duże, by uruchomić alarm, ale stały się wyraźnie zauważalne. Coś niedobrego działo się z naszą usługą.
-Postanowiliśmy jeszcze bardziej zawęzić i doszczegółowić obaszar patrzenia.
+Postanowiliśmy jeszcze bardziej zawęzić obszar patrzenia i przyjrzeć się jak pracuje wirtualna maszyna. Sięgnęliśmy po
+kolejną metrykę - tym razem obrazującą pracę Garbage Collectora.
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/gc_spent_per_minute_before_fail.png)
+
+Nasze obawy znowu się potwierdziły. Od przełomu listopada do grudnia pracuje on o wiele gorzej niż wcześniej. Pojawiła
+się kolejna hipoteza. Może błąd leży w samej usłudze. Może było jakieś wdrożenie, wraz z którym do kodu weszła szkodliwa
+zmiana pogarszająca działanie aplikacji. Po weryfikacji logu wdrożeń oazało się, że jednak nie. W tym okresie w kodzie
+źródłowym nie zaszły żadne znaczące zmiany. Problemu znowu musieliśmy szukać gdzie indziej.
+
+Wiedzieliśmy już sporo, metryki dały nam ogólne spojrzenie na sytuację. Teraz mogliśmy spokojnie przyjrzeć się
+szczegółom i sięgnąć po logi.
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/clients.png)
 
