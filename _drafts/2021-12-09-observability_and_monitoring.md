@@ -106,16 +106,20 @@ rozmiaru pliku z logami.
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/storage_metric.png)
 
-Sytuacja wyglądała bardzo dziwnie. Gdzieś pomiędzy 30.11 a 01.12 niewątpliwie coś wpłynęło na naszą usługą. Na wykresie
-widać dramatyczny wzrost tempa odkładania logów. Tylko czy to od razu musi być awaria ? Przecież weszliśmy w okres
-wzmożonego ruchu, a usługa standardowo gromadzi sporo logów. Może ich przyrost wynika ze zwiększonej ilości
-obsługiwanych żądań? Ta hipoteza wydawała się mało realna ze względu na zobserwowaną skalę anomalii, ale jednak trzeba
-było ją zweryfikować. Sięgnęliśmy zatem po drugą metrykę - tym razem obrazującą rozkład ruchu przychodzącego do usługi.
+Sytuacja wyglądała bardzo dziwnie. Pomiędzy 30.11 a 01.12 niewątpliwie coś wpłynęło na naszą usługą. Na wykresie widać
+dramatyczny wzrost tempa odkładania logów.
+
+Tylko czy to od razu musi być awaria ? Przecież weszliśmy w okres wzmożonego ruchu, a usługa standardowo gromadzi sporo
+logów. Może ich przyrost wynika ze zwiększonej ilości obsługiwanych żądań?
+
+Ta hipoteza wydawała się mało realna ze względu na skalę zaobserwowanej anomalii, ale jednak należało ją zweryfikować.
+
+Sięgnęliśmy zatem po drugą metrykę -tym razem obrazującą rozkład ruchu przychodzącego do usługi.
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/incomming_traffic.png)
 
-Tym razem krzywa nie pokazywała żadnych anomalii. Usługa w obserwowanym okresie obsługiwała normalny, typowy dla siebie
-ruch. Nie tutaj więc należy szukać przyczyny problemu.
+Krzywa nie pokazywała żadnych anomalii. Usługa w obserwowanym okresie obsługiwała normalny, typowy dla siebie ruch. Nie
+tutaj więc należy szukać przyczyny problemu.
 
 Ciekawych informacji dostarczyła analiza kolejnej zależności. Tym razem przyjrzeliśmy się czasom odpowiedzi naszej
 usługi.
@@ -123,23 +127,25 @@ usługi.
 ![](../img/articles/2021-12-09-observability_and_monitoring/p99_response_time_before_failure..png)
 
 I tu niespodzianka, bo w interesującym nas przedziale parametry naszej usługi wyraźnie się pogorszyły. Opóźnienia nie
-były na tyle duże, by uruchomić alarm, ale stały się wyraźnie zauważalne. Coś niedobrego działo się z naszą usługą.
-Postanowiliśmy jeszcze bardziej zawęzić obszar patrzenia i przyjrzeć się jak pracuje wirtualna maszyna. Sięgnęliśmy po
-kolejną metrykę - tym razem obrazującą pracę Garbage Collectora.
+były na tyle duże, by uruchomić alarm, ale stały się wyraźnie zauważalne.
+
+Coś niedobrego działo się z naszą usługą. Postanowiliśmy jeszcze bardziej zawęzić obszar patrzenia i przyjrzeć się jak
+pracuje wirtualna maszyna. Sięgnęliśmy po kolejną metrykę -tym razem obrazującą pracę Garbage Collector.
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/gc_spent_per_minute_before_fail.png)
 
-Nasze obawy znowu się potwierdziły. Od przełomu listopada do grudnia pracuje on o wiele gorzej niż wcześniej. Pojawiła
-się kolejna hipoteza. Może błąd leży w samej usłudze. Może było jakieś wdrożenie, wraz z którym do kodu weszła szkodliwa
-zmiana pogarszająca działanie aplikacji. Po weryfikacji logu wdrożeń oazało się, że jednak nie. W tym okresie w kodzie
-źródłowym nie zaszły żadne znaczące zmiany. Problemu znowu musieliśmy szukać gdzie indziej.
+Od przełomu listopada do grudnia pracuje on o wiele gorzej niż wcześniej.
 
-Wiedzieliśmy już sporo, metryki dały nam ogólne spojrzenie na sytuację. Teraz mogliśmy spokojnie przyjrzeć się
-szczegółom i sięgnąć po logi.
+Pojawiła się kolejna hipoteza. Może błąd leży w samej usłudze. Może odbyło jakieś wdrożenie, wraz z którym do kodu
+trafiła zmiana pogarszająca działanie aplikacji.
 
-![](../img/articles/2021-12-09-observability_and_monitoring/clients.png)
+Jednak po weryfikacji logów deploymentu okazało się, że aplikacja w tym okresie nie była wdrażana. Problemu znowu trzeba
+było szukać gdzie indziej.
 
-![](../img/articles/2021-12-09-observability_and_monitoring/kibana.png)
+Wiedzieliśmy już sporo, bo metryki dały nam ogólne spojrzenie na sytuację. Jednak najwięcej powiedziały logi.
+
+Okazało się, że wielokrotnie pojawia się w nich stacktrace, którego źródłem jest nasz circuit breaker. A to
+jednoznacznie wskazywało na kłopoty w komunikacji z którymś z serwisów.
 
 ```
 exception java.lang.RuntimeException: Hystrix circuit short-circuited and is OPEN
@@ -147,17 +153,56 @@ exception java.lang.RuntimeException: Hystrix circuit short-circuited and is OPE
     at com.netflix.hystrix.AbstractCommand.applyHystrixSemantics(AbstractCommand.java:557)
 ```
 
+<!--Nieco dziwne wydawało się to, że wyjątki nie były zalogowane na poziomie ERROR lecz WARN.-->
+
+Niestety sytuacja wyglądała niezbyt dobrze. Ze względu na duży ruch stacktrace odkładał się w logach 6 tys razy na
+minutę. W ciągu jednej tylko godziny zalogowanych zostało 6 mln wyjątków. Usługa błyskawicznie zużywała przewidziane dla
+niej miejsce na dysku. A cała sytuacja ciągle trwała !
+
+![](../img/articles/2021-12-09-observability_and_monitoring/kibana.png)
+
+Co zatem było pierwotną przyczyną emisji wyjątków ? Może któraś z usług odpowiada na tyle wolno, że przekroczony zostaje
+timeout przewidziany dla klienta ? Należało przyjrzeć się charakterystyce opisującej komunikację pomiędzy usługami. W
+tym celu ponownie sięgnęliśmy do metryk.
+
+![](../img/articles/2021-12-09-observability_and_monitoring/clients.png)
+
+I tu znowu okazało się, że na przełomie miesięcy dramatycznie pogorszyła się jakość komunikacji pomiędzy naszym serwisem
+a jedną z usług. Czyżbyśmy znaleźli przyczynę ? Jeśli tak to zwykłe zwiększenie wartości timeout dla klienta powinno
+rozwiązać problem.
+
+Wprowadziliśmy szybką poprawkę i oczekiwaliśmy znaczącej poprawy, która niestety nie nastąpiła.
+
+Do logów cały czas trafiały ogromne ilości stosów wyjątków, których źródłem był Hystrix. Więc przyczyną nie mógł być
+timeout.
+
+I wtedy okazało się, że mamy jeszcze jeden problem -nie jesteśmy w stanie odczytać zwracanej nam
+odpowiedzi:
+
 ```
-feign.codec.DecodeException: Error while extracting response for type
+Error while extracting response for type
     [java.util.List<xxx.xxx.xxx.Dto>] and content type [application/vnd.allegro.public.v1+json]; nested exception is
     org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error
     ...
 ```
 
+Szybko okazało się że doszło do złamania kontraktu. I to była pierwotna przyczyna naszych kłopotów. Nasza
+usługa stała się niestabilna przez błąd, którego źródłem była inna usługa.
+
+Po naprawieniu awarii od razu można zaobserwować poprawę wydajności pracy GC
+
 ![](../img/articles/2021-12-09-observability_and_monitoring/gc_spent_per_minute_after_fail.png)
+
+Oraz znaczne zmiejszenie przyrostu pliku logów.
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/storage_after_fail.png)
 
+
+
+<!--Jak to się stało, że nie zauważyliśmy tego wyjątku już wcześniej ?
+
+Okazało się, że ramki wyjątków logowane były nie na poziomie ERROR lecz WARN, dodatkowo przy takiej ilości komunikatów
+nie zwróciliśmy po prostu uwagi, że mamy do czynienia z dwoma ich rodzajami!-->
 
 
 
