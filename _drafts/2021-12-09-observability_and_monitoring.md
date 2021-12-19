@@ -13,13 +13,12 @@ Spróbujmy odpowiedzieć sobie, jak rozumieć należy pojęcie *Observability*.
 > Observability is the ability to collect data about program execution, internal states of modules, and communication
 > between components. Wikipedia()
 
-System obserwowalny jest przede wszystkim poznany i zrozumiany. Dostarcza precyzyjnych danych opisujących stan i
-kondycję swoich komponentów. Dane te mogą one mieć bardzo różną postać. Są to zarówno liczbowe dane telemetryczne, jak i
-tekstowe zapisy logów. Dzięki nim jesteśmy w stanie zrozumieć charakterystykę zachowań systemu i sposób przepływu
-danych. To z kolei pozwala na wychwytywanie subtelnych anomalii, które w chwili wystąpienia nie stanowią problemu, ale
-są przesłanki, że wkrótce nim się staną. Skuteczna reakcja w tym właśnie momencie pozwala na zachowanie stabilności i
-ciągłości działania. I o to właśnie chodzi. Mamy możliwość zadziałania na przyczynę, zanim pojawi się jej negatywny
-skutek.
+System obserwowalny jest przede wszystkim rozpoznany. Dostarcza precyzyjnych danych opisujących stan i kondycję swoich
+komponentów. Dane te mogą one mieć bardzo różną postać. Są to zarówno liczbowe dane telemetryczne, jak i tekstowe zapisy
+logów. Dzięki nim jesteśmy w stanie zrozumieć charakterystykę zachowań systemu i sposób przepływu danych. To z kolei
+pozwala na wychwytywanie subtelnych anomalii, które w chwili wystąpienia nie stanowią problemu, ale są przesłanki, że
+wkrótce nim się staną. Skuteczna reakcja w tym właśnie momencie pozwala na zachowanie stabilności i ciągłości działania.
+I o to właśnie chodzi. Mamy możliwość zadziałania na przyczynę, zanim pojawi się jej negatywny skutek.
 
 Zachowanie systemu jest dobrym przybliżeniem zachowań jego użytkowników. Ten naturalnie stworzony model pozwala na
 wyciągnięcie wniosków co do oczekiwanych kierunków rozwoju. Może stanowić zatem podstawę do podejmowania decyzji nie
@@ -90,24 +89,23 @@ i kodu technicznego.
 
 # Piątkowe popołudnie
 
-Dla systemu działającego w Allegro aspekt obserwowalności ma kluczowe znaczenie. Nasze usługi cały czas zbierają ogromne
-ilości danych telemetrycznych. Aplikacje monitorujące na bieżąco sprawdzają, czy mieszczą się w one w zadanych
-przedziałach, a w razie stwierdzenia nieprawidłowości automatycznie powiadamiani są dyżuranci.
+Dla systemu Allegro aspekt obserwowalności ma kluczowe znaczenie. Nasze usługi cały czas zbierają ogromne ilości danych
+telemetrycznych. Aplikacje monitorujące na bieżąco sprawdzają, czy mieszczą się w one w zadanych przedziałach, a w razie
+stwierdzenia nieprawidłowości automatycznie powiadamiani są dyżuranci.
 
 Aby pokazać Wam, jak system ten działa w praktyce, opowiem o awarii, która przydarzyła mi się podczas mojego pierwszego,
 samodzielnego dyżuru produkcyjnego, nomen omen w piątkowe popołudnie.
 
 Wszystko rozpoczęło się telefonem od dyżurnego jednego z zespołów infrastrukturalnych z informacją, że od jakiegoś czasu
-jedna z naszych usług zachowuje się bardzo niestabilnie. Zaobserwowany został nienaturalny, skokowy przyrost odkładanych
-przez nią logów. Sytuacja ta została odnotowana przez system monitoringu i uruchomiła alarm.
+jedna z naszych usług zachowuje się bardzo niestabilnie. Zaobserwowany został nienaturalny, skokowy przyrost wolumenu
+odkładanych przez nią logów. Sytuacja ta została odnotowana przez system monitoringu i uruchomiła alarm.
 
-Rozpoczęliśmy analizę sytuacji. Pierwszą metryką, po którą sięgnęliśmy to ta, która wizualizuje dzienne przyrosty
-rozmiaru pliku z logami.
+Rozpoczęliśmy analizę sytuacji. Na początek sięgnęliśmy po metrykę opisującą dzienne przyrosty rozmiaru pliku z logami.
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/storage_metric.png)
 
-Sytuacja wyglądała bardzo dziwnie. Pomiędzy 30.11 a 01.12 niewątpliwie coś wpłynęło na naszą usługą. Na wykresie widać
-dramatyczny wzrost tempa odkładania logów.
+Sytuacja wyglądała bardzo dziwnie. Pomiędzy 30.11 a 01.12 coś wpłynęło na naszą usługą. Na wykresie widać dramatyczny
+wzrost tempa odkładania logów.
 
 Tylko czy to od razu musi być awaria ? Przecież weszliśmy w okres wzmożonego ruchu, a usługa standardowo gromadzi sporo
 logów. Może ich przyrost wynika ze zwiększonej ilości obsługiwanych żądań?
@@ -118,24 +116,27 @@ Sięgnęliśmy zatem po drugą metrykę -tym razem obrazującą rozkład ruchu p
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/incomming_traffic.png)
 
-Krzywa nie pokazywała żadnych anomalii. Usługa w obserwowanym okresie obsługiwała normalny, typowy dla siebie ruch. Nie
-tutaj więc należy szukać przyczyny problemu.
+Krzywa nie pokazywała żadnych anomalii. Usługa w obserwowanym okresie obsługiwała normalny, typowy dla siebie ruch.
+Widzimy naturalne wahania, które wiązać należy z dobowym rozkładem aktywności użytkowników, ale na pewno nie nie ma tu
+niczego, co tłumaczyłoby takie zachowanie usługi.
 
 Ciekawych informacji dostarczyła analiza kolejnej zależności. Tym razem przyjrzeliśmy się czasom odpowiedzi naszej
 usługi.
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/p99_response_time_before_failure..png)
 
-I tu niespodzianka, bo w interesującym nas przedziale parametry naszej usługi wyraźnie się pogorszyły. Opóźnienia nie
-były na tyle duże, by uruchomić alarm, ale stały się wyraźnie zauważalne.
+Metryka wyraźnie pokazała, że od początku grudnia parametry naszej usługi wyraźnie się pogorszyły. Wszyscy korzystający
+z naszej funkcjonalności musieli dostrzec spadek wydajności. Opóźnienia nie były na tyle duże, by uruchomić alarm, ale
+stały się wyraźnie zauważalne.
 
-Coś niedobrego działo się z naszą usługą. Postanowiliśmy jeszcze bardziej zawęzić obszar patrzenia i przyjrzeć się jak
-pracuje wirtualna maszyna. Sięgnęliśmy po kolejną metrykę -tym razem obrazującą pracę Garbage Collector.
+W kolejnym kroku postanowiliśmy jeszcze bardziej zawęzić obszar analizy i przyjrzeć się jak pracuje wirtualna maszyna
+java. Sięgnęliśmy po kolejną metrykę -tym razem obrazującą pracę GC.
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/gc_spent_per_minute_before_fail.png)
 
-Bez trudu dało się zauważyć, że od przełomu listopada i grudnia pracuje on o wiele gorzej niż wcześniej. Ma on coraz
-większe problemy ze zwolnieniem zasobów.
+Bez trudu dało się zauważyć, że od przełomu listopada i grudnia stał się on dużo mniej wydajny. Ma on coraz większe
+problemy ze zwolnieniem zasobów i zużywa dużo więcej czasu procesora. To z kolei tłumaczy zauważony wcześniej spadek
+wydajności całej aplikacji.
 
 Pojawiła się kolejna hipoteza. Może błąd leży w samej usłudze. Może odbyło jakieś wdrożenie, wraz z którym do kodu
 trafiła zmiana pogarszająca działanie aplikacji.
@@ -153,8 +154,6 @@ exception java.lang.RuntimeException: Hystrix circuit short-circuited and is OPE
     at com.netflix.hystrix.AbstractCommand.handleShortCircuitViaFallback(AbstractCommand.java:979)
     at com.netflix.hystrix.AbstractCommand.applyHystrixSemantics(AbstractCommand.java:557)
 ```
-
-<!--Nieco dziwne wydawało się to, że wyjątki nie były zalogowane na poziomie ERROR lecz WARN.-->
 
 Niestety sytuacja wyglądała niezbyt dobrze. Ze względu na duży ruch stacktrace odkładał się w logach 6 tys razy na
 minutę. W ciągu jednej tylko godziny zalogowanych zostało 6 mln wyjątków. Usługa błyskawicznie zużywała przewidziane dla
@@ -175,7 +174,7 @@ rozwiązać problem.
 Wprowadziliśmy szybką poprawkę i oczekiwaliśmy znaczącej poprawy, która niestety nie nastąpiła.
 
 Do logów cały czas trafiały ogromne ilości stosów wyjątków, których źródłem był Hystrix. Więc przyczyną nie mógł być
-timeout.
+timeout. Ponownie wróciliśmy do analizy danych.
 
 I wtedy okazało się, że mamy jeszcze jeden problem -nie jesteśmy w stanie odczytać zwracanej nam odpowiedzi:
 
@@ -186,8 +185,9 @@ Error while extracting response for type
     ...
 ```
 
-Szybko okazało się, że doszło do złamania kontraktu. I właśnie to była pierwotna przyczyna całego zamieszania. Nasza
-usługa stała się niestabilna przez błąd, którego źródłem była inna usługa. Tylko to wcale nie było takie oczywiste.
+Szybko okazało się, że doszło do złamania kontraktu. W obiekcie DTO została zmieniona nazwa jednego z pól. I właśnie to
+była pierwotna przyczyna całego zamieszania. Nasza usługa stała się niestabilna przez błąd, którego źródłem była inna
+usługa. Tylko to wcale nie było takie oczywiste.
 
 Po naprawieniu awarii od razu można zaobserwować poprawę wydajności pracy GC
 
@@ -203,16 +203,17 @@ Jak to się stało, że tak poważna awaria została niezauważona przez systemy
 
 Jak zwykle w takich sytuacjach okazało się, że nie ma jednej zasadniczej przyczyny.
 
-Przede wszystkim okazało się, że ramki wyjątków logowane były nie na poziomie ERROR lecz WARN. Tylko czy to jest
-błąd? Przecież wszystko zadziałało poprawnie, usługa zewnętrzna zwróciła swoją odpowiedź ze statusem 200. Z jej punktu
-widzenia było wszystko w porządku. Nam nie udało się odczytać odpowiedzi i co prawda pojawił się wyjątek, ale został
-on obsłużony przez Circuit Breaker. Stack trace trafił do logu, a komunikacja została ponowiona.  Nasz klient nie
-otrzymał informacji o błędzie, lecz zwrócony mu został domyślny obiekt odpowiedzi tzw. fallback.
+Przede wszystkim okazało się, że ramki wyjątków logowane były nie na poziomie ERROR lecz WARN. Tylko czy to jest błąd?
+Przecież wszystko zadziałało poprawnie, usługa zewnętrzna zwróciła swoją odpowiedź ze statusem 200. Z jej punktu
+widzenia było wszystko w porządku. Nam nie udało się odczytać odpowiedzi i co prawda pojawił się wyjątek, ale został on
+obsłużony przez Circuit Breaker. Stack trace trafił do logu, a komunikacja została ponowiona. Nasz klient nie otrzymał
+informacji o błędzie, lecz zwrócony mu został domyślny obiekt odpowiedzi tzw. fallback.
 
-Nie ulega wątpliwości, że zabrakło nam bardzo ważnej metryki. Gdybyśmy monitorowali ilość odpowiedzi typu fallback,
-to bez wątpienia wykrylibyśmy problem dużo wcześniej.
+Co moglibyśmy poprawić, by sytuacja się nie powtórzyła ? Nie ulega wątpliwości, że zabrakło nam bardzo ważnej metryki.
+Gdybyśmy monitorowali ilość odpowiedzi typu fallback w przedziale czasu, to bez wątpienia wykrylibyśmy problem dużo
+wcześniej.
 
-Uniknęlibyśmy kłopotów, a o pierwszym samodzielnym dyżurze produkcyjnym dawno bym już zapomniał ;)
+Uniknęlibyśmy wielu kłopotów, a o pierwszym samodzielnym dyżurze dawno bym już zapomniał ;)
 
 
 
