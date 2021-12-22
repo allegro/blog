@@ -3,6 +3,11 @@ layout: post
 title: "Evaluating performance of time series collections"
 author: [michal.knasiecki]
 tags: [tech, mongodb, performance, "time series"]
+excerpt: >
+    A new version of MongoDB, 5.0, has been recently launched. The list of changes included one that I found
+    particularly interesting: the time series collections. It is a method of effective storing and processing of
+    time-ordered value series. In this article we will verify whether the processing of time series is really as fast
+    as promised by the authors.
 ---
 A few years ago, I was working on a new version of [Allegro](https://allegro.tech) purchase ratings.
 It was a time of a pretty large revolution in the rating system when we moved this product away from our monolith, also
