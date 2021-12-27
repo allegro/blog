@@ -7,7 +7,16 @@ postulates- *Observability*.
 
 # Observability
 
-# Observability - wzorce realizacyjne
+Let's try to answer ourselve, how the term *Observability* should be understood.
+
+I would like to quote a very simple definition found on _[Wikipedia](https://en.wikipedia.org/wiki/Observability)_
+
+> Observability is the ability to collect data about program execution, internal states of modules, and communication
+> between components.
+
+So let's take a closer look at it, and consider what it really means.
+
+# Observability - implementation patterns
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/observability.png)
 
