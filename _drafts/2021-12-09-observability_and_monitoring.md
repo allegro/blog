@@ -13,12 +13,12 @@ Spróbujmy odpowiedzieć sobie, jak rozumieć należy pojęcie *Observability*.
 > Observability is the ability to collect data about program execution, internal states of modules, and communication
 > between components. Wikipedia()
 
-System obserwowalny jest przede wszystkim rozpoznany. Dostarcza precyzyjnych danych opisujących stan i kondycję swoich
-komponentów. Dane te mogą one mieć bardzo różną postać. Są to zarówno liczbowe dane telemetryczne, jak i tekstowe zapisy
-logów. Dzięki nim jesteśmy w stanie zrozumieć charakterystykę zachowań systemu i sposób przepływu danych. To z kolei
-pozwala na wychwytywanie subtelnych anomalii, które w chwili wystąpienia nie stanowią problemu, ale są przesłanki, że
-wkrótce nim się staną. Skuteczna reakcja w tym właśnie momencie pozwala na zachowanie stabilności i ciągłości działania.
-I o to właśnie chodzi. Mamy możliwość zadziałania na przyczynę, zanim pojawi się jej negatywny skutek.
+System obserwowalny dostarcza precyzyjnych danych opisujących stan swoich komponentów. Mogą mieć one bardzo różną
+postać- od liczbowych danych telemetrycznych aż do tekstowych zapisów logów. Dzięki nim jesteśmy w stanie zrozumieć
+charakterystykę zachowań systemu i sposób przepływu danych. To z kolei pozwala na wychwytywanie subtelnych anomalii,
+które w chwili wystąpienia nie stanowią problemu, ale możemy przypuszczać, że wkrótce nim się staną. Skuteczna
+interwencja deweloperska podjęta w tym momencie pozwala na zachowanie stabilności i niezawodności systemu. I o to
+właśnie chodzi. Mamy możliwość zadziałania na przyczynę, zanim pojawi się jej negatywny skutek.
 
 Zachowanie systemu jest dobrym przybliżeniem zachowań jego użytkowników. Ten naturalnie stworzony model pozwala na
 wyciągnięcie wniosków co do oczekiwanych kierunków rozwoju. Może stanowić zatem podstawę do podejmowania decyzji nie

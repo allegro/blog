@@ -14,7 +14,12 @@ I would like to quote a very simple definition found on _[Wikipedia](https://en.
 > Observability is the ability to collect data about program execution, internal states of modules, and communication
 > between components.
 
-So let's take a closer look at it, and consider what it really means.
+The observable system provides precise data describing the condition of its components. This data can take many forms-
+from numeric telemetry data to text logs. Thanks to them, we are able to understand the characteristics of the system
+behavior and the detailed way of data flow. This allows us to catch subtle anomalies, that may not be a problem at this
+moment, but we can assume, they will become it soon. Effective developer intervention taken at this point of time allows
+preserve system stability and reliability. And that this is what it's all about. We have the opportunity to act on the
+cause before the negative effect occurs.
 
 # Observability - implementation patterns
 
