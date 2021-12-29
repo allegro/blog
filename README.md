@@ -41,13 +41,12 @@ Currently, the team consists of:
 
 * Daniel Dopierała — editor
 * Bartosz Gałek — editor
-* Mirosław Gołda — editor
-* Tomek Gospodarczyk — helps us with web development
+* Tomek Gospodarczyk — editor
 * Michał Kosmulski — editor-in-chief
-* Piotrek Orłowski — founder
+* Mateusz Krzeszowiak — editor
 * Waldemar Panas — editor
 * Wojtek Poniatowski — editor
-* Bartek Walacik — editor
+* Katarzyna Zadurska — editor
 
 # Creating a new post
 
