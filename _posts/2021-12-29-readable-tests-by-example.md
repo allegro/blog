@@ -201,7 +201,7 @@ def "shouldn't charge for delivery when the client has a VIP status"() {
 }
 ```
 
-In this case, it may seem that test is much better, because it is simpler and easier to read, but with a more in-depth analysis it turns out that it still does not meet the expected requirements as in the section “Hello Domain”, because it:
+In this case, it may seem that test is much better, because it is simpler and easier to read, but with a more in-depth analysis it turns out that it still does not meet the expected requirements as in the section “How can we test such code?”, because it:
 
 * uses concepts such as repository, provider, event publisher, handler, which were not mentioned in the written business scenarios - these are technical implementation details;
 * all the variables used are within the specification, which in the case of a multitude of tests may constitute additional complexity in their maintenance. Besides, it is not difficult to make a mistake here, e.g. by introducing a new variable that is already defined somewhere under a different name;
