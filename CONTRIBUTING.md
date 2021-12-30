@@ -14,6 +14,7 @@ Please also have a look at [README.md](README.md) for a general introduction to 
     * an engineer who does not use Allegro
     * an engineer from outside Poland who has never heard of Allegro
 * Keep it simple, keep it short: this is a blog rather than a very formal place.
+* Keep it simple, keep it short: this is a blog rather than a very formal place.
 * Nonetheless, make sure the text’s content is correct and its form reasonably clear. We want the blog to be high-quality.
 * Read the [guidelines](#review-guidelines) in this document for a quicker code review.
 * Check your post with a Markdown viewer. Markdown preview in IntelliJ is a good start. You can also [test-render the page on your local machine](#how-to-test-render-your-post).
