@@ -18,7 +18,7 @@ In this article, I will show you how to disenchant this miserable state of affai
 ## Hello domain!
 The domain that will serve us as a background will not be too complicated, but at the same time not simple enough to actually be able to capture the benefit for which it is worth investing more time and effort in writing tests that are clear and easy to develop further.
 
-For the purpose of presenting to you a domain that is neither too complicated nor too simple, I will use a model of a vinyl records online shop. (I tried to create a domain which is universal and intuitive at the same time.)
+For the purpose of presenting to you a domain that is neither too complicated nor too trivial, I will use a model of a vinyl records online shop. (I tried to create a domain which is universal and intuitive at the same time.)
 
 Let’s assume that we have the following very preliminary and explicitly written general business assumptions.
 
@@ -48,21 +48,23 @@ Scenario 1.1
 ### Architecture
 
 The structure of the code reflects the architecture that was adopted during the implementation works.
-The application is a modular monolith written based on the architectural style of Ports & Adapter, as well as the Domain Driven Design approach.
+The application is a modular monolith written based on the architectural style of [Ports & Adapter](https://blog.allegro.tech/2020/05/hexagonal-architecture-by-example.html),
+as well as the [Domain Driven Design](https://www.dddcommunity.org/learning-ddd/what_is_ddd/) approach.
 
 <img alt="API package structure" src="/img/articles/2021-12-29-readable-tests-by-example/2.png"/>
+
 We can distinguish the following packages:
-* catalogue: reflects the catalogue of products with their unit prices
+* `catalogue`: reflects the catalogue of products with their unit prices
 
-* client: provides information on client scoring (VIP, STANDARD)
+* `client`: provides information on client scoring (VIP, STANDARD)
 
-* common: it contains common concepts, objects that appear in other contexts, e.g. the Money class
+* `common`: it contains common concepts, objects that appear in other contexts, e.g. the Money class
 
-* delivery: calculates the delivery price based on the defined policy
+* `delivery`: calculates the delivery price based on the defined policy
 
-* order: this is where the logic related to the user's order is located, such as the amount of payment, or the ability to find them among other orders
+* `order`: this is where the logic related to the user's order is located, such as the amount of payment, or the ability to find them among other orders
 
-* sales: provides information on types promotions (e.g. price list configuration), especially the minimum value order needed for free delivery
+* `sales`: provides information on types promotions (e.g. price list configuration), especially the minimum value order needed for free delivery
 
 As the order-related domain is the most complex, it actually coordinates the entire purchasing process, and thus it should provide a comprehensive example for our further consideration.
 
@@ -81,9 +83,11 @@ Below I have listed the main assumptions that will guide us throughout the rest 
 
 ## Naive approach - or how not to write tests
 
-As I mentioned earlier, tests should be a living documentation of business requirements. It is typical of each documentation that you have to read and understand it first. It's easy to guess that this shouldn't be too much of a problem for a potentially new person on the team.
+As I mentioned earlier, tests should be a living documentation of business requirements. It is typical of each documentation that you have to read and understand it first.
+It's easy to guess that this shouldn't be too much of a problem for a potentially new person on the team.
 
-Let's take a closer look at Scenario 1.1, at the very beginning of our article, implemented in the form of an acceptance test. This is of course a sample code that could be created in projects where no special attention is paid to the quality of the provided test code. I would not recommend this type of testing.
+Let's take a closer look at `Scenario 1.1`, at the very beginning of our article, implemented in the form of an acceptance test.
+This is of course a sample code that could be created in projects where no special attention is paid to the quality of the provided test code. I would not recommend this type of testing.
 
 ```groovy
  def "shouldn't charge for delivery when the client has a VIP status"() {
@@ -155,7 +159,7 @@ The above code is not easy to analyze as it requires the reader to focus on too 
 * REST architectural style,
 * classes derived from frameworks such as RestTemplate, PollingConditions.
 
-Undoubtedly, it is far from the appearance of the original Scenario 1.1.
+Undoubtedly, it is far from the appearance of the original `Scenario 1.1`.
 It contains many concepts that do not belong to the domain language that obscure the presence of natural expressions that we use in conversations with business stakeholders, for instance “event publisher” or “mock server”.
 
 Another disadvantage of this code is that it is not easily adaptable to further development, e.g. in the event of a change in business requirements when it is necessary to modify or add another test.
@@ -163,7 +167,7 @@ Another disadvantage of this code is that it is not easily adaptable to further 
 The conscious reader might notice that the example of our imperfect test is maybe too exaggerated and that each section of the ‘given’/‘when’/’then’ blocks, etc. could be extracted by the use of a separate private method. Certainly, this procedure may result in some improvement of the code quality, but nevertheless such an approach still has many drawbacks:
 
 * the test class still contains a code related to the technical implementation;
-* if another test class tests a similar subset of functionalities, then sooner or later, there will be a need to copy such a method;
+* if another test class uses a similar subset of functionalities, then sooner or later, there will be a need to copy such a method;
 * what if I would like to change, for example, the library for mocking calls to another type of library?
 
 Let’s take a closer look at a unit test this time. It covers a narrower range of requirements because, e.g., it does not check whether the client has been sent a free music track. Try to find similar defects in it as in the acceptance test.
@@ -209,11 +213,11 @@ In this case, it may seem that test is much better, because it is simpler and ea
 
 I have used two above examples of tests (acceptance and unit), to quickly highlight how many flaws the naive solution has adopted, even though the business requirement was not too complicated. In summary, in each of the tests we have had to take extra care of:
 
-* manually creating objects using a constructor is not comfortable and additionally, with the large number of parameters, difficult to read; this also makes the tests messy and difficult to read. Moreover, changing the constructor makes them very fragile;
+* manually creating objects using a constructor is not comfortable and additionally, with the large number of parameters, difficult to read; this also makes the tests messy and hard to maintain because changing the constructor makes them very fragile;
 * creating body http requests using text blocks, which in the case of larger objects leads to the creation of structures occupying a large part of the specification;
 * mocking or stubbing external dependencies using mechanisms from the framework as Stub or Mock, which can be comfortable but not necessarily improve the readability of the code and its further development;
 * stubbing the response to external services using the library Wiremock class directly in your code test;
-* checking the final result due to the complexity of the internal objects.
+* checking the final state of an object by referring directly to its content in the test. With complex structures it can be very inconvenient and unreadable.
 
 In the next section, I will focus on eliminating these shortcomings with a few simple solutions.
 
@@ -282,9 +286,9 @@ class CreateOrderJsonBuilder {
 }
 ```
 
-In the above example, the toMap method returns a map, which can then be turned into a body of the http request in Json format.
+In the above example, the `toMap` method returns a map, which can then be turned into a body of the http request in Json format.
 
-The Test Data Builder can be used both for constructing input data at the controller level and at the level of unit tests, e.g. by creating an object representing the initial state of the database.
+The `Test Data Builder` can be used both for constructing input data at the controller level and at the level of unit tests, e.g. by creating an object representing the initial state of the database.
 There is nothing to prevent us from using this pattern, also for the construction of objects on which we make assertions.
 
 ```groovy
@@ -321,7 +325,7 @@ class OrderPaidEventBuilder {
 }
 ```
 What is worth mentioning, we use the same constants in many places, which may seem a controversial idea for many readers.
-However, I decided to split them into a separate TestData class and based on the assumption that the class builders are assigned default values.
+However, I decided to split them into a separate `TestData` class and based on the assumption that the class builders are assigned default values.
 Thanks to this I can focus on data relevant to a given test case only.
 It does not make sense to introduce unnecessary noise into the test, as it should be set up with a minimal required data set.
 
@@ -329,12 +333,12 @@ This pattern is also described by Nat Pryce on his [blog](http://www.natpryce.co
 
 ### Ability Pattern
 
-The OrderPaymentAcceptanceSpec class implements several traits with similar names ending with the word Ability. This is another concept that I want to discuss.
+The `OrderPaymentAcceptanceSpec` class implements several traits with similar names ending with the word Ability. This is another concept that I want to discuss.
 As we understand it, and so it is giving certain abilities to the test scenario. As a result, with this approach, we can expand small blocks more and more.
 
 Now, it is easy to imagine another test that needs the same ability or skill, by which we can get rid of duplicate codes between different classes of tests.
 
-Let's analyse an example implementation of a trait named: CreateOrderAbility
+Let's analyse an example implementation of a trait named: `CreateOrderAbility`
 
 ```groovy
 trait CreateOrderAbility implements MakeRequestAbility {
@@ -357,9 +361,9 @@ trait CreateOrderAbility implements MakeRequestAbility {
 }
 ```
 
-It extends the MakeRequestAbility trait responsible for building and sending an http request to a given url, which is already served by the Spring controller,
+It extends the `MakeRequestAbility` trait responsible for building and sending an http request to a given url, which is already served by the Spring controller,
 hiding all technical aspects from the reader. Moreover, the methods it exposes in conjunction with the passed parameters invoking the static method of the test builder class,
-read almost like prose. This simple procedure makes our code more expressive, making it look closer to the text from the requirements Scenario 1.1.
+read almost like prose. This simple procedure makes our code more expressive, making it look closer to the text from the requirements `Scenario 1.1`.
 
 ```groovy
   def "shouldn't charge for delivery when the client has a VIP status"() {
@@ -392,7 +396,7 @@ def "shouldn't charge for delivery when the client has a VIP status"() {
     // some code omitted
   }
 ```
-In some cases, the Ability pattern can act as an assertion class, which I will mention later in the part regarding tailor-made assertions.
+In some cases, the `Ability pattern` can act as an assertion class, which I will mention later in the part regarding tailor-made assertions.
 Often in the case of black box tests, there is a need to check additional side effects, e.g. whether an email was sent after the purchase of the order,
 or whether a service was asked with the data we want. We can then split this logic into an appropriately named Ability class method.
 
