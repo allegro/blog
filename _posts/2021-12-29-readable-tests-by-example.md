@@ -1,6 +1,5 @@
 ---
-layout: post
-title: "Make your tests readable by example"
+layout: post title: "Make your tests readable by example"
 author: [kamil.jedrzejuk]
 tags: [tech, backend, testing, java, groovy, tdd, bdd, ddd]
 ---
@@ -138,12 +137,10 @@ the quality of the provided test code. I would not recommend this type of testin
             get("/reputation/${CLIENT_ID_1}")
                 .withHeader(ACCEPT, equalTo(APPLICATION_JSON.toString()))
                 .willReturn(aResponse()
-                    .withBody(
-                        """{
-                      "reputation": "VIP",
-                      "clientId": "${CLIENT_ID_1}"
-                   }"""
-                    )
+                    .withBody("""{
+                                   "reputation": "VIP",
+                                   "clientId": "${CLIENT_ID_1}"
+                                 }""")
                     .withHeader(CONTENT_TYPE, APPLICATION_JSON.toString())
                 )
         )
