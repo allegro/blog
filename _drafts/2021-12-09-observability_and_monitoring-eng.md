@@ -23,7 +23,28 @@ cause before its negative effect occurs.
 
 # Observability - implementation patterns
 
+We intuitively feel that observability is a broad, abstract concept. According
+to [Microservice Architecture Pattern](https://microservices.io/patterns/microservices.html), it can be decomposed into
+several strongly cooperating, more specialized areas:
+
 ![](../img/articles/2021-12-09-observability_and_monitoring/observability.png)
+
+* **Logging**- Storage of textual information describing the operation of particular system components. Textual records
+  are enriched in metadata, which allows for their later retrieval and processing.
+
+
+* **Tracing**- It is a term describing the passing of a common identifier to all components implementing given business
+  action of the user. Each of them uses this identifier to tag the logs that are put away.Thanks to this, we gain a
+  correlating element, and it becomes possible to precisely trace the data flow in the system.
+
+
+* **Application metrics** - Telemetry data describing the state and condition of individual the system components.
+
+
+* **Health checking**- It is a pattern of system behavior assuming that each of its components is able to report that it
+  is ready to process data at that moment in time.
+
+The harmonious development of these areas ensures that good observability is maintained for the entire system.
 
 # System monitorowania i informowania
 
