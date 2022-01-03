@@ -46,7 +46,12 @@ several strongly cooperating, more specialized areas:
 
 The harmonious development of these areas ensures that good observability is maintained for the entire system.
 
-# System monitorowania i informowania
+# Monitoring system
+
+One more detail should be noted here. The solutions discussed earlier are not sufficient to realize real-time
+activities. Tools implementing these patterns are specialized for collecting and processing data. Nothing more. They are
+not able to interpret them on their own and they are not able to distinguish the situation normal from exceptional. We
+need one more player - _Monitoring System_.
 
 # Service Mesh
 
