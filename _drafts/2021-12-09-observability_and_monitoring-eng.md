@@ -53,6 +53,21 @@ activities. Tools implementing these patterns are specialized for collecting and
 not able to interpret them on their own and they are not able to distinguish the situation normal from exceptional. We
 need one more player - _Monitoring System_.
 
+Its main task is to monitor the collected telemetry data and check specific rules. In case of violation of the rules,
+appropriate measures are taken, for example, the person on duty will be informed immediately.
+
+We need to pay attention to how the rule starting the entire action was determined. Informing that the service has used
+up all the available disk space and it no longer works, makes no sense. An error has occurred, the system has not
+works ( we would have found out about it even without complicated measurements; ). A much better idea is a message like
+this: "
+80% of the available space has been exhausted. React and you will avoid trouble". And this is the secret of successfully
+maintaining an extensive system. We have a reason to believe that in X amount of time the space will be exhausted and
+the service will stop working. That X is the time to intervene effectively.
+
+This action closes the cycle. A man becomes involved. However, he is not left alone. At this point, many details many
+details are already known. We know in which place of the system an exceptional situation occurred, which rule was
+violated, where to look for the cause. We have collected logs. We can act.
+
 # Service Mesh
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/service-mesh-observability.png)
