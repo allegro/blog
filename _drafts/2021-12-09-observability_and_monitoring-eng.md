@@ -64,9 +64,9 @@ this: "
 maintaining an extensive system. We have a reason to believe that in X amount of time the space will be exhausted and
 the service will stop working. That X is the time to intervene effectively.
 
-This action closes the cycle. A man becomes involved. However, he is not left alone. At this point, many details many
-details are already known. We know in which place of the system an exceptional situation occurred, which rule was
-violated, where to look for the cause. We have collected logs. We can act.
+This action closes the cycle. A man becomes involved. However, he is not left alone. At this point, many details are
+already known. We know in which place of the system an exceptional situation occurred, which rule was violated, where to
+look for the cause. We have collected logs. We can act.
 
 # Service Mesh
 
