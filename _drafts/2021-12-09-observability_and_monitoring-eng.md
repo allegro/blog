@@ -193,7 +193,7 @@ Refining the model immediately solved the problem. GC regained its former effici
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/gc_spent_per_minute_after_fail.png)
 
-nd the growth of the log file has been greatly reduced.
+and the growth of the log file has been greatly reduced.
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/storage_after_fail.png)
 
