@@ -82,6 +82,9 @@ take all the measurements, read input and output messages, and then send them to
 Such proxy services can be generated completely automatically, without the developer's involvement. They provide a
 complete separation of business and technical code.
 
+The analysis of the situation has begun. At the beginning, we reached for the metric describing the daily increase in
+the size of the log file.
+
 ![](../img/articles/2021-12-09-observability_and_monitoring/service-mesh-observability.png)
 
 # Friday afternoon
@@ -92,6 +95,10 @@ irregularities are detected, the on-call staff is automatically notified.
 
 To show you how this system works in practice, I will tell you about a failure that happened to me during my first one,
 independent production duty on Friday afternoon.
+
+It all started with a call from the infrastructure team on duty with the information that for some time, one of our
+services has been behaving very unstably. It was observed an unnatural, abrupt increase in the size of the logs. This
+situation was noted by the monitoring system and triggered an alarm.
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/storage_metric.png)
 
