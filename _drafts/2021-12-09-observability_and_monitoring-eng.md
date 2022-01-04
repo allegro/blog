@@ -133,9 +133,21 @@ reached for another metric - this time depicting the work of the GC.
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/gc_spent_per_minute_before_fail.png)
 
-It was easily noticeable that it has become much less efficient since the turn of November and December. It has more and more
-problems with freeing up resources and consumes much more CPU time. This, in turn, explains the previously noticed decrease
-performance of the entire application.
+It was easily noticeable that it has become much less efficient since the turn of November and December. It has more and
+more problems with freeing up resources and consumes much more CPU time. This, in turn, explains the previously noticed
+decrease performance of the entire application.
+
+Another hypothesis has emerged. Maybe the bug lies in the service itself. Maybe there was some code change which
+degrades the application's performance.
+
+However, after verifying the deployment logs, it was found that the application was not deployed during this period. The
+problem had to be found elsewhere.
+
+We already knew quite a bit because the metrics gave us a general overview of the situation. However, the logs told us
+the most.
+
+We found multiple occurrences of the same exception there. Its source was our circuit breaker. And this was a clear
+indication of communication problems.
 
 ```
 exception java.lang.RuntimeException: Hystrix circuit short-circuited and is OPEN
@@ -143,7 +155,15 @@ exception java.lang.RuntimeException: Hystrix circuit short-circuited and is OPE
     at com.netflix.hystrix.AbstractCommand.applyHystrixSemantics(AbstractCommand.java:557)
 ```
 
+Unfortunately the situation did not look very good. Due to the high traffic the stacktrace was stored in the logs 6
+thousand times per minute. During only one hour 6 million exceptions were logged. The service was rapidly consuming disk
+space on the disk. And the whole situation was still going on!
+
 ![](../img/articles/2021-12-09-observability_and_monitoring/kibana.png)
+
+So what was the root cause of the exception issue ? Maybe one of the services responds so slowly that the timeout
+provided for the client is exceeded ? It was necessary to look at the characteristics that describe the communication
+between services. In order to do that, we again looked into the metrics.
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/clients.png)
 
