@@ -76,15 +76,22 @@ With help comes another powerful microservices architecture pattern called Servi
 many functions, details of which can be found in another article (TODO LINK).
 
 From the viewpoint of observability, the most important thing is that, it assumes the existence of proxy components (
-called sidecars), through which all traffic directed to the service passes through. These are the places where we can take all the measurements, read
-input and output messages, and then send them to the appropriate gathering systems.
+called sidecars), through which all traffic directed to the service passes through. These are the places where we can
+take all the measurements, read input and output messages, and then send them to the appropriate gathering systems.
 
 Such proxy services can be generated completely automatically, without the developer's involvement. They provide a
 complete separation of business and technical code.
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/service-mesh-observability.png)
 
-# Piątkowe popołudnie
+# Friday afternoon
+
+For the Allegro system, the observability aspect is really crucial. Our services collect huge amounts of telemetry data
+all the time. The monitoring applications continuously check whether they are within the given ranges, and if
+irregularities are detected, the on-call staff is automatically notified.
+
+To show you how this system works in practice, I will tell you about a failure that happened to me during my first one,
+independent production duty on Friday afternoon.
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/storage_metric.png)
 
