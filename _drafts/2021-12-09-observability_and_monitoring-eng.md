@@ -102,11 +102,40 @@ situation was noted by the monitoring system and triggered an alarm.
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/storage_metric.png)
 
+The situation was very strange. Between 30/11 and 01/12 something affected our service. The chart shows dramatic
+increase in the rate of log stacking.
+
+But does it have to be a failure right away? After all, we have entered a period of increased traffic, and the service
+collects a lot as standard logs. Maybe their increase is due to the increased number of serviced requests?
+
+This hypothesis seemed unlikely given the magnitude of the observed anomaly, but it still needed to be verified.
+
+We reached for a second metric - showing the distribution of traffic coming into the service.
+
 ![](../img/articles/2021-12-09-observability_and_monitoring/incomming_traffic.png)
+
+The curve did not show any anomalies. The service handled normal, typical traffic during the observed period.
+
+We see natural fluctuations that should be associated with the daily distribution of user activity, but there is
+certainly anything that would explain such behavior of the service.
+
+Analysis of another relationship provided interesting information. This time we looked at the response times of our
+service.
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/p99_response_time_before_failure..png)
 
+The metrics clearly showed that our service performance has clearly deteriorated since early December. Everyone using
+our functionality must have noticed a decrease in performance. The delays were not long enough to set off alarm bells,
+but they became clearly noticeable.
+
+In the next step, we decided to narrow the analysis area even further and look at how the java virtual machine works. We
+reached for another metric - this time depicting the work of the GC.
+
 ![](../img/articles/2021-12-09-observability_and_monitoring/gc_spent_per_minute_before_fail.png)
+
+It was easily noticeable that it has become much less efficient since the turn of November and December. It has more and more
+problems with freeing up resources and consumes much more CPU time. This, in turn, explains the previously noticed decrease
+performance of the entire application.
 
 ```
 exception java.lang.RuntimeException: Hystrix circuit short-circuited and is OPEN
