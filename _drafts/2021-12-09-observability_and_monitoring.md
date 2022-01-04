@@ -189,15 +189,13 @@ Szybko okazało się, że doszło do złamania kontraktu. W obiekcie DTO został
 była pierwotna przyczyna całego zamieszania. Nasza usługa stała się niestabilna przez błąd, którego źródłem była inna
 usługa. Tylko to wcale nie było takie oczywiste.
 
-Po naprawieniu awarii od razu można zaobserwować poprawę wydajności pracy GC
+Uspójnienie modelu natychmiast rozwiązało problem. GC odzyskał dawną efektywność
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/gc_spent_per_minute_after_fail.png)
 
-oraz znaczne zmiejszenie przyrostu pliku logów.
+a przyrost pliku logów został znacznie ograniczony.
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/storage_after_fail.png)
-
-Pożar został ugaszony, trzeba było jednak poszukać odpowiedzi na zasadnicze pytanie:
 
 Jak to się stało, że tak poważna awaria została niezauważona przez systemy monitorujące ?
 

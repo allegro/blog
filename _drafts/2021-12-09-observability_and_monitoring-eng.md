@@ -167,6 +167,17 @@ between services. In order to do that, we again looked into the metrics.
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/clients.png)
 
+And here we found that at the turn of the month the quality of communication with one of the services deteriorated
+dramatically. Could this be the cause of the problems? If so, simply increasing the timeout value for the client should
+solve the problem.
+
+We made a hot fix and expected a significant improvement, which unfortunately did not happen.
+
+Huge amounts of exception stacks were going into the logs all the time. Their source was still Hystrix. So the reason
+could not be timeout. Again, we went back to analyze the logs.
+
+And then we found out that we have another problem - we are not able to read the response that is returned to us:
+
 ```
 Error while extracting response for type
     [java.util.List<xxx.xxx.xxx.Dto>] and content type [application/vnd.allegro.public.v1+json]; nested exception is
@@ -174,10 +185,19 @@ Error while extracting response for type
     ...
 ```
 
+It quickly turned out that the contract had been breached. One of the fields has been renamed. That's it
+was the root cause of all the confusion. Our service has become unstable due to a bug caused by a different source
+service. Only that was not so obvious at all.
+
+Refining the model immediately solved the problem. GC regained its former efficiency:
+
 ![](../img/articles/2021-12-09-observability_and_monitoring/gc_spent_per_minute_after_fail.png)
+
+nd the growth of the log file has been greatly reduced.
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/storage_after_fail.png)
 
+How did it happen that such a serious failure went unnoticed by the monitoring systems?
 
-
+As usual in such situations, it turned out that there is no single root cause.
 
