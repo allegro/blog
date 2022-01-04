@@ -70,6 +70,18 @@ look for the cause. We have collected logs. We can act.
 
 # Service Mesh
 
+When we imagine the code responsible for collecting metrics and gathering logs, we can come to the right conclusion,
+that it must be very generic. Is it possible to avoid repeating it for each individual service? It turns out that yes.
+With help comes another powerful microservices architecture pattern called Service Mesh. It is very complicated and has
+many functions, details of which can be found in another article (TODO LINK).
+
+From the viewpoint of observability, the most important thing is that, it assumes the existence of proxy components (
+called sidecars), through which all traffic directed to the service passes through. These are the places where we can take all the measurements, read
+input and output messages, and then send them to the appropriate gathering systems.
+
+Such proxy services can be generated completely automatically, without the developer's involvement. They provide a
+complete separation of business and technical code.
+
 ![](../img/articles/2021-12-09-observability_and_monitoring/service-mesh-observability.png)
 
 # Piątkowe popołudnie

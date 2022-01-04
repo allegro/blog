@@ -76,14 +76,14 @@ naruszona, gdzie należy szukać przyczyny. Mamy zgromadzone logi. Możemy dzia�
 # Service Mesh
 
 Gdy wyobrazimy sobie kod odpowiedzialny za zbieranie metryk i gromadzenie logów, to możemy dojść do słusznego wniosku,
-że musi on być bardzo generyczny. Czy można uniknąć zatem powtarzania go dla każdej usłgi z osobna ? Okazuje się, że
-tak. Z pomocą przychodzi kolejny potężny wzorzec architektury mikroserwisowej nazywany Service Mesh. Jest on bardzo
+że musi on być bardzo generyczny. Czy można uniknąć powtarzania go dla każdej usłgi z osobna ? Okazuje się, że tak. Z
+pomocą przychodzi kolejny potężny wzorzec architektury mikroserwisowej nazywany Service Mesh. Jest on bardzo
 skomplikowany i pełni wiele różnorakich funkcji, szczegóły można poznać w innym artykule TODO. Z punktu widzenia
-observability najważniejsze jest to, że zakłada on istnienie tzw. siedecars. Są to komponenty proxy, przez które
-przechodzi cały ruch skierowany do usługi. Jest to punkt, w którym można dokonać wszelkich pomiarów, odczytać komunikaty
-wejściowe i wyjściowe, a potem skomunikować się z odpowiednimi systemami gromadzącymi je. Takie usługi proxy mogą być
-generowane całkowicie automatycznie, bez wiedzy dewelopera. Dzięki nim uzyskuje się całkowitą separację kodu biznesowego
-i kodu technicznego.
+observability najważniejsze jest to, że zakłada on istnienie komponentów proxy (zwanych sidecars), przez które
+przechodzi cały ruch skierowany do usługi. Są to miejsca, w których możemy dokonać wszelkich pomiarów, odczytać
+komunikaty wejściowe i wyjściowe, a potem wysłać je do odpowiednich systemów gromadzących. Takie usługi proxy
+mogą być generowane całkowicie automatycznie, bez udziału dewelopera. Dzięki nim uzyskuje się całkowitą separację kodu
+biznesowego i kodu technicznego.
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/service-mesh-observability.png)
 
