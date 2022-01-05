@@ -185,9 +185,9 @@ Error while extracting response for type
     ...
 ```
 
-It quickly turned out that the contract had been breached. One of the fields has been renamed. That's it
-was the root cause of all the confusion. Our service has become unstable due to a bug caused by a different source
-service. Only that was not so obvious at all.
+It quickly turned out that the contract had been breached. One of the fields has been renamed. That's it was the root
+cause of all the confusion. Our service has become unstable due to a bug caused by a different source service. Only that
+was not so obvious at all.
 
 Refining the model immediately solved the problem. GC regained its former efficiency:
 
@@ -201,3 +201,15 @@ How did it happen that such a serious failure went unnoticed by the monitoring s
 
 As usual in such situations, it turned out that there is no single root cause.
 
+First, it turned out that exception frames were logged not at ERROR but WARN level. But is this an error? After all,
+everything worked correctly, the external service returned its response with a status of 200. From its point of view
+everything was fine. We were not able to read the response and an exception occurred, but it was handled by Circuit
+Breaker. Stack trace went to log and communication was resumed. Our client did not receive information about the error,
+but it was returned a default response object called fallback.
+
+What could we improve so that the situation does not happen again ?
+
+There is no doubt that we were missing a very important metric. If we had monitored the number of fallback responses per
+time interval, we would have undoubtedly detected the problem much earlier.
+
+TODO szkatuła
