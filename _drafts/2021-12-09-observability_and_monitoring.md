@@ -1,12 +1,33 @@
-# Intro
+### Intro
+
+Gdy dołączałem do zespołu Allegro bardzo ciekawiło mnie zagadnienie monitorowania i utrzymania tak rozległego systemu.
+Dużo słyszałem o tym, że mikroserwisy działające produkcyjnie utrzymywane są bezpośrednio przez zespoły developerskie i
+że odbywa się to bez specjalnych działów monitorujących.
+
+Z literatury znałem wzorce projektowe i stosowane rozwiązania, jednak ciężko mi było wyobrazić sobie jak to wszystko
+działa w praktyce.
+
+Zadawałem sobie pytania jakie narzędzia wykorzystywane są do określania kondycji całego systemu i w jaki sposób
+wkomponowane zostały w architekturę mikroserwisowa? Kto lub co ocenia że określona sytuacja jest niepoprawna?
+
+Niemniej ciekawe wydawało mi się co tak naprawde dzieje sie po wystąpieniu błędu, jak informacja ta przebiega przez
+różne warstwy, by na końcu dotrzeć do właściwego developera.
+
+Wreszcie jak wygląda szukanie przyczyny i współpraca zaangażowanych do tego osób. Na jakich danych opierają się przy
+formułowaniu i weryfikacji hipotez.
+
+W tym artykule chciałbym przybliżyć Wam ten bardzo ciekawy aspekt pracy z mikroserwisami.
+
+Opowiem o sytuacji, która wydarzyła się podczas mojego pierwszego dyżuru. Sprawiła ona że znalazłem wiele odpowiedzi na
+postawione pytania. Ale po kolei, zacznę od teorii.
+
+### Observability
 
 W skomplikowanym systemie informatycznym składającym się z mikroserwisów nie jesteśmy w stanie ustrzec się przed
 wystąpieniem problemów. Możemy jednak starać się je przewidywać i reagować na nie tak szybko, jak to tylko możliwe. Aby
 to osiągnąć, konieczne jest sięgnięcie po specjalistyczne narzędzia służące do oceny aktualnego stanu komponentów
 naszego systemu. Są one przewidziane przez wzorzec architektury mikroserwisowej i realizują jeden z głównych jego
 postulatów - *Observability*.
-
-# Observability
 
 Spróbujmy odpowiedzieć sobie, jak rozumieć należy pojęcie *Observability*.
 
@@ -24,7 +45,7 @@ Zachowanie systemu jest dobrym przybliżeniem zachowań jego użytkowników. Ten
 wyciągnięcie wniosków co do oczekiwanych kierunków rozwoju. Może stanowić zatem podstawę do podejmowania decyzji nie
 tylko technicznych, ale też (a może przede wszystkim) biznesowych. Jest to jego kolejna, ogromna zaleta.
 
-# Observability - wzorce realizacyjne
+### Observability - wzorce realizacyjne
 
 Intuicyjnie czujemy, że obserwowalność jest pojęciem pojemnym, abstrakcyjnym.
 Według [modelu architektury mikroserwisowej](https://microservices.io/patterns/microservices.html) może ona zostać
@@ -52,7 +73,7 @@ com/tip/The-basics-of-monitoring-and-observability-in-microservices]
 
 Harmonijny rozwój tych obszarów zapewnia utrzymanie dobregit j obserwalności dla całego systemu.
 
-# System monitorowania i informowania
+### System monitorowania i informowania
 
 Tu należy zwrócić uwagę na jeszcze jeden szczegół. Omówione wcześniej rozwiązania nie są wystarczające do skutecznego
 działania w czasie rzeczywistym. Narzędzia realizujące te wzorce wyspecjalizowane są do gromadzenia i przetwarzania
@@ -73,7 +94,7 @@ Ta akcja domyka cykl. Zaangażowany zostaje człowiek. Nie pozostaje on jednak p
 jest już wiele szczegółów. Wiadomo, w którym miejscu systemu wystąpiła sytuacja wyjątkowa, która reguła została
 naruszona, gdzie należy szukać przyczyny. Mamy zgromadzone logi. Możemy działać.
 
-# Service Mesh
+### Service Mesh
 
 Gdy wyobrazimy sobie kod odpowiedzialny za zbieranie metryk i gromadzenie logów, to możemy dojść do słusznego wniosku,
 że musi on być bardzo generyczny. Czy można uniknąć powtarzania go dla każdej usłgi z osobna ? Okazuje się, że tak. Z
@@ -81,13 +102,13 @@ pomocą przychodzi kolejny potężny wzorzec architektury mikroserwisowej nazywa
 skomplikowany i pełni wiele różnorakich funkcji, szczegóły można poznać w innym artykule TODO. Z punktu widzenia
 observability najważniejsze jest to, że zakłada on istnienie komponentów proxy (zwanych sidecars), przez które
 przechodzi cały ruch skierowany do usługi. Są to miejsca, w których możemy dokonać wszelkich pomiarów, odczytać
-komunikaty wejściowe i wyjściowe, a potem wysłać je do odpowiednich systemów gromadzących. Takie usługi proxy
-mogą być generowane całkowicie automatycznie, bez udziału dewelopera. Dzięki nim uzyskuje się całkowitą separację kodu
+komunikaty wejściowe i wyjściowe, a potem wysłać je do odpowiednich systemów gromadzących. Takie usługi proxy mogą być
+generowane całkowicie automatycznie, bez udziału dewelopera. Dzięki nim uzyskuje się całkowitą separację kodu
 biznesowego i kodu technicznego.
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/service-mesh-observability.png)
 
-# Piątkowe popołudnie
+### Piątkowe popołudnie
 
 Dla systemu Allegro aspekt obserwowalności ma kluczowe znaczenie. Nasze usługi cały czas zbierają ogromne ilości danych
 telemetrycznych. Aplikacje monitorujące na bieżąco sprawdzają, czy mieszczą się w one w zadanych przedziałach, a w razie
@@ -201,7 +222,7 @@ Jak to się stało, że tak poważna awaria została niezauważona przez systemy
 
 Jak zwykle w takich sytuacjach okazało się, że nie ma jednej zasadniczej przyczyny.
 
-Przede wszystkim okazało się, że ramki wyjątków logowane były nie na poziomie ERROR lecz WARN. Tylko czy to jest błąd?
+Przede wszystkim okazało się, że ramki wyjątków logowane były nie na poziomie ERROR, lecz WARN. Tylko czy to jest błąd?
 Przecież wszystko zadziałało poprawnie, usługa zewnętrzna zwróciła swoją odpowiedź ze statusem 200. Z jej punktu
 widzenia było wszystko w porządku. Nam nie udało się odczytać odpowiedzi i co prawda pojawił się wyjątek, ale został on
 obsłużony przez Circuit Breaker. Stack trace trafił do logu, a komunikacja została ponowiona. Nasz klient nie otrzymał
@@ -211,7 +232,9 @@ Co moglibyśmy poprawić, by sytuacja się nie powtórzyła ? Nie ulega wątpliw
 Gdybyśmy monitorowali ilość odpowiedzi typu fallback w przedziale czasu, to bez wątpienia wykrylibyśmy problem dużo
 wcześniej.
 
-Uniknęlibyśmy wielu kłopotów, a o pierwszym samodzielnym dyżurze dawno bym już zapomniał ;)
+### Podsumowanie
+
+TODO Uniknęlibyśmy wielu kłopotów, a o pierwszym samodzielnym dyżurze dawno bym już zapomniał ;)
 
 
 
