@@ -1,4 +1,4 @@
-### Intro
+# Intro
 
 Gdy dołączałem do zespołu Allegro bardzo ciekawiło mnie zagadnienie monitorowania i utrzymania tak rozległego systemu.
 Dużo słyszałem o tym, że mikroserwisy działające produkcyjnie utrzymywane są bezpośrednio przez zespoły developerskie i
@@ -99,7 +99,7 @@ naruszona, gdzie należy szukać przyczyny. Mamy zgromadzone logi. Możemy dzia�
 Gdy wyobrazimy sobie kod odpowiedzialny za zbieranie metryk i gromadzenie logów, to możemy dojść do słusznego wniosku,
 że musi on być bardzo generyczny. Czy można uniknąć powtarzania go dla każdej usłgi z osobna ? Okazuje się, że tak. Z
 pomocą przychodzi kolejny potężny wzorzec architektury mikroserwisowej nazywany Service Mesh. Jest on bardzo
-skomplikowany i pełni wiele różnorakich funkcji, szczegóły można poznać w innym artykule TODO. Z punktu widzenia
+skomplikowany i pełni wiele różnorakich funkcji, szczegóły można poznać w artykule [ Migrating to Service Mesh ](https://blog.allegro.tech/2020/05/migrating-to-service-mesh.html). Z punktu widzenia
 observability najważniejsze jest to, że zakłada on istnienie komponentów proxy (zwanych sidecars), przez które
 przechodzi cały ruch skierowany do usługi. Są to miejsca, w których możemy dokonać wszelkich pomiarów, odczytać
 komunikaty wejściowe i wyjściowe, a potem wysłać je do odpowiednich systemów gromadzących. Takie usługi proxy mogą być
