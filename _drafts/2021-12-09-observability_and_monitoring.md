@@ -1,23 +1,23 @@
 # Intro
 
-**Gdy dołączałem do zespołu Allegro bardzo ciekawiło mnie zagadnienie monitorowania i utrzymania rozległego systemu
-rozproszonego. Dużo słyszałem o tym, że mikroserwisy działające produkcyjnie utrzymywane są bezpośrednio przez zespoły
-developerskie i że odbywa się to bez specjalnych działów monitorujących.
+**Gdy dołączałem do zespołu Allegro bardzo ciekawiło mnie zagadnienie monitorowania rozległego systemu rozproszonego.
+Dużo słyszałem o tym, że mikroserwisy działające produkcyjnie utrzymywane są bezpośrednio przez zespoły developerskie i
+że odbywa się to bez specjalnych działów monitorujących.**
 
-Z literatury znałem wzorce projektowe i stosowane rozwiązania, jednak ciężko mi było wyobrazić sobie, jak to wszystko
-działa w praktyce.
+**Z literatury znałem wzorce projektowe i stosowane rozwiązania, jednak ciężko mi było wyobrazić sobie, jak to wszystko
+działa w praktyce.**
 
-Zadawałem sobie pytania, jakie narzędzia wykorzystywane są do określania kondycji systemu i w jaki sposób wkomponowane
-zostały w architekturę mikroserwisowa? Kto lub co ocenia, że określona sytuacja jest niepoprawna?
+**Zadawałem sobie pytania, jakie narzędzia wykorzystywane są do określania kondycji systemu i w jaki sposób wkomponowane
+zostały w architekturę mikroserwisowa? Kto ocenia, że określona sytuacja jest niepoprawna i należy ją zaraportować?
 
-Co tak naprawde dzieje sie po wystąpieniu błędu, jak informacja ta przebiega przez różne warstwy, by na końcu dotrzeć do
-właściwego developera.
+**Co tak naprawdę dzieje sie po wystąpieniu błędu, jak informacja ta przebiega przez różne warstwy, by na końcu dotrzeć
+do właściwego developera.**
 
-Wreszcie jak wygląda szukanie przyczyny i współpraca zaangażowanych do tego osób. Na jakich danych opierają się przy
-formułowaniu i weryfikacji hipotez.
+**Wreszcie jak wygląda szukanie przyczyny i współpraca zaangażowanych do tego osób. Jekie dane można wykorzystać do
+formułowania i weryfikacji hipotez.**
 
 W tym artykule chciałbym przybliżyć Wam ten bardzo ciekawy aspekt pracy z mikroserwisami. Opowiem o sytuacji, która
-wydarzyła się podczas mojego pierwszego dyżuru. Ale po kolei. Zacznę od teorii.**
+wydarzyła się podczas mojego pierwszego dyżuru, w piątkowe popołudnie. Ale po kolei. Zacznę od teorii.**
 
 ### Observability
 
@@ -30,7 +30,9 @@ postulatów - *Observability*.
 Spróbujmy odpowiedzieć sobie, jak rozumieć należy pojęcie *Observability*.
 
 > Observability is the ability to collect data about program execution, internal states of modules, and communication
-> between components. Wikipedia()
+> between components.
+>
+> _source: Wikipedia_
 
 System obserwowalny dostarcza precyzyjnych danych opisujących stan swoich komponentów. Mogą mieć one bardzo różną
 postać- od liczbowych danych telemetrycznych aż do tekstowych zapisów logów. Dzięki nim jesteśmy w stanie zrozumieć
@@ -116,9 +118,9 @@ stwierdzenia nieprawidłowości automatycznie powiadamiani są dyżuranci.
 Aby pokazać Wam, jak system ten działa w praktyce, opowiem o awarii, która przydarzyła mi się podczas mojego pierwszego,
 samodzielnego dyżuru produkcyjnego, nomen omen w piątkowe popołudnie.
 
-Wszystko rozpoczęło się telefonem od dyżurnego jednego z zespołów infrastrukturalnych z informacją, że od jakiegoś czasu
-jedna z naszych usług zachowuje się bardzo niestabilnie. Zaobserwowany został nienaturalny, skokowy przyrost rozmiaru
-odkładanych przez nią logów. Sytuacja ta została odnotowana przez system monitoringu i uruchomiła alarm.
+**Wszystko rozpoczęło się telefonem od dyżurnego jednego z zespołów. Otrzymałem informację, że od jakiegoś czasu jedna z
+naszych usług zachowuje się bardzo niestabilnie. Zaobserwowany został nienaturalny, skokowy przyrost rozmiaru
+odkładanych przez nią logów. Sytuacja ta została odnotowana przez system monitoringu i uruchomiła alarm.**
 
 Rozpoczęliśmy analizę sytuacji. Na początek sięgnęliśmy po metrykę opisującą dzienne przyrosty rozmiaru pliku z logami.
 
@@ -164,7 +166,10 @@ trafiła zmiana pogarszająca działanie aplikacji.
 Jednak po weryfikacji logów deploymentu okazało się, że aplikacja w tym okresie nie była wdrażana. Problemu znowu trzeba
 było szukać gdzie indziej.
 
-Wiedzieliśmy już sporo, bo metryki dały nam ogólne spojrzenie na sytuację. Jednak najwięcej powiedziały logi.
+**Metryki dały nam ogólne spojrzenie na sytuację. Wiedzieliśmy, że nasza usługa od pewnego czasu działa nieprawidłowo.
+Pomimo stabilnego poziomu ruchu wejściowego, odpowiedzi stały się wyraźnie wolniejsze. JVM zaczął pracować dużo
+mniej wydajnie, a usługa odkłada ogromne ilości logów. Udało się też określić punkt w czasie kiedy rozpoczęły się
+problemy. Teraz można było znacznie zawęzić obszar poszukiwań i przyjrzeć się logom.**
 
 Okazało się, że wielokrotnie pojawia się w nich stacktrace, którego źródłem jest nasz circuit breaker.
 
@@ -236,9 +241,11 @@ jej punktu widzenia było wszystko w porządku. Nam nie udało się odczytać od
 został on obsłużony przez circuit breaker. Stack trace trafił do logu, nasz klient nie otrzymał informacji o błędzie,
 lecz zwrócony mu został domyślny obiekt odpowiedzi tzw. fallback. Uważam, że tak właśnie powinno się zadziać.**
 
-Nie ulega wątpliwości, że zabrakło nam bardzo ważnej metryki.
-Gdybyśmy monitorowali ilość odpowiedzi typu fallback w przedziale czasu, to bez wątpienia wykrylibyśmy problem dużo
-wcześniej. Niestabilne działanie naszej usługi powinno zostać wykryte przez nasze własne metryki i nasz monitoring.
-Powinno to się stać, zanim inne, zewnętrzne zespoły odnotują pogorszenie istotnych dla nich parametrów technicznych.
+Nie ulega wątpliwości, że zabrakło nam bardzo ważnej metryki. Gdybyśmy monitorowali ilość odpowiedzi typu fallback w
+przedziale czasu, to bez wątpienia wykrylibyśmy problem dużo wcześniej. Niestabilne działanie naszej usługi powinno
+zostać wykryte przez nasze własne metryki i nasz monitoring. Powinno to się stać, zanim inne, zewnętrzne zespoły
+odnotują pogorszenie istotnych dla nich parametrów technicznych.
 
 Mam nadzieję, że następnym razem tak właśnie się stanie.
+
+
