@@ -1,25 +1,23 @@
 # Intro
 
-Gdy dołączałem do zespołu Allegro bardzo ciekawiło mnie zagadnienie monitorowania i utrzymania tak rozległego systemu.
-Dużo słyszałem o tym, że mikroserwisy działające produkcyjnie utrzymywane są bezpośrednio przez zespoły developerskie i
-że odbywa się to bez specjalnych działów monitorujących.
+**Gdy dołączałem do zespołu Allegro bardzo ciekawiło mnie zagadnienie monitorowania i utrzymania rozległego systemu
+rozproszonego. Dużo słyszałem o tym, że mikroserwisy działające produkcyjnie utrzymywane są bezpośrednio przez zespoły
+developerskie i że odbywa się to bez specjalnych działów monitorujących.
 
-Z literatury znałem wzorce projektowe i stosowane rozwiązania, jednak ciężko mi było wyobrazić sobie jak to wszystko
+Z literatury znałem wzorce projektowe i stosowane rozwiązania, jednak ciężko mi było wyobrazić sobie, jak to wszystko
 działa w praktyce.
 
-Zadawałem sobie pytania jakie narzędzia wykorzystywane są do określania kondycji całego systemu i w jaki sposób
-wkomponowane zostały w architekturę mikroserwisowa? Kto lub co ocenia że określona sytuacja jest niepoprawna?
+Zadawałem sobie pytania, jakie narzędzia wykorzystywane są do określania kondycji systemu i w jaki sposób wkomponowane
+zostały w architekturę mikroserwisowa? Kto lub co ocenia, że określona sytuacja jest niepoprawna?
 
-Niemniej ciekawe wydawało mi się co tak naprawde dzieje sie po wystąpieniu błędu, jak informacja ta przebiega przez
-różne warstwy, by na końcu dotrzeć do właściwego developera.
+Co tak naprawde dzieje sie po wystąpieniu błędu, jak informacja ta przebiega przez różne warstwy, by na końcu dotrzeć do
+właściwego developera.
 
 Wreszcie jak wygląda szukanie przyczyny i współpraca zaangażowanych do tego osób. Na jakich danych opierają się przy
 formułowaniu i weryfikacji hipotez.
 
-W tym artykule chciałbym przybliżyć Wam ten bardzo ciekawy aspekt pracy z mikroserwisami.
-
-Opowiem o sytuacji, która wydarzyła się podczas mojego pierwszego dyżuru. Sprawiła ona że znalazłem wiele odpowiedzi na
-postawione pytania. Ale po kolei, zacznę od teorii.
+W tym artykule chciałbym przybliżyć Wam ten bardzo ciekawy aspekt pracy z mikroserwisami. Opowiem o sytuacji, która
+wydarzyła się podczas mojego pierwszego dyżuru. Ale po kolei. Zacznę od teorii.**
 
 ### Observability
 
@@ -99,8 +97,9 @@ naruszona, gdzie należy szukać przyczyny. Mamy zgromadzone logi. Możemy dzia�
 Gdy wyobrazimy sobie kod odpowiedzialny za zbieranie metryk i gromadzenie logów, to możemy dojść do słusznego wniosku,
 że musi on być bardzo generyczny. Czy można uniknąć powtarzania go dla każdej usłgi z osobna ? Okazuje się, że tak. Z
 pomocą przychodzi kolejny potężny wzorzec architektury mikroserwisowej nazywany Service Mesh. Jest on bardzo
-skomplikowany i pełni wiele różnorakich funkcji, szczegóły można poznać w artykule [ Migrating to Service Mesh ](https://blog.allegro.tech/2020/05/migrating-to-service-mesh.html). Z punktu widzenia
-observability najważniejsze jest to, że zakłada on istnienie komponentów proxy (zwanych sidecars), przez które
+skomplikowany i pełni wiele różnorakich funkcji, szczegóły można poznać w
+artykule [ Migrating to Service Mesh ](https://blog.allegro.tech/2020/05/migrating-to-service-mesh.html). Z punktu
+widzenia observability najważniejsze jest to, że zakłada on istnienie komponentów proxy (zwanych sidecars), przez które
 przechodzi cały ruch skierowany do usługi. Są to miejsca, w których możemy dokonać wszelkich pomiarów, odczytać
 komunikaty wejściowe i wyjściowe, a potem wysłać je do odpowiednich systemów gromadzących. Takie usługi proxy mogą być
 generowane całkowicie automatycznie, bez udziału dewelopera. Dzięki nim uzyskuje się całkowitą separację kodu
@@ -167,14 +166,19 @@ było szukać gdzie indziej.
 
 Wiedzieliśmy już sporo, bo metryki dały nam ogólne spojrzenie na sytuację. Jednak najwięcej powiedziały logi.
 
-Okazało się, że wielokrotnie pojawia się w nich stacktrace, którego źródłem jest nasz circuit breaker. A to
-jednoznacznie wskazywało na kłopoty w komunikacji z którymś z serwisów.
+Okazało się, że wielokrotnie pojawia się w nich stacktrace, którego źródłem jest nasz circuit breaker.
 
 ```
 exception java.lang.RuntimeException: Hystrix circuit short-circuited and is OPEN
     at com.netflix.hystrix.AbstractCommand.handleShortCircuitViaFallback(AbstractCommand.java:979)
     at com.netflix.hystrix.AbstractCommand.applyHystrixSemantics(AbstractCommand.java:557)
 ```
+
+**Jest to mechanizm zabezpieczający przed problemem nazywanym "kaskadą błędów", czyli propagacją błędów jednego serwisu
+na jego klientów. Jeśli w określonym przedziale czasu liczba nieudanych wywołań serwisu będzie większa od założonej
+wartości, to przestaje on być odpytywany. Klient nie otrzymuje błędu, tylko przygotowany wcześniej obiekt domyślny.
+Pojawienie się tego komunikatu jednoznacznie wskazywało na brak komunikacji z wywoływanym serwisem.
+**
 
 Niestety sytuacja wyglądała niezbyt dobrze. Ze względu na duży ruch stacktrace odkładał się w logach 6 tys razy na
 minutę. W ciągu jednej tylko godziny zalogowanych zostało 6 mln wyjątków. Usługa błyskawicznie zużywała przewidziane dla
@@ -188,8 +192,8 @@ tym celu ponownie sięgnęliśmy do metryk.
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/clients.png)
 
-I tu znowu okazało się, że na przełomie miesięcy dramatycznie pogorszyła się jakość komunikacji pomiędzy naszym serwisem
-a jedną z usług. Czyżbyśmy znaleźli przyczynę ? Jeśli tak to zwykłe zwiększenie wartości timeout dla klienta powinno
+I tu okazało się, że na przełomie miesięcy dramatycznie pogorszyła się jakość komunikacji pomiędzy naszym serwisem
+a jedną z usług. Czyżbyśmy znaleźli przyczynę ? Jeśli tak, to zwykłe zwiększenie wartości timeout dla klienta powinno
 rozwiązać problem.
 
 Wprowadziliśmy szybką poprawkę i oczekiwaliśmy znaczącej poprawy, która niestety nie nastąpiła.
@@ -197,7 +201,7 @@ Wprowadziliśmy szybką poprawkę i oczekiwaliśmy znaczącej poprawy, która ni
 Do logów cały czas trafiały ogromne ilości stosów wyjątków, których źródłem był Hystrix. Więc przyczyną nie mógł być
 timeout. Ponownie wróciliśmy do analizy danych.
 
-I wtedy okazało się, że mamy jeszcze jeden problem -nie jesteśmy w stanie odczytać zwracanej nam odpowiedzi:
+I wtedy okazało się, że mamy jeszcze jeden problem -nie jesteśmy w stanie odczytać zwracanej nam odpowiedzi.
 
 ```
 Error while extracting response for type
