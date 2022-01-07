@@ -177,12 +177,11 @@ exception java.lang.RuntimeException: Hystrix circuit short-circuited and is OPE
 **Jest to mechanizm zabezpieczający przed problemem nazywanym "kaskadą błędów", czyli propagacją błędów jednego serwisu
 na jego klientów. Jeśli w określonym przedziale czasu liczba nieudanych wywołań serwisu będzie większa od założonej
 wartości, to przestaje on być odpytywany. Klient nie otrzymuje błędu, tylko przygotowany wcześniej obiekt domyślny.
-Pojawienie się tego komunikatu jednoznacznie wskazywało na brak komunikacji z wywoływanym serwisem.
-**
+Pojawienie się tego komunikatu jednoznacznie wskazywało na brak komunikacji z wywoływanym serwisem.**
 
-Niestety sytuacja wyglądała niezbyt dobrze. Ze względu na duży ruch stacktrace odkładał się w logach 6 tys razy na
+**Niestety sytuacja wyglądała niezbyt dobrze. Ze względu na duży ruch stacktrace odkładał się w logach 6 tys razy na
 minutę. W ciągu jednej tylko godziny zalogowanych zostało 6 mln wyjątków. Usługa błyskawicznie zużywała przewidziane dla
-niej miejsce na dysku. A cała sytuacja ciągle trwała !
+niej miejsce na dysku. A cała sytuacja ciągle trwała !**
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/kibana.png)
 
@@ -192,8 +191,8 @@ tym celu ponownie sięgnęliśmy do metryk.
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/clients.png)
 
-I tu okazało się, że na przełomie miesięcy dramatycznie pogorszyła się jakość komunikacji pomiędzy naszym serwisem
-a jedną z usług. Czyżbyśmy znaleźli przyczynę ? Jeśli tak, to zwykłe zwiększenie wartości timeout dla klienta powinno
+I tu okazało się, że na przełomie miesięcy dramatycznie pogorszyła się jakość komunikacji pomiędzy naszym serwisem a
+jedną z usług. Czyżbyśmy znaleźli przyczynę ? Jeśli tak, to zwykłe zwiększenie wartości timeout dla klienta powinno
 rozwiązać problem.
 
 Wprowadziliśmy szybką poprawkę i oczekiwaliśmy znaczącej poprawy, która niestety nie nastąpiła.
@@ -201,7 +200,7 @@ Wprowadziliśmy szybką poprawkę i oczekiwaliśmy znaczącej poprawy, która ni
 Do logów cały czas trafiały ogromne ilości stosów wyjątków, których źródłem był Hystrix. Więc przyczyną nie mógł być
 timeout. Ponownie wróciliśmy do analizy danych.
 
-I wtedy okazało się, że mamy jeszcze jeden problem -nie jesteśmy w stanie odczytać zwracanej nam odpowiedzi.
+**I wtedy okazało się, że mamy jeszcze jeden problem -nie jesteśmy w stanie odczytać zwracanej nam odpowiedzi**
 
 ```
 Error while extracting response for type
@@ -210,11 +209,14 @@ Error while extracting response for type
     ...
 ```
 
-Szybko okazało się, że doszło do złamania kontraktu. W obiekcie DTO została zmieniona nazwa jednego z pól. I właśnie to
-była pierwotna przyczyna całego zamieszania. Nasza usługa stała się niestabilna przez błąd, którego źródłem była inna
-usługa. Tylko to wcale nie było takie oczywiste.
+**To wyglądało już poważnie. Doszło do złamania kontraktu. Wiadomość, która do nas dociera, nie może zostać prawidłowo
+odczytana. W którymś momencie zmieniła się jej struktura. To musiała być przyczyna problemu ! Po zgłoszeniu do dyżuranta
+w zespole właścicieli wadliwej usługi dowiedzieliśmy się, że rzeczywiście doszło do pomyłki i w obiekcie DTO została
+zmieniona nazwa jednego z pól. I właśnie to była pierwotna przyczyna całego zamieszania.**
 
-Uspójnienie modelu natychmiast rozwiązało problem. GC odzyskał dawną efektywność
+**Szybko dokonaliśmy uspójnienia modelu, a to natychmiast rozwiązało problem.**
+
+**Po sprawdzeniu metryk okazało się, że GC odzyskał dawną efektywność**
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/gc_spent_per_minute_after_fail.png)
 
@@ -222,23 +224,21 @@ a przyrost pliku logów został znacznie ograniczony.
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/storage_after_fail.png)
 
-Jak to się stało, że tak poważna awaria została niezauważona przez systemy monitorujące ?
-
-Jak zwykle w takich sytuacjach okazało się, że nie ma jednej zasadniczej przyczyny.
-
-Przede wszystkim okazało się, że ramki wyjątków logowane były nie na poziomie ERROR, lecz WARN. Tylko czy to jest błąd?
-Przecież wszystko zadziałało poprawnie, usługa zewnętrzna zwróciła swoją odpowiedź ze statusem 200. Z jej punktu
-widzenia było wszystko w porządku. Nam nie udało się odczytać odpowiedzi i co prawda pojawił się wyjątek, ale został on
-obsłużony przez Circuit Breaker. Stack trace trafił do logu, a komunikacja została ponowiona. Nasz klient nie otrzymał
-informacji o błędzie, lecz zwrócony mu został domyślny obiekt odpowiedzi tzw. fallback.
-
-Co moglibyśmy poprawić, by sytuacja się nie powtórzyła ? Nie ulega wątpliwości, że zabrakło nam bardzo ważnej metryki.
-Gdybyśmy monitorowali ilość odpowiedzi typu fallback w przedziale czasu, to bez wątpienia wykrylibyśmy problem dużo
-wcześniej.
-
 ### Podsumowanie
 
-TODO Uniknęlibyśmy wielu kłopotów, a o pierwszym samodzielnym dyżurze dawno bym już zapomniał ;)
+**Gdy problem został już rozwiązany, stabilność przywrócona, mogliśmy sobie zadać pytanie, jak to się stało, że tak
+poważna awaria została niezauważona przez systemy monitorujące ?**
 
+**Czy nasza usługa mogła w tej sytuacji zachować się lepiej ?**
 
+**Według mnie, wszystkie mechanizmy zadziałały poprawnie. Usługa zewnętrzna zwróciła swoją odpowiedź ze statusem 200. Z
+jej punktu widzenia było wszystko w porządku. Nam nie udało się odczytać odpowiedzi i co prawda pojawił się wyjątek, ale
+został on obsłużony przez circuit breaker. Stack trace trafił do logu, nasz klient nie otrzymał informacji o błędzie,
+lecz zwrócony mu został domyślny obiekt odpowiedzi tzw. fallback. Uważam, że tak właśnie powinno się zadziać.**
 
+Nie ulega wątpliwości, że zabrakło nam bardzo ważnej metryki.
+Gdybyśmy monitorowali ilość odpowiedzi typu fallback w przedziale czasu, to bez wątpienia wykrylibyśmy problem dużo
+wcześniej. Niestabilne działanie naszej usługi powinno zostać wykryte przez nasze własne metryki i nasz monitoring.
+Powinno to się stać, zanim inne, zewnętrzne zespoły odnotują pogorszenie istotnych dla nich parametrów technicznych.
+
+Mam nadzieję, że następnym razem tak właśnie się stanie.
