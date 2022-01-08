@@ -170,10 +170,10 @@ trafiła zmiana pogarszająca działanie aplikacji.
 Jednak po weryfikacji logów deploymentu okazało się, że aplikacja w tym okresie nie była wdrażana. Problemu znowu trzeba
 było szukać gdzie indziej.
 
-**Metryki dały nam ogólne spojrzenie na sytuację. Wiedzieliśmy, że nasza usługa od pewnego czasu działa nieprawidłowo.
+Metryki dały nam ogólne spojrzenie na sytuację. Wiedzieliśmy, że nasza usługa od pewnego czasu działa nieprawidłowo.
 Pomimo stabilnego poziomu ruchu wejściowego, odpowiedzi stały się wyraźnie wolniejsze. JVM zaczął pracować dużo mniej
 wydajnie, a usługa odkłada ogromne ilości logów. Udało się też określić punkt w czasie kiedy rozpoczęły się problemy.
-Teraz można było znacznie zawęzić obszar poszukiwań i przyjrzeć się logom.**
+Teraz można było znacznie zawęzić obszar poszukiwań i przyjrzeć się logom.
 
 Okazało się, że wielokrotnie pojawia się w nich stacktrace, którego źródłem jest nasz circuit breaker.
 
@@ -183,14 +183,14 @@ exception java.lang.RuntimeException: Hystrix circuit short-circuited and is OPE
     at com.netflix.hystrix.AbstractCommand.applyHystrixSemantics(AbstractCommand.java:557)
 ```
 
-**Jest to mechanizm zabezpieczający przed problemem nazywanym "kaskadą błędów", czyli propagacją błędów jednego serwisu
+Jest to mechanizm zabezpieczający przed problemem nazywanym "kaskadą błędów", czyli propagacją błędów jednego serwisu
 na jego klientów. Jeśli w określonym przedziale czasu liczba nieudanych wywołań serwisu będzie większa od założonej
 wartości, to przestaje on być odpytywany. Klient nie otrzymuje błędu, tylko przygotowany wcześniej obiekt domyślny.
-Pojawienie się tego komunikatu jednoznacznie wskazywało na brak komunikacji z wywoływanym serwisem.**
+Pojawienie się tego komunikatu jednoznacznie wskazywało na brak komunikacji z wywoływanym serwisem.
 
-**Niestety sytuacja wyglądała niezbyt dobrze. Ze względu na duży ruch stacktrace odkładał się w logach 6 tys razy na
+Niestety sytuacja wyglądała niezbyt dobrze. Ze względu na duży ruch stacktrace odkładał się w logach 6 tys razy na
 minutę. W ciągu jednej tylko godziny zalogowanych zostało 6 mln wyjątków. Usługa błyskawicznie zużywała przewidziane dla
-niej miejsce na dysku. A cała sytuacja ciągle trwała !**
+niej miejsce na dysku. A cała sytuacja ciągle trwała !
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/kibana.png)
 
@@ -209,7 +209,7 @@ Wprowadziliśmy szybką poprawkę i oczekiwaliśmy znaczącej poprawy, która ni
 Do logów cały czas trafiały ogromne ilości stosów wyjątków, których źródłem był Hystrix. Więc przyczyną nie mógł być
 timeout. Ponownie wróciliśmy do analizy danych.
 
-**I wtedy okazało się, że mamy jeszcze jeden problem -nie jesteśmy w stanie odczytać zwracanej nam odpowiedzi**
+I wtedy okazało się, że mamy jeszcze jeden problem -nie jesteśmy w stanie odczytać zwracanej nam odpowiedzi.
 
 ```
 Error while extracting response for type
@@ -218,10 +218,10 @@ Error while extracting response for type
     ...
 ```
 
-**To wyglądało już poważnie. Doszło do złamania kontraktu. Wiadomość, która do nas dociera, nie może zostać prawidłowo
+To wyglądało już poważnie. Doszło do złamania kontraktu. Wiadomość, która do nas dociera, nie może zostać prawidłowo
 odczytana. W którymś momencie zmieniła się jej struktura. To musiała być przyczyna problemu ! Po zgłoszeniu do dyżuranta
 w zespole właścicieli wadliwej usługi dowiedzieliśmy się, że rzeczywiście doszło do pomyłki i w obiekcie DTO została
-zmieniona nazwa jednego z pól. I właśnie to była pierwotna przyczyna całego zamieszania.**
+zmieniona nazwa jednego z pól. I właśnie to była pierwotna przyczyna całego zamieszania.
 
 **Szybko dokonaliśmy uspójnienia modelu, a to natychmiast rozwiązało problem.**
 

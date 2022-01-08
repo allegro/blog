@@ -165,17 +165,24 @@ degrades the application's performance.
 However, after verifying the deployment logs, it was found that the application was not deployed during this period. The
 problem had to be found elsewhere.
 
-We already knew quite a bit because the metrics gave us a general overview of the situation. However, the logs told us
-the most.
+The metrics gave us a general overview of the situation. We knew that our service had been malfunctioning for some time.
+Despite stable levels of input traffic, responses had become noticeably slower. The JVM began to run much less
+efficient, and the service was putting off huge amounts of logs. It was also possible to determine the point in time
+when the problems started. It was now possible to narrow the search area considerably and look at the logs.
 
-We found multiple occurrences of the same exception there. Its source was our circuit breaker. And this was a clear
-indication of communication problems.
+We found multiple occurrences of the same exception there. Its source was our circuit breaker.
 
 ```
 exception java.lang.RuntimeException: Hystrix circuit short-circuited and is OPEN
     at com.netflix.hystrix.AbstractCommand.handleShortCircuitViaFallback(AbstractCommand.java:979)
     at com.netflix.hystrix.AbstractCommand.applyHystrixSemantics(AbstractCommand.java:557)
 ```
+
+It is a mechanism protecting against the problem called "cascading failures", i.e. propagation of errors from one
+service on its clients. If in a defined period of time the number of unsuccessful calls to a service is higher than the
+assumed value, the circuit breaker opens the cirumstace, and service stops being queried. The client does not receive an
+error, but a previously prepared default object. The appearance of this message clearly indicated a lack of
+communication with the called service.
 
 Unfortunately the situation did not look very good. Due to the high traffic the stacktrace was stored in the logs 6
 thousand times per minute. During only one hour 6 million exceptions were logged. The service was rapidly consuming disk
@@ -207,9 +214,12 @@ Error while extracting response for type
     ...
 ```
 
-It quickly turned out that the contract had been breached. One of the fields has been renamed. That's it was the root
-cause of all the confusion. Our service has become unstable due to a bug caused by a different source service. Only that
-was not so obvious at all.
+This was already looking serious. A break of contract had occurred. The message that's coming to us can't be properly
+read. At some point its structure had been changed, and we didn't find about it. That must have been the cause of the
+problem!
+
+After reporting to the on duty in the owners team of the defective service, we found out that there was indeed a mistake
+and the name of one of the fields in the DTO object has been changed. And this was the root cause of all the confusion.
 
 Refining the model immediately solved the problem. GC regained its former efficiency:
 
