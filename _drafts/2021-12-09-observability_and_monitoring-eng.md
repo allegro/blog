@@ -1,11 +1,33 @@
 # Intro
 
+When I joined the Allegro team, I was very curious about the issue of monitoring an extensive distributed system. I've
+heard a lot about the fact that productive microservices are maintained directly by development teams and that this is
+done without special monitoring departments.
+
+From the literature I knew the design patterns and solutions used, but it was hard for me to imagine how it all works in
+practice.
+
+I wondered about a lot of things:
+
+* What kind of tools are used to determine the condition of the system and how are they integrated with microservice
+  architecture?
+* Who distinguishes between correct and incorrect situations and makes the decision to initiate an emergency action?
+* What really happens after a fault occurs, how is this information handled by the various layers of the system so that
+  it finally reaches the right developer?
+* What does the cooperation of people looking for the causes and removing the failure look like? What kind of data can
+  they use to formulate and verification of hypotheses.
+
+In this article I would like to introduce you to this very interesting aspect of working with microservices. I will tell
+you about a situation which happened during my first duty, on Friday afternoon.
+
+But one by one. I will start with the theory.
+
+# Observability
+
 In a complex microservice system, we are not able to avoid problems. However, we can try to anticipate them and react to
 them as quickly as possible. To achieve this, it is necessary to use specialized tools to assess the current condition
 of our components. They are provided for by the microservice architecture model and implement one of its main
 postulates- *Observability*.
-
-# Observability
 
 Let's try to answer ourselve, how the term *Observability* should be understood.
 

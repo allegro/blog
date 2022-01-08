@@ -1,23 +1,27 @@
 # Intro
 
-**Gdy dołączałem do zespołu Allegro bardzo ciekawiło mnie zagadnienie monitorowania rozległego systemu rozproszonego.
-Dużo słyszałem o tym, że mikroserwisy działające produkcyjnie utrzymywane są bezpośrednio przez zespoły developerskie i
-że odbywa się to bez specjalnych działów monitorujących.**
+Gdy dołączałem do zespołu Allegro bardzo ciekawiło mnie zagadnienie monitorowania rozległego systemu rozproszonego. Dużo
+słyszałem o tym, że mikroserwisy działające produkcyjnie utrzymywane są bezpośrednio przez zespoły developerskie i że
+odbywa się to bez specjalnych działów monitorujących.
 
-**Z literatury znałem wzorce projektowe i stosowane rozwiązania, jednak ciężko mi było wyobrazić sobie, jak to wszystko
-działa w praktyce.**
+Z literatury znałem wzorce projektowe i stosowane rozwiązania, jednak ciężko mi było wyobrazić sobie, jak to wszystko
+działa w praktyce.
 
-**Zadawałem sobie pytania, jakie narzędzia wykorzystywane są do określania kondycji systemu i w jaki sposób wkomponowane
-zostały w architekturę mikroserwisowa? Kto ocenia, że określona sytuacja jest niepoprawna i należy ją zaraportować?
+Zastanawiałem się nad wieloma kwestiami:
 
-**Co tak naprawdę dzieje sie po wystąpieniu błędu, jak informacja ta przebiega przez różne warstwy, by na końcu dotrzeć
-do właściwego developera.**
+* Jakie narzędzia wykorzystywane są do określania kondycji systemu i w jaki sposób wkomponowane zostały w architekturę
+  mikroserwisowa?
 
-**Wreszcie jak wygląda szukanie przyczyny i współpraca zaangażowanych do tego osób. Jekie dane można wykorzystać do
-formułowania i weryfikacji hipotez.**
+* Kto rozróżnia sytuacje poprawne od niepoprawnych i podejmuje decyzję o rozpoczęciu akcji alarmowej?
+
+* Co tak naprawdę dzieje sie po wystąpieniu błędu, jak informacja ta obsługiwana jest przez różne warstwy systemu, by na
+  końcu mogła dotrzeć do właściwego developera?
+
+* Jak wygląda współpraca osób szukających przyczyn i usuwających awarię? Jakimi danymi mogą posłużyć się do formułowania
+  i weryfikacji hipotez.
 
 W tym artykule chciałbym przybliżyć Wam ten bardzo ciekawy aspekt pracy z mikroserwisami. Opowiem o sytuacji, która
-wydarzyła się podczas mojego pierwszego dyżuru, w piątkowe popołudnie. Ale po kolei. Zacznę od teorii.**
+wydarzyła się podczas mojego pierwszego dyżuru. Ale po kolei. Zacznę od teorii.
 
 ### Observability
 
@@ -167,9 +171,9 @@ Jednak po weryfikacji logów deploymentu okazało się, że aplikacja w tym okre
 było szukać gdzie indziej.
 
 **Metryki dały nam ogólne spojrzenie na sytuację. Wiedzieliśmy, że nasza usługa od pewnego czasu działa nieprawidłowo.
-Pomimo stabilnego poziomu ruchu wejściowego, odpowiedzi stały się wyraźnie wolniejsze. JVM zaczął pracować dużo
-mniej wydajnie, a usługa odkłada ogromne ilości logów. Udało się też określić punkt w czasie kiedy rozpoczęły się
-problemy. Teraz można było znacznie zawęzić obszar poszukiwań i przyjrzeć się logom.**
+Pomimo stabilnego poziomu ruchu wejściowego, odpowiedzi stały się wyraźnie wolniejsze. JVM zaczął pracować dużo mniej
+wydajnie, a usługa odkłada ogromne ilości logów. Udało się też określić punkt w czasie kiedy rozpoczęły się problemy.
+Teraz można było znacznie zawęzić obszar poszukiwań i przyjrzeć się logom.**
 
 Okazało się, że wielokrotnie pojawia się w nich stacktrace, którego źródłem jest nasz circuit breaker.
 
