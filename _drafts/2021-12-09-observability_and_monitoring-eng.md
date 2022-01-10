@@ -116,7 +116,7 @@ all the time. The monitoring applications continuously check whether they are wi
 irregularities are detected, the on-call staff is automatically notified.
 
 To show you how this system works in practice, I will tell you about a failure that happened to me during my first one,
-independent production duty on Friday afternoon.
+independent production duty.
 
 It all started with a call from the infrastructure team on duty with the information that for some time, one of our
 services has been behaving very unstably. It was observed an unnatural, abrupt increase in the size of the logs. This
@@ -229,19 +229,25 @@ and the growth of the log file has been greatly reduced.
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/storage_after_fail.png)
 
-How did it happen that such a serious failure went unnoticed by the monitoring systems?
+# Conclusion
 
-As usual in such situations, it turned out that there is no single root cause.
+Once the problem was solved, stability restored, we could ask ourselves how it happened that such a
+failure had gone unnoticed by the monitoring systems?
 
-First, it turned out that exception frames were logged not at ERROR but WARN level. But is this an error? After all,
-everything worked correctly, the external service returned its response with a status of 200. From its point of view
-everything was fine. We were not able to read the response and an exception occurred, but it was handled by Circuit
-Breaker. Stack trace went to log and communication was resumed. Our client did not receive information about the error,
-but it was returned a default response object called fallback.
+Could our service have behaved better in this situation?
+
+In my opinion, all mechanisms worked correctly. The external service returned its response with a status of 200. From its point of view
+everything was fine. We did not manage to read the answer and an exception occurred, but
+it was handled by the circuit breaker. Stack trace hit the log, our client did not receive an error message,
+but the default response object was returned to him (fallback object). I think that is what should happen.
 
 What could we improve so that the situation does not happen again ?
 
 There is no doubt that we were missing a very important metric. If we had monitored the number of fallback responses per
-time interval, we would have undoubtedly detected the problem much earlier.
+time interval, we would have undoubtedly detected the problem much earlier. Unstable performance of our service should
+be detected by our own metrics and our monitoring.  This should happen before other, external teams can
+notice a deterioration in significant technical parameters.
+
+I hope that our improvments will be effective and next time that is what will happen.
 
 TODO szkatuła

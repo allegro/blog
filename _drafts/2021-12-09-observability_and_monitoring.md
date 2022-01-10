@@ -122,9 +122,9 @@ stwierdzenia nieprawidłowości automatycznie powiadamiani są dyżuranci.
 Aby pokazać Wam, jak system ten działa w praktyce, opowiem o awarii, która przydarzyła mi się podczas mojego pierwszego,
 samodzielnego dyżuru produkcyjnego, nomen omen w piątkowe popołudnie.
 
-**Wszystko rozpoczęło się telefonem od dyżurnego jednego z zespołów. Otrzymałem informację, że od jakiegoś czasu jedna z
+Wszystko rozpoczęło się telefonem od dyżurnego jednego z zespołów. Otrzymałem informację, że od jakiegoś czasu jedna z
 naszych usług zachowuje się bardzo niestabilnie. Zaobserwowany został nienaturalny, skokowy przyrost rozmiaru
-odkładanych przez nią logów. Sytuacja ta została odnotowana przez system monitoringu i uruchomiła alarm.**
+odkładanych przez nią logów. Sytuacja ta została odnotowana przez system monitoringu i uruchomiła alarm.
 
 Rozpoczęliśmy analizę sytuacji. Na początek sięgnęliśmy po metrykę opisującą dzienne przyrosty rozmiaru pliku z logami.
 
@@ -223,9 +223,9 @@ odczytana. W którymś momencie zmieniła się jej struktura. To musiała być p
 w zespole właścicieli wadliwej usługi dowiedzieliśmy się, że rzeczywiście doszło do pomyłki i w obiekcie DTO została
 zmieniona nazwa jednego z pól. I właśnie to była pierwotna przyczyna całego zamieszania.
 
-**Szybko dokonaliśmy uspójnienia modelu, a to natychmiast rozwiązało problem.**
+Szybko dokonaliśmy uspójnienia modelu, a to natychmiast rozwiązało problem.
 
-**Po sprawdzeniu metryk okazało się, że GC odzyskał dawną efektywność**
+Po sprawdzeniu metryk okazało się, że GC odzyskał dawną efektywność
 
 ![](../img/articles/2021-12-09-observability_and_monitoring/gc_spent_per_minute_after_fail.png)
 
@@ -235,20 +235,20 @@ a przyrost pliku logów został znacznie ograniczony.
 
 ### Podsumowanie
 
-**Gdy problem został już rozwiązany, stabilność przywrócona, mogliśmy sobie zadać pytanie, jak to się stało, że tak
-poważna awaria została niezauważona przez systemy monitorujące ?**
+Gdy problem został już rozwiązany, stabilność przywrócona, mogliśmy sobie zadać pytanie, jak to się stało, że tak
+poważna awaria została niezauważona przez systemy monitorujące ?
 
-**Czy nasza usługa mogła w tej sytuacji zachować się lepiej ?**
+Czy nasza usługa mogła w tej sytuacji zachować się lepiej ?
 
-**Według mnie, wszystkie mechanizmy zadziałały poprawnie. Usługa zewnętrzna zwróciła swoją odpowiedź ze statusem 200. Z
+Według mnie, wszystkie mechanizmy zadziałały poprawnie. Usługa zewnętrzna zwróciła swoją odpowiedź ze statusem 200. Z
 jej punktu widzenia było wszystko w porządku. Nam nie udało się odczytać odpowiedzi i co prawda pojawił się wyjątek, ale
 został on obsłużony przez circuit breaker. Stack trace trafił do logu, nasz klient nie otrzymał informacji o błędzie,
-lecz zwrócony mu został domyślny obiekt odpowiedzi tzw. fallback. Uważam, że tak właśnie powinno się zadziać.**
+lecz zwrócony mu został domyślny obiekt odpowiedzi tzw. fallback. Uważam, że tak właśnie powinno się zadziać.
 
 Nie ulega wątpliwości, że zabrakło nam bardzo ważnej metryki. Gdybyśmy monitorowali ilość odpowiedzi typu fallback w
 przedziale czasu, to bez wątpienia wykrylibyśmy problem dużo wcześniej. Niestabilne działanie naszej usługi powinno
 zostać wykryte przez nasze własne metryki i nasz monitoring. Powinno to się stać, zanim inne, zewnętrzne zespoły
-odnotują pogorszenie istotnych dla nich parametrów technicznych.
+odnotują pogorszenie istotnych parametrów technicznych.
 
 Mam nadzieję, że następnym razem tak właśnie się stanie.
 
