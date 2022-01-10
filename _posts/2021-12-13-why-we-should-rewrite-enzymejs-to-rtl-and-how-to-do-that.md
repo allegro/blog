@@ -5,10 +5,10 @@ author: [magdalena.mazur]
 tags: [tech, frontend, javascript, jest, enzyme, react-testing-library, rtl, react]
 ---
 
-Everyone repeats like a mantra that tests are an indispensable element of development work.  Is there anything to it? 
+Everyone repeats like a mantra that tests are an indispensable element of development work. Is there anything to it? 
 Well, I need to admit that as a developer, I rather often want to skip the test writing stage. I assume I’m not the 
-only one. I’m aware that it’s a mistake, even with testers on board. Effective and efficient testing of your own code
- leads to catching bugs at the moment of creating a functionality, as well as when changing something already existing. 
+only one. I’m aware that it’s a mistake, even with testers on board. Effective and efficient testing of your own code 
+can help with catching bugs in new functionalities, as well as in changes to already existing ones. 
  It cannot be questioned. Sometimes tests also help to understand how some long—unused functionality or component works. 
  And that’s a small bonus too. **Can a large project cope without testing? Probably so. But the number of errors and 
  their severity will probably be much higher.** That’s why in Allegro Ads we pay attention to writing tests.
@@ -16,18 +16,18 @@ only one. I’m aware that it’s a mistake, even with testers on board. Effecti
 ## Frameworks
 We have a fairly large number of frameworks that are used to write tests in JavaScript. We can list tools like: 
 [MochaJS](https://mochajs.org/), [Jest](https://jestjs.io/), [Karma](https://karma-runner.github.io), 
-[Jasmine](https://jasmine.github.io/), [Cypress](https://www.cypress.io/). Some of them focus more on business value,
- others on technical details. There are also a range of libraries which solve different problems. However, in this 
- article, we will pay special attention and compare two testing javascript libraries like 
- [Enzyme.js](https://enzymejs.github.io/enzyme/) and [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) (often called RTL).
+[Jasmine](https://jasmine.github.io/), [Cypress](https://www.cypress.io/). However, in this article, we will pay 
+special attention and compare two testing javascript libraries: [Enzyme.js](https://enzymejs.github.io/enzyme/) and 
+[React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) (often called RTL).
 
 ![npm trends screen](/img/articles/2021-12-13-why-we-should-rewrite-enzymejs-to-rtl-and-how-to-do-that/01.png)
 ###### Source [npm trends](https://www.npmtrends.com/@testing-library/react-vs-enzyme)
 
 ## EnzymeJS
-From the Enzyme documentation we can read a short description: *Enzyme is a JavaScript Testing utility for React 
-that makes it easier to test your React Components' output. You can also manipulate, traverse, and in some ways 
-simulate runtime given the output.*
+From the Enzyme documentation we can read a short description: 
+
+> Enzyme is a JavaScript Testing utility for React that makes it easier to test your React Components' output. 
+> You can also manipulate, traverse, and in some ways simulate runtime given the output.
 
 Enzyme was released in **2015 by AirBnB**. And let’s face it, Enzyme has gained a lot of popularity. Last year, 
 the library was moved from AirBnB space to external github space as a separate independent organization. This step was 
@@ -38,8 +38,8 @@ intended to encourage the community to further develop the library.
 ![commit diffrences](/img/articles/2021-12-13-why-we-should-rewrite-enzymejs-to-rtl-and-how-to-do-that/03.png)
 ###### Source [Enzyme github](https://github.com/enzymejs/enzyme/commit/b06750bb5f6248ceb9c3fae903a71d0747a420d6)
 
-When it comes to raw data, the latest version of **Enzyme 3.11.0** has a bundle size of **463.2kb (127.5 kB)** and was 
-released on **20 December 2019**. Currently has 258 [open issues](https://github.com/enzymejs/enzyme/issues) and 31 
+When it comes to raw data, the latest version of **Enzyme 3.11.0** has a bundle size of **463.2kB minified (127.5 kB minified + gzipped)** and was 
+released on **20 December 2019**. Currently is 258 [open issues](https://github.com/enzymejs/enzyme/issues) and 31 
 open PR’s. 	
 
 ![bundlephobia Enzyme sreen](/img/articles/2021-12-13-why-we-should-rewrite-enzymejs-to-rtl-and-how-to-do-that/04.png)
@@ -49,8 +49,9 @@ open PR’s.
 Interesting fact: 
 - There are also Enzyme Adapter Packages for React. So you need to install adapter package and its dependencies related 
 to the version of React that you are using. For example, for version 16, it also needs *enzyme—adapter—react—16* to be 
-installed. Unfortunately, it does not support all features completely. So for every new version of React, we have to 
-wait for the release of the new adapter.
+installed. Unfortunately, it does not support all features completely. It should be mentioned 
+that there is not offical adapter for React 17 yet, which has been released in October 2020 (so it is more than a year!). 
+If you don't want to use community version you are still blocked and you cannot use the new React features.
 
 ## React Testing Library (often called RTL)
 
@@ -59,8 +60,7 @@ provides light utility functions on top of react—dom and react—dom/test—ut
 practices.*.
 
 Released in **April 2018 by Kent C. Dodds**. The latest stable version **12.1.2** of RTL has a bundle size of 
-**215.8kb (47.3 kB)** and was released in **October 2021**. Currently, a pre—release of v13.0.0—alpha is being 
-prepared. Repository has 26 [open issues](https://github.com/enzymejs/enzyme/issues) and 2 open PR’s.  
+**215.8kB The RTL repository has 26 [open issues](https://github.com/enzymejs/enzyme/issues) and 2 open PR’s.  
 
 ![bundlephobia RTL screen](/img/articles/2021-12-13-why-we-should-rewrite-enzymejs-to-rtl-and-how-to-do-that/05.png)
 
@@ -72,8 +72,9 @@ Interesting facts:
 - Jest documentation links to the RTL website in the [*Testing Web Framework*](https://jestjs.io/docs/testing-frameworks#react)
  section as well as React documentation in the [*Recommended Tools*](https://reactjs.org/docs/testing.html#tools).
 - Testing—library allows us to test with the same API not only React but also others frameworks like Vue 
-(testing—library/vue), Angluar (tesiting—library/angular), Svelte (testing—library/svelte) etc. This could be some 
-advantage for people working on several projects in different technologies.
+(testing—library/vue), Angular (tesiting—library/angular), Svelte (testing—library/svelte) etc. This could be some 
+advantage for people working on several projects in different technologies. There is also *dom-testing-library* which allows 
+writing tests without any framework!
 
 ## Basic differences
 
@@ -81,15 +82,11 @@ The main differences between the two libraries that I can notice:
 1. **Different approaches to testing** 
    
    What distinguishes RTL is that we find elements by their labels or texts, almost like a user would. The point is to 
-   replicate and simulate the user’s behavior. Rtl tries to render components to the DOM and doesn’t give us access 
+   replicate and simulate the user’s behavior. RTL tries to render components to the DOM and doesn’t give us access 
    directly to the internal component. While Enzyme uses shallow rendering (or sometimes deep rendering) and 
-   encourages us to test the components instance using their state and props. Enzyme also allows full rendering of DOM 
+   encourages us to test the components instance using its state and props. Enzyme also allows full rendering of DOM 
    but it is not the basic assumption of the library’s operation.
-2. **Bundle size** 
-   
-   Maybe this is not as significant as the first point, but it is worth paying attention to bundle size also. RTL has 
-   a two times smaller bundle.
-3. **Age**  
+2. **Age**  
    
    Enzyme is 6 years old, RTL is 3 years old
 
@@ -102,27 +99,27 @@ September 2020, the number of RTL downloads exceeded the number of Enzyme downlo
 ###### Source [npm trends](https://www.npmtrends.com/@testing-library/react-vs-enzyme)
 
 In the case of RTL, it is clear that the number of downloads is still growing strongly. On the other hand, it can 
-be suspected that the highest peak of Enzyme downloads is already behind it.
+be suspected that the highest peak of Enzyme downloads is already behind.
 
-###### Reasons to change testing library
+###### Reasons to change the testing library
 
-Well, let’s be honest, Enzyme.js is a powerful library which helps us test our React Components in an easier way for a 
-long time. But maybe.. too long? The first official release was in December 2015. Do not get me wrong, I don’t want to 
+Well, let’s be honest, Enzyme.js is a powerful library which has helped us test our React Components in an easier way for a 
+long time. But maybe... too long? The first official release was in December 2015. Do not get me wrong, I don’t want to 
 say that everything old is bad. But the frontend world is changing constantly, just as the approach to testing it. 
 I know that the Enzyme.js library hasn’t been deprecated yet, but there are a lot of reasons to switch your test library 
 right now. **If you haven’t read it I highly recommend you to take a look at this 
 [Piotr Staniów article](https://www.piotrstaniow.pl/goodbye-enzyme)** (it takes about 10 minutes to read). 
 
 The main reasons for me to think about slowly rewriting your tests and switch to another library from this article are: 
-- one maintains a developer, 
-- not keeping up with React changes. 
+- one developer maintaining the entire package, 
+- not keeping up with React changes.
 
-I think these are big blockers in using this tool on.
+I think these are big blockers in using this tool.
 
 ## Case study of rewriting
 
 Below I will present my own example created for the purposes of this article. It should present the minimal effort to 
-rewrite one library to another.
+rewrite tests from one library to another.
 
 ### Component: 
 
@@ -144,8 +141,6 @@ export const Test = ({ defaultCounter = 0, header = 'Default header' }) => {
     )
 };
 
-export default Test;
-
 ```
 ### Enzyme example: 
 
@@ -163,6 +158,7 @@ describe('<Test />', () => {
     // then
     expect(wrapper.text()).toContain('Default header');
   });
+
   it('should render header from props', () => {
     // when
     const wrapper = mount(<Test header="My simple calculator" />);
@@ -171,6 +167,7 @@ describe('<Test />', () => {
     expect(wrapper.text()).toContain('My simple calculator');
     expect(wrapper.text()).not.toContain('Default header');
   });
+
   it('should render default defaultCounter', () => {
     // when
     const wrapper = mount(<Test />);
@@ -178,6 +175,7 @@ describe('<Test />', () => {
     // then
     expect(wrapper.find('.counter').text()).toBe('0');
   });
+
   it('should render defaultCounter from props', () => {
     // when
     const wrapper = mount(<Test defaultCounter={100} />);
@@ -185,7 +183,8 @@ describe('<Test />', () => {
     // then
     expect(wrapper.find('.counter').text()).toBe('100');
   });
-  it('should increment conunter on click', () => {
+
+  it('should increment counter on click', () => {
     // given
     const wrapper = mount(<Test defaultCounter={100} />);
     const button = wrapper.find('button').at(0);
@@ -196,7 +195,8 @@ describe('<Test />', () => {
     // then
     expect(wrapper.find('.counter').text()).toBe('101');
   });
-  it('should decrement conunter on click', () => {
+
+  it('should decrement counter on click', () => {
     // given
     const wrapper = mount(<Test defaultCounter={100} />);
     const button = wrapper.find('button').at(1);
@@ -211,7 +211,7 @@ describe('<Test />', () => {
 
 
 ```
-### What need to be change:
+### What needs to be changed:
 - remove **mount** and use **render** instead
 - remove **wrapper** variable and use **screen** to get elements
 - replace **simulate(’click’)** with **userEvent**
@@ -232,6 +232,7 @@ describe('<Test />', () => {
     // then
     expect(screen.getByRole('heading', { name: 'Default header' })).toBeInTheDocument();
   });
+
   it('should render header from props', () => {
     // when
     render(<Test header="My simple calculator" />);
@@ -240,6 +241,7 @@ describe('<Test />', () => {
     expect(screen.getByRole('heading', { name: 'My simple calculator' })).toBeInTheDocument();
     expect(screen.queryByText('Default header')).not.toBeInTheDocument();
   });
+
   it('should render default defaultCounter', () => {
     // when
     render(<Test />);
@@ -247,6 +249,7 @@ describe('<Test />', () => {
     // then
     expect(screen.getByText('0')).toBeInTheDocument();
   });
+
   it('should render defaultCounter from props', () => {
     // when
     render(<Test defaultCounter={100} />);
@@ -254,7 +257,8 @@ describe('<Test />', () => {
     // then
     expect(screen.getByText('100')).toBeInTheDocument();
   });
-  it('should increment conunter on click', () => {
+
+  it('should increment counter on click', () => {
     // given
     render(<Test defaultCounter={100} />);
 
@@ -266,7 +270,8 @@ describe('<Test />', () => {
     // then
     expect(screen.getByText('101')).toBeInTheDocument();
   });
-  it('should decrement conunter on click', () => {
+
+  it('should decrement counter on click', () => {
     // given
     render(<Test defaultCounter={100} />);
 
@@ -285,26 +290,26 @@ describe('<Test />', () => {
 
 My team is currently working on the development of [Allegro Ads](https://allegro.pl/ads), which is an advertising tool 
 for our ecommerce platform sellers. It is a whole panel for viewing statistics, displaying advertising campaigns. We 
-provide sponsored offers for our allegro site, facebook, google and recently even for on the partner websites. Our 
+provide sponsored offers for our Allegro site, Facebook, Google and recently even the partner websites. Our 
 sellers pay us for the opportunity to advertise their products, and at the same time we strive to ensure that these 
 ads accurately reach people potentially interested in buying, thereby generating profits for sellers.
 
 The main technology stack is standard and still pretty cool. The core of the project is written in React, and 
-significant parts have been rewritten to Typescript. From the beginning, for testing purposes, we use Jest. In 
+significant parts have been rewritten to Typescript. For testing purposes, we use Jest. In 
 my opinion this is a very good and stable tool, easy to work with. It has quite a low entry threshold, even if someone 
 hasn’t had too much experience with tests before. The main advantages of Jest for me are minimal configuration and quite 
 good documentation. But for testing react components we currently have two libraries and I’ll explain why in a moment.
 
-The 2.0. version of platform Allegro Ads was released about 6 years ago, with an Enzyme library on a board. A year ago 
+The 2.0 version of platform Allegro Ads was released about 6 years ago, with an Enzyme library on a board. A year ago 
 the team added a react testing library to package.json. We have both packages so far. **Recently we officially decided 
 to slowly rewrite the Enzyme library for good.** We added the rule to our docc (Declaration of Code Convention) that 
-the new components are tested just in RTL, the old ones will be rewritten when existing parts of the code will be onboard.
+the new components are tested just in RTL, the old ones will be rewritten during the development of specific parts.
 
 ## Migration effects so far
 
 Currently we have got **592 test files** (counting after the file names with “spec” phrase). In these files we can 
 also find **709 of unique “describe”** usage for wrapping a series of tests, and **1796 unique test cases**. Half of 
-tests are written only in jest, but a significant amount of tests for better testing use extra libraries. 
+tests are written only in Jest, but a significant amount of tests for better testing use extra libraries. 
 
 React testing library is used in **131 files**, which is around **22% of all test files**. 
 Enzyme tests are in **137 files** which is around **23%**.  
@@ -316,10 +321,10 @@ beginning and RTL for a year. So I’m quite stunned by these numbers. I did not
 
 ## Summary
 
-Hopefully this article showed you that switch from one to the other library doesn’t have to be difficult. As 
+Hopefully this article showed you that switching from one to the other library doesn’t have to be difficult. As 
 programmers, we will encounter such situations frequently. I think that the effort put into replacing old 
 libraries with newer ones and keeping your code free of technological debt will bring tangible results for developers, 
 project and, finally, users.
 
-I hope that I was able to show you why we prescribe the Enzyme to RTL, how we do it and at what stage we are. Probably 
+I hope that I was able to show you why we rewrite the Enzyme tests to RTL, how we do it and what stage we are at. Probably 
 it is not the end. What are we going to replace RTL with in the future? We’ll see. :) 
