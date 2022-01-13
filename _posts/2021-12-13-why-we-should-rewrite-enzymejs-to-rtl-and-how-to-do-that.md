@@ -14,7 +14,11 @@ Everyone repeats like a mantra that tests are an indispensable element of develo
       their severity will probably be much higher.** That’s why in Allegro Ads we pay attention to writing tests.
 
 ## Frameworks
-We have a fairly large number of frameworks that are used to write tests in JavaScript. We can list tools like: [MochaJS](https://mochajs.org/), [Jest](https://jestjs.io/), [Karma](https://karma-runner.github.io), [Jasmine](https://jasmine.github.io/), [Cypress](https://www.cypress.io/). However, in this article, we will pay special attention and compare two testing javascript libraries: [Enzyme.js](https://enzymejs.github.io/enzyme/) and [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) (often called RTL).
+We have a fairly large number of frameworks that are used to write tests in JavaScript. We can list tools like:
+ [MochaJS](https://mochajs.org/), [Jest](https://jestjs.io/), [Karma](https://karma-runner.github.io),
+  [Jasmine](https://jasmine.github.io/), [Cypress](https://www.cypress.io/). However, in this article, we will pay
+   special attention and compare two testing javascript libraries: [Enzyme.js](https://enzymejs.github.io/enzyme/)
+    and [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) (often called RTL).
 
 ![npm trends screen](/img/articles/2021-12-13-why-we-should-rewrite-enzymejs-to-rtl-and-how-to-do-that/01.png)
 *Source [npm trends](https://www.npmtrends.com/@testing-library/react-vs-enzyme)*
