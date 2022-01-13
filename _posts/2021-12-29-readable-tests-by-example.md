@@ -40,7 +40,8 @@ we can assume that the cost of delivery is always a fixed amount of EUR 20.
 We distinguish between two types of clients: STANDARD and VIP.
 
 If the order is processed for a customer with a VIP status or the value of the order exceeds a certain amount
-according to the running promotional campaign (current price list configuration), the order will be delivered free of charge.
+according to the running promotional campaign (current price list configuration), the order will be delivered free
+of charge.
 
 Additionally, for the VIP customer, a free music track should be sent to their mailbox after the payment of the order.
 
@@ -203,7 +204,8 @@ final ClientId CLIENT_ID = new ClientId("1")
 final Vinyl VINYL_1 = new Vinyl(new VinylId("1"), EUR_40)
 final Quantity ONE = new Quantity(1)
 final OrderId ORDER_ID = new OrderId("1")
-final OrderDataSnapshot UNPAID_ORDER_EUR_40 = orderFactory.create(ORDER_ID, CLIENT_ID, Maps.of(VINYL_1, ONE), true).toSnapshot()
+final OrderDataSnapshot UNPAID_ORDER_EUR_40 = orderFactory.create(ORDER_ID, CLIENT_ID, Maps.of(VINYL_1, ONE), true)
+    .toSnapshot()
 final ClientReputation VIP = ClientReputation.vip(CLIENT_ID)
 final PayOrderCommand PAY_FOR_ORDER_EUR_40 = new PayOrderCommand(ORDER_ID, EUR_40)
 
@@ -462,7 +464,7 @@ trait OrderPaymentAbility implements MakeRequestAbility {
     private PollingConditions pollingConditions = new PollingConditions(timeout: 5)
 
     // some code omitted
-    void assertThatClientDidNotPaidForDelivery(OrderPaidEventBuilder anEventBuilder = anOrderPaidEvent().anOrderPaidEventWithFreeDelivery()) {
+    void assertThatClientDidNotPaidForDelivery(def anEvent = anOrderPaidEvent().anOrderPaidEventWithFreeDelivery()) {
         pollingConditions.eventually {
             Mockito.verify(domainEventPublisher, times(1))
                 .publish(anEventBuilder.build())
@@ -481,7 +483,7 @@ from the framework? Here are the arguments for:
 * enriching the test with the language specific to our domain,
 * we are not limited by the capabilities of a given framework, e.g. Spock doesn’t allow you to mock final Java classes,
   then we have to use an additional lib
-  like [spock-mockable](https://github.com/CamilYed/readable-tests-by-example/blob/master/src/test/groovy/tech/allegro/blog/vinyl/shop/delivery/domain/DeliveryCostPolicySpec.groovy#L13)
+  like [spock-mockable](https://tinyurl.com/readeable-test-by-example)
   .
 
 ### Tailor-made assertions
