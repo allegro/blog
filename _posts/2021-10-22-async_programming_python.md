@@ -7,7 +7,7 @@ tags: [tech, python, async, coroutines]
 
 Most of applications we create are basically loops. An average program waits
 for an event, then processes it following some business logic. Afterwards it
-begins waiting for another event to arrive.  Java Servlets works this way too.
+begins waiting for another event to arrive. Java Servlets work this way too.
 Popular frameworks such as Spring allow us to only care about the business logic,
 while the framework takes care of the application main loop.
 
@@ -18,7 +18,7 @@ your favourite language standard library. It waits for a request with the amount
 base and target currencies and responds with a calculated output. In its simplest
 form it could have all the exchange rates hardcoded, so the operation is very
 fast and efficient. We can assume that such an application uses all the
-available processing power when processing requests.
+available processing power when handling requests.
 
 But in the next iteration we want our app to query another service for current
 rates instead of relying on hardcoded values. We will soon discover our app is
@@ -26,9 +26,9 @@ spending most of its time waiting for a response from the other service.
 
 Network communication is very slow after all. Let’s assume that a simple request
 takes at least 1ms to complete. Modern processors have clock frequencies up to
-5GHz and, providing the data and code are already cached, they are capable of
+5GHz and, provided the data and code are already cached, they are capable of
 at least one simple operation per cycle. This means we could have done at least
-5 * 10e6 simple operations while waiting for the request to complete! What a
+5 million simple operations while waiting for the request to complete! What a
 waste of resources!
 
 ### Classic approach with threads
@@ -37,7 +37,7 @@ application so that when it receives the request it passes it to a separate
 thread. This way we don’t have to worry about blocking operations in the
 business logic. It is the operating system’s responsibility to allocate CPU to
 something meaningful while our thread is blocked waiting for the other service.
-This is how most of the applications I have been working on work.
+From my experience this is how most of the applications work.
 
 Unfortunately this approach has some drawbacks as well. Threads consume a lot of
 resources and you can only create a limited number of them. Very soon you
@@ -47,15 +47,15 @@ thread pool allocation policy in order not to starve some part of your
 application. Add race conditions and other concurrency related issues and it
 suddenly gets overcomplicated.
 
-### How about we don't block
+### How about we don’t block
 Let’s assume you decide threads are too expensive, too cumbersome or they are
 simply not available on your platform, because for example you are writing bare
 metal applications and there is no operating system. When we decide not to use
 threading we have to keep in mind we cannot afford having any blocking operations
 in our application, because they are wasting our resources. Having no threads
-there is no way to use time when something blocks.
+means there is no way to use time when something blocks.
 
-The new idea for the programm architecture is as follows:
+The new idea for the program architecture is as follows:
 - Wait for an event to happen.
 - If the event is a new request arriving to an endpoint, then we only setup
 the request to another service and return.
@@ -74,7 +74,7 @@ to show up. You can read more about `accept` in [the Linux manual](https://man7.
 Similarly `write` and `read` functions, defined by POSIX standard, are used
 to send and receive data over the created connection. Both can also block
 waiting for the I/O operation to become possible. You can read more about these
-functions in Linux manual: [read](https://man7.org/linux/man-pages/man2/read.2.html),
+functions in the Linux manual: [read](https://man7.org/linux/man-pages/man2/read.2.html),
 [write](https://man7.org/linux/man-pages/man3/write.3p.html).
 
 As you may have already noticed, our asynchronous application only makes sense
@@ -83,7 +83,7 @@ called it “waiting for an event to happen”. In Linux we can achieve such a
 behaviour using `select` or `poll` system calls. `poll` is basically a more modern
 version of `select`. In practice we can provide them with a set of event
 descriptors and they will block until one of expected events occurs. You can
-read more about these calls in Linux manual: [select](https://man7.org/linux/man-pages/man2/select.2.html),
+read more about these calls in the Linux manual: [select](https://man7.org/linux/man-pages/man2/select.2.html),
 [poll](https://man7.org/linux/man-pages/man2/poll.2.html).
 
 ## Select in Python
@@ -92,17 +92,17 @@ Python standard library. It hides some complicated low level aspects of the
 operating system API which is good for this article. Read more about
 `selectors` module in [the Python documentation](https://docs.python.org/3/library/selectors.html#module-selectors).
 
-Basically we can register an event we want to wait for using the `register`
+Firstly we can register an event we want to wait for using the `register`
 method, then we wait for any registered event to happen using the `select`
 method. Python standard library provides us with `DefaultSelector` which is an
 alias for the most efficient implementation on the current platform, so that we
 don’t have to dive into low level details if we don’t want to.
 
-### Simplest async application
+### The simplest async application
 For the sake of simplicity of the examples I won’t use `Selector` and I won’t
-try to create an async http client from scratch. There are simply too many
-unrelated low level details. Surprisingly, the simplest GET request consists
-of numerous blocking operations. Instead, I propose the simplest and most easily
+try to create an async http client from scratch. There are plainly too many
+unrelated low level details. Surprisingly, event the most common GET request consists
+of numerous blocking operations. Instead, I propose the most basic and most easily
 controllable blocking operation there is: waiting for user input.
 
 Let’s replace the complicated `selector` with a simple `input` function and
@@ -147,7 +147,7 @@ Processing event B
 Processing event C
 ```
 
-As you can see we create an event loop listening for events (user input),
+As you can see we created an event loop listening for events (user input),
 then it dispatches the event to the relevant handler. Note how the `input`
 function inside the event loop is the only blocking operation in the whole
 program.
@@ -271,7 +271,7 @@ in progress without any overhead, so the main goal is accomplished.
 We learned that asynchronous approach results in an efficient application, but
 also has some drawbacks. For starters, your code does not reflect your program
 logic directly. Instead, you have to manually control the flow, maintain state
-and pass requests' context around which is cumbersome and error prone.
+and pass requests’ context around which is cumbersome and error prone.
 
 Your application business logic is hidden under implementation details and the
 architecture of your solution is determined by the way you decided to deal with
@@ -390,7 +390,7 @@ $ python yield_twice.py
 ```
 
 What is more, a generator can also have a return statement. The returned value
-will be used as a payload to StopIteration exception raised when the iteration
+will be used as a payload to `StopIteration` exception raised when the iteration
 is over or (much more usefully) it can be used as a result of `yield from`
 expression.
 
@@ -452,7 +452,7 @@ $ python failing_generator.py
 Something went wrong
 ```
 
-You can read more about generators in [Python documentation](https://docs.python.org/3/howto/functional.html#generators).
+You can read more about generators in the [Python documentation](https://docs.python.org/3/howto/functional.html#generators).
 
 ## Async code using generators
 So we know that generators superficially behave like a stream of values.
@@ -658,27 +658,28 @@ actual blocking operations like reading from socket and you can create your own
 asynchronous HTTP application.
 
 ## Python asyncio
-Actually the async/await syntax is present only since Python 3.7. Prior to 3.7
+In fact, the async/await syntax is present only since Python 3.7. Prior to 3.7
 coroutines were actually written as generators with special annotation attached
 to them.
 
-Python standard library provides us with a ready to use event loop to run our
+Python standard library provides us with a ready-to-use event loop to run our
 coroutines as well as a set of convenient awaitable operations covering all the
 lowest level blocking operations we usually deal with. If you want to learn more
 about low level async API in Python,
 [PEP3156](https://www.python.org/dev/peps/pep-3156/) is a great place to start.
 
-Furthermore, there are a huge number of libraries making use of this low level
+Furthermore, there is a huge number of libraries making use of this low level
 API. They implement HTTP clients, web frameworks, database drivers and many
 others. My favourite asynchronous libraries in Python are:
 asynchronous HTTP client [aiohttp](https://docs.aiohttp.org/en/stable/),
 web framework [FastAPI](https://fastapi.tiangolo.com/) and
 MongoDB driver [Motor](https://motor.readthedocs.io/en/stable/).
 
-In fact, the Python event loop actually runs on futures, also known as promises
+In reality, the Python event loop runs on futures, also known as promises
 in other languages. Coroutines are implemented with tasks which rely on
-futures, so our implementation is actually simplified. You should remember that
-when looking into Python sources, so you don’t get confused!
+futures. Our implementation is actually simplified as it bypasses some abstraction
+layers. You should remember that when looking into Python sources, 
+so you don’t get confused!
 
 When I first started learning coroutines I had hard times trying to figure out
 all the strange behaviours myself. It was only the understanding of how things
