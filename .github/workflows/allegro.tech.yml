@@ -1,9 +1,9 @@
-name: update allegro.tech
+name: Update allegro.tech
 
 on:
   push:
     branches: [ main ]
-  
+
 jobs:
   dispatch:
     runs-on: ubuntu-latest

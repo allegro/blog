@@ -1,0 +1,19 @@
+name: Push to public fork
+
+on:
+  push:
+    branches: [ main-internal ]
+
+jobs:
+  publish:
+    runs-on: [self-hosted, ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: rebase public fork
+        run: git remote add public https://github.com/allegro/blog.git && git pull public main --rebase && git push "https://$REPO_TOKEN@github.com/allegro/blog.git" HEAD -f
+        env:
+          REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
