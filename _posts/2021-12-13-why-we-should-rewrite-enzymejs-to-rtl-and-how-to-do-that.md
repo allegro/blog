@@ -110,10 +110,10 @@ Well, let’s be honest, Enzyme.js is a powerful library which has helped us tes
     your test library right now. **If you haven’t read it I highly recommend you to take a look at [this article](https://www.piotrstaniow.pl/goodbye-enzyme) by Piotr Staniów** (it takes about 10 minutes to read).
 
 The main reasons for me to think about slowly rewriting my tests and switch to another library from this article are:
-- one developer maintaining the entire package,
+- one developer maintaining the entire Enzyme package,
 - not keeping up with React changes.
 
-I think these are big blockers in using this tool.
+If you ask me, these are big blockers in using this tool.
 
 ## Case study of rewriting
 
@@ -211,9 +211,9 @@ describe('<Test />', () => {
 ```
 
 ### What needs to be changed:
-- remove **mount** and use **render** instead
-- remove **wrapper** variable and use **screen** to get elements
-- replace **simulate(’click’)** with **userEvent**
+- remove `mount` and use `render` instead
+- remove `wrapper` variable and use `screen` to get elements
+- replace `simulate(’click’)` with `userEvent`
 
 ### React Testing Library example:
 
@@ -290,7 +290,7 @@ describe('<Test />', () => {
 ## Enzyme and RTL in Allegro Ads
 
 My team is currently working on the development of [Allegro Ads](https://allegro.pl/ads), which is an advertising tool
- for our ecommerce platform sellers. It is a whole panel for viewing statistics, displaying advertising campaigns. We
+ for our e-commerce platform sellers. It is a whole panel for viewing statistics, displaying advertising campaigns. We
   provide sponsored offers for our Allegro site, Facebook, Google and recently even the partner websites. Our sellers
    pay us for the opportunity to advertise their products, and at the same time we strive to ensure that these ads
     accurately reach people potentially interested in buying, thereby generating profits for sellers.
@@ -301,7 +301,7 @@ The main technology stack is standard and still pretty cool. The core of the pro
    experience with tests before. The main advantages of Jest for me are minimal configuration and quite good
     documentation. But for testing react components we currently have two libraries and I’ll explain why in a moment.
 
-The 2.0 version of platform Allegro Ads was released about 6 years ago, with an Enzyme library on a board. A year ago
+The 2.0 version of platform Allegro Ads was released about 6 years ago. A year ago
  the team added a React Testing Library to `package.json`. We have both packages so far. **Recently we officially decided
   to slowly rewrite the Enzyme library for good.** We added the rule to our Declaration of Code Convention that
    the new components are tested just in RTL, the old ones will be rewritten during the development of specific parts.
