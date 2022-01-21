@@ -9,7 +9,7 @@ Everyone repeats like a mantra that tests are an indispensable element of develo
  Well, I need to admit that as a developer, I rather often want to skip the test writing stage. I assume I’m not the
   only one. I’m aware that it’s a mistake, even with testers on board. Effective and efficient testing of your own
    code can help with catching bugs in new functionalities, as well as in changes to already existing ones. It cannot
-    be questioned. Sometimes tests also help to understand how some long—unused functionality or component works. And
+    be questioned. Sometimes tests also help to understand how some long-unused functionality or component works. And
      that’s a small bonus too. **Can a large project cope without testing? Probably so. But the number of errors and
       their severity will probably be much higher.** That’s why in Allegro Ads we pay attention to writing tests.
 
@@ -39,7 +39,7 @@ Enzyme was released in **2015 by AirBnB**. And let’s face it, Enzyme has gaine
 *Source [Enzyme github](https://github.com/enzymejs/enzyme/commit/b06750bb5f6248ceb9c3fae903a71d0747a420d6)*
 
 When it comes to raw data, the latest version of **Enzyme 3.11.0** has a bundle size of **463.2kB minified (127.5 kB
- minified + gzipped)** and was released on **20 December 2019**. Currently is 258
+ minified + gzipped)** and was released on **20 December 2019**. Currently it has 258
   [open issues](https://github.com/enzymejs/enzyme/issues) and 31 open PR’s.
 
 ![bundlephobia Enzyme sreen](/img/articles/2021-12-13-why-we-should-rewrite-enzymejs-to-rtl-and-how-to-do-that/04.png)
@@ -48,7 +48,7 @@ When it comes to raw data, the latest version of **Enzyme 3.11.0** has a bundle 
 Interesting fact:
 - There are also Enzyme Adapter Packages for React. So you need to install adapter package and its dependencies
  related to the version of React that you are using. For example, for version 16, it also needs
-  *enzyme—adapter—react—16* to be installed. Unfortunately, it does not support all features completely.
+  `enzyme-adapter-react-16` to be installed. Unfortunately, it does not support all features completely.
    It should be mentioned that there is not offical adapter for React 17 yet, which has been released in
     October 2020 (so it is more than a year!). If you don't want to use community version you are still blocked and you
      cannot use the new React features.
@@ -56,8 +56,8 @@ Interesting fact:
 ## React Testing Library (often called RTL)
 RTL says about itself:
 
-> The React Testing Library is a very light—weight solution for testing React components. It provides light utility
- functions on top of react—dom and react—dom/test—utils, in a way that encourages better testing practices.
+> The React Testing Library is a very light-weight solution for testing React components. It provides light utility
+ functions on top of `react-dom` and `react-dom/test-utils`, in a way that encourages better testing practices.
 
 Released in **April 2018 by Kent C. Dodds**. The latest stable version **12.1.2** of RTL has a bundle size of **215.8kB
  minified (47.3kB minified + gzipped)** . The RTL repository has 26
@@ -71,9 +71,9 @@ Interesting facts:
 - Jest documentation links to the RTL website in the
 [*Testing Web Framework*](https://jestjs.io/docs/testing-frameworks#react) section as well as React documentation in the
  [*Recommended Tools*](https://reactjs.org/docs/testing.html#tools).
-- Testing—library allows us to test with the same API not only React but also others frameworks like Vue
- (testing—library/vue), Angular (tesiting—library/angular), Svelte (testing—library/svelte) etc. This could be some
-  advantage for people working on several projects in different technologies. There is also *dom-testing-library* which
+- Testing-library allows us to test with the same API not only React but also others frameworks like Vue
+ (`testing-library/vue`), Angular (`testing-library/angular`), Svelte (`testing-library/svelte`) etc. This could be some
+  advantage for people working on several projects in different technologies. There is also `dom-testing-library` which
    allows writing tests without any framework!
 
 ## Basic differences
@@ -107,10 +107,9 @@ Well, let’s be honest, Enzyme.js is a powerful library which has helped us tes
  for a long time. But maybe... too long? The first official release was in December 2015. Do not get me wrong, I don’t
   want to say that everything old is bad. But the frontend world is changing constantly, just as the approach to
    testing it. I know that the Enzyme.js library hasn’t been deprecated yet, but there are a lot of reasons to switch
-    your test library right now. **If you haven’t read it I highly recommend you to take a look at this
-     [Piotr Staniów article](https://www.piotrstaniow.pl/goodbye-enzyme)** (it takes about 10 minutes to read).
+    your test library right now. **If you haven’t read it I highly recommend you to take a look at [this article](https://www.piotrstaniow.pl/goodbye-enzyme) by Piotr Staniów** (it takes about 10 minutes to read).
 
-The main reasons for me to think about slowly rewriting your tests and switch to another library from this article are:
+The main reasons for me to think about slowly rewriting my tests and switch to another library from this article are:
 - one developer maintaining the entire package,
 - not keeping up with React changes.
 
@@ -216,7 +215,7 @@ describe('<Test />', () => {
 - remove **wrapper** variable and use **screen** to get elements
 - replace **simulate(’click’)** with **userEvent**
 
-### React testing library example:
+### React Testing Library example:
 
 ```js
 import React from 'react';
@@ -303,8 +302,8 @@ The main technology stack is standard and still pretty cool. The core of the pro
     documentation. But for testing react components we currently have two libraries and I’ll explain why in a moment.
 
 The 2.0 version of platform Allegro Ads was released about 6 years ago, with an Enzyme library on a board. A year ago
- the team added a react testing library to package.json. We have both packages so far. **Recently we officially decided
-  to slowly rewrite the Enzyme library for good.** We added the rule to our docc (Declaration of Code Convention) that
+ the team added a React Testing Library to `package.json`. We have both packages so far. **Recently we officially decided
+  to slowly rewrite the Enzyme library for good.** We added the rule to our Declaration of Code Convention that
    the new components are tested just in RTL, the old ones will be rewritten during the development of specific parts.
 
 ## Migration effects so far
@@ -313,17 +312,17 @@ Currently we have got **592 test files** (counting after the file names with “
  find **709 of unique “describe”** usage for wrapping a series of tests, and **1796 unique test cases**. Half of tests
   are written only in Jest, but a significant amount of tests for better testing use extra libraries.
 
-React testing library is used in **131 files**, which is around **22% of all test files**.
+React Testing Library is used in **131 files**, which is around **22% of all test files**.
 Enzyme tests are in **137 files** which is around **23%**.
 
-So the Enzyme is still used more often. However, keep in mind that we have been using Enzyme in this project from the
+So Enzyme is still used more often. However, keep in mind that we have been using Enzyme in this project from the
  beginning and RTL for a year. So I’m quite stunned by these numbers. I did not think that the use of RTL would
   increase so significantly in a year. Of course, there is still a long way to completely eliminate Enzyme, especially
    among other project priorities, but now I’m convinced that small steps will be enough to do that.
 
 ## Summary
 
-Hopefully this article showed you that switching from one to the other library doesn’t have to be difficult. As
+Hopefully this article showed you that switching from one library to another doesn’t have to be difficult. As
  programmers, we will encounter such situations frequently. I think that the effort put into replacing old libraries
   with newer ones and keeping your code free of technological debt will bring tangible results for developers, project
    and, finally, users.
