@@ -69,12 +69,12 @@ Released in **April 2018 by Kent C. Dodds**. The latest stable version **12.1.2*
 Interesting facts:
 - When you create a project by Create React App, you will get support for React Testing Library right away.
 - Jest documentation links to the RTL website in the
-[*Testing Web Framework*](https://jestjs.io/docs/testing-frameworks#react) section as well as React documentation in the
- [*Recommended Tools*](https://reactjs.org/docs/testing.html#tools).
+[*Testing Web Framework*](https://jestjs.io/docs/testing-frameworks#react) section as well as React documentation in
+ the [*Recommended Tools*](https://reactjs.org/docs/testing.html#tools).
 - Testing-library allows us to test with the same API not only React but also others frameworks like Vue
- (`testing-library/vue`), Angular (`testing-library/angular`), Svelte (`testing-library/svelte`) etc. This could be some
-  advantage for people working on several projects in different technologies. There is also `dom-testing-library` which
-   allows writing tests without any framework!
+ (`testing-library/vue`), Angular (`testing-library/angular`), Svelte (`testing-library/svelte`) etc. This could be
+  some advantage for people working on several projects in different technologies. There is also
+   `dom-testing-library` which allows writing tests without any framework!
 
 ## Basic differences
 
@@ -107,7 +107,8 @@ Well, let’s be honest, Enzyme.js is a powerful library which has helped us tes
  for a long time. But maybe... too long? The first official release was in December 2015. Do not get me wrong, I don’t
   want to say that everything old is bad. But the frontend world is changing constantly, just as the approach to
    testing it. I know that the Enzyme.js library hasn’t been deprecated yet, but there are a lot of reasons to switch
-    your test library right now. **If you haven’t read it I highly recommend you to take a look at [this article](https://www.piotrstaniow.pl/goodbye-enzyme) by Piotr Staniów** (it takes about 10 minutes to read).
+    your test library right now. **If you haven’t read it I highly recommend you to take a look at
+     [this article](https://www.piotrstaniow.pl/goodbye-enzyme) by Piotr Staniów** (it takes about 10 minutes to read).
 
 The main reasons for me to think about slowly rewriting my tests and switch to another library from this article are:
 - one developer maintaining the entire Enzyme package,
@@ -302,9 +303,10 @@ The main technology stack is standard and still pretty cool. The core of the pro
     documentation. But for testing react components we currently have two libraries and I’ll explain why in a moment.
 
 The 2.0 version of platform Allegro Ads was released about 6 years ago. A year ago
- the team added a React Testing Library to `package.json`. We have both packages so far. **Recently we officially decided
-  to slowly rewrite the Enzyme library for good.** We added the rule to our Declaration of Code Convention that
-   the new components are tested just in RTL, the old ones will be rewritten during the development of specific parts.
+ the team added a React Testing Library to `package.json`. We have both packages so far. **Recently we officially
+  decided to slowly rewrite the Enzyme library for good.** We added the rule to our Declaration of Code Convention
+   that the new components are tested just in RTL, the old ones will be rewritten during the development of
+    specific parts.
 
 ## Migration effects so far
 
