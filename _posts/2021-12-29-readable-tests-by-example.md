@@ -241,7 +241,7 @@ code?” section, because it:
 * all the variables used are within the specification, which in the case of a multitude of tests may constitute
   additional complexity in their maintenance. Besides, it is not difficult to make a mistake here, e.g. by introducing a
   new variable that is already defined somewhere under a different name;
-* is not easy to add further tests outside the specification that would need similar functionality - unfortunately, it
+* it is not easy to add further tests outside the specification that would need similar functionality - unfortunately, it
   will require multiple repetition of fragments of the code.
 
 I have used two above examples of tests (acceptance and unit), to quickly highlight how many flaws the naive solution
