@@ -254,7 +254,7 @@ to take extra care of:
 * creating body http requests using text blocks, which in the case of larger objects leads to the creation of structures
   occupying a large part of the specification;
 * mocking or stubbing external dependencies using mechanisms from the framework as Stub or Mock, which can be
-  comfortable but not necessarily improve the readability of the code and its further development;
+  comfortable but does not necessarily improve the readability of the code and its further development;
 * stubbing the response to external services using the library Wiremock class directly in your code test;
 * checking the final state of an object by referring directly to its content in the test. With complex structures it can
   be very inconvenient and unreadable.
