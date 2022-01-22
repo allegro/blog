@@ -386,7 +386,7 @@ The `OrderPaymentAcceptanceSpec` class implements several traits with similar na
 is another concept that I want to discuss. As we understand it, and so it is giving certain abilities to the test
 scenario. As a result, with this approach, we can expand small blocks more and more.
 
-Now, it is easy to imagine another test that needs the same ability or skill, by which we can get rid of duplicate codes
+Now, it is easy to imagine another test that needs the same ability or skill, by which we can get rid of duplicate code
 between different classes of tests.
 
 Let's analyse an example implementation of a trait named: `CreateOrderAbility`
