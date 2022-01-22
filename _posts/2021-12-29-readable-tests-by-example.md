@@ -488,7 +488,7 @@ from the framework? Here are the arguments for:
 
 ### Tailor-made assertions
 
-The last concept that I want to discuss is dedicated assertion classes. Assertion class is nothing more than a simple
+The last concept that I want to discuss is dedicated assertion classes. An assertion class is nothing more than a simple
 class exposing methods which allow checking the input object appropriately.
 
 In some scenarios, we would actually like to verify the data that, for example, was eventually saved in the database.
