@@ -71,7 +71,7 @@ We can distinguish the following packages:
 
 * `delivery`: calculates the delivery price based on the defined policy
 
-* `order`: this is where the logic related to the user's order is located, such as the amount of payment, or the ability
+* `order`: keeps the logic related to the user's order, such as the amount of payment, or the ability
   to find them among other orders
 
 * `sales`: provides information on types promotions (e.g. price list configuration), especially the minimum value order
