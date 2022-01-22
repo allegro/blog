@@ -255,7 +255,7 @@ to take extra care of:
   occupying a large part of the specification;
 * mocking or stubbing external dependencies using mechanisms from the framework as Stub or Mock, which can be
   comfortable but does not necessarily improve the readability of the code and its further development;
-* stubbing the response to external services using the library Wiremock class directly in your code test;
+* stubbing the response to external services using the library Wiremock class directly in our code’s test;
 * checking the final state of an object by referring directly to its content in the test. With complex structures it can
   be very inconvenient and unreadable.
 
