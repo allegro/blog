@@ -32,7 +32,7 @@ An online store sells vinyl records. Each order is delivered by a courier compan
 
 The cost of delivery is charged when the customer pays for the order.
 
-The cost of delivery is always collected from the supplier's system (the courier's system).
+The cost of delivery is always collected from the supplier’s system (the courier’s system).
 
 In the event of its unavailability (e.g. when the external courier system cannot provide the cost amount),
 we can assume that the cost of delivery is always a fixed amount of EUR 20.
@@ -71,7 +71,7 @@ We can distinguish the following packages:
 
 * `delivery`: calculates the delivery price based on the defined policy
 
-* `order`: keeps the logic related to the user's order, such as the amount of payment, or the ability
+* `order`: keeps the logic related to the user’s order, such as the amount of payment, or the ability
   to find them among other orders
 
 * `sales`: provides information on types promotions (e.g. price list configuration), especially the minimum value order
@@ -102,15 +102,15 @@ Below I have listed the main assumptions that will guide us throughout the rest 
 ## Naive approach - or how not to write tests
 
 As I mentioned earlier, tests should be a living documentation of business requirements. It is typical of each
-documentation that you have to read and understand it first. It's easy to guess that this shouldn't be too much of a
+documentation that you have to read and understand it first. It’s easy to guess that this shouldn’t be too much of a
 problem for a potentially new person on the team.
 
-Let's take a closer look at `Scenario 1.1`, at the very beginning of our article, implemented in the form of an
+Let’s take a closer look at `Scenario 1.1`, at the very beginning of our article, implemented in the form of an
 acceptance test. This is of course sample code that could be created in projects where no special attention is paid to
 the quality of the provided test code. I would not recommend this type of testing.
 
 ```groovy
- def "shouldn't charge for delivery when the client has a VIP status"() {
+ def "shouldn’t charge for delivery when the client has a VIP status"() {
     given:
         def body = """
           {
@@ -209,7 +209,7 @@ final OrderDataSnapshot UNPAID_ORDER_EUR_40 = orderFactory.create(ORDER_ID, CLIE
 final ClientReputation VIP = ClientReputation.vip(CLIENT_ID)
 final PayOrderCommand PAY_FOR_ORDER_EUR_40 = new PayOrderCommand(ORDER_ID, EUR_40)
 
-def "shouldn't charge for delivery when the client has a VIP status"() {
+def "shouldn’t charge for delivery when the client has a VIP status"() {
     given:
         orderRepository.findBy(ORDER_ID) >> Optional.of(UNPAID_ORDER_EUR_40)
 
@@ -263,7 +263,7 @@ In the next section, I will focus on eliminating these shortcomings with a few s
 
 ## Fixing the state of affairs
 
-Let's look at the first test again, which was presented in the previous section “Naive Approach”. It is not too hard to
+Let’s look at the first test again, which was presented in the previous section “Naive Approach”. It is not too hard to
 notice that the vocabulary here resembles a more natural language, used by domain experts who do not use purely
 technical terms.
 
@@ -276,7 +276,7 @@ class OrderPaymentAcceptanceSpec extends BaseIntegrationTest implements
     OrderPaymentAbility,
     FreeMusicTrackSenderAbility {
 
-    def "shouldn't charge for delivery when the client has a VIP status"() {
+    def "shouldn’t charge for delivery when the client has a VIP status"() {
         given:
             thereIs(anUnpaidOrder())
 
@@ -389,7 +389,7 @@ scenario. As a result, with this approach, we can expand small blocks more and m
 Now, it is easy to imagine another test that needs the same ability or skill, by which we can get rid of duplicate code
 between different classes of tests.
 
-Let's analyse an example implementation of a trait named: `CreateOrderAbility`
+Let’s analyse an example implementation of a trait named: `CreateOrderAbility`
 
 ```groovy
 trait CreateOrderAbility implements MakeRequestAbility {
@@ -419,7 +419,7 @@ This simple procedure makes our code more expressive, making it look closer to t
 requirements `Scenario 1.1`.
 
 ```groovy
-  def "shouldn't charge for delivery when the client has a VIP status"() {
+  def "shouldn’t charge for delivery when the client has a VIP status"() {
     given:
         thereIs(anUnpaidOrder()) // -> there is an unpaid order
         // some code omitted
@@ -443,7 +443,7 @@ trait OrderAbility {
 And this time we read the beginning of the test identically:
 
 ```groovy
-def "shouldn't charge for delivery when the client has a VIP status"() {
+def "shouldn’t charge for delivery when the client has a VIP status"() {
     given:
         thereIs(anUnpaidOrder()) // -> there is an unpaid order
         // some code omitted
