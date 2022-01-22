@@ -236,7 +236,7 @@ In this case, it may seem that test is much better, because it is simpler and ea
 analysis it turns out that it still does not meet the expected requirements from the “How can we test such
 code?” section, because it:
 
-* uses concepts such as repository, provider, event publisher, handler, which were not mentioned in the written business
+* it uses concepts such as repository, provider, event publisher, handler, which were not mentioned in the written business
   scenarios - these are technical implementation details;
 * all the variables used are within the specification, which in the case of a multitude of tests may constitute
   additional complexity in their maintenance. Besides, it is not difficult to make a mistake here, e.g. by introducing a
