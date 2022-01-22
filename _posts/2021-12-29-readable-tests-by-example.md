@@ -234,7 +234,7 @@ def "shouldn’t charge for delivery when the client has a VIP status"() {
 
 In this case, it may seem that test is much better, because it is simpler and easier to read, but with a more in-depth
 analysis it turns out that it still does not meet the expected requirements from the “How can we test such
-code?” section, because it:
+code?” section, because:
 
 * it uses concepts such as repository, provider, event publisher, handler, which were not mentioned in the written business
   scenarios - these are technical implementation details;
