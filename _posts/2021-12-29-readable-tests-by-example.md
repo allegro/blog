@@ -491,7 +491,7 @@ from the framework? Here are the arguments for:
 The last concept that I want to discuss is dedicated assertion classes. Assertion class is nothing more than a simple
 class exposing methods which allow checking the input object appropriately.
 
-In some scenarios, we would like in fact to verify the data that, for example, was eventually saved in the database.
+In some scenarios, we would actually like to verify the data that, for example, was eventually saved in the database.
 Some of our objects can be so complex that it would be inconvenient to check them directly in the test, referencing the
 nested objects or iterating the collections.
 
