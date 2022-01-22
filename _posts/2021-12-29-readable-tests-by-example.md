@@ -9,7 +9,7 @@ Have you ever worked on a project where after downloading the code from the repo
 requirements are hidden under the layer of unreadable tests? \
 Or maybe you are currently wondering how to test a new feature that you have been entrusted to implement?
 
-Nothing is more frustrating than a code that we cannot control, and over time it becomes so troublesome that no one
+Nothing is more frustrating than code that we cannot control, and over time it becomes so troublesome that no one
 bothers about it too much. People do not pay enough attention to such a project and subsequent tests, if any, duplicate
 the shortcomings of all the previous ones in the legacy.
 
