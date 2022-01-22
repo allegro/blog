@@ -331,7 +331,7 @@ class CreateOrderJsonBuilder {
 }
 ```
 
-In the above example, the `toMap` method returns a map, which can then be turned into a body of the http request in Json
+In the above example, the `toMap` method returns a map, which can then be turned into a body of the HTTP request in JSON
 format.
 
 The `Test Data Builder` can be used both for constructing input data at the controller level and at the level of unit
