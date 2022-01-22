@@ -67,7 +67,7 @@ We can distinguish the following packages:
 
 * `client`: provides information on client scoring (VIP, STANDARD)
 
-* `common`: it contains common concepts, objects that appear in other contexts, e.g. the Money class
+* `common`: contains common concepts, objects that appear in other contexts, e.g. the Money class
 
 * `delivery`: calculates the delivery price based on the defined policy
 
