@@ -412,7 +412,7 @@ trait CreateOrderAbility implements MakeRequestAbility {
 }
 ```
 
-It extends the `MakeRequestAbility` trait responsible for building and sending an http request to a given url, which is
+It extends the `MakeRequestAbility` trait responsible for building and sending an HTTP request to a given URL, which is
 already served by the Spring controller, hiding all technical aspects from the reader. Moreover, the methods it exposes
 in conjunction with the passed parameters invoking the static method of the test builder class, read almost like prose.
 This simple procedure makes our code more expressive, making it look closer to the text from the
