@@ -13,7 +13,7 @@ Nothing is more frustrating than code that we cannot control, and over time it b
 bothers about it too much. People do not pay enough attention to such a project and subsequent tests, if any, duplicate
 the shortcomings of all the previous ones in the legacy.
 
-In this article, I will show you how to disenchant this miserable state of affairs with a few simple tips and I will
+In this article I will show you how to disenchant this miserable state of affairs with a few simple tips and I will
 invite you to approach the tests in a completely different way and create their new edition.
 
 ## Hello domain!
