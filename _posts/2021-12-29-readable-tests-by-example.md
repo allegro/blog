@@ -538,7 +538,7 @@ Apart from this, such an assertion can also be used in other places than just on
 ## The end
 
 I hope that by presenting the above example I have managed to show you how to use simple concepts to write or improve
-tests to be more legible. Consequently, they become a living documentation of our code, which undoubtedly is a great
+tests to be more readable. Consequently, they become a living documentation of our code, which undoubtedly is a great
 added value to the project that we work on.
 
 However, if you are wondering whether it is always worth investing time in writing tests as suggested in this article,
