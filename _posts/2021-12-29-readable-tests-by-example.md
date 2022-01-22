@@ -190,7 +190,7 @@ of the ‘given’/‘when’/’then’ blocks, etc. could be extracted by the 
 procedure may result in some improvement of the code quality, but nevertheless such an approach still has many
 drawbacks:
 
-* the test class still contains a code related to the technical implementation;
+* the test class still contains code related to the technical implementation;
 * if another test class uses a similar subset of functionalities, then sooner or later, there will be a need to copy
   such a method;
 * what if I would like to change, for example, the library for mocking calls to another type of library?
