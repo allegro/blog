@@ -106,7 +106,7 @@ documentation that you have to read and understand it first. It's easy to guess 
 problem for a potentially new person on the team.
 
 Let's take a closer look at `Scenario 1.1`, at the very beginning of our article, implemented in the form of an
-acceptance test. This is of course a sample code that could be created in projects where no special attention is paid to
+acceptance test. This is of course sample code that could be created in projects where no special attention is paid to
 the quality of the provided test code. I would not recommend this type of testing.
 
 ```groovy
