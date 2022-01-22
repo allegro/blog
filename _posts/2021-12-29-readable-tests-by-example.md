@@ -477,7 +477,7 @@ trait OrderPaymentAbility implements MakeRequestAbility {
 The question is why we should make so much effort in creating our own solutions, and not use ready-made solutions directly
 from the framework? Here are the arguments for:
 
-* reusability - we can use once written ability in many places,
+* reusability - we can use an ability written once in many places,
 * extensibility - in the case of changing the library, which, for example, is used to mock other services, it is enough
   to make changes in one place,
 * enriching the test with the language specific to our domain,
