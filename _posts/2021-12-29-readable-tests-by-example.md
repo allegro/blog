@@ -248,8 +248,8 @@ I have used two above examples of tests (acceptance and unit), to quickly highli
 has adopted, even though the business requirement was not too complicated. In summary, in each of the tests we have had
 to take extra care of:
 
-* manually creating objects using a constructor is not comfortable and additionally, with the large number of
-  parameters, difficult to read; this also makes the tests messy and hard to maintain because changing the constructor
+* manually creating objects using a constructor. This is not comfortable and additionally, with the large number of
+  parameters, difficult to read; it also makes the tests messy and hard to maintain because changing the constructor
   makes them very fragile;
 * creating body http requests using text blocks, which in the case of larger objects leads to the creation of structures
   occupying a large part of the specification;
