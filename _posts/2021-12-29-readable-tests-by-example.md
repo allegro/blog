@@ -244,7 +244,7 @@ code?” section, because it:
 * it is not easy to add further tests outside the specification that would need similar functionality - unfortunately, it
   will require multiple repetition of fragments of the code.
 
-I have used two above examples of tests (acceptance and unit), to quickly highlight how many flaws the naive solution
+I have used the two examples of tests above to quickly highlight how many flaws the naive solution
 has adopted, even though the business requirement was not too complicated. In summary, in each of the tests we have had
 to take extra care of:
 
