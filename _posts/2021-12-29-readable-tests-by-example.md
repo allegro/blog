@@ -474,7 +474,7 @@ trait OrderPaymentAbility implements MakeRequestAbility {
 }
 ```
 
-The question is why we should make so much effort in creating own solutions, and not use ready-made solutions directly
+The question is why we should make so much effort in creating our own solutions, and not use ready-made solutions directly
 from the framework? Here are the arguments for:
 
 * reusability - we can use once written ability in many places,
