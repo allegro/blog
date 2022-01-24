@@ -99,7 +99,7 @@ Below I have listed the main assumptions that will guide us throughout the rest 
 * Adding a new test to the existing scenario should not be difficult, and should be based on the existing ready-to-use
   concepts which can also be easily modified.
 
-## Naive approach - or how not to write tests
+## Naive approach — or how not to write tests
 
 As I mentioned earlier, tests should be a living documentation of business requirements. It is typical of each
 documentation that you have to read and understand it first. It’s easy to guess that this shouldn’t be too much of a
@@ -237,11 +237,11 @@ analysis it turns out that it still does not meet the expected requirements from
 code?” section, because:
 
 * it uses concepts such as repository, provider, event publisher, handler, which were not mentioned in the written business
-  scenarios - these are technical implementation details;
+  scenarios — these are technical implementation details;
 * all the variables used are within the specification, which in the case of a multitude of tests may constitute
   additional complexity in their maintenance. Besides, it is not difficult to make a mistake here, e.g. by introducing a
   new variable that is already defined somewhere under a different name;
-* it is not easy to add further tests outside the specification that would need similar functionality - unfortunately, it
+* it is not easy to add further tests outside the specification that would need similar functionality — unfortunately, it
   will require multiple repetition of fragments of the code.
 
 I have used the two examples of tests above to quickly highlight how many flaws the naive solution
@@ -477,8 +477,8 @@ trait OrderPaymentAbility implements MakeRequestAbility {
 The question is why we should make so much effort in creating our own solutions, and not use ready-made ones directly
 from the framework? Here are the arguments for:
 
-* reusability - we can use an ability written once in many places,
-* extensibility - in the case of changing the library, which, for example, is used to mock other services, it is enough
+* reusability — we can use an ability written once in many places,
+* extensibility — in the case of changing the library, which, for example, is used to mock other services, it is enough
   to make changes in one place,
 * enriching the test with the language specific to our domain,
 * we are not limited by the capabilities of a given framework, e.g. Spock doesn’t allow you to mock final Java classes,
