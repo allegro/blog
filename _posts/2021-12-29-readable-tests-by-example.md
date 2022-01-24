@@ -251,7 +251,7 @@ to take extra care of:
 * manually creating objects using a constructor. This is not comfortable and additionally, with the large number of
   parameters, difficult to read; it also makes the tests messy and hard to maintain because changing the constructor
   makes them very fragile;
-* creating body http requests using text blocks, which in the case of larger objects leads to the creation of structures
+* creating body HTTP requests using text blocks, which in the case of larger objects leads to the creation of structures
   occupying a large part of the specification;
 * mocking or stubbing external dependencies using mechanisms from the framework as Stub or Mock, which can be
   comfortable but does not necessarily improve the readability of the code and its further development;
