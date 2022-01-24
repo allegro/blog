@@ -2,7 +2,7 @@
 layout: post
 title: "Make your tests readable by example"
 author: [kamil.jedrzejuk]
-tags: [tech, backend, testing, java, groovy, tdd, bdd, ddd]
+tags: [tech, backend, testing, tdd, bdd, java, groovy, ddd]
 ---
 
 Have you ever worked on a project where after downloading the code from the repository you start to wonder what business
@@ -13,8 +13,8 @@ Nothing is more frustrating than code that we cannot control, and over time it b
 bothers about it too much. People do not pay enough attention to such a project and subsequent tests, if any, duplicate
 the shortcomings of all the previous ones in the legacy.
 
-In this article I will show you how to disenchant this miserable state of affairs with a few simple tips and I will
-invite you to approach the tests in a completely different way and create their new edition.
+In this article I will show you how to disenchant this miserable state of affairs with a few simple tips. I invite
+you to approach the tests in a completely different way to create their new version.
 
 ## Hello domain!
 
