@@ -17,7 +17,7 @@ Everyone repeats like a mantra that tests are an indispensable element of develo
 We have a fairly large number of frameworks that are used to write tests in JavaScript. We can list tools like:
  [MochaJS](https://mochajs.org/), [Jest](https://jestjs.io/), [Karma](https://karma-runner.github.io),
   [Jasmine](https://jasmine.github.io/), [Cypress](https://www.cypress.io/). However, in this article, we will pay
-   special attention and compare two testing javascript libraries: [Enzyme.js](https://enzymejs.github.io/enzyme/)
+   special attention and compare two javascript testing libraries: [Enzyme.js](https://enzymejs.github.io/enzyme/)
     and [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) (often called RTL).
 
 ![npm trends screen](/img/articles/2021-12-13-why-we-should-rewrite-enzymejs-to-rtl-and-how-to-do-that/01.png)
@@ -30,7 +30,7 @@ From the Enzyme documentation we can read a short description:
 > You can also manipulate, traverse, and in some ways simulate runtime given the output.
 
 Enzyme was released in **2015 by AirBnB**. And let’s face it, Enzyme has gained a lot of popularity. Last year, the
- library was moved from AirBnB space to external github space as a separate independent organization. This step was
+ library was moved from AirBnB space to external Github space as a separate independent organization. This step was
   intended to encourage the community to further develop the library.
 
 ![commit diffrences](/img/articles/2021-12-13-why-we-should-rewrite-enzymejs-to-rtl-and-how-to-do-that/02.png)
@@ -71,8 +71,8 @@ Interesting facts:
 - Jest documentation links to the RTL website in the
 [*Testing Web Framework*](https://jestjs.io/docs/testing-frameworks#react) section as well as React documentation in
  the [*Recommended Tools*](https://reactjs.org/docs/testing.html#tools).
-- Testing-library allows us to test with the same API not only React but also others frameworks like Vue
- (`testing-library/vue`), Angular (`testing-library/angular`), Svelte (`testing-library/svelte`) etc. This could be
+- Testing library allows us to test with the same API not only React but also other frameworks like Vue
+ (`testing-library/vue`), Angular (`testing-library/angular`), Svelte (`testing-library/svelte`) etc. This could bring
   some advantage for people working on several projects in different technologies. There is also
    `dom-testing-library` which allows writing tests without any framework!
 
@@ -82,8 +82,8 @@ The main differences between the two libraries that I can notice:
 1. **Different approaches to testing**
 
    What distinguishes RTL is that we find elements by their labels or texts, almost like a user would. The point is to
-    replicate and simulate the user’s behavior. RTL tries to render components to the DOM and doesn’t give us access
-     directly to the internal component. While Enzyme uses shallow rendering (or sometimes deep rendering) and
+    replicate and simulate the user’s behavior. RTL renders components to the DOM and doesn’t give us access
+     directly to the component's internals. While Enzyme uses shallow rendering (or sometimes deep rendering) and
       encourages us to test the components instance using its state and props. Enzyme also allows full rendering of DOM
        but it is not the basic assumption of the library’s operation.
 2. **Age**
@@ -297,22 +297,22 @@ My team is currently working on the development of [Allegro Ads](https://allegro
     accurately reach people potentially interested in buying, thereby generating profits for sellers.
 
 The main technology stack is standard and still pretty cool. The core of the project is written in React, and
- significant parts have been rewritten to Typescript. For testing purposes, we use Jest. In my opinion this is a very
-  good and stable tool, easy to work with. It has quite a low entry threshold, even if someone hasn’t had too much
+ significant parts have been rewritten to TypeScript. For testing purposes, we use Jest. In my opinion this is a very
+  good and stable tool, easy to work with. It has quite a low entry barrier, even if someone hasn’t had too much
    experience with tests before. The main advantages of Jest for me are minimal configuration and quite good
-    documentation. But for testing react components we currently have two libraries and I’ll explain why in a moment.
+    documentation. But for testing React components we currently have two libraries and I’ll explain why in a moment.
 
 The 2.0 version of platform Allegro Ads was released about 6 years ago. A year ago
- the team added a React Testing Library to `package.json`. We have both packages so far. **Recently we officially
-  decided to slowly rewrite the Enzyme library for good.** We added the rule to our Declaration of Code Convention
-   that the new components are tested just in RTL, the old ones will be rewritten during the development of
-    specific parts.
+ the team added React Testing Library to `package.json`. We have both packages so far. **Recently we officially
+  decided to slowly rewrite the Enzyme tests and get rid of the library for good.** We added the rule to our
+   Declaration of Code Convention that the new components are tested just in RTL, the old ones will be rewritten
+    during the development of specific parts.
 
 ## Migration effects so far
 
 Currently we have got **592 test files** (counting after the file names with “spec” phrase). In these files we can also
- find **709 of unique “describe”** usage for wrapping a series of tests, and **1796 unique test cases**. Half of tests
-  are written only in Jest, but a significant amount of tests for better testing use extra libraries.
+ find **709 of unique “describe”** usage, and **1796 unique test cases**. Half of tests
+  are written only in Jest, but a significant number of tests for better testing use extra libraries.
 
 React Testing Library is used in **131 files**, which is around **22% of all test files**.
 Enzyme tests are in **137 files** which is around **23%**.
