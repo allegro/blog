@@ -8,11 +8,11 @@ tags: [tech, kotlin, android, ui-testing, allegro-pay]
 Automatic UI tests are designed to check whether the user interface is working properly.
 For example they verify if users see an appropriate screen with correct data and won’t encounter
 an unexpected behavior. These tests, apart from checking the correctness of displayed screen,
-should also check whether the user sees the appropriate screen after clicking the button. They also
-allow you to control the behavior of the application for a given business process. At Allegro Pay,
-we have several critical processes, such as onboarding a new customer or repayment of liabilities.
-Until now, these processes have been tested manually. Automating these tests will allow us to save
-the tester’s time and eliminate possible human errors.
+should also check whether the user sees the appropriate screen after clicking the button. They will
+allow to check the business process in a controlled manner. At Allegro Pay, we have several critical
+processes, such as onboarding a new customer or repayment of liabilities. Until now, these processes
+have been tested manually. Automating these tests will allow us to save the tester’s time and
+eliminate possible human errors.
 
 Tests can run the entire application or only a part of it. In our case they run only a part of
 the application, namely the Allegro Pay module. This solution is associated with certain changes
@@ -43,10 +43,16 @@ and the PageObject pattern.
 
 Wiremock is a tool that allows you to mock the response for a given endpoint with a declared data example.
 And this is one of the most important functionalities of this tool. In addition, it can also record requests,
-map responses, edit response data, and act as a transparent proxy. Thanks to this, it is possible to obtain
-a stable and reliable answer each time, the data of which will be the same. Here is an example stub:
+map responses, edit response data, and act as a transparent proxy. This solution supports the testing of edge
+cases and different response statuses that are difficult or impossible to automatically simulate in a real test
+environment. Another big reason for using this tool is stability. The test environment that the tests would
+connect to doesn't always work. Running tests in such a situation would not bring any benefits. This would be
+wasting resources and generating costs. Thanks to this, it is possible to obtain the same answer each time. Here is
+an example stub:
 
 ```kotlin
+open class Stub(val mappingBuilder: MappingBuilder)
+
 internal object GreetingStub : Stub(
    get(
        urlEqualTo("/allegropay/greeting")
@@ -142,18 +148,19 @@ the toolbar will be checked and you will click on the option that will take you 
 The toolbar title will also be checked in the overpayment screen and the back arrow will be clicked. The
 application will return to the options screen, the title of the toolbar will be checked and the back arrow
 will be clicked. The last screen that will be checked will be the dashboard screen. And then the test will
-pass.
-The class fragment presented below has the method that was used in the previous test. This means that the
-method can be used for other tests without unnecessarily duplicating it.
+pass. The class fragment presented below has the method that was used in the previous test. This method allows
+for creates settings page object and run check on toolbar page and overpayment item page. Toolbar page object
+allows for check name by string resource defined in `strings.xml` file. Whereas `overpaymentItemPage()` method
+searches for item on the first position on the recycler view. After that it clicks on overpayment option on screen.
+This means that the methods can be used for other tests without unnecessarily duplicating it.
 
 ```kotlin
-internal class OverpaymentItemPage() {
-
-   fun tapOnOverpayment() = apply {
-       Espresso.onView(withId(R.id.overpayment))
-           .perform(ViewActions.click())
+inSettings()
+   .toolbarPage { toolbar ->
+       toolbar.checkName(SETTINGS_TOOLBAR_NAME_RES_ID)
+   }.overpaymentItemPage(position = 1) { item ->
+       item.tapOnOverpayment()
    }
-}
 ```
 
 Our test team proposed to provide test scenarios that should be implemented in addition to the so-called
