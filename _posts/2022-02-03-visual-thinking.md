@@ -10,7 +10,7 @@ We use written (source code) language to express our intentions in a machine-rea
 communicate with other people. We pride ourselves as ones choosing programming language optimized to the task at hand.
 Do we use the most optimal way to express our ideas?
 
-### Spoken planning
+## Spoken planning
 
 — Josh, could you summarize what we are going to implement?
 
@@ -32,7 +32,7 @@ cart service to call us and we will check the transactions store for recent orde
 discussion.<br/>
 — Guys, checkout stays the same. Cart is providing everything the checkout requires.
 
-### Retrospective
+## Retrospective
 
 Let’s stop here for a moment. Have you ever been in a situation, when you were forced to do two things at the same time?
 For example listening to what is being said and trying to actively participate in the discussion regarding a not exactly
@@ -41,7 +41,7 @@ demanding. Usually after a hourly session I was exhausted and in need of a break
 significant amount of writing to capture everything that was said - just to have an option of referring back to this
 during the sprint. What if this session looked differently?
 
-### Visual planning
+## Visual planning
 
 “Josh, could you summarize what we are going to implement?”.
 
@@ -51,7 +51,7 @@ That was a bit unexpected, however it was a no-brainer.
 cart service to display reduced price (if applicable). Also the “My Account” page is going to call us to retrieve the
 current rebate for the logged user”.
 
-### The difference
+## The difference
 
 What is the main difference between the first scenario and the second one? To me it is about common model. In the first
 case I am building an individual model of a change. I need significant amount of energy to translate speech to my model
@@ -73,12 +73,12 @@ describe it using words.
 
 ![planning tasks](/img/articles/2022-02-03-visual-thinking/planning_tasks.png)
 
-### The background
+## The background
 
 Why switching to a drawing board has such an effect? To answer this question we have to check some facts.
 
-On a daily basis a spoken (or written) language is our standard way of communication. It took us some time to speak and
-before that we had been able to:
+On a daily basis a spoken (or written) language is our standard way of communication. Children, however, need some time
+to develop such skill. Earlier they are able to:
 
 * register movement (at 2 months age)
 * try to grab things by hand (5 months)
@@ -109,19 +109,26 @@ We talk about ideas in the same way as about any space-related topic!
 
 How could it happen? Scientists have been trying to understand functions of different parts of the brain for some time
 already. In the seventies they have identified so-called **place cells** - neurons that are activated at specific
-location. It took some time to identify another layer of neurons on top of these: **grid cells** working as our inner
+location. It took some time to identify another layer of neurons on top of these: **grid cells**, working as our inner
 GPS, activated when switching locations. The latter discovery was
 awarded [Nobel Prize in 2014](https://www.nobelprize.org/prizes/medicine/2014/press-release/).
 
-While performing tests on human beings it turned out that place cells are activated not only in specific locations. They
-are also activated by events, people, ideas. The grid cells are activated by thinking about consequences of events, by
+Tests on human beings resulted in another finding: place cells are activated not only in specific locations. They are
+also activated by events, people, ideas. The grid cells are activated by thinking about consequences of events, by
 social interactions and by connecting ideas together. We are using the same brain structures for spatial orientation,
-for ideas and for social interactions.
+for ideas and for social interactions. This is the reason why Barbara Tversky issued an audacious thesis that "all
+thoughts begins as spatial thoughts".
 
-TBD map and visualization as map We are using [maps](https://en.wikipedia.org/wiki/Map) to communicate space concept.
+### Map elements
 
-### TBD map elements
+Nowadays we have a GPS device in almost any smartphone, so it is rather difficult to get lost. Basic GPS information -
+current coordinate - is not very useful by itself. It is much more convenient to display our current location over a map
+layer. What is a map? According to [wikipedia](https://en.wikipedia.org/wiki/Map) it is "[..] a symbolic depiction
+emphasizing relationships between elements of some space [..]".
 
-### TBD Arrow as the special element
+As our ideas - and imaginary concepts like services - are treated by our brains as spatial elements we simply reused
+our known concept of space visualization to present imagined beings and relations among them.
+
+### Arrows
 
 ### TBD unstructured drawing
