@@ -49,8 +49,16 @@ After paying for the order, no modifications can be made.
 ```
 
 Such assumptions can be translated into one of the BDD-style scenarios:
-<img alt="API package structure" src="/img/articles/2021-12-29-readable-tests-by-example/1.png" title="Scenario 1.1">
-Scenario 1.1
+
+```gherkin
+    Scenario: 1.1 (The VIP client pays for the order)
+        Given there is an unpaid order
+        And the client is a VIP
+        When the client makes the payment
+        Then payment succeeded
+        And the client did not paid for delivery
+        And free music track was sent to the client
+```
 
 ### Architecture
 
