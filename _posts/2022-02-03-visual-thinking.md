@@ -121,14 +121,27 @@ thoughts begins as spatial thoughts".
 
 ### Map elements
 
-Nowadays we have a GPS device in almost any smartphone, so it is rather difficult to get lost. Basic GPS information -
+Nowadays we have a GPS sensor in almost any smartphone, so it is rather difficult to get lost. Basic GPS information -
 current coordinate - is not very useful by itself. It is much more convenient to display our current location over a map
 layer. What is a map? According to [wikipedia](https://en.wikipedia.org/wiki/Map) it is "[..] a symbolic depiction
 emphasizing relationships between elements of some space [..]".
 
-As our ideas - and imaginary concepts like services - are treated by our brains as spatial elements we simply reused
-our known concept of space visualization to present imagined beings and relations among them.
+As our ideas - and imaginary concepts like services - are treated by our brains as spatial elements we simply reused our
+known concept of space visualization to present imagined beings and relations among them.
 
 ### Arrows
+
+Maps consist of several symbols and one of them is usually not present at all (I think that miliary maps can be safely
+ruled out from our discussion). This element is an arrow - and it is a significant element of our planning diagrams.
+According to Barbara Tversky in the already
+mentioned ["Mind in motion" lecture](https://www.youtube.com/watch?v=gmc4wEL2aPQ)
+arrows as map elements started to appear in the 20th century. Before that more human-like symbols had been used to
+indicate directions, like symbols of feet. Addition of arrows changes our perception of diagrams: without arrows it is
+usually a structural drawing, that requires additional labels to understand it. Arrows transform such a structural
+diagram into functional diagram: we are able to trace arrows to their origin, we see how things are connected and how
+they cooperate. Check example below - left-hand side version is static, only describes elements and the right-hand side
+version shows movement of particular elements without using a single word.
+
+![static and dynamic clock](/img/articles/2022-02-03-visual-thinking/clock.png)
 
 ### TBD unstructured drawing
