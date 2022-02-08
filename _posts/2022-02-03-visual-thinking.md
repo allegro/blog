@@ -144,4 +144,18 @@ version shows movement of particular elements without using a single word.
 
 ![static and dynamic clock](/img/articles/2022-02-03-visual-thinking/clock.png)
 
-### TBD unstructured drawing
+## Messy lines
+
+All these well-known elements are our means of communication with other people, or even ourselves, in a different point
+in time. Sometimes we draw to discover, we sketch shapes to find an inspiration, an idea. This seems to be important in
+a different creative profession: architecture. Architects discover ideas in sketches. Ambiguity of non-obvious shapes
+promotes creativity. It is so important in this profession that sketches from private collections are sold as books. One
+of such books
+is [Sou Fujimoto sketchbook](https://www.designboom.com/architecture/sou-fujimoto-sketchbook-lars-muller-publishers/).
+One quote from it, found
+at ["Drawing for Discovery" post](https://colorandstory.medium.com/drawing-for-discovery-7e47ae6943da)
+is something I would like to leave you with:
+
+> The lines are never certain, never knowing where the next will lead to. Never knowing, but continuing to draw.
+> And for this very reason, there is always an opportunity for something new. From the infinite dialogues of the brain,
+> eyes, hand, paper, and space, new architecture is born.
