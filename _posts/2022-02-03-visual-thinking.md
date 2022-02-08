@@ -1,7 +1,7 @@
 ---
 layout: post
-
-title: “Visual thinking” author: [michal.kowalcze]
+title: "Visual thinking"
+author: [michal.kowalcze]
 tags: [tech, communication, visualization, planning, creativity]
 ---
 
