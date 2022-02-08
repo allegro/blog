@@ -532,12 +532,12 @@ nested objects or iterating the collections.
         assertThatThereIsOrderWithId(ORDER_ID)
             .hasClientId(CLIENT_ID)
             .hasItemWithIdThat(CZESLAW_NIEMEN_ALBUM_ID)
-            .hasUnitPrice(euro(35.00))
-            .hasQuantity(20)
+                .hasUnitPrice(euro(35.00))
+                .hasQuantity(20)
             .and()
             .hasItemWithIdThat(BOHEMIAN_RHAPSODY_ALBUM_ID)
-            .hasUnitPrice(euro(55.00))
-            .hasQuantity(1)
+                .hasUnitPrice(euro(55.00))
+                .hasQuantity(1)
 }
 ```
 
