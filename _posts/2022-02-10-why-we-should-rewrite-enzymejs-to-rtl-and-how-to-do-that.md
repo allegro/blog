@@ -20,7 +20,7 @@ We have a fairly large number of frameworks that are used to write tests in Java
 special attention and compare two javascript testing libraries: [Enzyme.js](https://enzymejs.github.io/enzyme/)
 and [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) (often called RTL).
 
-![npm trends screen](/img/articles/2021-12-13-why-we-should-rewrite-enzymejs-to-rtl-and-how-to-do-that/01.png)
+![npm trends screen](/img/articles/2022-02-10-why-we-should-rewrite-enzymejs-to-rtl-and-how-to-do-that/01.png)
 *Source [npm trends](https://www.npmtrends.com/@testing-library/react-vs-enzyme)*
 
 ## EnzymeJS
@@ -33,16 +33,16 @@ Enzyme was released in **2015 by AirBnB**. And let’s face it, Enzyme has gaine
 library was moved from AirBnB space to external Github space as a separate independent organization. This step was
 intended to encourage the community to further develop the library.
 
-![commit diffrences](/img/articles/2021-12-13-why-we-should-rewrite-enzymejs-to-rtl-and-how-to-do-that/02.png)
+![commit diffrences](/img/articles/2022-02-10-why-we-should-rewrite-enzymejs-to-rtl-and-how-to-do-that/02.png)
 
-![commit diffrences](/img/articles/2021-12-13-why-we-should-rewrite-enzymejs-to-rtl-and-how-to-do-that/03.png)
+![commit diffrences](/img/articles/2022-02-10-why-we-should-rewrite-enzymejs-to-rtl-and-how-to-do-that/03.png)
 *Source [Enzyme github](https://github.com/enzymejs/enzyme/commit/b06750bb5f6248ceb9c3fae903a71d0747a420d6)*
 
 When it comes to raw data, the latest version of **Enzyme 3.11.0** has a bundle size of **463.2kB minified (127.5 kB
 minified + gzipped)** and was released on **20 December 2019**. Currently it has 258
 [open issues](https://github.com/enzymejs/enzyme/issues) and 31 open PR’s.
 
-![bundlephobia Enzyme sreen](/img/articles/2021-12-13-why-we-should-rewrite-enzymejs-to-rtl-and-how-to-do-that/04.png)
+![bundlephobia Enzyme sreen](/img/articles/2022-02-10-why-we-should-rewrite-enzymejs-to-rtl-and-how-to-do-that/04.png)
 *Source [Bundle Phobia](https://bundlephobia.com/package/enzyme@3.11.0)*
 
 Interesting fact:
@@ -63,7 +63,7 @@ Released in **April 2018 by Kent C. Dodds**. The latest stable version **12.1.2*
 minified (47.3kB minified + gzipped)** . The RTL repository has 26
 [open issues](https://github.com/enzymejs/enzyme/issues) and 2 open PR’s.
 
-![bundlephobia RTL screen](/img/articles/2021-12-13-why-we-should-rewrite-enzymejs-to-rtl-and-how-to-do-that/05.png)
+![bundlephobia RTL screen](/img/articles/2022-02-10-why-we-should-rewrite-enzymejs-to-rtl-and-how-to-do-that/05.png)
 *Source [Bundle Phobia](https://bundlephobia.com/package/@testing-library/react@12.1.2)*
 
 Interesting facts:
@@ -95,7 +95,7 @@ Enzyme is 6 years old, RTL is 3 years old
 Below we can see a comparison of the number of downloads of both libraries in the last 5 years. Between August and
 September 2020, the number of RTL downloads exceeded the number of Enzyme downloads.
 
-![Enzyme and RTL dowloands graph](/img/articles/2021-12-13-why-we-should-rewrite-enzymejs-to-rtl-and-how-to-do-that/06.png)
+![Enzyme and RTL dowloands graph](/img/articles/2022-02-10-why-we-should-rewrite-enzymejs-to-rtl-and-how-to-do-that/06.png)
 *Source [npm trends](https://www.npmtrends.com/@testing-library/react-vs-enzyme)*
 
 In the case of RTL, it is clear that the number of downloads is still growing strongly. On the other hand, it can be
