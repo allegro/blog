@@ -602,8 +602,8 @@ kamil.pyc:
 maciej.piotrowski:
     name: Maciej Piotrowski
     bio: Maciej is a passionate iOS developer that pays much attention to details and code quality. He likes improving things, always looking for better solutions because he’s amazed that in programming world issues can be solved in 100s of ways.
-    twitter: paciej00
-    github: paciej00
+    twitter: macpiotrowski89
+    github: maciejpiotrowski89
 
 tymon.felski:
     name: Tymon Felski
@@ -702,9 +702,18 @@ daniel.faderski:
     name: Daniel Faderski
     bio: Software engineer interested in distributed systems. Java & Python lover.
 
+tomasz.szewczyk:
+    name: Tomasz Szewczyk
+    bio: JVM software developer with interest in all kind of programming languages. Experienced in electronics, embedded C, Python, Java, Kotlin and JavaScript.
+    github: tomaszszewczyk
+
 piotr.prusinski:
     name: Piotr Prusiński
     bio: I’m a Software engineer who likes to develop in every direction. I’m a fan of treating soft skills on par with hard skills.
+    
+magdalena.mazur:
+    name: Magdalena Mazur
+    bio: Frontend Software Engineer, loves to resolve problems. At Allegro working on an advertising tool - Allegro Ads, and all the adverts that you can see on the platform. ;-)
 
 kamil.jedrzejuk:
     name: Kamil Jędrzejuk
