@@ -88,8 +88,9 @@ thread, what significantly speeds up and facilitates writing tests. An important
 this tool is that **_system animations and don’t keep activities function cannot be enabled on the test device_**.
 ![Espresso cheat sheet](/img/articles/2022-02-01-android-ui-testing-in-allegro-pa-organization/espresso_cheatsheet.png)
 
-The last thing is the PageObject pattern which allows you to store the interactions and assertions in
-one place in the context of each screen. According to Martin Fowler (if you haven't read his books, you should!):
+The last thing is the <a href="https://martinfowler.com/bliki/PageObject.html" target="_blank">PageObject</a>
+pattern which allows you to store the interactions and assertions in one place in the context of each screen.
+According to Martin Fowler (if you haven't read his books, you should!):
 >The basic rule of thumb for a page object is that it should allow a software client to do anything and
 see anything that a human can.
 
