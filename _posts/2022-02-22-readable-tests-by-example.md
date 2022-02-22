@@ -67,7 +67,7 @@ a modular monolith written based on the architectural style
 of [Ports & Adapter](https://blog.allegro.tech/2020/05/hexagonal-architecture-by-example.html), as well as
 the [Domain Driven Design](https://www.dddcommunity.org/learning-ddd/what_is_ddd/) approach.
 
-<img alt="API package structure" src="/img/articles/2021-12-29-readable-tests-by-example/1.png"/>
+<img alt="API package structure" src="/img/articles/2022-02-22-readable-tests-by-example/1.png"/>
 
 We can distinguish the following packages:
 
