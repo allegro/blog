@@ -56,7 +56,7 @@ Such assumptions can be translated into one of the BDD-style scenarios:
    And the client is a VIP
    When the client makes the payment
    Then payment succeeded
-   And the client did not paid for delivery
+   And the client did not pay for delivery
    And free music track was sent to the client
 ```
 
@@ -298,7 +298,7 @@ class OrderPaymentAcceptanceSpec extends BaseIntegrationTest implements
             assertThat(payment).succeeded()
 
         and:
-            assertThatClientDidNotPaidForDelivery()
+            assertThatClientDidNotPayForDelivery()
 
         and:
             assertThatFreeMusicTrackWasSentToTheClient()
@@ -472,7 +472,7 @@ trait OrderPaymentAbility implements MakeRequestAbility {
     private PollingConditions pollingConditions = new PollingConditions(timeout: 5)
 
     // some code omitted
-    void assertThatClientDidNotPaidForDelivery(def anEvent = anOrderPaidEvent().anOrderPaidEventWithFreeDelivery()) {
+    void assertThatClientDidNotPayForDelivery(def anEvent = anOrderPaidEvent().anOrderPaidEventWithFreeDelivery()) {
         pollingConditions.eventually {
             Mockito.verify(domainEventPublisher, times(1))
                 .publish(anEventBuilder.build())
