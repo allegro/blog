@@ -4,9 +4,7 @@ title: "The War in Ukraine"
 author: [michal.kosmulski]
 tags: [tech, "soft skills", helping]
 ---
-The attack on Ukraine has shocked the entire world, but in Poland it is perceived as especially poignant.
-Not only is Ukraine our direct neighbor (as are Russia and Belarus), but Poland’s difficult history allows us to
-sympathize with the Ukrainians even more. Many live in Poland, so it’s affecting people we know personally.
+The attack on Ukraine has shocked the entire world, but in Poland it is making especially big waves. Not just due to geographical proximity - Ukrainians are one of the largest minorities in Poland and simply put it is affecting people we know personally.
 
 While the fighting continues, here’s what [Allegro](https://allegro.tech) is doing, and what you can do, too, to help
 humanitarian efforts.
