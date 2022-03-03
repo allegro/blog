@@ -25,6 +25,7 @@ michal.kosmulski:
         id: 1224016
         name: Michał Kosmulski
     linkedin: kosmulski
+    role: Editor in chief
 
 bartosz.walacik:
     name: Bartosz Walacik
@@ -108,6 +109,7 @@ bartosz.galek:
     name: Bartosz Gałek
     bio: Software Developer at Allegro, engineer with devops flavor. Believes that there is always a place for improvement; likes to try new technologies and languages. Open source fan and occasional contributor.
     github: bgalek
+    role: Editor
 
 bartlomiej.ignasiak:
     name: Bartłomiej Ignasiak
@@ -669,6 +671,7 @@ mateusz.krzeszowiak:
     bio: Webperf Team member. Likes to constantly optimize and improve existing solutions. Finds it hard to stop talking about his work and sharing knowledge.
     twitter: krzksz
     github: krzksz
+    role: Editor
 
 jon.skeet:
     name: Jon Skeet
