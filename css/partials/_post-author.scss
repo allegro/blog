@@ -40,6 +40,10 @@
     font-size: 0.9em;
     text-decoration: none;
     color: #222;
+    vertical-align: top;
+    &:hover {
+        text-decoration: none;
+    }
 }
 
 .post-author h3 {
