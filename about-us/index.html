@@ -2,17 +2,21 @@
 layout: default
 title: about
 ---
-
-<section id="main-content" class="desk responsive-content">
-    <article class="post-content main-item" itemprop="articleBody">
-        <h1 class="title" style="margin: 0">About us</h1>
-        <p>This is Allegro’s public-facing tech blog. We use it to share our knowledge with the community and to tell
+<section id="main-content" class="section-blog responsive-content blue-bg">
+    <header class="main-item">
+        <h1 class="post-title">About us</h1>
+                <p>This is Allegro’s public-facing tech blog. We use it to share our knowledge with the community and to tell
             others what our work at Allegro is like.
             It is also a tool for promoting Allegro to potential candidates (PromoIT). However, we try to be objective,
             and we explicitly avoid any kind of excessive propaganda.
             We write for smart people who are good at telling genuinely interesting and useful information from
             corporate.
         </p>
+    </header>
+ </section>
+<section id="author" class="responsive-content">
+    <div class="main-item">
+    <article class="post-content" itemprop="articleBody">
         <h2>Goals:</h2>
         <ul>
             <li>Creating a technical blog valuable for the community. We focus on development and devops.</li>
@@ -23,17 +27,18 @@ title: about
             </li>
         </ul>
         <h2>Our editors:</h2>
+    </article>
         <ul class="post-author-list">
-            {%assign authors = site.data.members%}
+            {%assign authors = site.data.members | sort%}
             {% for author in authors%}
-            {%assign authorKey = author[0]%}
-            {%assign authorData = author[1]%}
-            {% if authorData.role contains "Editor" %}
-            <li  class="post-author">
-                {% include single_author.html showLinkToPost=true %}
-            </li>
-            {% endif %}
+                {%assign authorKey = author[0]%}
+                {%assign authorData = author[1]%}
+                   {% if authorData.role contains "Editor" %}
+                <li  class="post-author">
+                    {% include single_author.html showLinkToPost=true %}
+                </li>
+                {% endif %}
             {% endfor %}
         </ul>
-    </article>
+    </div>
 </section>
