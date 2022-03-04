@@ -35,7 +35,7 @@ title: about
                 {%assign authorData = author[1]%}
                    {% if authorData.role contains "Editor" %}
                 <li  class="post-author">
-                    {% include single_author.html showLinkToPost=true %}
+                    {% include single_author.html showLinkToPost=false %}
                 </li>
                 {% endif %}
             {% endfor %}
