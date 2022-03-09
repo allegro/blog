@@ -44,7 +44,7 @@ class AllegroPayTestApplication : TestApplication() {
 ## The Tool, Framework And Pattern
 Tools and frameworks used in the process of adding tests are Espresso and Wiremock Stubbing
 and the PageObject pattern.
-![Espresso and Wiremock logos](/img/articles/2022-02-01-android-ui-testing-in-allegro-pay-organization/espresso_and_wiremock.png)
+![Espresso and Wiremock logos](/img/articles/2022-03-09-android-ui-testing-in-allegro-pay-organization/espresso_and_wiremock.png)
 
 ### Wiremock
 [Wiremock](https://wiremock.org/) is a tool which allows mocking the response for
@@ -91,7 +91,7 @@ assertion of the view state. I put a cheat sheet with the most needed and most u
 assertions, etc. below. Espresso provides management of the main thread, what significantly speeds up and
 facilitates writing tests. An important consideration when using this tool is that **_system animations and
 "don’t keep activities" function cannot be enabled on the test device_**.
-![Espresso cheat sheet](/img/articles/2022-02-01-android-ui-testing-in-allegro-pay-organization/espresso_cheatsheet.png)
+![Espresso cheat sheet](/img/articles/2022-03-09-android-ui-testing-in-allegro-pay-organization/espresso_cheatsheet.png)
 
 ### PageObject Pattern
 The last thing needed to write perfect tests is the [PageObject](https://martinfowler.com/bliki/PageObject.html) pattern
@@ -180,7 +180,7 @@ of data or switching between screens. However, it should also be noted that the 
 shouldn’t be too large, because running one test usually takes a few seconds, what may cause queues in the
 test environment. Additionally, the tests need to be merged into the main branch. The 10 sample tests took
 almost 30 seconds to complete, but the entire procedure took almost a minute.
-![10 sample tests](/img/articles/2022-02-01-android-ui-testing-in-allegro-pay-organization/10_tests.png)
+![10 sample tests](/img/articles/2022-03-09-android-ui-testing-in-allegro-pay-organization/10_tests.png)
 
 ## The End
 We expect that the addition of tests will reduce the work of manual testers. Testing cases that require simulating
