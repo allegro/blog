@@ -13,7 +13,7 @@ Do we use the most optimal way to express our ideas?
 
 ### Spoken planning
 
-— Josh, could you summarize what we are going to implement?
+— Josh, could you summarize what we are going to implement, please?
 
 That was a bit unexpected. He was just trying to match what he already knew from onboarding days with what was just
 said. It was really difficult to follow team discussion at the same time. It was a standard planning session, held over
@@ -44,7 +44,7 @@ during the sprint. What if this session looked differently?
 
 ### Visual planning
 
-“Josh, could you summarize what we are going to implement?”.
+— Josh, could you summarize what we are going to implement, please?
 
 That was a bit unexpected, however, it was a no-brainer.
 ![planning services](/img/articles/2022-02-03-visual-thinking/planning_services.png)
@@ -61,7 +61,7 @@ their own with a similar amount of energy spent on synchronization.
 
 ![private models](/img/articles/2022-02-03-visual-thinking/private_models.png)
 
-In case of the second scenario the model is common. There is no need to maintain private models. It is easy to
+In the case of the second scenario, the model is shared. There is no need to maintain private models. It is easy to
 understand changed elements and to refer to discussed changes later. “A picture is worth a thousand words” after all.
 
 ![common model](/img/articles/2022-02-03-visual-thinking/common_model.png)
