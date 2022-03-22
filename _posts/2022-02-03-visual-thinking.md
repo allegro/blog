@@ -36,9 +36,9 @@ discussion.<br/>
 ### Retrospective
 
 Let’s stop here for a moment. Have you ever been in a situation, when you were forced to do two things at the same time?
-For example listening to what is being said and trying to actively participate in the discussion regarding a not exactly
-well known topic? Was it a demanding experience? I had such an opportunity and I remember these sessions as quite
-demanding. Usually after a hourly session I was exhausted and in need of a break. Not to mention that it required a
+For example, listening to what is being said and trying to actively participate in the discussion regarding a not exactly
+well-known topic? Was it a demanding experience? I had such an opportunity and I remember these sessions as quite
+demanding. Usually, after an hourly session, I was exhausted and in need of a break. Not to mention that it required a
 significant amount of writing to capture everything that was said — just to have an option of referring back to this
 during the sprint. What if this session looked differently?
 
@@ -46,17 +46,17 @@ during the sprint. What if this session looked differently?
 
 “Josh, could you summarize what we are going to implement?”.
 
-That was a bit unexpected, however it was a no-brainer.
+That was a bit unexpected, however, it was a no-brainer.
 ![planning services](/img/articles/2022-02-03-visual-thinking/planning_services.png)
 “As we can see in the picture we are going to add a new service, discounts. This service will be called by the current
-cart service to display reduced price (if applicable). Also the “My Account” page is going to call us to retrieve the
+cart service to display a reduced price (if applicable). Also, the “My Account” page is going to call us to retrieve the
 current rebate for the logged user”.
 
 ### The difference
 
-What is the main difference between the first scenario and the second one? To me it is about common model. In the first
-case I am building an individual model of a change. I need significant amount of energy to translate speech to my model
-and to explain my model to the others. What is more — everyone involved in the discussion is building a mental model on
+What is the main difference between the first scenario and the second one? To me, it is about a common model. In the first
+case, I am building an individual model of a change. I need a significant amount of energy to translate speech to my model
+and to explain my model to others. What is more — everyone involved in the discussion is building a mental model on
 their own with a similar amount of energy spent on synchronization.
 
 ![private models](/img/articles/2022-02-03-visual-thinking/private_models.png)
@@ -68,7 +68,7 @@ understand changed elements and to refer to discussed changes later. “A pictur
 
 Output from a visual planning is something that can be used further during a sprint. Depending on the tool it is
 possible to use it instead of an issue-tracking tool. Sticky notes can indicate actions, tasks, TODOs. They can be
-arranged in a tree and display scope of a pull-request. They can be connected by a dotted line to indicate dependencies.
+arranged in a tree and display the scope of a pull request. They can be connected by a dotted line to indicate dependencies.
 And in the worst case, when you do not have any idea how to visualize something, you can always use a block of text and
 describe it using words.
 
@@ -78,7 +78,7 @@ describe it using words.
 
 Why switching to a drawing board has such an effect? To answer this question we have to check some facts.
 
-On a daily basis a spoken (or written) language is our standard way of communication. Children, however, need some time
+On a daily basis, a spoken (or written) language is our standard way of communication. Children, however, need some time
 to develop such skill. Earlier they are able to:
 
 * register movement (at 2 months age)
@@ -87,7 +87,7 @@ to develop such skill. Earlier they are able to:
 * exploit cause-effect — drop a toy an watch it falling (8 months)
 * start to use words in a proper context (11 months)
 
-Such spatial skills are something all creatures need to develop to survive. Even plants, to some extent, exibit
+Such spatial skills are something all creatures need to develop to survive. Even plants, to some extent, exhibit
 spatial-aware behavior — they move to follow the sun.
 
 It is worth noting that spatial-related terms
@@ -108,23 +108,23 @@ On the other hand, what language do we use to express ideas-related actions? As 
 
 We talk about ideas in the same way as about any space-related topic!
 
-How could it happen? Scientists have been trying to understand functions of different parts of the brain for some time
-already. In the seventies they have identified so-called **place cells** — neurons that are activated at specific
+How could it happen? Scientists have been trying to understand the functions of different parts of the brain for some time
+already. In the seventies, they have identified so-called **place cells** — neurons that are activated at a specific
 location. It took some time to identify another layer of neurons on top of these: **grid cells**, working as our inner
 GPS, activated when switching locations. The latter discovery was
 awarded [Nobel Prize in 2014](https://www.nobelprize.org/prizes/medicine/2014/press-release/).
 
 Tests on human beings resulted in another finding: place cells are activated not only in specific locations. They are
-also activated by events, people, ideas. The grid cells are activated by thinking about consequences of events, by
-social interactions and by connecting ideas together. We are using the same brain structures for spatial orientation,
-for ideas and for social interactions. This is the reason why Barbara Tversky issued an audacious thesis that “all
-thoughts begins as spatial thoughts”.
+also activated by events, people, ideas. The grid cells are activated by thinking about the consequences of events, by
+social interactions, and by connecting ideas together. We are using the same brain structures for spatial orientation,
+for ideas, and for social interactions. This is the reason why Barbara Tversky issued an audacious thesis that “all
+thoughts begin as spatial thoughts”.
 
 ### Map elements
 
 Nowadays we have a GPS sensor in almost any smartphone, so it is rather difficult to get lost. Basic GPS information -
 current coordinate — is not very useful by itself. It is much more convenient to display our current location over a map
-layer. What is a map? According to [wikipedia](https://en.wikipedia.org/wiki/Map) it is “[..] a symbolic depiction
+layer. What is a map? According to [wikipedia](https://en.wikipedia.org/wiki/Map), it is “[..] a symbolic depiction
 emphasizing relationships between elements of some space [..]”.
 
 As our ideas — and imaginary concepts like services — are treated by our brains as spatial elements we simply use known
@@ -136,19 +136,19 @@ We used so far several symbols in our planning diagrams. Almost all of them can 
 This element is an arrow — a significant element of our drawings. According to Barbara Tversky in the already
 mentioned [“Mind in motion” lecture](https://www.youtube.com/watch?v=gmc4wEL2aPQ)
 arrows as visual elements started to appear in the 20th century. Before that symbols of feet or fingers had been used to
-indicate direction. Addition of arrows changes our perception of diagrams: without arrows it is usually a structural
-drawing, that requires additional labels to understand it. Arrows transform such a structural diagram into functional
-diagram: we are able to trace arrows to their origin, we see how things are connected and how they cooperate. Check
-example below — left-hand side version is static, only describes elements and the right-hand side version shows movement
+indicate direction. The addition of arrows changes our perception of diagrams: without them, it is usually a structural
+drawing, that requires additional labels to understand. Arrows transform such a structural diagram into a functional
+diagram: we can trace arrows to their origin, we see how things are connected and how they cooperate. Check the
+example below — the left-hand side version is static, only describes elements and the right-hand side version shows the movement
 of particular elements without using a single word.
 
 ![static and dynamic clock](/img/articles/2022-02-03-visual-thinking/clock.png)
 
 ## Messy lines
 
-All these well-known elements are our means of communication with other people, or even ourselves, in a different point
-in time. Sometimes we draw to discover, we sketch shapes to find an inspiration, an idea. This seems to be important in
-a different creative profession: architecture. Architects discover ideas in sketches. Ambiguity of non-obvious shapes
+All these well-known elements are our means of communication with other people, or even ourselves, at a different point
+in time. Sometimes we draw to discover, we sketch shapes to find inspiration, an idea. This seems to be important in
+a different creative profession: architecture. Architects discover ideas in sketches. The ambiguity of non-obvious shapes
 promotes creativity. It is so important in this profession that sketches from private collections are sold as books. One
 of such books
 is [Sou Fujimoto sketchbook](https://www.designboom.com/architecture/sou-fujimoto-sketchbook-lars-muller-publishers/). I
