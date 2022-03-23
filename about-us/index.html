@@ -35,10 +35,35 @@ title: about
                 {%assign authorData = author[1]%}
                    {% if authorData.role contains "Editor" %}
                 <li  class="post-author">
-                    {% include single_author.html showLinkToPost=false %}
+                    {% include single_author.html showLinkToPost=false showRole=true %}
                 </li>
                 {% endif %}
             {% endfor %}
         </ul>
+    <article class="post-content" itemprop="articleBody">
+        <h2>Former editors:</h2>
+    </article>
+        <ul class="post-author-list">
+            {%assign authors = site.data.members | sort%}
+            {% for author in authors%}
+                {%assign authorKey = author[0]%}
+                {%assign authorData = author[1]%}
+                   {% if authorData.role contains "Former" %}
+                <li  class="post-author">
+                    {% include single_author.html showLinkToPost=false showRole=true %}
+                </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    <article class="post-content" itemprop="articleBody">
+        <h2>Unassociated reviewers:</h2>
+        <p>
+          We'd also like to thank all the people, too numerous to list here,
+          who reviewed articles without being formal members of the editorial board.
+          Just like code reviews, article reviews are open to everyone at the company
+          and often people just drop in when they feel competent to discuss a topic.
+          You can't overestimate the value of such spontaneous help.
+        </p>
+    </article>
     </div>
 </section>

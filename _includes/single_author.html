@@ -33,6 +33,11 @@
     </a>
 {% endif %}
 </h3>
+{%if !include.showRole %}
+  <p style="margin: 0">
+    <small>role: {{authorData.role}}</small>
+  </p>
+{% endif %}
 {{authorData.bio | markdownify}}
 {%if include.showLinkToPost %}
 {% assign author_post_count = 0 %}
@@ -41,7 +46,6 @@
         {% capture author_post_count %} {{ author_post_count | plus: 1 }} {% endcapture %}
     {% endif %}
 {% endfor %}
-
 <p><a href="/authors/{{authorKey}}">
        {% if  author_post_count == 0 %}
        {% elsif author_post_count == ' 1 ' %}

@@ -7,6 +7,7 @@ piotr.orlowski:
     name: Piotr Orłowski
     bio: Software Development Manager with over twenty years of experience in IT and e-commerce. At Allegro he manages the work of 150+ engineers taking care of their continuous substantive development, he is responsible for the technical quality, stability and efficiency of the Allegro platform. He likes simple solutions which gives more possibilities than originally planned :)
     twitter: nigraspl
+    role: Former blog founder
 
 adam.dubiel:
     name: Adam Dubiel
@@ -32,6 +33,7 @@ bartosz.walacik:
     bio: Software engineer with 15+ years of professional experience. He focuses on lightweight and modern technologies around JVM. At Allegro, he works as a development team leader. [JaVers](http://javers.org) project lead. Spock advocate.
     twitter: BartoszWalacik
     github: bartoszwalacik
+    role: Former editor in chief
 
 andrzej.winnicki:
     name: Andrzej Winnicki
@@ -166,6 +168,7 @@ joanna.antkowiak:
 miroslaw.golda:
     name: Mirosław Gołda
     bio: Mirosław is a software engineer with programming experience in Java, PHP, JavaScript and Node.js who joined Allegro Group in 2011. He likes playing around with various programming languages and technologies. Recently he’s experimenting with various automated testing tools and frameworks.
+    role: Former editor
 
 piotr.ciemielewski:
     name: Piotr Ciemielewski
