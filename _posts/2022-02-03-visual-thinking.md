@@ -81,7 +81,7 @@ Why switching to a drawing board has such an effect? To answer this question we 
 On a daily basis, a spoken (or written) language is our standard way of communication. Children, however, need some time
 to develop such a skill. Earlier they are able to:
 
-* register movement (at 2 months age)
+* register movement (at 2 months of age)
 * try to grab things by hand (5 months)
 * follow movement with their eyes, find hidden things (7 months)
 * exploit cause-effect — drop a toy and watch it fall (8 months)
