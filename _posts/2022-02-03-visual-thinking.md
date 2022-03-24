@@ -17,7 +17,7 @@ Do we use the most optimal way to express our ideas?
 
 That was a bit unexpected. He was just trying to match what he already knew from onboarding days with what was just
 said. It was really difficult to follow team discussion at the same time. It was a standard planning session, held over
-Zoom, with his distributed team. Someone was already sharing screen and the story summary, along with acceptance
+Zoom, with his distributed team. Someone was already sharing their screen and the story summary, along with acceptance
 criteria, was visible. They were developing an online store and the current topic was: basket price reduction for active
 users. In short: users who spent more than 50€ for the last 7 days should have a discount applied during the checkout
 process.
@@ -27,11 +27,11 @@ cart service to call us and we will check the transactions store for recent orde
 — Is that all?<br/>
 — I didn’t catch more changes.<br/>
 — What about customers willing to check if they are eligible for a discount?<br/>
-— Oh, so it seems we need to change ‘my account’ page as well.<br/>
+— Oh, so it seems we need to change the “My Account” page as well.<br/>
 — And the checkout service? We have to both display discount and use it.<br/>
 — You’re right! I was trying to picture the main change in my mind and wasn’t paying attention to the whole
 discussion.<br/>
-— Guys, checkout stays the same. Cart is providing everything the checkout requires.
+— Guys, checkout stays the same. The cart is providing everything the checkout requires.
 
 ### Retrospective
 
@@ -79,12 +79,12 @@ describe it using words.
 Why switching to a drawing board has such an effect? To answer this question we have to check some facts.
 
 On a daily basis, a spoken (or written) language is our standard way of communication. Children, however, need some time
-to develop such skill. Earlier they are able to:
+to develop such a skill. Earlier they are able to:
 
 * register movement (at 2 months age)
 * try to grab things by hand (5 months)
-* follow movement with our eyes, find hidden things (7 months)
-* exploit cause-effect — drop a toy an watch it falling (8 months)
+* follow movement with their eyes, find hidden things (7 months)
+* exploit cause-effect — drop a toy and watch it fall (8 months)
 * start to use words in a proper context (11 months)
 
 Such spatial skills are something all creatures need to develop to survive. Even plants, to some extent, exhibit
@@ -109,10 +109,10 @@ On the other hand, what language do we use to express ideas-related actions? As 
 We talk about ideas in the same way as about any space-related topic!
 
 How could it happen? Scientists have been trying to understand the functions of different parts of the brain for some time
-already. In the seventies, they have identified so-called **place cells** — neurons that are activated at a specific
+already. In the seventies, they have identified the so-called **place cells** — neurons that are activated at a specific
 location. It took some time to identify another layer of neurons on top of these: **grid cells**, working as our inner
 GPS, activated when switching locations. The latter discovery was
-awarded [Nobel Prize in 2014](https://www.nobelprize.org/prizes/medicine/2014/press-release/).
+awarded a [Nobel Prize in 2014](https://www.nobelprize.org/prizes/medicine/2014/press-release/).
 
 Tests on human beings resulted in another finding: place cells are activated not only in specific locations. They are
 also activated by events, people, ideas. The grid cells are activated by thinking about the consequences of events, by
@@ -132,7 +132,7 @@ concepts of space visualization to present imagined beings and relations among t
 
 ### Arrows
 
-We used so far several symbols in our planning diagrams. Almost all of them can be found in maps as well, except one.
+So far we used several symbols in our planning diagrams. Almost all of them can be found in maps as well, except one.
 This element is an arrow — a significant element of our drawings. According to Barbara Tversky in the already
 mentioned [“Mind in motion” lecture](https://www.youtube.com/watch?v=gmc4wEL2aPQ)
 arrows as visual elements started to appear in the 20th century. Before that symbols of feet or fingers had been used to
