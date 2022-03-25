@@ -723,3 +723,26 @@ kamil.jedrzejuk:
 michal.kwiatek:
     name: Michał Kwiatek
     bio: I’m a Junior Mobile Software Engineer at Allegro Pay who works with Android. I like creating perfect screen layouts and the best user experience. I'm a big fan of Formula 1.
+
+riccardo.belluzzo:
+    name: Riccardo Belluzzo
+    bio: Riccardo is a Research Engineer in the Allegro ML team and specializes in Natural Language Processing and Understanding. Riccardo is also a music freak, playing guitar in his free time and running a podcast about underground music and emerging artists.
+    linkedin: riccardo-belluzzo
+
+tomasz.bochenski:
+    name: Tomasz Bocheński
+    bio: Tomasz is a Machine Learning Engineer focused on both research and building solutions that use state-of-the-art ML algorithms. MLOps fan interested in building scalable ML environments for fast and efficient experimentation.
+    linkedin: tmbochenski
+
+michal.zajac:
+    name: Michał Zając
+    bio: Michał is a Ph.D. student at Jagiellonian University. He is interested in Machine Learning, Reinforcement Learning and Continual Learing. He is a former Research Engineer at Allegro. Michał also interned at Google Brain and Facebook.
+    twitter: Michal_Zajac_
+
+lukasz.kucinski:
+    name: Łukasz Kuciński
+    bio: Łukasz is an Assistant Professor at the Polish Academy of Sciences. His research focuses on machine learning and he co-leads a reinforcement learning lab. He contributes to the growth of the Polish machine learning community, hosting the reinforcement learning seminar and co-organizing a deep reinforcement learning course.
+
+piotr.milos:
+    name: Piotr Miłoś
+    bio: Piotr is a professor at the Polish Academy of Sciences and a visiting professor at the University of Oxford. He specializes in machine learning and co-leads a research group focusing on reinforcement learning. He actively works towards developing machine learning research in Poland, including hosting a reinforcement learning seminar, co-organizing a deep reinforcement learning course, and being a scientific advisor of the ML in PL association.
