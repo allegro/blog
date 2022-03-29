@@ -47,7 +47,7 @@ during the sprint. What if this session looked differently?
 — Josh, could you summarize what we are going to implement, please?
 
 That was a bit unexpected, however, it was a no-brainer.
-![planning services](/img/articles/2022-02-03-visual-thinking/planning_services.png)
+![planning services](/img/articles/2022-03-30-visual-thinking/planning_services.png)
 “As we can see in the picture we are going to add a new service, discounts. This service will be called by the current
 cart service to display a reduced price (if applicable). Also, the “My Account” page is going to call us to retrieve the
 current rebate for the logged user”.
@@ -59,12 +59,12 @@ case, I am building an individual model of a change. I need a significant amount
 and to explain my model to others. What is more — everyone involved in the discussion is building a mental model on
 their own with a similar amount of energy spent on synchronization.
 
-![private models](/img/articles/2022-02-03-visual-thinking/private_models.png)
+![private models](/img/articles/2022-03-30-visual-thinking/private_models.png)
 
 In the case of the second scenario, the model is shared. There is no need to maintain private models. It is easy to
 understand changed elements and to refer to discussed changes later. “A picture is worth a thousand words” after all.
 
-![common model](/img/articles/2022-02-03-visual-thinking/common_model.png)
+![common model](/img/articles/2022-03-30-visual-thinking/common_model.png)
 
 Output from a visual planning is something that can be used further during a sprint. Depending on the tool it is
 possible to use it instead of an issue-tracking tool. Sticky notes can indicate actions, tasks, TODOs. They can be
@@ -72,7 +72,7 @@ arranged in a tree and display the scope of a pull request. They can be connecte
 And in the worst case, when you do not have any idea how to visualize something, you can always use a block of text and
 describe it using words.
 
-![planning tasks](/img/articles/2022-02-03-visual-thinking/planning_tasks.png)
+![planning tasks](/img/articles/2022-03-30-visual-thinking/planning_tasks.png)
 
 ## The background
 
@@ -104,7 +104,7 @@ On the other hand, what language do we use to express ideas-related actions? As 
 * push forward
 * toss out
 
-![ideas and actions](/img/articles/2022-02-03-visual-thinking/ideas_and_actions.png)
+![ideas and actions](/img/articles/2022-03-30-visual-thinking/ideas_and_actions.png)
 
 We talk about ideas in the same way as about any space-related topic!
 
@@ -142,7 +142,7 @@ diagram: we can trace arrows to their origin, we see how things are connected an
 example below — the left-hand side version is static, only describes elements and the right-hand side version shows the movement
 of particular elements without using a single word.
 
-![static and dynamic clock](/img/articles/2022-02-03-visual-thinking/clock.png)
+![static and dynamic clock](/img/articles/2022-03-30-visual-thinking/clock.png)
 
 ## Messy lines
 
