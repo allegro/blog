@@ -6,8 +6,8 @@ tags: [tech, communication, visualization, planning, creativity]
 ---
 
 We use written (source code) language to express our intentions in a machine-readable form. We use spoken language to
-communicate with other people. We pride ourselves as ones choosing programming language optimized to the task at hand.
-Do we use the most optimal way to express our ideas?
+communicate with other people. We pride ourselves as ones choosing a programming language optimized to the task at hand.
+Do we use the optimal way to express our ideas?
 
 ## The Story
 
