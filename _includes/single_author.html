@@ -1,45 +1,52 @@
 {%if include.showLinkToPost %}
 <a href="/authors/{{authorKey}}" aria-hidden="true" tabindex="-1"><img src="/img/authors/{{authorKey}}.jpg" alt="" class="avatar" /></a>
-<h3 lang="pl-PL"><a href="/authors/{{authorKey}}">{{authorData.name}}</a></h3>
 {% else %}
-<img src="/img/authors/{{authorKey}}.jpg" alt="" class="avatar" />
-<h3 lang="pl-PL">{{authorData.name}}</h3>
+<img src="/img/authors/{{authorKey}}.jpg" alt="" class="avatar" /> {% endif %}
+<h3 lang="pl-PL">
+{%if include.showLinkToPost %}
+    <a href="/authors/{{authorKey}}"> {{authorData.name}}</a>
+{% else %}
+    {{authorData.name}}
 {% endif %}
-
 {%if authorData.twitter %}
-<a class="username" href="https://twitter.com/{{authorData.twitter}}">
-<span class="social"><img src="/img/social/twitter.svg" alt="Twitter"></span>
-<span>{{authorData.twitter}}</span>
-</a>
+    <a class="username" href="https://twitter.com/{{authorData.twitter}}">
+        <span class="social"><img src="/img/social/twitter.svg" alt="Twitter"></span>
+        {% comment %} <span>{{authorData.twitter}}</span> {% endcomment %}
+    </a>
 {% endif %}
 {%if authorData.github %}
-<a class="username" href="https://github.com/{{authorData.github}}">
-<span class="social"><img src="/img/social/github.svg" alt="Github"></span>
-<span>{{authorData.github}}</span>
-</a>
+    <a class="username" href="https://github.com/{{authorData.github}}">
+        <span class="social"><img src="/img/social/github.svg" alt="Github"></span>
+        {% comment %} <span>{{authorData.github}}</span> {% endcomment %}
+    </a>
 {% endif %}
 {%if authorData.stackOverflow.id and authorData.stackOverflow.name %}
-<a class="username" href="https://stackoverflow.com/users/{{authorData.stackOverflow.id}}">
-<span class="social"><img src="/img/social/stackoverflow.svg" alt="StackOverflow"></span>
-    <span>{{authorData.stackOverflow.name}}</span>
-</a>
+    <a class="username" href="https://stackoverflow.com/users/{{authorData.stackOverflow.id}}">
+        <span class="social"><img src="/img/social/stackoverflow.svg" alt="StackOverflow"></span>
+        {% comment %} <span>{{authorData.stackOverflow.name}}</span> {% endcomment %}
+    </a>
 {% endif %}
 {%if authorData.linkedin %}
-<a class="username" href="https://www.linkedin.com/in/{{authorData.linkedin}}">
-<span class="social"><img src="/img/social/linkedin.svg" alt="Linkedin"></span>
-<span>{{authorData.linkedin}}</span>
-</a>
+    <a class="username" href="https://www.linkedin.com/in/{{authorData.linkedin}}">
+        <span class="social"><img src="/img/social/linkedin.svg" alt="Linkedin"></span>
+        {% comment %} <span>{{authorData.linkedin}}</span> {% endcomment %}
+    </a>
+{% endif %}
+</h3>
+{%if !include.showRole %}
+  <p style="margin: 0">
+    <small>role: {{authorData.role}}</small>
+  </p>
 {% endif %}
 {{authorData.bio | markdownify}}
 {%if include.showLinkToPost %}
-    {% assign author_post_count = 0 %}
-    {% for post in site.posts %}
+{% assign author_post_count = 0 %}
+{% for post in site.posts %}
     {% if post.author contains authorKey %}
-    {% capture author_post_count %} {{ author_post_count | plus: 1 }} {% endcapture %}
+        {% capture author_post_count %} {{ author_post_count | plus: 1 }} {% endcapture %}
     {% endif %}
-    {% endfor %}
-
-   <p><a href="/authors/{{authorKey}}">
+{% endfor %}
+<p><a href="/authors/{{authorKey}}">
        {% if  author_post_count == 0 %}
        {% elsif author_post_count == ' 1 ' %}
           see post by {{authorData.name}}
@@ -47,5 +54,5 @@
           see {{author_post_count}} posts by {{authorData.name}}
        {% endif %}
        </a>
-   </p>
+</p>
 {% endif %}

@@ -7,6 +7,7 @@ piotr.orlowski:
     name: Piotr Orłowski
     bio: Software Development Manager with over twenty years of experience in IT and e-commerce. At Allegro he manages the work of 150+ engineers taking care of their continuous substantive development, he is responsible for the technical quality, stability and efficiency of the Allegro platform. He likes simple solutions which gives more possibilities than originally planned :)
     twitter: nigraspl
+    role: Former blog founder
 
 adam.dubiel:
     name: Adam Dubiel
@@ -25,12 +26,14 @@ michal.kosmulski:
         id: 1224016
         name: Michał Kosmulski
     linkedin: kosmulski
+    role: Editor in chief
 
 bartosz.walacik:
     name: Bartosz Walacik
     bio: Software engineer with 15+ years of professional experience. He focuses on lightweight and modern technologies around JVM. At Allegro, he works as a development team leader. [JaVers](http://javers.org) project lead. Spock advocate.
     twitter: BartoszWalacik
     github: bartoszwalacik
+    role: Former editor in chief
 
 andrzej.winnicki:
     name: Andrzej Winnicki
@@ -108,6 +111,7 @@ bartosz.galek:
     name: Bartosz Gałek
     bio: Software Developer at Allegro, engineer with devops flavor. Believes that there is always a place for improvement; likes to try new technologies and languages. Open source fan and occasional contributor.
     github: bgalek
+    role: Editor
 
 bartlomiej.ignasiak:
     name: Bartłomiej Ignasiak
@@ -164,6 +168,7 @@ joanna.antkowiak:
 miroslaw.golda:
     name: Mirosław Gołda
     bio: Mirosław is a software engineer with programming experience in Java, PHP, JavaScript and Node.js who joined Allegro Group in 2011. He likes playing around with various programming languages and technologies. Recently he’s experimenting with various automated testing tools and frameworks.
+    role: Former editor
 
 piotr.ciemielewski:
     name: Piotr Ciemielewski
@@ -669,6 +674,7 @@ mateusz.krzeszowiak:
     bio: Webperf Team member. Likes to constantly optimize and improve existing solutions. Finds it hard to stop talking about his work and sharing knowledge.
     twitter: krzksz
     github: krzksz
+    role: Editor
 
 jon.skeet:
     name: Jon Skeet
@@ -719,6 +725,36 @@ kamil.jedrzejuk:
     name: Kamil Jędrzejuk
     bio: 'I am a Software engineer and for over 8 years I have been interested in and follow topics related to Domain Driven Design, Event Storming and software design. Another area that interests me is the Java Virtual Machine and more and more often bare-metal programming.'
     linkedin: jkamil
+
+katarzyna.zadurska:
+    name: Katarzyna Zadurska
+    bio: Frontend Engineer at Allegro Ads. React enthusiast with passion for good quality code and attention to detail. Genuinely excited about code review. Willing to learn and discover things, whether it is code-related or just a new spot with eclairs.
+    linkedin: kzadurska
+    twitter: kzadurska
+    github: kzadurska
+    role: Editor
+
+tomasz.gospodarczyk:
+    name: Tomasz Gospodarczyk
+    bio: Frontend Engineer and team leader in the team responsible for offer page and navigation components at Allegro. Web Performance enthusiast and occasional music creator.
+    linkedin: gotomi
+    twitter: gotomi
+    github: gotomi
+    role: Editor
+
+wojciech.poniatowski:
+    name: Wojciech Poniatowski
+    bio: As Product Team Manager Wojciech builds product teams and manages Product Managers within Allegro’s technology. At our Tech Blog he provides a bit of business perspective.
+    linkedin: poniatowski
+    role: Editor
+
+daniel.dopierala:
+    name: Daniel Dopierała
+    bio: A Software Engineer who just likes to do his job well. Specializes in backend technologies on JVM, but does not shy away from frontend and big data.
+    linkedin: dopieralad
+    twitter: dopieralad
+    github: dopieralad
+    role: Editor
 
 michal.kwiatek:
     name: Michał Kwiatek

@@ -5,7 +5,7 @@
 .post-author-list li {
     padding: 0;
     border-bottom: 1px solid #eee;
-    margin: 2em 0;
+    padding: 1rem 0;
     list-style: none;
 }
 
@@ -32,7 +32,7 @@
     overflow: hidden;
 }
 
-.post-author .content + .content {
+.post-author .content+.content {
     border-top: 0;
 }
 
@@ -40,6 +40,10 @@
     font-size: 0.9em;
     text-decoration: none;
     color: #222;
+    vertical-align: top;
+    &:hover {
+        text-decoration: none;
+    }
 }
 
 .post-author h3 {

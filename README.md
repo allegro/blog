@@ -44,7 +44,6 @@ Currently, the team consists of:
 * Tomek Gospodarczyk — editor
 * Michał Kosmulski — editor-in-chief
 * Mateusz Krzeszowiak — editor
-* Waldemar Panas — editor
 * Wojtek Poniatowski — editor
 * Katarzyna Zadurska — editor
 
