@@ -7,7 +7,7 @@ excerpt: "A picture is worth a thousand words — see for yourself how this uniq
 ---
 In this picture, we can see an Agile team in its natural habitat at Allegro:
 
-![An Agile team in its natural habitat at Allegro](/img/articles/2022-03-31-agile-team-natural-habitat/allegro-agile-team-natural-habitat.jpg)
+![An Agile team in its natural habitat at Allegro](/img/articles/2022-04-01-agile-team-natural-habitat/allegro-agile-team-natural-habitat.jpg)
 
 Learning and development are very important to us at [Allegro](https://allegro.tech/). This absolutely not staged photo
 shows Piotr (right) reading out loud from a book about a newfangled language called BASIC. Piotr is a Product Owner,
