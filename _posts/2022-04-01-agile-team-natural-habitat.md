@@ -5,6 +5,8 @@ author: [michal.kosmulski]
 tags: [tech, agile, testing, "April 1st"]
 excerpt: "A picture is worth a thousand words — see for yourself how this unique Agile team learns BASIC from their Product Owner."
 ---
+> This post was published on April 1st, 2022, and should be taken with a grain of salt.
+
 In this picture, we can see an Agile team in its natural habitat at Allegro:
 
 ![An Agile team in its natural habitat at Allegro](/img/articles/2022-04-01-agile-team-natural-habitat/allegro-agile-team-natural-habitat.jpg)
