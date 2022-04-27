@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Exploring graphQL's performance tradeoffs
-author: alicja.halamska, dawid.kubicki
+author: [alicja.halamska, dawid.kubicki]
 tags: [tech, backend, performance, graphql, kotlin, java]
 ---
 ## What’s graphQL and how does it work?
@@ -391,5 +391,5 @@ Then it checks if all fields that were asked are already in memory, if some are 
 We not decided to use global data loader caching because of many clients of our graph and data
 in this graph change frequently in timeline
 [we use request strategy](https://github.com/graphql-java/java-dataloader#the-scope-of-a-data-loader-is-important).
-If we are talking about caching on client side we tackle with issue that some of our object don't have unique `ID` so 
+If we are talking about caching on client side we tackle with issue that some of our object don't have unique `ID` so
 after a while we skip this approach and as well we are not caching them on client side.
