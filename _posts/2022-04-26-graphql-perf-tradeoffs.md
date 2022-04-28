@@ -4,6 +4,11 @@ title: Exploring graphQL's performance tradeoffs
 author: [alicja.halamska, dawid.kubicki]
 tags: [tech, backend, performance, graphql, kotlin, java]
 ---
+
+At [Allegro](https://allegro.tech/) we decided introduce GraphQL as our API Gateway for build internal client systems.
+During building such a solution we've learnt a lot about this technology
+and we would like to share it with you in this article.
+
 ## What’s graphQL and how does it work?
 To understand how to increase performance we need to understand how it works under the hood.
 Why is it so important? In graphQL most of the common ideas on how to speed up the communication are useless.
