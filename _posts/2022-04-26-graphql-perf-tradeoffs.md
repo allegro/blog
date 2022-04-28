@@ -12,8 +12,8 @@ and we would like to share it with you in this article.
 ## What’s GraphQL and how does it work?
 To understand how to increase performance we need to understand how it works under the hood.
 Why is it so important? In GraphQL most of the common ideas on how to speed up the communication are useless.
-First thing we usually do is introduce cache to our application, but you can often hear that graphQL is not cacheable.
-Indeed it is not that simple in GraphQl and We hope to clarify it to you later in this article.
+One of the things we usually do is introduce cache to our application, but you can often hear that graphQL is not cacheable.
+Indeed it is not that simple in GraphQl and we hope to clarify it to you later in this article.
 
 So what is GraphQL? [GraphQl’s documentation](https://graphql.org/) says:
 
@@ -29,7 +29,7 @@ There is only one entry point and all needed  information is sent in a request p
 
 There are three key concepts that we should be aware of:
 
-* Schema - description of your data in a JSON like format.
+* Schemas - description of your data in a JSON-like format.
 
 ```graphql
 type User {
@@ -40,15 +40,15 @@ type User {
 }
 ```
 * Queries - the way we ask for processing information.
-  We provide informations about which resources we want to fetch or mutate and which exactly fields we want to be returned.
+  We provide information about which resources we want to fetch or mutate and which exactly fields we want to be returned.
+  Below we ask for the user's name and his friends names.
 
 ```graphql
-query{
+query {
  user(id: "1234") {
    name
-   email
    friends { name }
-    }
+ }
 }
 ```
 * Resolvers - fragments of code that serve information for specific part of schema.
@@ -74,9 +74,9 @@ We decided to use:
 * A query resolver for fields that come from the same data source as the identifier field.
 We may ask for information that we don’t need,
 but we skip the unnecessary connection time overhead when we ask for more than one field.
-Moreover, most of the sources that are connected to our service are connected through rest Api,
+Moreover, most of the sources that are connected to our service are connected through REST API,
 so they always compute all fields, so why shouldn't we use them?
-Adding additional resolvers also complicades logic and makes flow less clear.
+Adding additional resolvers also complicates logic and makes flow less clear.
 
 
 * A type resolver when some parts of a query can be resolved independently, because those parts can run parallel.
@@ -87,7 +87,6 @@ that isn't ours to avoid dependency crossing.
 
 ## The metrics war
 
-GraphQL architecture driven metrics development.
 We can indicate a few strategies to monitoring performance like:
 
 * Poor - HTTP endpoint (just one endpoint which always responds with 200 status code)
@@ -98,8 +97,8 @@ The HTTP endpoint is what we measured for a REST API.
 For example one of the most simple  ways of monitoring performance for API endpoints is response time.
 Some basic dashboards could look like this:
 
-![dashboard_1](/img/articles/2022-04-26-graphql-perf-tradeoffs/p95_response-1.png)
-![dashboard_2](/img/articles/2022-04-26-graphql-perf-tradeoffs/p95_response-2.png)
+![dashboard_1](/img/articles/2022-04-26-graphql-perf-tradeoffs/p95-response-1.png)
+![dashboard_2](/img/articles/2022-04-26-graphql-perf-tradeoffs/p95-response-2.png)
 
 In the GraphQL universe, there is usually only one endpoint. This approach has cons and pros.
 While we have low latency and no errors it could be great for us as developers and business.
@@ -108,7 +107,7 @@ We have just one entry point and one failure point but if something goes wrong w
 Below chart of `p95` for single GraphQL endpoint tells us nothing while we have a huge utilization of our graph
 and plenty of consumer which use different input data and ask us for variety of payload in extended  scope.
 
-![dashboard_3](/img/articles/2022-04-26-graphql-perf-tradeoffs/p95_response-3.png)
+![dashboard_3](/img/articles/2022-04-26-graphql-perf-tradeoffs/p95-response-3.png)
 
 Using below simple metric configuration of measure entry endpoint:
 
