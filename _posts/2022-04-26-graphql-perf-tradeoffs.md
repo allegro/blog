@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Exploring graphQL's performance tradeoffs
+title: Exploring GraphQL's performance tradeoffs
 author: [alicja.halamska, dawid.kubicki]
 tags: [tech, backend, performance, graphql, kotlin, java]
 ---
@@ -9,13 +9,13 @@ At [Allegro](https://allegro.tech/) we decided introduce GraphQL as our API Gate
 During building such a solution we've learnt a lot about this technology
 and we would like to share it with you in this article.
 
-## What’s graphQL and how does it work?
+## What’s GraphQL and how does it work?
 To understand how to increase performance we need to understand how it works under the hood.
-Why is it so important? In graphQL most of the common ideas on how to speed up the communication are useless.
+Why is it so important? In GraphQL most of the common ideas on how to speed up the communication are useless.
 First thing we usually do is introduce cache to our application, but you can often hear that graphQL is not cacheable.
-Indeed it is not that simple in graphQl and We hope to clarify it to you later in this article.
+Indeed it is not that simple in GraphQl and We hope to clarify it to you later in this article.
 
-So what is graphQL? [GraphQl’s documentation](https://graphql.org/) says:
+So what is GraphQL? [GraphQl’s documentation](https://graphql.org/) says:
 
 > GraphQL is a query language for APIs and a runtime for fulfilling those queries with your existing data.
 > GraphQL provides a complete and understandable description of the data in your API,
@@ -66,9 +66,9 @@ The second part is added by type resolvers. Let me show you an example. We want 
 At first we run UserQueryResolver, which fetches user from user domain logic. It returns only id of the user.
 Then we call UserTypeResolver with resolved before id.
 It makes two calls: first one to userEmail service and second to User name service.
-When resolving is over, graphQl returns result.
+When resolving is over, GraphQl returns result.
 UserQueryResolver might also have returned all information.
-One of the main questions about optimizing graphQl is when to use query resolver, and when type resolver.
+One of the main questions about optimizing GraphQl is when to use query resolver, and when type resolver.
 We decided to use:
 
 * A query resolver for fields that come from the same data source as the identifier field.
@@ -90,9 +90,9 @@ that isn't ours to avoid dependency crossing.
 GraphQL architecture driven metrics development.
 We can indicate a few strategies to monitoring performance like:
 
-* `Poor` - http endpoint (just one endpoint which always response with 200 status code)
-* `Better` -  GraphQL query/mutation (each query/mutation)
-* `Almost great` - Resolvers (access to data source)
+* Poor - HTTP endpoint (just one endpoint which always responds with 200 status code)
+* Better -  GraphQL query/mutation (each query/mutation)
+* Almost great - Resolvers (access to data source)
 
 The HTTP endpoint is what we measured for a REST API.
 For example one of the most simple  ways of monitoring performance for API endpoints is response time.
@@ -105,7 +105,7 @@ In the GraphQL universe, there is usually only one endpoint. This approach has c
 While we have low latency and no errors it could be great for us as developers and business.
 We have just one entry point and one failure point but if something goes wrong we have to dig deeper.
 
-Below chart of `p95` for single graphQL endpoint tells us nothing while we have a huge utilization of our graph
+Below chart of `p95` for single GraphQL endpoint tells us nothing while we have a huge utilization of our graph
 and plenty of consumer which use different input data and ask us for variety of payload in extended  scope.
 
 ![dashboard_3](/img/articles/2022-04-26-graphql-perf-tradeoffs/p95_response-3.png)
@@ -223,8 +223,8 @@ Per field monitoring is pretty nice of getting extra data to analyze our graph.
 However, it can be expensive to collect such a kind of data.
 Measuring each field can be more and more valuable than monitoring each query.
 Moreover we can easily find the bottleneck of bits and pieces of our graph.
-Resolvers monitoring can be achieved by using built-in libraries into our graphql server implementation such as
-graphql-java-server.
+Resolvers monitoring can be achieved by using built-in libraries into our GraphQL server implementation such as
+`graphql-java-server`.
 Our implementation follows the Apollo
 [(A community building flexible open source tools for GraphQL.)](https://github.com/apollographql) proposed tracing format.
 
@@ -275,7 +275,7 @@ Our implementation follows the Apollo
 ```
 
 Bottom line of resolver monitoring is thinking about it like checking each data source,
-not the internal mechanism of graphql implementation.
+not the internal mechanism of GraphQL implementation.
 Hardware is not a limiting factor in this case as often I/O operation and external calls are crucial.
 
 ## Batching requests to external services
@@ -283,7 +283,7 @@ Hardware is not a limiting factor in this case as often I/O operation and extern
 In the paragraph about resolvers we mentioned connecting with the same source many times to
 fetch all the type fields in case of using type resolvers. There is a solution for that, and it calls data loaders.
 How does it work? It collects all requests from many parts of the schema and asks about them in one request.
-Thanks to that it solves the N+1 problem, which is very well known in graphQL.
+Thanks to that it solves the N+1 problem, which is very well known in GraphQL.
 Imagine the situation then we want to ask about three users.
 
 ![no-loader](/img/articles/2022-04-26-graphql-perf-tradeoffs/no-loader.png)
@@ -375,12 +375,12 @@ The biggest problem that makes using HTTP cache less effective is plenty of diff
 When we ask for a user with his name and email the request saves in cache.
 But when we ask again without the information about email despite the fact that
 the information is already available we cannot use it,
-because this is a different question (and http cache cannot handle it without understanding graphQL logic).
+because this is a different question (and http cache cannot handle it without understanding GraphQL logic).
 To make cache work as best as possible we should recognise at field level which is already in
 memory and ask only for the rest of them.
 
 ### Server-side caching
-Let’s put aside http caching and focus more on how we can implement server cache that is more focused on graphQL logic.
+Let’s put aside http caching and focus more on how we can implement server cache that is more focused on GraphQL logic.
 We could cache specific types or their fields. Good example of implemented server-side cache is
 [apollo-server](https://www.apollographql.com/docs/apollo-server/performance/caching/).
 So if we run the same type or query resolver with the same arguments it can be returned from cache.
@@ -388,7 +388,7 @@ With data loaders you can also cache requests to external sources not only in on
 but even between many queries by selecting specific directive.
 
 ### Client-side caching
-The most common and beneficial way to cache graphQl is client-side caching.
+The most common and beneficial way to cache GraphQL is client-side caching.
 As an example we can see what Apollo created. Cache uses the id field to identify if an object exists in memory.
 Then it checks if all fields that were asked are already in memory, if some are not it asks only for them.
 
