@@ -395,3 +395,8 @@ We not decided to use global data loader caching because of many clients of our 
 in this graph change frequently in timeline
 [we use request strategy](https://github.com/graphql-java/java-dataloader#the-scope-of-a-data-loader-is-important).
 If we are talking about caching on the client side we tackle the issue that some of our objects don't have unique `ID` so after a while we skipped this approach and we are not caching them on the client side as well.
+
+## What is the outcome of the battle?
+
+As you can see we learned a lot about GraphQLs trade offs while working with it. The most important feature of it, fetching only those fields that we need, is a huge optimization itself, but also causes many problems with standard ways to make application effective or even to measure that efficiency.
+The ideas that we described above need to be implemented by the programmers (most libraries don't provide that logic) and it’s really intricate and time consuming.
