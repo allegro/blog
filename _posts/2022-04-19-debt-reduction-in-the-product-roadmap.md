@@ -2,17 +2,17 @@
 layout: post
 title: "How to include refactoring into Product development roadmap? Reducing technical debt inspired by real options identification"
 author: [olga.dudzik]
-tags: [tech]
+tags: [tech, roadmaps, tech debt, product]
 ---
 
-## Nowadays, technical debt can be considered a bread and butter of most IT-powered enterprises around the world.
-
+Nowadays, technical debt can be considered the bread and butter of most IT-powered enterprises around the world.
 Almost every company that survived the startup phase and managed to deliver its first products to customers will face at some point technical challenges related to past architectural decisions. Although code engineering gets better every year, we cannot argue with the obvious fact of life: the market will always force many of us to deliver tech products faster than we wish. Time To Market has always been a key success factor for many product companies and it puts a lot of pressure on Engineering to keep up to challenging deadlines.
 
 Statistics explicitly show the scale of the problem. According to the survey conducted in 2020 by McKinsey[^1], tech debt can reach up to as much as 40% of the whole technology value. On average 10-20% of IT budget is ultimately consumed by tech debt management and most CIOs interviewed consider the problem significantly increasing over past years, especially in enterprise-size companies[^2].
 
 [^1]: https://www.mckinsey.com/business-functions/mckinsey-digital/our-insights/tech-debt-reclaiming-tech-equity
 [^2]: https://www.computerweekly.com/news/252504654/Technical-debt-is-holding-back-innovation
+
 As disturbing as it sounds, acknowledging the magnitude of the problem is the first step to dealing with it.
 
 So, here we get to the Product Management reality. Even if we are lucky and after a product discovery we manage to navigate a perfect niche where we can provide a long-awaited, successful product, we still can fail having technology adjusted to our plans and needs. And that would be a real PM tragedy, wouldn’t it? To cap it all, it might be hard to even talk about innovative solutions when maneuvering around limitations imposed by the legacy code. So any further development of our product may become increasingly tricky and take more time what eventually poses a threat to staying competitive.
@@ -27,7 +27,9 @@ The situation gets even more complicated in publicly listed companies that repor
 
 I believe that especially in Product Management we appreciate inspirations from other industries. And this case should not be an exception. Financial industry and analysts working on companies' valuations have been struggling with a similar challenge for decades. Is it worth investing in a company that may not seem to be an appealing opportunity now in terms of near-future ROI? How to assess potential profits from innovative ideas on the table? How can we, in general, assess long-term impact of work at the grass roots? And which tech company is a good investment opportunity? Our development backlogs should answer similar questions - which of these debt-reduction tasks are worth pursuing and what can we achieve? Which of them are really good opportunities for us? And finally - how to prove to stakeholders the real value of such initiatives? To approach these questions we can use the idea of real options.
 
-Let us discover together the roots of real options. The idea itself dates back to 1977. Stewart Myers coined this term describing real options as “opportunities to purchase real assets on possibly favorable terms” and declaring that each company should be aware of its real assets and real options. Since then, the idea has evolved significantly and has been used in multiple methodologies not only for financial valuations, but also for determining value drivers in a variety of industries. It has been particularly attractive to IT enterprises as it embraces dealing with high uncertainty.
+Let us discover together the roots of real options. The idea itself dates back to 1977. Stewart Myers coined this term describing real options as “opportunities to purchase real assets on possibly favorable terms”[^3] and declaring that each company should be aware of its real assets and real options. Since then, the idea has evolved significantly and has been used in multiple methodologies not only for financial valuations, but also for determining value drivers in a variety of industries. It has been particularly attractive to IT enterprises as it embraces dealing with high uncertainty.
+
+[^3]: https://onlinelibrary.wiley.com/doi/10.1111/emre.12324
 
 Inspired by real options theory, I reckon that we should stop considering technical debt in terms of short-term Profit and Loss accounting.
 
@@ -39,7 +41,9 @@ Bearing in mind the PM’s reality of limited time and resources, the aim is to 
 
 In the Product Management case, investments (time of our developers) will be made to remove some technical obstacles and they will become product enablers. Opportunities on the other hand will be translated into tangible deliveries and potentially attractive positions in our future Roadmaps. And in the best case, these opportunities may even open some new doors to further developments into currently unknown and unreachable areas. Our ultimate goal is to maximize opportunities while minimizing effort required to enable them.
 
-I strongly believe that it is really tricky to evaluate analyzed efforts and hopes from the financial perspective at an early stage of analysis. Calculating ROI moneywise can be extremely time-consuming and tends to be based heavily on “guesstimates” (“an [approximate](https://dictionary.cambridge.org/dictionary/english/approximate) [calculation](https://dictionary.cambridge.org/dictionary/english/calculate) of the [size](https://dictionary.cambridge.org/dictionary/english/size) or [amount](https://dictionary.cambridge.org/dictionary/english/amount) of something when you do not [know](https://dictionary.cambridge.org/dictionary/english/know) all the [facts](https://dictionary.cambridge.org/dictionary/english/fact)”) . Nonetheless, at the same time it should be fairly possible and informative to at least roughly estimate our potential works vs. hopes in T-shirt sizing method (or any other preferred manner, up to you) and I would strongly recommend to follow this path at the beginning. As it is fairly simple and flexible, we can use the same concept to evaluate profits or attractivity of products or opportunities.
+I strongly believe that it is really tricky to evaluate analyzed efforts and hopes from the financial perspective at an early stage of analysis. Calculating ROI moneywise can be extremely time-consuming and tends to be based heavily on “guesstimates” (“an approximate calculation of the size or amount of something when you do not know all the facts”[^4]) . Nonetheless, at the same time it should be fairly possible and informative to at least roughly estimate our potential works vs. hopes in T-shirt sizing method (or any other preferred manner, up to you) and I would strongly recommend to follow this path at the beginning. As it is fairly simple and flexible, we can use the same concept to evaluate profits or attractivity of products or opportunities.
+
+[^4]: https://dictionary.cambridge.org/dictionary/english/guesstimate
 
 ## Where should we start tech debt - value mapping?
 
