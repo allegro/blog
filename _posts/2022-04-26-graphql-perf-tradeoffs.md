@@ -5,17 +5,17 @@ author: [alicja.halamska, dawid.kubicki]
 tags: [tech, backend, performance, graphql, kotlin, java]
 ---
 
-At [Allegro](https://allegro.tech/) we decided introduce GraphQL as our API Gateway for build internal client systems.
-During building such a solution we've learnt a lot about this technology
+At [Allegro](https://allegro.tech/) we decided introduce GraphQL as our API Gateway for building internal client systems.
+By building such a solution we've learnt a lot about this technology
 and we would like to share it with you in this article.
 
 ## What’s GraphQL and how does it work?
 To understand how to increase performance we need to understand how it works under the hood.
 Why is it so important? In GraphQL most of the common ideas on how to speed up the communication are useless.
 One of the things we usually do is introduce cache to our application, but you can often hear that graphQL is not cacheable.
-Indeed it is not that simple in GraphQl and we hope to clarify it to you later in this article.
+Indeed it is not that simple in GraphQL and we hope to clarify it to you later in this article.
 
-So what is GraphQL? [GraphQl’s documentation](https://graphql.org/) says:
+So what is GraphQL? [GraphQL’s documentation](https://graphql.org/) says:
 
 > GraphQL is a query language for APIs and a runtime for fulfilling those queries with your existing data.
 > GraphQL provides a complete and understandable description of the data in your API,
@@ -24,7 +24,7 @@ So what is GraphQL? [GraphQl’s documentation](https://graphql.org/) says:
 GraphQL sends the information through standard TCP connection (mostly HTTP).
 There is only one entry point and all needed information is sent in a request param or body.
 In contrast to the REST API, where we often fetch fields that we won't use, in GraphQL we can ask and compute only the useful ones.
-This key feature gives us the first and most important way to speed up our application: Ask only for this information that you need.
+This key feature gives us the first and most important way to speed up our application: ask only for the information that you need.
 
 There are three key concepts that we should be aware of:
 
@@ -40,7 +40,7 @@ type User {
 ```
 * Queries - the way we ask for processing information.
   We provide information about which resources we want to fetch or mutate and which exactly fields we want to be returned.
-  We can fetch data with an operation called query or change data with mutation.
+  We can fetch data with an operation called query or change data with a mutation.
   Below we ask for the user's name and his friends names.
 
 ```graphql
@@ -66,9 +66,9 @@ The second part is added by type resolvers. Let us show you an example: let's sa
 At first we run UserQueryResolver, which fetches user from user domain logic. It returns only id of the user.
 Then we call UserTypeResolver with id resolved earlier.
 It makes two calls: first one to userEmail service and second to User name service.
-When resolving is over, GraphQl returns result.
+When resolving is over, GraphQL returns result.
 UserQueryResolver might also have returned all information.
-One of the main questions about optimizing GraphQl is when to use query resolver, and when type resolver.
+One of the main questions about optimizing GraphQL is when to use query resolver, and when type resolver.
 We decided to use:
 
 * A query resolver for fields that come from the same data source as the identifier field.
@@ -382,21 +382,20 @@ Let’s put aside HTTP caching and focus more on how we can implement server cac
 We could cache specific types or their fields. Good example of implemented server-side cache is
 [apollo-server](https://www.apollographql.com/docs/apollo-server/performance/caching/).
 So if we run the same type or query resolver with the same arguments it can be returned from cache.
-With data loaders you can also cache requests to external sources not only in one query,
-but even between many queries by selecting specific directive.
+With [data loaders](https://github.com/graphql-java/java-dataloader#the-scope-of-a-data-loader-is-important) you can also cache requests to external sources not only in one query,
+but even between many queries by selecting specific strategy. This is out of the box solution, that can be used easily.
 
 ### Client-side caching
-The most common and beneficial way to cache GraphQL is client-side caching.
-As an example we can see what Apollo created. Cache uses the id field to identify if an object exists in memory.
+Another common way to cache query response is client-side caching. It can be very beneficial, because one client may ask for the same information many times.
+As an example we can take Apollo client and it's solution. Cache uses the id field to identify whether an object exists in memory.
 Then it checks if all fields that were asked are already in memory, if some are not it asks only for them.
 
 ### Caching out decisions
-We not decided to use global data loader caching because of many clients of our graph and data
-in this graph change frequently in timeline
-[we use request strategy](https://github.com/graphql-java/java-dataloader#the-scope-of-a-data-loader-is-important).
+We've not decided to use server-side caching with global data loader because we have struggled with many clients of our graph and the graph's data
+change frequently in the timeline. That forced us to use cache per request strategy.
 If we are talking about caching on the client side we tackle the issue that some of our objects don't have unique `ID` so after a while we skipped this approach and we are not caching them on the client side as well.
 
 ## What is the outcome of the battle?
 
-As you can see we learned a lot about GraphQLs trade offs while working with it. The most important feature of it, fetching only those fields that we need, is a huge optimization itself, but also causes many problems with standard ways to make application effective or even to measure that efficiency.
+We have learned a lot about GraphQL's trade offs while working with it, but there is still a lot to be discovered. The most important feature of it, fetching only those fields that we need, is a huge optimization itself, but also causes many problems with standard ways to make application effective or even to measure that efficiency.
 The ideas that we described above need to be implemented by the programmers (most libraries don't provide that logic) and it’s really intricate and time consuming.
