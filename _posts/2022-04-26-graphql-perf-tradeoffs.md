@@ -151,6 +151,7 @@ query {
 After few new features it can end up more complex like this one. In the same query we ask for 10k another extra object data source.
 We can imagine that previous `p95` dashboard doesn't have much value now because it is perfectly normal that the
 computation time increased when asked for additional data. The pagination plays a big role here, too.
+Both of these queries can still be executed at the same time and shouldn't be measured by the same metric.
 
 ```graphql
 query {
