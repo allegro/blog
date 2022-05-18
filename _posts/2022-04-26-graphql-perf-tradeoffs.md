@@ -41,7 +41,7 @@ type User {
 * Queries - the way we ask for processing information.
   We provide information about which resources we want to fetch or mutate and which exactly fields we want to be returned.
   We can fetch data with an operation called query or change data with a mutation.
-  Below we ask for the user's name and his friends names.
+  Below we query for the user's name and his friends' names.
 
 ```graphql
 query {
@@ -74,13 +74,12 @@ We decided to use:
 * A query resolver for fields that come from the same data source as the identifier field.
 We may ask for information that we don’t need,
 but we skip the unnecessary connection time overhead when we ask for more than one field.
-Moreover, most of the sources that are connected to our service are connected through REST API,
-so they always compute all fields, so why shouldn't we use them?
+Moreover, most of the sources that are connected to our service are REST APIs and always compute all fields, so why shouldn't we use them?
 Adding additional resolvers also complicates logic and makes flow less clear.
 
 
-* A type resolver when some parts of a query can be resolved independently, because those parts can run parallel.
-It's very easy to achieve, just wrap the resolver’s functions with any of the asynchronous abstraction. We also use type resolvers when we ask for some part of the domain
+* A type resolver when some parts of a query can be resolved independently, because those parts can run in parallel.
+It's very easy to achieve, just wrap the resolver’s functions with any of the asynchronous abstractions. We also use type resolvers when we ask for some part of the domain
 that isn't ours to avoid dependency crossing.
 
 
@@ -93,7 +92,7 @@ We can indicate a few strategies to monitoring performance like:
 * Almost great - Resolvers (access to data source)
 
 The HTTP endpoint is what we measured for a REST API.
-For example one of the most simple ways of monitoring performance for API endpoints is response time.
+For example one of the simplest ways of monitoring performance for API endpoints is response time.
 Some basic dashboards could look like this:
 
 ![dashboard_1](/img/articles/2022-04-26-graphql-perf-tradeoffs/p95-response-1.png)
@@ -104,11 +103,11 @@ While we have low latency and no errors it could be great for us as developers a
 We have just one entry point and one failure point but if something goes wrong we have to dig deeper.
 
 Below chart of `p95` for single GraphQL endpoint tells us nothing while we have a huge utilization of our graph
-and plenty of consumer which use different input data and ask us for variety of payload in extended scope.
+and plenty of consumers which use different input data and ask us for variety of payload in extended scope.
 
 ![dashboard_3](/img/articles/2022-04-26-graphql-perf-tradeoffs/p95-response-3.png)
 
-Using below simple metric configuration of measure entry endpoint:
+We are using a simple metric configuration for measuring endpoints:
 
 ```kotlin
 class MetricFilter(
@@ -137,7 +136,7 @@ class MetricFilter(
    }
 }
 ```
-Remember that our queries can change on timeline by extend their business requirement. It can start from simple like this:
+Remember that our queries can change in time, e.g. by extended business requirements. They can start from a simple query like this:
 
 ```graphql
 query {
@@ -149,9 +148,9 @@ query {
 }
 ```
 
-After few new features in can end up more complex like this one. Under the same query we ask for 10k another extra object data source
-we can imagine that previous dashboard p95 doesn't have any value because it will be perfectly normal that the
-time of computation increases during ask for extra data (here pagination play role)
+After few new features it can end up more complex like this one. In the same query we ask for 10k another extra object data source.
+We can imagine that previous `p95` dashboard doesn't have much value now because it is perfectly normal that the
+computation time increased when asked for additional data. The pagination plays a big role here, too.
 
 ```graphql
 query {
@@ -159,9 +158,9 @@ query {
  		id: ID
  		name: String
  	    email: String
-		friends(offset: 10000){
+		friends(limit: 10000, offset: 1){
 		   name: String
-		   lasName: String
+		   lastName: String
         }
     }
 }
@@ -169,18 +168,18 @@ query {
 
 ### Slow query log
 
-After integrating a huge number of new API’s we realized that a simple http endpoint monitoring is not enough in our case.
+After integrating a huge number of new API’s we realized that a simple HTTP endpoint monitoring is not enough in our case.
 We had been looking for a better approach to this. Slow query log is a simple concept -
 set a threshold at which we consider a query too slow.
 Each query that exceeds that threshold gets logged with all input parameters.
 Moreover we set up metrics which indicate that some problematic query appears.
-Whether such an approach is perfect ?
+Whether such an approach is perfect?
 No, still we have to analyze each query and answer a question if the query is slow because
 of query complexity or maybe because of other problems.
-At the end of the day we can use this approach/idea as a simple and effective tool to find slow queries quite fast.
+At the end of the day we can use this approach as a simple and effective tool to find slow queries quite fast.
 
 As an example we can show you the code below.
-We created our own instrumentation at the beginning of each query to measure time and parameters/variables.
+We created our own instrumentation at the beginning of each query to measure time and variables.
 
 ```kotlin
 @Component
@@ -215,16 +214,17 @@ class MonitoringInstrumentation(
     }
   }
 ```
-Last but not least, an interesting approach which we consider and
-it's almost out of the box for resolvers and supported by many libraries is per field.
-Per field monitoring is pretty nice of getting extra data to analyze our graph.
+
+### Per field monitoring
+
+Last but not least, an interesting approach which we consider and it's almost out of the box for resolvers and supported by many libraries is per field monitoring.
+It is pretty nice for getting extra data to analyze our graph.
 However, it can be expensive to collect such a kind of data.
-Measuring each field can be more and more valuable than monitoring each query.
+Measuring each field can be more valuable than monitoring each query.
 Moreover we can easily find the bottleneck of bits and pieces of our graph.
 Resolvers monitoring can be achieved by using built-in libraries into our GraphQL server implementation such as
 `graphql-java-server`.
-Our implementation follows the Apollo
-[(A community building flexible open source tools for GraphQL.)](https://github.com/apollographql) proposed tracing format.
+Our implementation follows the Apollo proposed tracing format ([A community building flexible open source tools for GraphQL](https://github.com/apollographql)).
 
 ```json
 {
@@ -265,7 +265,8 @@ Our implementation follows the Apollo
            "fieldName": "name",
            "startOffset": 125010028,
            "duration": 20213
-         }  ]
+         }
+       ]
      }
    }
  }
@@ -286,11 +287,11 @@ Imagine the situation then we want to ask about three users.
 
 ![no-loader](/img/articles/2022-04-26-graphql-perf-tradeoffs/no-loader.png)
 
-As the diagram says, we must ask external sources four times for three users ( once for each + one for all of them).
+As the diagram says, we must ask external sources four times for three users – once to fetch all users and once per each user to fetch his name.
 Moreover we call user name service many times even if it has some batch method to get logins for many users.
 Introducing a data loader solves this problem. Second diagram shows how it works.
 
-![no-loader](/img/articles/2022-04-26-graphql-perf-tradeoffs/loader.png)
+![data-loader](/img/articles/2022-04-26-graphql-perf-tradeoffs/data-loader.png)
 
 We cumulate all requests and ask user name service only once. Let’s see what the code looks like.
 We have `UserBatchDataLoader` which asks `userClient` for users and maps response to `User` object.
@@ -328,10 +329,9 @@ class UserTypeResolver(
 
 Exactly the same we can do with `User` fields in type resolver.
 We can accumulate requests for each field and run it once if the source is the same.
-There is a UserDataLoader that asks `UserClient` for the whole `User` object.
+There is a `UserDataLoader` that asks `UserClient` for the whole `User` object.
 
 ```kotlin
-
 @Component
 class UserDataLoader(
    userClient: UserClient,
@@ -340,7 +340,6 @@ class UserDataLoader(
    { userId: String -> userClient.user(userId) },
    executor
 )
-
 ```
 
 It is used in `UserTypeResolver` while resolving first name and email.
@@ -390,7 +389,7 @@ Another common way to cache query response is client-side caching. It can be ver
 As an example we can take Apollo client and it's solution. Cache uses the id field to identify whether an object exists in memory.
 Then it checks if all fields that were asked are already in memory, if some are not it asks only for them.
 
-### Caching out decisions
+### Our caching decisions
 We've not decided to use server-side caching with global data loader because we have struggled with many clients of our graph and the graph's data
 change frequently in the timeline. That forced us to use cache per request strategy.
 If we are talking about caching on the client side we tackle the issue that some of our objects don't have unique `ID` so after a while we skipped this approach and we are not caching them on the client side as well.
