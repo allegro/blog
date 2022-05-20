@@ -5,7 +5,7 @@ author: [alicja.halamska, dawid.kubicki]
 tags: [tech, backend, performance, graphql, kotlin, java]
 ---
 
-At [Allegro](https://allegro.tech/) we decided introduce GraphQL as our API Gateway for building internal client systems.
+At [Allegro](https://allegro.tech/) we decided to introduce GraphQL as our API Gateway for building several internal client systems.
 By building such a solution we've learnt a lot about this technology
 and we would like to share it with you in this article.
 
@@ -46,8 +46,8 @@ type User {
 ```graphql
 query {
  user(id: "1234") {
-   name
-   friends { name }
+    name
+    friends { name }
  }
 }
 ```
@@ -111,39 +111,39 @@ We are using a simple metric configuration for measuring endpoints:
 
 ```kotlin
 class MetricFilter(
-   private val meterRegistry: MeterRegistry,
-   private val clock: Clock
+    private val meterRegistry: MeterRegistry,
+    private val clock: Clock
 ) : OncePerRequestFilter() {
 
-   override fun doFilterInternal(
-       request: HttpServletRequest,
-       response: HttpServletResponse,
-       filterChain: FilterChain
-   ) {
-       val start = clock.millis()
-       try {
-           filterChain.doFilter(request, response)
-       } finally {
-           val finish = clock.millis()
-           meterRegistry.timer(
-               "api.execution",
-               "statusCode",
-               response.status.toString(),
-               "path",
-               request.requestURI
-           ).record(finish - start, TimeUnit.MILLISECONDS)
-       }
-   }
+    override fun doFilterInternal(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        filterChain: FilterChain
+    ) {
+        val start = clock.millis()
+        try {
+            filterChain.doFilter(request, response)
+        } finally {
+            val finish = clock.millis()
+            meterRegistry.timer(
+                "api.execution",
+                "statusCode",
+                response.status.toString(),
+                "path",
+                request.requestURI
+            ).record(finish - start, TimeUnit.MILLISECONDS)
+        }
+    }
 }
 ```
 Remember that our queries can change in time, e.g. by extended business requirements. They can start from a simple query like this:
 
 ```graphql
 query {
-	user {
- 		id: ID
- 		name: String
- 	    email: String
+    user {
+        id: ID
+        name: String
+        email: String
     }
 }
 ```
@@ -156,12 +156,12 @@ Both of these queries can still be executed at the same time and shouldn't be me
 ```graphql
 query {
 	user {
- 		id: ID
- 		name: String
- 	    email: String
-		friends(limit: 10000, offset: 1){
-		   name: String
-		   lastName: String
+        id: ID
+        name: String
+        email: String
+        friends(limit: 10000, offset: 1){
+            name: String
+            lastName: String
         }
     }
 }
