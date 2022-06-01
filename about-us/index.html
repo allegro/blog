@@ -2,47 +2,68 @@
 layout: default
 title: about
 ---
-
-<section id="main-content" class="desk manifesto">
-  <article class="post-content responsive-content" itemprop="articleBody">
+<section id="main-content" class="section-blog responsive-content blue-bg">
+    <header class="main-item">
+        <h1 class="post-title">About us</h1>
+                <p>This is Allegro’s public-facing tech blog. We use it to share our knowledge with the community and to tell
+            others what our work at Allegro is like.
+            It is also a tool for promoting Allegro to potential candidates (PromoIT). However, we try to be objective,
+            and we explicitly avoid any kind of excessive propaganda.
+            We write for smart people who are good at telling genuinely interesting and useful information from
+            corporate.
+        </p>
+    </header>
+ </section>
+<section id="author" class="responsive-content">
     <div class="main-item">
-      <h2 class="title">about allegro Tech</h2>
-      <p>
-        <a href="https://allegro.pl/">Allegro</a> is the #1 online shopping destination in Poland
-        and the #6 eTail business in Europe. Started in 1999, today it is one of the most recognised
-        brands in Poland.
-      </p>
-      <p>
-        Allegro marketplace currently stands for over 150 million offers listed each month,
-        140,000 merchants’ accounts (ranging from the world's biggest brands to small and
-        medium enterprises), and over 21 million registered accounts.
-      </p>
-      <p>
-        Making a site like this work requires a lot of engineering and as the site grows, we
-        learn and adopt new technologies. What started out as a huge monolithic application,
-        over the years migrated towards an ecosystem of loosely coupled microservices
-        written in Java and other JVM languages running in the cloud. Creating a scalable and
-        distributed system at this scale brings about many challenges which make our work
-        interesting.
-      </p>
-      <p>
-        Not only scale provides us with interesting challenges. Software craftsmanship, big data,
-        machine learning and frontend technologies are all tools of the trade which we need to master
-        in order to make the system useful to buyers and sellers. In the fast-moving world of technology,
-        we try to stay on the cutting edge in order to fully take advantage of what technology has to offer.
-      </p>
-      <p>
-        On allegro.tech we share some of the interesting things we do, the issues we face and
-        the lessons we learn (sometimes the hard way). Software development is not only about
-        technology but also about people, so we have a Tech section and an Agile section as
-        well. We hope you find these posts useful. Feel free to get in touch and comment.
-      </p>
-      <div class="video-wrapper wide">
-        <div>
-          <iframe class="center-video" src="https://www.youtube.com/embed/joxqfnuucZs?rel=0" frameborder="0"
-            allowfullscreen></iframe>
-        </div>
-      </div>
+    <article class="post-content" itemprop="articleBody">
+        <h2>Goals:</h2>
+        <ul>
+            <li>Creating a technical blog valuable for the community. We focus on development and devops.</li>
+            <li>Letting the community know about events we organize or take part in.</li>
+            <li>Maintaining the image of Allegro as a technical leader and a place where great engineers work.</li>
+            <li>Highlighting our achievements but also describing our failures, for example by publishing outage
+                postmortems.
+            </li>
+        </ul>
+        <h2>Our editors:</h2>
+    </article>
+        <ul class="post-author-list">
+            {%assign authors = site.data.members | sort%}
+            {% for author in authors%}
+                {%assign authorKey = author[0]%}
+                {%assign authorData = author[1]%}
+                   {% if authorData.role contains "Editor" %}
+                <li  class="post-author">
+                    {% include single_author.html showLinkToPost=false showRole=true %}
+                </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    <article class="post-content" itemprop="articleBody">
+        <h2>Former editors:</h2>
+    </article>
+        <ul class="post-author-list">
+            {%assign authors = site.data.members | sort%}
+            {% for author in authors%}
+                {%assign authorKey = author[0]%}
+                {%assign authorData = author[1]%}
+                   {% if authorData.role contains "Former" %}
+                <li  class="post-author">
+                    {% include single_author.html showLinkToPost=false showRole=true %}
+                </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    <article class="post-content" itemprop="articleBody">
+        <h2>Unassociated reviewers:</h2>
+        <p>
+          We'd also like to thank all the people, too numerous to list here,
+          who reviewed articles without being formal members of the editorial board.
+          Just like code reviews, article reviews are open to everyone at the company
+          and often people just drop in when they feel competent to discuss a topic.
+          You can't overestimate the value of such spontaneous help.
+        </p>
+    </article>
     </div>
-  </article>
 </section>

@@ -7,6 +7,7 @@ piotr.orlowski:
     name: Piotr Orłowski
     bio: Software Development Manager with over twenty years of experience in IT and e-commerce. At Allegro he manages the work of 150+ engineers taking care of their continuous substantive development, he is responsible for the technical quality, stability and efficiency of the Allegro platform. He likes simple solutions which gives more possibilities than originally planned :)
     twitter: nigraspl
+    role: Former blog founder
 
 adam.dubiel:
     name: Adam Dubiel
@@ -25,12 +26,14 @@ michal.kosmulski:
         id: 1224016
         name: Michał Kosmulski
     linkedin: kosmulski
+    role: Editor in chief
 
 bartosz.walacik:
     name: Bartosz Walacik
     bio: Software engineer with 15+ years of professional experience. He focuses on lightweight and modern technologies around JVM. At Allegro, he works as a development team leader. [JaVers](http://javers.org) project lead. Spock advocate.
     twitter: BartoszWalacik
     github: bartoszwalacik
+    role: Former editor in chief
 
 andrzej.winnicki:
     name: Andrzej Winnicki
@@ -108,6 +111,7 @@ bartosz.galek:
     name: Bartosz Gałek
     bio: Software Developer at Allegro, engineer with devops flavor. Believes that there is always a place for improvement; likes to try new technologies and languages. Open source fan and occasional contributor.
     github: bgalek
+    role: Editor
 
 bartlomiej.ignasiak:
     name: Bartłomiej Ignasiak
@@ -164,6 +168,7 @@ joanna.antkowiak:
 miroslaw.golda:
     name: Mirosław Gołda
     bio: Mirosław is a software engineer with programming experience in Java, PHP, JavaScript and Node.js who joined Allegro Group in 2011. He likes playing around with various programming languages and technologies. Recently he’s experimenting with various automated testing tools and frameworks.
+    role: Former editor
 
 piotr.ciemielewski:
     name: Piotr Ciemielewski
@@ -602,8 +607,8 @@ kamil.pyc:
 maciej.piotrowski:
     name: Maciej Piotrowski
     bio: Maciej is a passionate iOS developer that pays much attention to details and code quality. He likes improving things, always looking for better solutions because he’s amazed that in programming world issues can be solved in 100s of ways.
-    twitter: paciej00
-    github: paciej00
+    twitter: macpiotrowski89
+    github: maciejpiotrowski89
 
 tymon.felski:
     name: Tymon Felski
@@ -669,6 +674,7 @@ mateusz.krzeszowiak:
     bio: Webperf Team member. Likes to constantly optimize and improve existing solutions. Finds it hard to stop talking about his work and sharing knowledge.
     twitter: krzksz
     github: krzksz
+    role: Editor
 
 jon.skeet:
     name: Jon Skeet
@@ -702,6 +708,77 @@ daniel.faderski:
     name: Daniel Faderski
     bio: Software engineer interested in distributed systems. Java & Python lover.
 
+tomasz.szewczyk:
+    name: Tomasz Szewczyk
+    bio: JVM software developer with interest in all kind of programming languages. Experienced in electronics, embedded C, Python, Java, Kotlin and JavaScript.
+    github: tomaszszewczyk
+
 piotr.prusinski:
     name: Piotr Prusiński
     bio: I’m a Software engineer who likes to develop in every direction. I’m a fan of treating soft skills on par with hard skills.
+
+magdalena.mazur:
+    name: Magdalena Mazur
+    bio: Frontend Software Engineer, loves to resolve problems. At Allegro working on an advertising tool - Allegro Ads, and all the adverts that you can see on the platform. ;-)
+
+kamil.jedrzejuk:
+    name: Kamil Jędrzejuk
+    bio: 'I am a Software engineer and for over 8 years I have been interested in and follow topics related to Domain Driven Design, Event Storming and software design. Another area that interests me is the Java Virtual Machine and more and more often bare-metal programming.'
+    linkedin: jkamil
+
+katarzyna.zadurska:
+    name: Katarzyna Zadurska
+    bio: Frontend Engineer at Allegro Ads. React enthusiast with passion for good quality code and attention to detail. Genuinely excited about code review. Willing to learn and discover things, whether it is code-related or just a new spot with eclairs.
+    linkedin: kzadurska
+    twitter: kzadurska
+    github: kzadurska
+    role: Editor
+
+tomasz.gospodarczyk:
+    name: Tomasz Gospodarczyk
+    bio: Frontend Engineer and team leader in the team responsible for offer page and navigation components at Allegro. Web Performance enthusiast and occasional music creator.
+    linkedin: gotomi
+    twitter: gotomi
+    github: gotomi
+    role: Editor
+
+wojciech.poniatowski:
+    name: Wojciech Poniatowski
+    bio: As Product Team Manager Wojciech builds product teams and manages Product Managers within Allegro’s technology. At our Tech Blog he provides a bit of business perspective.
+    linkedin: poniatowski
+    role: Editor
+
+daniel.dopierala:
+    name: Daniel Dopierała
+    bio: A Software Engineer who just likes to do his job well. Specializes in backend technologies on JVM, but does not shy away from frontend and big data.
+    linkedin: dopieralad
+    twitter: dopieralad
+    github: dopieralad
+    role: Editor
+
+michal.kwiatek:
+    name: Michał Kwiatek
+    bio: I’m a Junior Mobile Software Engineer at Allegro Pay who works with Android. I like creating perfect screen layouts and the best user experience. I'm a big fan of Formula 1.
+
+riccardo.belluzzo:
+    name: Riccardo Belluzzo
+    bio: Riccardo is a Research Engineer in the Allegro ML team and specializes in Natural Language Processing and Understanding. Riccardo is also a music freak, playing guitar in his free time and running a podcast about underground music and emerging artists.
+    linkedin: riccardo-belluzzo
+
+tomasz.bochenski:
+    name: Tomasz Bocheński
+    bio: Tomasz is a Machine Learning Engineer focused on both research and building solutions that use state-of-the-art ML algorithms. MLOps fan interested in building scalable ML environments for fast and efficient experimentation.
+    linkedin: tmbochenski
+
+michal.zajac:
+    name: Michał Zając
+    bio: Michał is a Ph.D. student at Jagiellonian University. He is interested in Machine Learning, Reinforcement Learning and Continual Learing. He is a former Research Engineer at Allegro. Michał also interned at Google Brain and Facebook.
+    twitter: Michal_Zajac_
+
+lukasz.kucinski:
+    name: Łukasz Kuciński
+    bio: Łukasz is an Assistant Professor at the Polish Academy of Sciences. His research focuses on machine learning and he co-leads a reinforcement learning lab. He contributes to the growth of the Polish machine learning community, hosting the reinforcement learning seminar and co-organizing a deep reinforcement learning course.
+
+piotr.milos:
+    name: Piotr Miłoś
+    bio: Piotr is a professor at the Polish Academy of Sciences and a visiting professor at the University of Oxford. He specializes in machine learning and co-leads a research group focusing on reinforcement learning. He actively works towards developing machine learning research in Poland, including hosting a reinforcement learning seminar, co-organizing a deep reinforcement learning course, and being a scientific advisor of the ML in PL association.
