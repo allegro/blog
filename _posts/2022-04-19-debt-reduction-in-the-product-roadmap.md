@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "How to include refactoring into Product development roadmap? Reducing technical debt inspired by real options identification"
+title: "How to include refactoring into product development roadmap? Reducing technical debt inspired by real options identification"
 author: [olga.dudzik]
 tags: [tech, roadmaps, tech debt, product]
 ---
@@ -19,9 +19,9 @@ So, here we get to the Product Management reality. Even if we are lucky and afte
 
 Bearing that in mind, no reasonable Product Manager can afford ignoring the gravity of code complexity and shady legacy.
 
-Today is the day to start a crusade against technical debt in your products. Nonetheless before we start we must all admit: building a yearly roadmap consisting mostly of incomprehensible technical deliveries that cannot be easily attributed to business value will not make us most popular Product Managers out there, to put it mildly. In most companies proposing such a backlog will result in heated discussions about targets, KPIs and wasting teams’ capacity. Work that does not end up with a significant increment is hard to defend. At the end technical product development is mostly not a charity effort and it is supposed to deliver financial outcomes - the sooner, the better.
+Today is the day to start a crusade against technical debt in your products. Nonetheless before we start we must all admit: building a yearly roadmap consisting mostly of incomprehensible technical deliveries that cannot be easily attributed to business value will not make us most popular Product Managers out there, to put it mildly. In most companies proposing such a backlog will result in heated discussions about targets, KPIs and wasting team's capacity. Work that does not end up with a significant increment is hard to defend. At the end technical product development is mostly not a charity effort and it is supposed to deliver financial outcomes - the sooner, the better.
 
-The situation gets even more complicated in publicly listed companies that report to stakeholder on a regular basis. Declaring work without making any explicit promise of near-future apparent return on investment may seem unexplainable. Technical debt reduction on its own is strictly connected with vast uncertainty as long as it is not presented holistically in the broader context. So how can we approach Roadmaps to make debt reduction more appealing for our audience?
+The situation gets even more complicated in publicly listed companies that report to stakeholders on a regular basis. Declaring work without making any explicit promise of near-future apparent return on investment may seem unexplainable. Technical debt reduction on its own is strictly connected with vast uncertainty as long as it is not presented holistically in a broader context. So how can we approach Roadmaps to make debt reduction more appealing for our audience?
 
 ## Take a look outside of the IT world.
 
@@ -53,7 +53,7 @@ First of all we should list all services/topics touched by our technical debt. T
 
 The second step is ideation. Let’s determine our real options. Each of the listed services or areas, while solved, should be considered as an enabler for further system development. So this is the time to brainstorm together: assuming that problem A is resolved, what kind of new capabilities will be available for us? What kind of services or products can we build then? Or maybe there are some meaningful improvements that will make our product more convenient and should attract more users? We can and should go even further: what can we build assuming that more than one of the detected issues is closed? This is a perfect moment for the Product Manager to step in and to present the broad vision for the Product as inspiration. Wishful thinking, benchmarking, research and UX studies - all of these tools will prove to be useful in this workshop.
 
-At the end of step two we should be able to draw a tree diagram presenting clearly technical blockers as potential new opportunities enablers:
+At the end of step two we should be able to draw a tree diagram presenting clearly technical blockers as potential new opportunity enablers:
 
 ![Figure 1](/img/articles/2022-04-19-debt-reduction-in-the-product-roadmap/img1.png)
 
