@@ -2,7 +2,7 @@ name: Push to public fork
 
 on:
   push:
-    branches: [ main-internal ]
+    branches: [ main ]
 
 jobs:
   publish:
