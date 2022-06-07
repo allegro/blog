@@ -84,7 +84,7 @@ Adding additional resolvers also complicates logic and makes the flow less clear
 
 
 * A type resolver when some parts of a query can be resolved independently, because those parts can run in parallel.
-It’s very easy to achieve, just wrap the resolver’s functions with any of the asynchronous abstractions. We also use type resolvers when we ask for some part of the domain
+To achieve it, wrap the resolver’s functions with any of the asynchronous abstractions. We also use type resolvers when we ask for some part of the domain
 that isn’t ours to avoid dependency crossing.
 
 
