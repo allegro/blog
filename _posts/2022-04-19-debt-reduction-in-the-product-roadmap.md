@@ -10,8 +10,8 @@ Almost every company that survived the startup phase and managed to deliver its 
 
 Statistics explicitly show the scale of the problem. According to the survey conducted in 2020 by McKinsey[^1], tech debt can reach up to as much as 40% of the whole technology value. On average 10-20% of IT budget is ultimately consumed by tech debt management and most CIOs interviewed consider the problem significantly increasing over past years, especially in enterprise-size companies[^2].
 
-[^1]: https://www.mckinsey.com/business-functions/mckinsey-digital/our-insights/tech-debt-reclaiming-tech-equity
-[^2]: https://www.computerweekly.com/news/252504654/Technical-debt-is-holding-back-innovation
+[^1]: [https://www.mckinsey.com/business-functions/mckinsey-digital/our-insights/tech-debt-reclaiming-tech-equity](https://www.mckinsey.com/business-functions/mckinsey-digital/our-insights/tech-debt-reclaiming-tech-equity)
+[^2]: [https://www.computerweekly.com/news/252504654/Technical-debt-is-holding-back-innovation](https://www.computerweekly.com/news/252504654/Technical-debt-is-holding-back-innovation)
 
 As disturbing as it sounds, acknowledging the magnitude of the problem is the first step to dealing with it.
 
@@ -29,7 +29,7 @@ I believe that especially in Product Management we appreciate inspirations from 
 
 Let us discover together the roots of real options. The idea itself dates back to 1977. Stewart Myers coined this term describing real options as “opportunities to purchase real assets on possibly favorable terms”[^3] and declaring that each company should be aware of its real assets and real options. Since then, the idea has evolved significantly and has been used in multiple methodologies not only for financial valuations, but also for determining value drivers in a variety of industries. It has been particularly attractive to IT enterprises as it embraces dealing with high uncertainty.
 
-[^3]: https://onlinelibrary.wiley.com/doi/10.1111/emre.12324
+[^3]: [https://onlinelibrary.wiley.com/doi/10.1111/emre.12324](https://onlinelibrary.wiley.com/doi/10.1111/emre.12324)
 
 Inspired by real options theory, I reckon that we should stop considering technical debt in terms of short-term Profit and Loss accounting.
 
@@ -43,7 +43,7 @@ In the Product Management case, investments (time of our developers) will be mad
 
 I strongly believe that it is really tricky to evaluate analyzed efforts and hopes from the financial perspective at an early stage of analysis. Calculating ROI moneywise can be extremely time-consuming and tends to be based heavily on “guesstimates” (“an approximate calculation of the size or amount of something when you do not know all the facts”[^4]) . Nonetheless, at the same time it should be fairly possible and informative to at least roughly estimate our potential works vs. hopes in T-shirt sizing method (or any other preferred manner, up to you) and I would strongly recommend to follow this path at the beginning. As it is fairly simple and flexible, we can use the same concept to evaluate profits or attractivity of products or opportunities.
 
-[^4]: https://dictionary.cambridge.org/dictionary/english/guesstimate
+[^4]: [https://dictionary.cambridge.org/dictionary/english/guesstimate](https://dictionary.cambridge.org/dictionary/english/guesstimate)
 
 ## Where should we start tech debt - value mapping?
 
