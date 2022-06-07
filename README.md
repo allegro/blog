@@ -42,7 +42,6 @@ Currently, the team consists of:
 * Daniel Dopierała — editor
 * Bartosz Gałek — editor
 * Michał Kosmulski — editor-in-chief
-* Mateusz Krzeszowiak — editor
 * Wojtek Poniatowski — editor
 * Katarzyna Zadurska — editor
 
