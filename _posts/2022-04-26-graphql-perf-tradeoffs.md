@@ -377,7 +377,7 @@ When we ask for a user with his name and email the response is saved in cache.
 But when we ask again without the information about email despite the fact that
 the information is already available we cannot use it,
 because this is a different query (and HTTP cache cannot handle it without understanding GraphQL logic).
-To make cache work best we should recognise at field level which is already in
+To make cache work best we should recognise at field level which user name is already in
 memory and ask only for the rest of them.
 
 ### Server-side caching
