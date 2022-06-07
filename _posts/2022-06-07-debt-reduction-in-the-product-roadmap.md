@@ -55,7 +55,7 @@ The second step is ideation. Let’s determine our real options. Each of the lis
 
 At the end of step two we should be able to draw a tree diagram presenting clearly technical blockers as potential new opportunity enablers:
 
-![Figure 1](/img/articles/2022-04-19-debt-reduction-in-the-product-roadmap/img1.png)
+![Figure 1](/img/articles/2022-06-07-debt-reduction-in-the-product-roadmap/img1.png)
 
 Tree diagram mapping technical debt areas to related product/business opportunities.
 
@@ -63,7 +63,7 @@ Step three is all about evaluation. As mentioned before, I recommend using T-shi
 
 Business team (product managers and business stakeholders) will work on evaluating all the listed capabilities. As always, they should be considered in the broader context, so any product validation tools are handy. Apart from the business impact of each solution, we should also bear in mind if it fits into expected company strategy and if we can see it bringing us any competitive advantage when delivered in the more or less distant future (we have some issues to be resolved first!). Opportunities will be marked on the diagram as green boxes.
 
-![Figure 2](/img/articles/2022-04-19-debt-reduction-in-the-product-roadmap/img2.png)
+![Figure 2](/img/articles/2022-06-07-debt-reduction-in-the-product-roadmap/img2.png)
 
 ## Roadmapping
 
@@ -71,11 +71,11 @@ Having this analysis in hand, we can pick our best candidates for the roadmap de
 
 There are at least two approaches to include refactoring on the roadmap, depending on the company’s specifics. Presenting detected technical-debt tasks as a stage zero of your product development may prove to be handy for organizations that are particularly reluctant to acknowledge refactoring as opportunities. In such a case debt reduction could be ‘hidden’ in the Opportunity roadmap item represented by longer actual delivery time. It is worth noting that this approach gives less clarity when it comes to presenting dependencies:
 
-![Figure 3](/img/articles/2022-04-19-debt-reduction-in-the-product-roadmap/img3.png)
+![Figure 3](/img/articles/2022-06-07-debt-reduction-in-the-product-roadmap/img3.png)
 
 For companies that are more open to the refactoring idea, putting technical tasks as “business enablers” on the roadmap can give more clarity. In this approach, it is also easier to include multiple enablers and opportunities on one graph. Cause and effect sequence would explain interdependencies between deliveries and make it easier to understand overlapping items:
 
-![Figure 4](/img/articles/2022-04-19-debt-reduction-in-the-product-roadmap/img4.png)
+![Figure 4](/img/articles/2022-06-07-debt-reduction-in-the-product-roadmap/img4.png)
 
 I strongly believe that introducing analysis described in this article can be a good starting point for the discussion about reducing technical debt in IT-driven products. It can be further developed and supported by a variety of financial analysis methods available for real options valuations or other approaches applicable for IT. There is a necessity to change general mindset and industry’s way of thinking about code refactoring to make the process sustainable and successful. Becoming aware of new opportunities resulting from the technical debt reduction is a good first step towards this goal.
 
