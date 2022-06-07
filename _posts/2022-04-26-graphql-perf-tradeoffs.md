@@ -283,7 +283,7 @@ It is possible that our internal performance is not the limiting factor as I / O
 
 ## Batching requests to external services
 
-In the paragraph about resolvers we mentioned connecting with the same source many times to
+In the paragraph about resolvers we mentioned connecting to the same source many times to
 fetch all the type fields in case of using type resolvers. There is a solution for that, and it is called data loaders.
 How does it work? It collects all requests from many parts of the schema and retrieves their data in one request.
 This allows it to solve the N+1 problem, which is very well known in GraphQL.
