@@ -277,7 +277,7 @@ Our implementation follows the Apollo proposed tracing format ([A community buil
 }
 ```
 
-Bottom line of resolver monitoring is thinking about it as of checking each data source,
+Bottom line of resolver monitoring is thinking about it as checking each data source,
 not the internal mechanism of GraphQL implementation.
 It is possible that our internal performance is not the limiting factor as I / O and external connections are often critical.
 
