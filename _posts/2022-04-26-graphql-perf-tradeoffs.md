@@ -60,7 +60,7 @@ A schema consists of various elements:
 — defined queries/mutations/subscriptions that we can ask (we can think of it as the root of the graph)
 — input objects that we take as arguments in queries/mutations/subscriptions
 — objects that we return from queries/mutations/subscriptions
-— scalars, the simplest types (which is always a leaf in a graph)
+— scalars, the simplest types like int or string (which are always a leaf in a graph)
 
 As the schema is composed of queries and types, there are two kinds of resolvers. The first is obligatory and resolves the whole query.
 It can return the complete result, but also only a part of it.
