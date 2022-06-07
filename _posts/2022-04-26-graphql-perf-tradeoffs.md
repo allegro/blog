@@ -72,7 +72,7 @@ At first we run `UserQueryResolver`, which fetches user data from user domain lo
 Then we call `UserTypeResolver` with the ID resolved earlier.
 It makes two calls: first one to user email service and second to user name service.
 When resolving is over, GraphQL returns the result.
-UserQueryResolver might also have returned all information.
+`UserQueryResolver` might also have returned all information.
 One of the main questions about optimizing GraphQL is when to use a query resolver, and when a type resolver.
 We decided to use:
 
