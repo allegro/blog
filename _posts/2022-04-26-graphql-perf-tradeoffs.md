@@ -221,7 +221,7 @@ class MonitoringInstrumentation(
 
 ### Per field monitoring
 
-Last but not least, an interesting approach which we consider and it’s almost out of the box for resolvers and supported by many libraries is per field monitoring.
+Last but not least, an interesting approach which we consider, and is almost out of the box for resolvers and supported by many libraries, is per field monitoring.
 It is pretty nice for getting extra data to analyze our graph.
 However, it can be expensive to collect such a type of data.
 Gathering metrics for each field can be more valuable than monitoring each query.
