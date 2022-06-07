@@ -12,7 +12,7 @@ and we would like to share it with you in this article.
 ## What’s GraphQL and how does it work?
 To understand how to increase GraphQL’s performance we need to understand how it works under the hood.
 Why is it so important? In GraphQL most of the common ideas on how to speed up the communication are useless.
-One of the things we usually do is introduce caching to our application, but you can often hear that graphQL is not cacheable.
+One of the things we usually do is introduce caching to our application, but you can often hear that GraphQL is not cacheable.
 Indeed it is not that simple in GraphQL and we hope to clarify it to you later in this article.
 
 So what is GraphQL? [GraphQL’s documentation](https://graphql.org/) says:
@@ -22,7 +22,7 @@ So what is GraphQL? [GraphQL’s documentation](https://graphql.org/) says:
 > gives clients the power to ask for exactly what they need and nothing more [...].
 
 GraphQL sends the information through a standard TCP connection (mostly HTTP).
-There is only one entry point and all needed information is sent in a request param or body.
+There is only one entry point and all needed information is sent in a request parameter or body.
 In contrast to the REST API, where we often fetch fields that we won’t use, in GraphQL we can ask for and compute only the useful ones.
 This key feature gives us the first and most important way to speed up our application: ask only for the information that you need.
 
@@ -39,7 +39,7 @@ type User {
 }
 ```
 * Queries — the way we ask for processing information.
-  We provide information about which resources we want to fetch or mutate and which exactly fields we want to be returned.
+  We provide information about which resources we want to fetch or mutate and which fields exactly we want to be returned.
   We can fetch data with an operation called a query or change data with a mutation.
   Below we query for the user’s name and his friends’ names.
 
@@ -55,7 +55,7 @@ query {
 
 ## Resolver design is a game changer!
 
-We will spend the whole paragraph to make sure we are on the same page understanding how they work.
+We will spend the whole paragraph to make sure we are on the same page understanding how resolvers work.
 A schema consists of various elements:
 — defined queries/mutations/subscriptions that we can ask (we can think of it as the root of the graph)
 — input objects that we take as arguments in queries/mutations/subscriptions
@@ -63,17 +63,17 @@ A schema consists of various elements:
 — scalars, the simplest types (which is always a leaf in a graph)
 
 As the schema is composed of queries and types, there are two kinds of resolvers. The first is obligatory and resolves the whole query.
-It can return the complete result, but also only part of it.
+It can return the complete result, but also only a part of it.
 The second part is added by type resolvers. Let us show you an example: let’s say we want to get information about a user.
 
 ![resolver](/img/articles/2022-04-26-graphql-perf-tradeoffs/resolvers.png)
 
-At first we run UserQueryResolver, which fetches user data from user domain logic. It returns only the ID of the user.
-Then we call UserTypeResolver with ID resolved earlier.
-It makes two calls: first one to userEmail service and second to userName service.
+At first we run `UserQueryResolver`, which fetches user data from user domain logic. Only the ID of the user is returned.
+Then we call `UserTypeResolver` with the ID resolved earlier.
+It makes two calls: first one to user email service and second to user name service.
 When resolving is over, GraphQL returns the result.
 UserQueryResolver might also have returned all information.
-One of the main questions about optimizing GraphQL is when to use query resolver, and when type resolver.
+One of the main questions about optimizing GraphQL is when to use a query resolver, and when a type resolver.
 We decided to use:
 
 * A query resolver for fields that come from the same data source as the identifier field.
@@ -104,7 +104,7 @@ Some basic dashboards could look like this:
 ![dashboard_2](/img/articles/2022-04-26-graphql-perf-tradeoffs/p95-response-2.png)
 
 In the GraphQL universe, there is usually only one endpoint. This approach has advantages and disadvantages.
-While we have low latency and no errors it could be great for us as developers and business.
+While we have low latency and no errors it is great for us as developers and business.
 We have just one entry point and one failure point but if something goes wrong we have to dig deeper.
 
 The chart below, showing p95 response times for a single GraphQL endpoint, does not tell the whole story. In reality we have plenty of consumers which use different input data and ask us for variety of payload in extended scope.
@@ -151,8 +151,8 @@ query {
 }
 ```
 
-After a few new features are added, it can end up more complex like this one. In the same query we ask for ten thousand additional objects from another data source.
-We can imagine that previous `p95` dashboard doesn’t have much value now because it is perfectly normal that the
+After a few new features are added, they can end up more complex like the one below. In the same query we ask for ten thousand additional objects from another data source.
+We can imagine that the previous `p95` dashboard doesn’t have much value now because it is perfectly normal that the
 computation time increases when we ask for additional data. The pagination plays a big role here, too.
 Both of these queries can still be executed at the same time and shouldn’t be measured by the same metric.
 
@@ -172,8 +172,8 @@ query {
 
 ### Slow query log
 
-After integrating a huge number of new API’s we realized that simple HTTP endpoint monitoring was not enough in our case.
-We had been looking for a better approach to this. Slow query log is a simple concept -
+After integrating a huge number of new APIs we realized that simple HTTP endpoint monitoring was not enough in our case.
+We had been looking for a better approach. Slow query log is a simple concept -
 set a threshold at which we consider a query too slow.
 Each query that exceeds that threshold gets logged with all input parameters.
 Moreover we set up metrics which indicate that some problematic query appears.
@@ -287,13 +287,13 @@ In the paragraph about resolvers we mentioned connecting with the same source ma
 fetch all the type fields in case of using type resolvers. There is a solution for that, and it is called data loaders.
 How does it work? It collects all requests from many parts of the schema and retrieves their data in one request.
 This allows it to solve the N+1 problem, which is very well known in GraphQL.
-Imagine the situation then we want to query for three users.
+Imagine the situation where we want to query for three users.
 
 ![no-loader](/img/articles/2022-04-26-graphql-perf-tradeoffs/no-loader.png)
 
 As the diagram says, we must ask external sources four times for three users – once to fetch all users and once per each user to fetch his name.
 Moreover we call user name service many times even if it has some batch method to get logins for many users.
-Introducing a data loader solves this problem. Second diagram shows how it works.
+Introducing a data loader solves this problem. The second diagram shows how it works.
 
 ![data-loader](/img/articles/2022-04-26-graphql-perf-tradeoffs/data-loader.png)
 
@@ -331,7 +331,7 @@ class UserTypeResolver(
 
 ```
 
-Exactly the same we can do with `User` fields in type resolver.
+Exactly the same can be done with `User` fields in the type resolver.
 We can accumulate requests for each field and run it once if the source is the same.
 There is a `UserDataLoader` that asks `UserClient` for the whole `User` object.
 
@@ -386,7 +386,7 @@ We could cache specific types from our schema or their fields. A good example of
 [apollo-server](https://www.apollographql.com/docs/apollo-server/performance/caching/).
 So if we run the same type or query resolver with the same arguments it can be returned from cache.
 With [data loaders](https://github.com/graphql-java/java-dataloader#the-scope-of-a-data-loader-is-important) you can also cache requests to external sources not only in one query,
-but even between many queries by selecting specific strategy. This solution is available out of the box, and can be used easily.
+but even between many queries by selecting a specific strategy. This solution is available out of the box, and can be used easily.
 
 ### Client-side caching
 Another common way to cache query response is client-side caching. It can be very beneficial, because one client may ask for the same information many times.
@@ -394,7 +394,7 @@ As an example we can take Apollo client and its solution. The cache uses the ID 
 Then it checks if all fields that are to be returned are already in memory, if some are not it asks only for them.
 
 ### Our caching decisions
-We’ve not decided to use server-side caching with a global data loader because we have struggled with many clients of our graph and the graph’s data
+We’ve decided not to use server-side caching with a global data loader because we have struggled with many clients of our graph and the graph’s data
 changes frequently. That forced us to use a cache-per-request strategy.
 If we are talking about caching on the client side we tackle the issue that some of our objects don’t have a unique `ID` so after a while we skipped this approach and we are not caching them on the client side either.
 
