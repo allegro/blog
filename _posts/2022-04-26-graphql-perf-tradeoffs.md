@@ -56,7 +56,7 @@ query {
 ## Resolver design is a game changer!
 
 We will spend the whole paragraph on making sure we are on the same page understanding how resolvers work.
-A schema consists of various elements:
+A schema consists of types definitions:
 — defined queries/mutations/subscriptions that we can ask (we can think of it as the root of the graph)
 — input objects that we take as arguments in queries/mutations/subscriptions
 — objects that we return from queries/mutations/subscriptions
