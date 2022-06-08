@@ -8,12 +8,12 @@ excerpt: >
     rid of the GC from our application because it was running too long, too often, and perhaps even led to temporary system freezes.
     What if we could still benefit from the GC, but in special cases, also be able to store data beyond its control? We
     could still take advantage of its convenience and, at the same time, be able to easily get rid of long GC pauses.
-    It turns out that it is possible. In this article, we will look at whether and when it is worth storing the data
+    It turns out that it is possible. In this article, we will look at whether and when it is worth storing data
     beyond the reach of the Garbage Collector's greedy hands.
 ---
 
 Certainly one of the main distinguishing features of Java world is the Garbage Collector.
-Using it is safe and convenient, it allows us to forget about many tedious responsibilities, letting to focus on the
+Using it is safe and convenient, it allows us to forget about many tedious responsibilities, letting us focus on the
 pure joy of coding. Yet sometimes it can cause a headache too, especially when we notice that GC uses our resources
 too intensively. Each of us has probably experienced a time in our career when we wanted to get
 rid of the GC from our application because it was running too long, too often, and perhaps even led to temporary system freezes.
@@ -21,14 +21,14 @@ rid of the GC from our application because it was running too long, too often, a
 What if we could still benefit from the GC, but in special cases, also be able to store data beyond its control? We
 could still take advantage of its convenience and, at the same time, be able to easily get rid of long GC pauses.
 
-It turns out that it is possible. In this article, we will look at whether and when it is worth storing the data
+It turns out that it is possible. In this article, we will look at whether and when it is worth storing data
 beyond the reach of the Garbage Collector's greedy hands.
 
 ## Comfort comes at a price
 
 At [Allegro](https://allegro.tech) we are very keen on metrics. We measure anything that can tell us something about the condition of
 our services. Apart from the most obvious metrics directly related to the application, such as throughput, the number of
-errors, CPU and memory usage, we also pay a great deal of attention to metrics related to the Garbage Collecting — GC working
+errors, CPU and memory usage, we also pay a great deal of attention to metrics related to the garbage collecting — GC working
 time and number of its cycles. Too much time spent on releasing the memory or too frequent GC launches may signal problems with
 memory leaks or indicate that it is worth considering optimising memory usage or switching to a different GC strategy.
 
@@ -58,7 +58,7 @@ direct control of the operating system, which the JVM uses for its own purposes.
 methods, internal thread data and cached code necessary for operation. As I mentioned earlier, off-heap memory is not
 subject to the GC. In particular, it is excluded from garbage collection processes, which means that programmers
 creating the JVM code using this area are entirely responsible for freeing memory allocated for
-variables. However, it turns out that there is also a dedicated area to which we — the programmers — also have access to.
+variables. However, it turns out that there is also a dedicated area to which we — the programmers — have access as well.
 There is a possibility to write and read data from this space, remembering of course, that the responsibility
 for cleaning up after unnecessary variables lies entirely with us.
 
@@ -161,7 +161,7 @@ that there are very few solutions left. Out of the popular ones, only Terracotta
 only to some particular version. It seems that this is a very niche solution and we do not have many options to choose
 from. In terms of less-known projects, I came across [Chronicle-Map](https://github.com/OpenHFT/Chronicle-Map),
 [MapDB](https://github.com/jankotek/MapDB) and [OHC](https://github.com/snazy/ohc). I chose the
-last one because it was created as part of the Cassandra project, which I had some experience and was curious
+last one because it was created as part of the Cassandra project, which I had some experience with and was curious
 about how this component worked:
 
 > OHC was developed in 2014/15 for Apache Cassandra 2.2 and 3.0 to be used as the new row-cache backend.
@@ -180,7 +180,7 @@ In my project, I used the [Cafffeine cache](https://github.com/ben-manes/caffein
 and OHC library to store it in the off-heap area.
 
 The test scenario consists of querying for descriptions of different offers. During the test, I
-will collect data on memory and GC parameters using the jConsole. I prepared the test scenario using [jMeter](https://jmeter.apache.org/),
+will collect data on memory and GC parameters using jConsole. I prepared the test scenario using [jMeter](https://jmeter.apache.org/),
 which will additionally allow me to measure response times.
 
 The configuration of the first test is as follows:
@@ -199,7 +199,7 @@ Memory usage increases throughout the test, there were 40 GC collection cycles t
 This time heap memory usage chart definitely looks different, is shaped like a saw, and reaches half of the previous value.
 Please note also, that this time there were only 13 GC cycles with total time of 0.108s.
 
-The results of the GC profile comparison are therefore as expected, and what about the requests times?
+The results of the GC profile comparison are therefore as expected, and what about the request times?
 
 *jMeter metrics of on-heap variant:*
 ![on-heap GC chart](/img/articles/2022-06-01-gc-hands-off-my-data/on-heap-jmeter.png)
@@ -224,7 +224,7 @@ This time, for the sake of clarity, the results are summarized in a table:
 
 It turns out that as the size of cache item increases, the benefits of using off-heap space grow – all metrics have improved.
 
-What about cache maximum elements? Let's use 200.000B item size and check what happen, when we increase the maximum cache
+What about cache maximum elements? Let's use 200.000B item size and check what happens when we increase the maximum cache
 element size, we will test cache for 5000, 10.000 and 15.000 elements:
 
 | Cache max elements | Variant | GC cycles count | GC time | Request time (median) | Throughput |
@@ -236,7 +236,7 @@ element size, we will test cache for 5000, 10.000 and 15.000 elements:
 | 15000 | on-heap | 84 | 0.462 s | 355 ms | 41.8 rps |
 | 15000 | off-heap | 19 | 0.167 s | 344 ms | 42.6 rps |
 
-No surprise here either, increasing cache size has a positive impact on both variants. Of course in case of on-heap cache
+No surprise here either, increasing cache size has a positive impact on both variants. Of course in case of on-heap cache,
 some of the benefits are offset by the need for cleaning larger memory area.
 
 With the experiments conducted, we can conclude that the more data we store in memory, the greater the benefit of using
