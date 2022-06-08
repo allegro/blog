@@ -82,7 +82,7 @@ out.println(new String(name));
 out.println(buff.getInt());
 ```
 
-Note the `allocateDirect` method that is allocating the off-heap memory unlike to a similar method: `allocate` that is allocating
+Note the `allocateDirect` method that is allocating the off-heap memory unlike a similar method: `allocate` that is allocating
 on-heap memory. The behavior of both methods can be compared with the help of a profiler
 (I will use [jConsole](https://openjdk.java.net/tools/svc/jconsole/)). The following programs allocate 1GB of memory,
 respectively, on-heap and off-heap:
@@ -102,7 +102,7 @@ The chart below shows heap memory profile comparison for the both programs (on-h
 Such a possibility to bypass Garbage Collector may seem extremely tempting to
 developers struggling with long working time of the GC. However, this raises the question: what type of usage justifies
 the extra effort involved in manually freeing the memory and the potential risk of error? What are the advantages of
-using off-heap memory? Is it faster? How much time will we save by bypassing the GC? Why this method is so uncommon?
+using off-heap memory? Is it faster? How much time will we save by bypassing the GC? Why is this method so uncommon?
 To put it simply: is it worth doing and if so, when?
 
 ## Be gone GC!
@@ -112,7 +112,7 @@ to painful memory management. We can create variables of any type and any scope 
 happens to memory once we stop using them. This task is handled by the GC, which does it brilliantly. In each successive
 version of the JDK we get a new algorithm, which in some specific cases is even better than the previous one.
 
-However, I'm more than sure that many of us had encountered once the problem of long GC time or too frequent GC
+However, I'm more than sure that many of us had once encountered the problem of long GC time or too frequent GC
 calls. Every developer has their own ideas on how to deal with this issue - we look for memory leaks, profile the
 application in search of hot spots, examine the scope of created variables, use object pools, verify the system
 behaviour with different GC algorithms, and check the cache configuration.
@@ -129,7 +129,7 @@ any benefit in storing cache data outside the heap?
 
 In a sense, the off-heap space lies outside the control of the JVM (though it belongs to the Java process),
 and for this reason, it is not possible to write
-complex structures used in Java languages into it. This raises the need for an intermediate step for serialization the
+complex structures used in JVM languages into it. This raises the need for an intermediate step for serialization the
 data into a plain byte array, which can then be stored in the off-heap area. When the data is loaded, the reverse
 process must be performed: deserialization into a form that we can use in Java. These additional steps will of
 course come at an extra cost, which is why accessing off-heap data will, for obvious reasons, take longer than accessing
@@ -145,7 +145,7 @@ data, or is there a specific usage scenario? To answer these questions, it is ne
 
 ## Experiments
 
-In the on-heap area, we can store any data structure, which means that the advantage of this approach lies in the fact
+We can store any data structure in the on-heap area, which means that the advantage of this approach lies in the fact
 that there is no overhead involved in transforming the data to another form, while its disadvantage consists of the
 additional cost related to the GC. On the other hand, in the case of off-heap storage, there is no GC extra cost,
 but there is the cost of serialising the data to a byte array.
@@ -154,7 +154,7 @@ Over the last years, significant
 progress has been made in the field of GC and with the right matching of the algorithm to the application profile, its
 time can be very short. But is there any case where it is worth reaching into the unmanaged space after all?
 
-I decided to start with an overview of what opensource currently offers. When it comes to the implementation of the
+I decided to start with an overview of what open source currently offers. When it comes to the implementation of the
 on-heap cache mechanism, the options are numerous – there is well known: guava, ehcache, caffeine and many other solutions. However,
 when I began researching cache mechanisms offering the possibility of storing data outside the GC control, I found out
 that there are very few solutions left. Out of the popular ones, only Terracotta is supported, and even then, it applies
