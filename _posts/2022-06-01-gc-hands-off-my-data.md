@@ -5,24 +5,24 @@ author: [michal.knasiecki]
 tags: [tech, cache, performance, "off-heap", "garbage collectors"]
 excerpt: >
     Each of us has probably experienced a time in our career when we wanted to get
-    rid of the GC from our application because it was running too long, too often, and perhaps even led to temporary system freezes.
+    rid of the Garbage Collector from our application because it was running too long, too often, and perhaps even led to temporary system freezes.
     What if we could still benefit from the GC, but in special cases, also be able to store data beyond its control? We
     could still take advantage of its convenience and, at the same time, be able to easily get rid of long GC pauses.
     It turns out that it is possible. In this article, we will look at whether and when it is worth storing data
-    beyond the reach of the Garbage Collector's greedy hands.
+    beyond the reach of the Garbage Collector’s greedy hands.
 ---
 
-Certainly one of the main distinguishing features of Java world is the Garbage Collector.
+Certainly one of the main distinguishing features of the Java world is the Garbage Collector.
 Using it is safe and convenient, it allows us to forget about many tedious responsibilities, letting us focus on the
 pure joy of coding. Yet sometimes it can cause a headache too, especially when we notice that GC uses our resources
 too intensively. Each of us has probably experienced a time in our career when we wanted to get
-rid of the GC from our application because it was running too long, too often, and perhaps even led to temporary system freezes.
+rid of the Garbage Collector from our application because it was running too long, too often, and perhaps even led to temporary system freezes.
 
 What if we could still benefit from the GC, but in special cases, also be able to store data beyond its control? We
 could still take advantage of its convenience and, at the same time, be able to easily get rid of long GC pauses.
 
 It turns out that it is possible. In this article, we will look at whether and when it is worth storing data
-beyond the reach of the Garbage Collector's greedy hands.
+beyond the reach of the Garbage Collector’s greedy hands.
 
 ## Comfort comes at a price
 
@@ -43,7 +43,7 @@ that takes the form of time needed to free the memory of expired cache items, wh
 manner in which the cache works does not quite fit the
 [generational hypothesis](http://insightfullogic.com/2013/Feb/20/garbage-collection-java-1/) and may mislead the JVM by preventing it
 from properly tuning the GC mechanism. I then began to wonder whether it might not be worth keeping the cache in an area
-excluded from the GC's control? I knew this is possible, although I had never seen a practical implementation of this
+excluded from the GC’s control? I knew this is possible, although I had never seen a practical implementation of this
 technique. This topic was bothering me for some time, so I decided to investigate.
 
 ## Memory architecture
@@ -57,7 +57,7 @@ has no control over, which is the off-heap memory, sometimes also called native 
 direct control of the operating system, which the JVM uses for its own purposes. It stores information about classes and
 methods, internal thread data and cached code necessary for operation. As I mentioned earlier, off-heap memory is not
 subject to the GC. In particular, it is excluded from garbage collection processes, which means that programmers
-creating the JVM code using this area are entirely responsible for freeing memory allocated for
+creating the JVM code using this area are wholly responsible for freeing memory allocated for
 variables. However, it turns out that there is also a dedicated area to which we — the programmers — have access as well.
 There is a possibility to write and read data from this space, remembering of course, that the responsibility
 for cleaning up after unnecessary variables lies entirely with us.
@@ -82,7 +82,7 @@ out.println(new String(name));
 out.println(buff.getInt());
 ```
 
-Note the `allocateDirect` method that is allocating the off-heap memory unlike a similar method: `allocate` that is allocating
+Note the `allocateDirect` method that allocates the off-heap memory unlike a similar method: `allocate` that allocates
 on-heap memory. The behavior of both methods can be compared with the help of a profiler
 (I will use [jConsole](https://openjdk.java.net/tools/svc/jconsole/)). The following programs allocate 1GB of memory,
 respectively, on-heap and off-heap:
@@ -95,7 +95,7 @@ ByteBuffer.allocate(1000000000)
 ByteBuffer.allocateDirect(1000000000)
 ```
 
-The chart below shows heap memory profile comparison for the both programs (on-heap on the left vs. off-heap on the right):
+The chart below shows heap memory profile comparison for both programs (on-heap on the left vs. off-heap on the right):
 
 ![on-heap vs off-heap](/img/articles/2022-06-01-gc-hands-off-my-data/compare.png)
 
@@ -137,8 +137,8 @@ on-heap data directly.
 
 Since writing and reading data in the off-heap space takes longer, what is the benefit of this approach then? Well, the data
 stored in the off-heap space are not subject to GC processes, so on the one hand we – the programmers – are responsible
-for each freeing of memory after a given variable is no longer useful, but on the other hand, we relieve the management
-processes in the JVM by releasing CPU's time for the rest of the application, so, theoretically, it should
+for each freeing of memory after a given variable is no longer useful. On the other hand, we relieve the management
+processes in the JVM by releasing CPU’s time for the rest of the application, so, theoretically, it should
 result in some resource savings. The question is, do these differences balance each other out to any degree? Will the savings
 associated with the GC process balance out our longer data access time? If so, does it depend only on the amount of
 data, or is there a specific usage scenario? To answer these questions, it is necessary to run a few experiments.
@@ -154,11 +154,11 @@ Over the last years, significant
 progress has been made in the field of GC and with the right matching of the algorithm to the application profile, its
 time can be very short. But is there any case where it is worth reaching into the unmanaged space after all?
 
-I decided to start with an overview of what open source currently offers. When it comes to the implementation of the
+I decided to start with an overview of what the open source currently offers. When it comes to the implementation of the
 on-heap cache mechanism, the options are numerous – there is well known: guava, ehcache, caffeine and many other solutions. However,
 when I began researching cache mechanisms offering the possibility of storing data outside the GC control, I found out
-that there are very few solutions left. Out of the popular ones, only Terracotta is supported, and even then, it applies
-only to some particular version. It seems that this is a very niche solution and we do not have many options to choose
+that there are very few solutions left. Out of the popular ones, only Terracotta is supported.
+It seems that this is a very niche solution and we do not have many options to choose
 from. In terms of less-known projects, I came across [Chronicle-Map](https://github.com/OpenHFT/Chronicle-Map),
 [MapDB](https://github.com/jankotek/MapDB) and [OHC](https://github.com/snazy/ohc). I chose the
 last one because it was created as part of the Cassandra project, which I had some experience with and was curious
@@ -171,28 +171,28 @@ downloading the offer description from the repository, it is placed in the cache
 cache has a limited capacity, which is chosen in such a way that it forces the deletion of items that have been placed
 in it for the longest time.
 
-In our cache, the offer number will be the key, while its description in the form of a string of characters will be the
-value. This will allow us to easily simulate almost any size of data in the cache (all we have to do is to make the
-offer description longer), and additionally, it will make the overhead related to the aforementioned serialisation
+In our cache, the offer number is the key, while its description in the form of a string of characters is the
+value. This allows us to easily simulate almost any size of data in the cache (all we have to do is to make the
+offer description longer), and additionally, it makes the overhead related to the aforementioned serialisation
 relatively small – serialisation of a text string is obviously faster than a complex DTO object.
 
 In my project, I used the [Cafffeine cache](https://github.com/ben-manes/caffeine) to store the data in the on-heap area
 and OHC library to store it in the off-heap area.
 
-The test scenario consists of querying for descriptions of different offers. During the test, I
-will collect data on memory and GC parameters using jConsole. I prepared the test scenario using [jMeter](https://jmeter.apache.org/),
-which will additionally allow me to measure response times.
+The test scenario consisted of querying for descriptions of different offers. During the test, I
+collected data on memory and GC parameters using jConsole. I prepared the test scenario using [jMeter](https://jmeter.apache.org/),
+which additionally allowed me to measure response times.
 
-The configuration of the first test is as follows:
+The configuration of the first test was as follows:
 - maximum number of cached elements: 5000
 - cached element size: 100.000 bytes
 - 10 threads querying for random offers in a loop of 1000 iterations each
 
-Let's take a look at the results.
+Let’s take a look at the results.
 
 *The GC profile of on-heap variant:*
 ![on-heap GC chart](/img/articles/2022-06-01-gc-hands-off-my-data/on-heap-gc.png)
-Memory usage increases throughout the test, there were 40 GC collection cycles that lasted 0.212s.
+Memory usage increased throughout the test, there were 40 GC collection cycles that lasted 0.212s.
 
 *The GC profile of off-heap variant:*
 ![on-heap GC chart](/img/articles/2022-06-01-gc-hands-off-my-data/off-heap-gc.png)
@@ -209,7 +209,7 @@ The results of the GC profile comparison are therefore as expected, and what abo
 
 Request time metrics data is also in line with predictions, off-heap variant proved to be slightly slower than on-heap.
 
-Now let's see what effect increasing the data size will have on the results. Let's do tests for the following sizes:
+Now let’s see what effect increasing the data size will have on the results. Let’s do tests for the following sizes:
 100.000 B, 200.000 B and 300.000 B, jMeter configuration stays unchanged: 10 threads with 1000 iterations each.
 This time, for the sake of clarity, the results are summarized in a table:
 
@@ -224,7 +224,7 @@ This time, for the sake of clarity, the results are summarized in a table:
 
 It turns out that as the size of cache item increases, the benefits of using off-heap space grow – all metrics have improved.
 
-What about cache maximum elements? Let's use 200.000B item size and check what happens when we increase the maximum cache
+What about cache maximum elements? Let’s use 200.000B item size and check what happens when we increase the maximum cache
 element size, we will test cache for 5000, 10.000 and 15.000 elements:
 
 | Cache max elements | Variant | GC cycles count | GC time | Request time (median) | Throughput |
@@ -242,13 +242,13 @@ some of the benefits are offset by the need for cleaning larger memory area.
 With the experiments conducted, we can conclude that the more data we store in memory, the greater the benefit of using
 the off-heap area may be. At the same time, it should be added that these benefits are not huge, just a few RPS more.
 In the case of systems that store tremendous amounts of data, this method may bring some improvements in terms of resource utilization.
-However, for most of our apps and services, that's probably not the way to go, a code audit is a better idea.
+However, for most of our apps and services, that’s probably not the way to go, a code audit is a better idea.
 
 This is probably a good time to highlight how well implemented the current memory sweeper algorithms are. Well done GC!
 
 ## Conclusions
 
-Everyone has probably come across a case when an application froze as a result of GC's operation. As the above data
+Everyone has probably come across a case when an application froze as a result of GC’s operation. As the above data
 show, there is a relationship between the amount of data stored in memory and the time the GC requires to clean it up –
 the more data we store on the heap, the longer it takes to free the memory. That is why the cases where we process large
 amounts of data provide us with a potential benefit of using the off-heap area. There are some very specialised uses of
