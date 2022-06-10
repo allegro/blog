@@ -180,8 +180,8 @@ In my project, I used the [Cafffeine cache](https://github.com/ben-manes/caffein
 and OHC library to store it in the off-heap area.
 
 The test scenario consists of querying for descriptions of different offers. During the test, I will
-collect data on memory and GC parameters using jConsole. I run the test scenario using [jMeter](https://jmeter.apache.org/),
-which additionally allows me to measure response times.
+collect data on memory and GC parameters using jConsole. I will run the test scenario using [jMeter](https://jmeter.apache.org/),
+which additionally will allow me to measure response times.
 
 The configuration of the first test is as follows:
 - maximum number of cached elements: 5000
