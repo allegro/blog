@@ -179,11 +179,11 @@ relatively small – serialisation of a text string is obviously faster than a c
 In my project, I used the [Cafffeine cache](https://github.com/ben-manes/caffeine) to store the data in the on-heap area
 and OHC library to store it in the off-heap area.
 
-The test scenario consisted of querying for descriptions of different offers. During the test, I
-collected data on memory and GC parameters using jConsole. I prepared the test scenario using [jMeter](https://jmeter.apache.org/),
-which additionally allowed me to measure response times.
+The test scenario consists of querying for descriptions of different offers. During the test, I will
+collect data on memory and GC parameters using jConsole. I run the test scenario using [jMeter](https://jmeter.apache.org/),
+which additionally allows me to measure response times.
 
-The configuration of the first test was as follows:
+The configuration of the first test is as follows:
 - maximum number of cached elements: 5000
 - cached element size: 100.000 bytes
 - 10 threads querying for random offers in a loop of 1000 iterations each
@@ -192,12 +192,12 @@ Let’s take a look at the results.
 
 *The GC profile of on-heap variant:*
 ![on-heap GC chart](/img/articles/2022-06-01-gc-hands-off-my-data/on-heap-gc.png)
-Memory usage increased throughout the test, there were 40 GC collection cycles that lasted 0.212s.
+Memory usage increases throughout the test, there are 40 GC collection cycles that lasts 0.212s.
 
 *The GC profile of off-heap variant:*
 ![on-heap GC chart](/img/articles/2022-06-01-gc-hands-off-my-data/off-heap-gc.png)
 This time heap memory usage chart definitely looks different, is shaped like a saw, and reaches half of the previous value.
-Please note also, that this time there were only 13 GC cycles with total time of 0.108s.
+Please note also, that this time there are only 13 GC cycles with total time of 0.108s.
 
 The results of the GC profile comparison are therefore as expected, and what about the request times?
 
@@ -222,7 +222,7 @@ This time, for the sake of clarity, the results are summarized in a table:
 | 300.000 B | on-heap | 114 |  0.6s | 543 ms | 27.3 rps |
 | 300.000 B | off-heap | 27 |  0.185s | 528 ms | 27.9 rps |
 
-It turns out that as the size of cache item increases, the benefits of using off-heap space grow – all metrics have improved.
+It turns out that as the size of cache item increases, the benefits of using off-heap space grow – all metrics are improved.
 
 What about cache maximum elements? Let’s use 200.000B item size and check what happens when we increase the maximum cache
 element size, we will test cache for 5000, 10.000 and 15.000 elements:
