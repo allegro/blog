@@ -122,14 +122,14 @@ complex ones, containing references to other objects. What is more, the way cach
 uniform. Some objects are never queried after being inserted into the cache, others are read throughout their whole
 lifecycle. This causes the cache to disrupt the somewhat ideal world order defined by the generational hypothesis. Then,
 GC algorithms are faced with a very difficult task of determining the optimal way to clean up the memory freed by the
-items removed from the cache. All this causes the cache cleanup to be expensive. This made me wonder if there would be
+items removed from the cache. All this causes the cache cleanup to be expensive. This made me wonder if there was
 any benefit in storing cache data outside the heap?
 
 ## Off-heap space: Pros and cons
 
 In a sense, the off-heap space lies outside the control of the JVM (though it belongs to the Java process),
 and for this reason, it is not possible to write
-complex structures used in JVM languages into it. This raises the need for an intermediate step for serialization the
+complex structures used in JVM languages into it. This raises the need for an intermediate step of serializing the
 data into a plain byte array, which can then be stored in the off-heap area. When the data is loaded, the reverse
 process must be performed: deserialization into a form that we can use in Java. These additional steps will of
 course come at an extra cost, which is why accessing off-heap data will, for obvious reasons, take longer than accessing
