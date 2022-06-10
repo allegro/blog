@@ -51,7 +51,7 @@ technique. This topic was bothering me for some time, so I decided to investigat
 Any aware Java programmer knows the division of memory into young and old generation areas. People interested in
 details are probably also familiar with the more precise division into eden, survivor, tenured and perm.
 There is a number of excellent articles discussing this topic
-(like [this one](https://www.betsol.com/blog/java-memory-management-for-java-virtual-machine-jvm/)), so we won't go
+(like [this one](https://www.betsol.com/blog/java-memory-management-for-java-virtual-machine-jvm/)), so we won’t go
 into details. Instead, we will focus on a very specialised area of memory that the GC
 has no control over, which is the off-heap memory, sometimes also called native memory. This is a special area under the
 direct control of the operating system, which the JVM uses for its own purposes. It stores information about classes and
@@ -112,7 +112,7 @@ to painful memory management. We can create variables of any type and any scope 
 happens to memory once we stop using them. This task is handled by the GC, which does it brilliantly. In each successive
 version of the JDK we get a new algorithm, which in some specific cases is even better than the previous one.
 
-However, I'm more than sure that many of us had once encountered the problem of long GC time or too frequent GC
+However, I’m more than sure that many of us had once encountered the problem of long GC time or too frequent GC
 calls. Every developer has their own ideas on how to deal with this issue - we look for memory leaks, profile the
 application in search of hot spots, examine the scope of created variables, use object pools, verify the system
 behaviour with different GC algorithms, and check the cache configuration.
