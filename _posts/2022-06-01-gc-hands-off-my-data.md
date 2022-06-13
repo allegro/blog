@@ -185,7 +185,31 @@ The test scenario consists of querying for descriptions of different offers. Dur
 collect data on memory and GC parameters using jConsole. I will run the test scenario using [jMeter](https://jmeter.apache.org/),
 which additionally will allow me to measure response times.
 
-The configuration of the first test is as follows:
+From my preliminary research I know that this method is only applicable to memory-intensive systems.
+However, for the sake of order, let's first run an experiment on a small cache size with element set to 5 KB:
+- maximum number of cached elements: 10000
+- cached element size: 5.000 bytes
+- 10 threads querying for random offers in a loop of 100000 iterations each
+
+Take a look at the screenshots from jConsole below. The results are in line with expectations: no benefit from the use
+of off-heap space. Both the number of garbage collection cycles (63 vs. 65) and GC run time (0.182s vs 0.235s)
+are nearly identical in both cases:
+
+*The GC profile of on-heap variant:*
+![on-heap GC chart](/img/articles/2022-06-01-gc-hands-off-my-data/on-heap-small-gc.png)
+
+*The GC profile of off-heap variant:*
+![on-heap GC chart](/img/articles/2022-06-01-gc-hands-off-my-data/off-heap-small-gc.png)
+
+Not much of an improvement for small to medium cache size. However, this result is not disappointing to me because
+I expected it. GC is designed to handle much more memory than 400 MB, it would therefore be strange if we obtained
+an improvement at such an early stage.
+
+Now let's see how the comparison looks for a much larger cache element size, let's increase it up to 100 KB.
+At the same time, due to the fact that I am running the tests on a laptop with limited resources, I will reduce
+threads configuration and cache maximum element size.
+
+The configuration of the second test is as follows:
 - maximum number of cached elements: 5000
 - cached element size: 100.000 bytes
 - 10 threads querying for random offers in a loop of 1000 iterations each
