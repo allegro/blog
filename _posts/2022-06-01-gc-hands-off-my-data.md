@@ -155,9 +155,11 @@ progress has been made in the field of GC and with the right matching of the alg
 time can be very short. But is there any case where it is worth reaching into the unmanaged space after all?
 
 I decided to start with an overview of what open-source options are currently available. When it comes to the implementation of the
-on-heap cache mechanism, the options are numerous – there is well known: guava, ehcache, caffeine and many other solutions. However,
+on-heap cache mechanism, the options are numerous – there is well known:
+[guava](https://guava.dev/releases/21.0/api/docs/com/google/common/cache/Cache.html),
+[ehcache](https://www.ehcache.org/), [caffeine](https://github.com/ben-manes/caffeine) and many other solutions. However,
 when I began researching cache mechanisms offering the possibility of storing data outside GC control, I found out
-that there are very few solutions left. Out of the popular ones, only Terracotta is supported.
+that there are very few solutions left. Out of the popular ones, only [Terracotta](https://www.terracotta.org/) is supported.
 It seems that this is a very niche solution and we do not have many options to choose
 from. In terms of less-known projects, I came across [Chronicle-Map](https://github.com/OpenHFT/Chronicle-Map),
 [MapDB](https://github.com/jankotek/MapDB) and [OHC](https://github.com/snazy/ohc). I chose the
