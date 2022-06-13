@@ -50,7 +50,7 @@ technique. This topic was bothering me for some time, so I decided to investigat
 
 Any aware Java programmer knows the division of memory into young and old generation areas. People interested in
 details are probably also familiar with the more precise division into eden, survivor, tenured and perm.
-There is a number of excellent articles discussing this topic
+There are many excellent articles discussing this topic
 (like [this one](https://www.betsol.com/blog/java-memory-management-for-java-virtual-machine-jvm/)), so we won’t go
 into details. Instead, we will focus on a very specialised area of memory that the GC
 has no control over, which is the off-heap memory, sometimes also called native memory. This is a special area under the
@@ -58,7 +58,7 @@ direct control of the operating system, which the JVM uses for its own purposes.
 methods, internal thread data and cached code necessary for operation. As I mentioned earlier, off-heap memory is not
 subject to the GC. In particular, it is excluded from garbage collection processes, which means that programmers
 creating the JVM code using this area are wholly responsible for freeing memory allocated for
-variables. However, it turns out that there is also a dedicated area to which we — the programmers — have access as well.
+variables. There is also a dedicated area to which we — the programmers — have access as well.
 There is a possibility to write and read data from this space, remembering of course, that the responsibility
 for cleaning up after unnecessary variables lies entirely with us.
 
@@ -82,7 +82,7 @@ out.println(new String(name));
 out.println(buff.getInt());
 ```
 
-Note the `allocateDirect` method that allocates the off-heap memory unlike a similar method: `allocate` that allocates
+Note the `allocateDirect` method that allocates off-heap memory unlike a similar method: `allocate` that allocates
 on-heap memory. The behavior of both methods can be compared with the help of a profiler
 (I will use [jConsole](https://openjdk.java.net/tools/svc/jconsole/)). The following programs allocate 1GB of memory,
 respectively, on-heap and off-heap:
@@ -112,12 +112,12 @@ to painful memory management. We can create variables of any type and any scope 
 happens to memory once we stop using them. This task is handled by the GC, which does it brilliantly. In each successive
 version of the JDK we get a new algorithm, which in some specific cases is even better than the previous one.
 
-However, I’m more than sure that many of us had once encountered the problem of long GC time or too frequent GC
+However, I’m more than sure that many of us have once encountered the problem of long GC time or too frequent GC
 calls. Every developer has their own ideas on how to deal with this issue - we look for memory leaks, profile the
 application in search of hot spots, examine the scope of created variables, use object pools, verify the system
 behaviour with different GC algorithms, and check the cache configuration.
 
-In my case, it is the cache that is often responsible for long GC time. Sometimes it stores large amounts of objects, usually
+In my case, it is the cache that is often responsible for long GC time. Sometimes it stores large numbers of objects, usually
 complex ones, containing references to other objects. What is more, the way cache objects are accessed is often not
 uniform. Some objects are never queried after being inserted into the cache, others are read throughout their whole
 lifecycle. This causes the cache to disrupt the somewhat ideal world order defined by the generational hypothesis. Then,
@@ -154,9 +154,9 @@ Over the last years, significant
 progress has been made in the field of GC and with the right matching of the algorithm to the application profile, its
 time can be very short. But is there any case where it is worth reaching into the unmanaged space after all?
 
-I decided to start with an overview of what the open source currently offers. When it comes to the implementation of the
+I decided to start with an overview of what open-source options are currently available. When it comes to the implementation of the
 on-heap cache mechanism, the options are numerous – there is well known: guava, ehcache, caffeine and many other solutions. However,
-when I began researching cache mechanisms offering the possibility of storing data outside the GC control, I found out
+when I began researching cache mechanisms offering the possibility of storing data outside GC control, I found out
 that there are very few solutions left. Out of the popular ones, only Terracotta is supported.
 It seems that this is a very niche solution and we do not have many options to choose
 from. In terms of less-known projects, I came across [Chronicle-Map](https://github.com/OpenHFT/Chronicle-Map),
@@ -169,7 +169,7 @@ about how this component worked:
 To run the experiment, I decided to use a service built to provide the offer description based on its unique number. After
 downloading the offer description from the repository, it is placed in the cache to speed up future calls. Obviously, the
 cache has a limited capacity, which is chosen in such a way that it forces the deletion of items that have been placed
-in it for the longest time.
+in it for the longest time ago.
 
 In our cache, the offer number is the key, while its description in the form of a string of characters is the
 value. This allows us to easily simulate almost any size of data in the cache (all we have to do is to make the
@@ -192,14 +192,14 @@ Let’s take a look at the results.
 
 *The GC profile of on-heap variant:*
 ![on-heap GC chart](/img/articles/2022-06-01-gc-hands-off-my-data/on-heap-gc.png)
-Memory usage increases throughout the test, there are 40 GC collection cycles that lasts 0.212s.
+Memory usage increases throughout the test, there are 40 GC collection cycles that together last 0.212s.
 
 *The GC profile of off-heap variant:*
 ![on-heap GC chart](/img/articles/2022-06-01-gc-hands-off-my-data/off-heap-gc.png)
 This time heap memory usage chart definitely looks different, is shaped like a saw, and reaches half of the previous value.
 Please note also, that this time there are only 13 GC cycles with total time of 0.108s.
 
-The results of the GC profile comparison are therefore as expected, and what about the request times?
+The results of the GC profile comparison are therefore as expected, and what about the response times?
 
 *jMeter metrics of on-heap variant:*
 ![on-heap GC chart](/img/articles/2022-06-01-gc-hands-off-my-data/on-heap-jmeter.png)
