@@ -48,7 +48,7 @@ technique. This topic was bothering me for some time, so I decided to investigat
 
 ## Memory architecture
 
-Any aware Java programmer knows the division of memory into young and old generation areas. People interested in
+Any skilled Java programmer knows the division of memory into young and old generation areas. People interested in
 details are probably also familiar with the more precise division into eden, survivor, tenured and perm.
 There are many excellent articles discussing this topic
 (like [this one](https://www.betsol.com/blog/java-memory-management-for-java-virtual-machine-jvm/)), so we won’t go
