@@ -66,7 +66,7 @@ As the schema is composed of queries and types, there are two kinds of resolvers
 It can return the complete result, but also only a part of it.
 The second part is added by type resolvers. Let us show you an example: let’s say we want to get information about a user.
 
-![resolver](/img/articles/2022-04-26-graphql-perf-tradeoffs/resolvers.png)
+![resolver](/img/articles/2022-06-20-graphql-perf-tradeoffs/resolvers.png)
 
 At first we run `UserQueryResolver`, which fetches user data from user domain logic. Only the ID of the user is returned.
 Then we call `UserTypeResolver` with the ID resolved earlier.
@@ -100,8 +100,8 @@ The HTTP endpoint is the point at which we measured performance for a REST API.
 For example one of the simplest ways of monitoring performance for API endpoints is response time.
 Some basic dashboards could look like this:
 
-![dashboard_1](/img/articles/2022-04-26-graphql-perf-tradeoffs/p95-response-1.png)
-![dashboard_2](/img/articles/2022-04-26-graphql-perf-tradeoffs/p95-response-2.png)
+![dashboard_1](/img/articles/2022-06-20-graphql-perf-tradeoffs/p95-response-1.png)
+![dashboard_2](/img/articles/2022-06-20-graphql-perf-tradeoffs/p95-response-2.png)
 
 In the GraphQL universe, there is usually only one endpoint. This approach has advantages and disadvantages.
 While we have low latency and no errors it is great for us as developers and business.
@@ -109,7 +109,7 @@ We have just one entry point and one failure point but if something goes wrong w
 
 The chart below, showing p95 response times for a single GraphQL endpoint, does not tell the whole story. In reality we have plenty of consumers which use different input data and ask us for variety of payload in extended scope.
 
-![dashboard_3](/img/articles/2022-04-26-graphql-perf-tradeoffs/p95-response-3.png)
+![dashboard_3](/img/articles/2022-06-20-graphql-perf-tradeoffs/p95-response-3.png)
 
 We are using a simple metric configuration for measuring endpoints:
 
@@ -289,13 +289,13 @@ How does it work? It collects all requests from many parts of the schema and ret
 This allows it to solve the N+1 problem, which is very well known in GraphQL.
 Imagine the situation where we want to query for three users.
 
-![no-loader](/img/articles/2022-04-26-graphql-perf-tradeoffs/no-loader.png)
+![no-loader](/img/articles/2022-06-20-graphql-perf-tradeoffs/no-loader.png)
 
 As the diagram says, we must ask external sources four times for three users – once to fetch all users and once per each user to fetch his name.
 Moreover we call user name service many times even if it has some batch method to get logins for many users.
 Introducing a data loader solves this problem. The second diagram shows how it works.
 
-![data-loader](/img/articles/2022-04-26-graphql-perf-tradeoffs/data-loader.png)
+![data-loader](/img/articles/2022-06-20-graphql-perf-tradeoffs/data-loader.png)
 
 We cumulate all requests and ask user name service only once. Let’s see what the code looks like.
 We have `UserBatchDataLoader` which asks `userClient` for users and maps the response to `User` object.
