@@ -178,7 +178,7 @@ value. This allows us to easily simulate almost any size of data in the cache (a
 offer description longer), and additionally, it makes the overhead related to the aforementioned serialisation
 relatively small – serialisation of a text string is obviously faster than a complex DTO object.
 
-In my project, I used the [Cafffeine cache](https://github.com/ben-manes/caffeine) to store the data in the on-heap area
+In my project, I used the [Caffeine cache](https://github.com/ben-manes/caffeine) to store the data in the on-heap area
 and OHC library to store it in the off-heap area.
 
 The test scenario consists of querying for descriptions of different offers. During the test, I will
@@ -186,7 +186,7 @@ collect data on memory and GC parameters using jConsole. I will run the test sce
 which additionally will allow me to measure response times.
 
 From my preliminary research I know that this method is only applicable to memory-intensive systems.
-However, for the sake of order, let's first run an experiment on a small cache size with element set to 5 KB:
+However, for the sake of order, let’s first run an experiment on a small cache size with element set to 5 KB:
 - maximum number of cached elements: 10000
 - cached element size: 5.000 bytes
 - 10 threads querying for random offers in a loop of 100000 iterations each
@@ -205,7 +205,7 @@ Not much of an improvement for small to medium cache size. However, this result 
 I expected it. GC is designed to handle much more memory than 400 MB, it would therefore be strange if we obtained
 an improvement at such an early stage.
 
-Now let's see how the comparison looks for a much larger cache element size, let's increase it up to 100 KB.
+Now let’s see how the comparison looks for a much larger cache element size, let’s increase it up to 100 KB.
 At the same time, due to the fact that I am running the tests on a laptop with limited resources, I will reduce
 threads configuration and cache maximum element size.
 
