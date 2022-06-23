@@ -2,7 +2,7 @@
 layout: post
 title: How to facilitate EventStorming workshop
 author: [krzysztof.przychodzki]
-tags: [tech]
+tags: [tech, communication]
 ---
 
 ## Goal of this article
@@ -303,4 +303,5 @@ Another way to find were problems might lay is either voting for a specific prob
 and red stickies events that indicate where in our flow we are generating / losing money or value. For example by green
 stripe we indicate events where we are earning money, by red stripe &mdash; we can lose money or value.
 
+## After the storm
 
