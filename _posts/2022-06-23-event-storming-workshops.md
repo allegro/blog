@@ -23,8 +23,8 @@ the [Technology Radar](https://www.thoughtworks.com/radar/techniques/event-storm
 systems.
 
 During years a lot has changed, technique has developed and matured but main idea remain the same:
-> Event Storming is a flexible workshop format that allows a massive collaborative exploration of complex domains (...)
-> where software and business practitioners are building together a behavioural model of the whole business line.
+> *Event Storming is a flexible workshop format that allows a massive collaborative exploration of complex domains (...)
+> where software and business practitioners are building together a behavioural model of the whole business line.*
 
 Above definition is from Alberto Brandolini's
 book *[Introducing EventStorming](https://leanpub.com/introducing_eventstorming)* to which I will be referring in this
@@ -92,27 +92,11 @@ initial and final events.
 
 ## Introduction
 
-[//]: # (What is happening:)
-
-[//]: # (At this stage, everybody gets to know each other &#40;if necessary&#41; and the purpose of this meeting is presented. Acquaints)
-
-[//]: # (with the technique and building blocks with which will be working - idea of domain event, sticky notes and markers.)
-
-[//]: # (Basically:)
-
-[//]: # (- It has to be an orange sticky note)
-
-[//]: # (- It has to be relevant business event)
-
-[//]: # (- It needs to be phrased at past tense)
-
-[//]: # (Your role as a facilitator:)
-
 It is good to start the workshop with a short presentation of all participants - but it has to be rather quick before
 everybody gets bored. Generally you can omit this step and ask only new participants to introduce.
 
-> We are going to explore the business process as a whole by placing all the relevant events along a timeline. We will
-> highlight ideas, risks and opportunities along the way.
+> *We are going to explore the business process as a whole by placing all the relevant events along a timeline. We will
+> highlight ideas, risks and opportunities along the way.*
 
 What is necessary - we need to set a goal. What will we model? Tell what is our goal, what we will model and try to
 analyse.
@@ -127,17 +111,15 @@ down in the notebook, by hand. Is the event ‘offer was shown’ a relevant cha
 > **Tip**: A good ice-breaker is also demonstrating how to peel the sticky note so it would not curl
 > up… [for example here](https://www.youtube.com/watch?v=rPHLxOLuyLY)
 
-## Phase 1 Chaotic exploration (brains dump)
+## Phase 1 Chaotic exploration (brain dump)
 
 ### What is happening
 
-All participants are using orange sticky notes, writing down events and putting them on the board. Encourage the team to
-try to identify as many events as possible - if somebody is wrong, it's okay - others will correct.
+All participants are using orange sticky notes, writing down events and putting them on the board. When events start
+appearing on the board, a discussion will naturally start about what kind of events they are, when they are happening or
+how or what is triggering it.
 
 ### Your role as a facilitator
-
-Your role as a facilitator is to listen and observe - how fast new stickies are appearing, where discussion is taking
-place (try to capture events people are arguing about).
 
 Explain that we treat our whole board as a timeline and time is passing from left to right - it helps to see what is
 happening before and after. Sometimes it is worth showing the importance of time in an example:
@@ -147,6 +129,18 @@ happening before and after. Sometimes it is worth showing the importance of time
 - the door was closed
 
 in a different order it does not make sense.
+
+Your role as a facilitator is to listen and observe - how fast new stickies are appearing, where discussion is taking
+place (try to capture events people are arguing about). Encourage the team to try to identify as many events as possible
+
+- if somebody is wrong, it's okay - others will correct.
+
+When someone is mentioning some mysterious term capture its definition. As a facilitator you can, and you should ask
+obvious questions as it takes the burden off others participants.
+
+This is also a phase were divergent thinking takes place as a part of *chaotic exploration*. So on board we have a lot
+of events, we do not judge them at this point &mdash; later we will see where they lead us &mdash; encourage to
+generate new ideas and set aside critical thinking and judgment.
 
 > **Tips**:
 > As an icebreaker you can put the first event or events out - to show how easy it is, and help draw participants into
@@ -174,18 +168,13 @@ spoil the whole session, when key participants left.
 
 ## Phase 2 Timeline
 
+After divergent step now is time to emergent phase where we want to explore and experiment - this is what we will be
+doing during next phases.
+
 ### What is happening
 
 Now our goal is to make sure we are actually following the timeline - we would like the flow of events to be consistent
 from the beginning to the end.
-
-[//]: # (But how to achieve consistency of events?)
-
-[//]: # ()
-
-[//]: # (We could use some sorting strategies e.g.: pivotal event, swimlanes, temporal milestones, chapter)
-
-[//]: # (sorting[2]&#40;about:blank#fn2&#41; or reverse narrative[3]&#40;about:blank#fn3&#41;.)
 
 ### Your role as a facilitator:
 
@@ -194,8 +183,7 @@ ok. Remove the duplicates, but be careful &mdash; ask if those duplicated events
 not hesitate to add, remove or change some sticky notes on the board.
 
 At this step some issue points may appear - so it is good to mark it as a **hotspot** &mdash; use red sticky notes,
-write
-the issue down, but it is not a good time to deliberate about it now, we try to postpone this discussion.
+write the issue down, but it is not a good time to deliberate about it now, we try to postpone this discussion.
 
 ![hot-spot](/img/articles/2022-06-23-eventstorming/image2.png)
 
@@ -281,9 +269,9 @@ matters. External Systems may be represented by large pink stickies with its nam
 ### Who is an actor?
 
 Alberto Brandolini is explaining that
-> The goal is not to match the right yellow sticky note to every event in the flow. Adding significant people adds more
+> *The goal is not to match the right yellow sticky note to every event in the flow. Adding significant people adds more
 > clarity, but the goal is to trigger some insightful conversation: wherever the behavior depends on a different type of
-> user, wherever special actions need to be taken, and so on.
+> user, wherever special actions need to be taken, and so on.*
 
 The lack of precision is helping in discussion and exploration &mdash; it can be specific person for example *in our
 business model only Mrs. Smith can issue an invoice*, or after some time reservation is canceled &mdash; so even *Time*
@@ -303,5 +291,53 @@ Another way to find were problems might lay is either voting for a specific prob
 and red stickies events that indicate where in our flow we are generating / losing money or value. For example by green
 stripe we indicate events where we are earning money, by red stripe &mdash; we can lose money or value.
 
-## After the storm
+## It is like Pizzas
 
+When all hotspot are addressed, you have found the biggest impediment, or you know on what part you have to focus during
+next session, the onlu thing to do left is to close the workshop. Thankyou’s to all stakeholders and participants,
+schedule the next session and ask about feedback.
+
+After session, you will have clear business narrative on the board. What is more important participants will share
+general understanding of the process. They have gone through the massive learning process, gained experience and share
+the common knowledge &mdash; everybody uses the domain language. Due to the fact that we used simple building blocks
+the outcome is understandable to everyone PMs, UX designers, dev etc.
+
+The steps described above and their sequence should be regarded as an option which can be used during the session.
+Because there is no such thing as one recipe. For example if during *timeline step* you feel that introduction of people
+and systems is going to help &mdash; do not hesitate to do so. In other cases you will be interested only in finding
+impediments or where your system is delivering values do not feel obligated to use all steps.
+As Alberto says:
+> *I like to think about it like Pizzas: there’s a common base, but different toppings.*
+
+## Call for action
+
+If you are Allegro worker and you are interested in EventStorming &mdash; you want to develop, participate in workshops
+or help as a facilitator I strongly encourage you to join the guild.
+If you are not yet working at Allegro but are interested in how we use EventStroming maybe it is good opprtunity to join
+us &mdash; [#dobrzetubyć](https://www.linkedin.com/company/allegro-pl/life/team).
+
+## More about EventStroming
+
+On the Internet you can find a lot of materials about EventStorming. Below some of them that I found most valuable
+
+### Books
+
+1. [Introducing EventStorming](https://leanpub.com/introducing_eventstorming) Alberto Brandolini's book &mdash; *EventStorming Bible* &mdash; mandatory book!
+2. [The EventStorming Handbook](https://leanpub.com/eventstorming_handbook) by Paul Ryner &mdash; a great summary of *Introducing EventStorming* with a lot of valuable tips, tricks and recipes. After you will be able to explain
+   EventStorming even to your own child.
+3. [GameStorming A Playbook for Innovators, Rulebreakers, and Changemakers](https://gamestorming.com/) by Dave Gray,
+   Sunni Brown, James Macanufo &mdash; if you want to use full potential of your storming sessions.
+4. [Facilitator's Guide to Participatory Decision-making](https://allegro.pl/oferta/facilitator-s-guide-to-participatory-decision-maki-10017700512)
+   by Sam Kaner, Lenny Lind &mdash; how to be a better facilitator, not only for EventStorming. You will find precious
+   information about divergent, emergent and convergent thinking and why it is important.
+
+[//]: # (4. &#40;https://www.wiley.com/en-us/Facilitator%27s+Guide+to+Participatory+Decision+Making%2C+3rd+Edition-p-9781118404959&#41; by Sam Kaner, Lenny Lind)
+
+### Link
+
+1. [Awesome EventStorming](https://github.com/mariuszgil/awesome-eventstorming) by Mariusz Gil &mdash; I guess this is the
+   biggest source of links about EventStorming topics.
+
+## Thanks
+
+I would like to thank all of my colleagues from *Allegro EventStorimng Guild* for their help in creating this article.
