@@ -9,7 +9,7 @@ tags: [tech, communication]
 
 The goal of this article is to present the technique and its possibilities. I am not discovering anything new, just
 gathering available knowledge in one place. What I will try to show is a few tips on how to conduct and facilitate
-EventStorming workshop.
+EventStorming workshops.
 
 # Guide to Big Picture EventStorming
 
@@ -47,19 +47,6 @@ book I mentioned earlier.
       them with &mdash; users, people who are using our
       business/system &mdash; these two are totally opposite.
 
-### Provide unlimited modelling space
-
-When your session is offline:
-
-* wall where you attach plotter paper (it is easier take it on plotter paper),
-* stickies in different colours, shapes and quantity (will discuss it later),
-* markers
-
-When it has to be online you can use one of virtual boards like:
-
-* [miro](https://miro.com/)
-* [mural](https://www.mural.co/)
-
 ### Orange sticky note
 
 On which we will write down our events in the following form:
@@ -68,11 +55,28 @@ On which we will write down our events in the following form:
 * *Relevant for domain experts* - describing specific and pertinent events / changes in our business / system - these
   are changes that at the end of the day we want to save in the database.
 
-![domain event](/img/articles/2022-06-23-eventstorming/image1.png)
-
+  ![domain event](/img/articles/2022-06-23-eventstorming/image1.png)
 
 > **Tip**: It is a good practice to define the concept of an event together (with participants) at the beginning of the
 > workshop. Then we can verify our definition with events that are appearing on the wall.
+
+## Before launching
+
+### Provide unlimited modelling space
+
+Why is it important? Because you want participants to explore and experiment during the workshop. You don't want to
+impose limits on them or to allow a situation where someone doesn't add an event because there is no space left.
+
+When your session is offline:
+
+* wall where you attach plotter paper (it is easier to stick post-its on plotter paper),
+* stickies in different colours, shapes and quantity (will discuss it later),
+* markers
+
+When it has to be online you can use one of virtual boards like:
+
+* [miro](https://miro.com/)
+* [mural](https://www.mural.co/)
 
 ### Approach
 
@@ -273,7 +277,7 @@ Alberto Brandolini is explaining that
 > clarity, but the goal is to trigger some insightful conversation: wherever the behaviour depends on a different type
 > of user, wherever special actions need to be taken, and so on.*
 
-The lack of precision is helping in discussion and exploration &mdash; it can be specific person for example *in our
+The lack of precision is helping in discussion and exploration &mdash; it can be a specific person for example *in our
 business model only Mrs. Smith can issue an invoice*, or after some time reservation is cancelled &mdash; so even *Time*
 can be an actor. Another example *order cancellation* can have two actors: client and CEX worker.
 
