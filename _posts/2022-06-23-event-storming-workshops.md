@@ -341,7 +341,7 @@ On the Internet you can find a lot of materials about EventStorming. Below some 
 
 1. [Introducing EventStorming](https://leanpub.com/introducing_eventstorming) Alberto Brandolini’s book &mdash; *
    EventStorming Bible* &mdash; mandatory book!
-2. [The EventStorming Handbook](https://leanpub.com/eventstorming_handbook) by Paul Ryner &mdash; a great summary of *
+2. [The EventStorming Handbook](https://leanpub.com/eventstorming_handbook) by Paul Rayner &mdash; a great summary of *
    Introducing EventStorming* with a lot of valuable tips, tricks and recipes. After that you will be able to explain
    EventStorming even to your own child.
 3. [GameStorming A Playbook for Innovators, Rulebreakers, and Changemakers](https://gamestorming.com/) by Dave Gray,
