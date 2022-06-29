@@ -26,7 +26,7 @@ During years a lot has changed, technique has developed and matured but main ide
 > *Event Storming is a flexible workshop format that allows a massive collaborative exploration of complex domains (...)
 > where software and business practitioners are building together a behavioural model of the whole business line.*
 
-Above definition is from Alberto Brandolini's
+Above definition is from Alberto Brandolini’s
 book *[Introducing EventStorming](https://leanpub.com/introducing_eventstorming)* to which I will be referring in this
 article.
 
@@ -64,8 +64,8 @@ On which we will write down our events in the following form:
 
 ### Provide unlimited modelling space
 
-Why is it important? Because you want participants to explore and experiment during the workshop. You don't want to
-impose limits on them or to allow a situation where someone doesn't add an event because there is no space left.
+Why is it important? Because you want participants to explore and experiment during the workshop. You don’t want to
+impose limits on them or to allow a situation where someone doesn’t add an event because there is no space left.
 
 When your session is offline:
 
@@ -80,14 +80,14 @@ When it has to be online you can use one of virtual boards like:
 
 ### Approach
 
-There are two approaches to facilitate and that depends on general participants' understanding of the business process.
+There are two approaches to facilitate and that depends on general participants’ understanding of the business process.
 
 If your team does not know the domain - it is good to conduct a workshop in an exploratory way, because there is a lot
 of unknown. You can start with throwing a central event out, or if the domain is large - several events. Then look at
 what is happening before and after those events, regarding time flow.
 
 However, if your participants are familiar with the system (domain) and the goal is to discover only a part of it, see
-how something works or immerse into a specific *use-case*, you may want to impose certain limits/boundaries - e.g. by an
+how something works or immerse into a specific *use-case*, you may want to impose certain limits/boundaries - e.g. by
 initial and final events.
 
 # Phases of Big Picture EventStorming workshop
@@ -135,12 +135,12 @@ in a different order it does not make sense.
 Your role as a facilitator is to listen and observe - how fast new stickies are appearing, where discussion is taking
 place (try to capture events people are arguing about). Encourage the team to try to identify as many events as possible
 
-- if somebody is wrong, it's okay - others will correct.
+- if somebody is wrong, it’s okay - others will correct.
 
 When someone is mentioning some mysterious term, capture its definition. As a facilitator you can, and you should ask
 obvious questions as it takes the burden off others participants.
 
-This is also a phase were divergent thinking takes place as a part of *chaotic exploration*. So on board we have a lot
+This is also a phase where divergent thinking takes place as a part of *chaotic exploration*. So on board we have a lot
 of events, we do not judge them at this point &mdash; later we will see where they lead us &mdash; encourage to
 generate new ideas and set aside critical thinking and judgement.
 
@@ -148,7 +148,7 @@ generate new ideas and set aside critical thinking and judgement.
 > As an icebreaker you can put the first event or events out - to show how easy it is, and help draw participants into
 > workshops.
 >
-> Try to eliminate actors from the events - because we don't want to impose mental boundaries as we may not notice that
+> Try to eliminate actors from the events - because we don’t want to impose mental boundaries as we may not notice that
 > there is some other case.
 
 ### How to manage people
@@ -196,7 +196,7 @@ write the issue down, but it is not a good time to deliberate about it now, we t
 > on available events. To sustain attention, change this person with another one. In case of inconsistencies, we
 > complete the timeline with the missing events.
 >
-> However, you can do all of it &mdash; if you have some shy persons or your participants' supervisor is in
+> However, you can do all of it &mdash; if you have some shy persons or your participants’ supervisor is in
 > the room, when you tell the story you can make intentional errors or ask silly questions. All of this eventually will
 > help to explore the domain.
 >
@@ -231,7 +231,7 @@ event, e.g.:
 Going deeper (of course that depends on how deep you want to go)
 
 - What, how, when, why is it changing
-- When it can't change
+- When it can’t change
 - How does this affect the system / business
 
 > **Tip**: Also in this phase it can be convenient to introduce actors (phase 4 - people and systems) &mdash; if it
@@ -291,27 +291,25 @@ is a great occasion for additional discussion and a subject for further explorat
 
 > **Tip**: Remember that each *hot spot* should be addressed and resolved before the next session takes place.
 
-Another way to find were problems might lay is either voting for a specific problem or marking with for example green
+Another way to find where problems might lay is either voting for a specific problem or marking with for example green
 and red stickies events that indicate where in our flow we are generating / losing money or value. For example by green
-stripe we indicate events where we are earning money, by red stripe &mdash; we can lose money or value.
+stripes we indicate events where we are earning money, by red stripes &mdash; we lose money or value.
 
 ## It is like Pizzas
 
 When all hotspots are addressed, you have found the biggest impediment, or you know on what part you have to focus
-during
-next session, the only thing left to do is to close the workshop. Thankyou’s to all stakeholders and participants,
-schedule the next session and ask about feedback.
+during next session, the only thing left to do is to close the workshop. Thankyou’s to all stakeholders and
+participants, schedule the next session and ask about feedback.
 
 After the session, you will have a clear business narrative on the board. What is more important, participants will
-share
-general understanding of the process. They have gone through the massive learning process, gained experience and shared
-the common knowledge &mdash; everybody uses the domain language. Due to the fact that we used simple building blocks
-the outcome is understandable to everyone PMs, UX designers, dev etc.
+share general understanding of the process. They have gone through the massive learning process, gained experience and
+shared the common knowledge &mdash; everybody uses the domain language. Due to the fact that we used simple building
+blocks the outcome is understandable to everyone PMs, UX designers, dev etc.
 
 The steps described above and their sequence should be regarded as an option which can be used during the session.
-Because there is no such thing as one recipe. For example if during *timeline step* you feel that introduction of people
-and systems is going to help &mdash; do not hesitate to do so. In other cases you will be interested only in finding
-impediments or where your system is delivering values and do not feel obligated to use all steps.
+Because there is no such thing as one recipe. For example if during the *timeline step* you feel that introduction of
+people and systems is going to help &mdash; do not hesitate to do so. In other cases you will be interested only in
+finding impediments or where your system is delivering values and do not feel obligated to use all steps.
 As Alberto says:
 > *I like to think about it like Pizzas: there’s a common base, but different toppings.*
 
@@ -319,9 +317,9 @@ As Alberto says:
 
 Big Picture EventStorming is the first and crucial step, its outcome is visible and valuable. Depending on the team
 needs it can be sufficient but if we want to go deeper and explore more next are Process Level and Design Level
-EventStorming. We use the same stickies' grammar enhanced with more colours to explain the complexity of our system. Due
+EventStorming. We use the same stickies’ grammar enhanced with more colours to explain the complexity of our system. Due
 to the fact that we use the same grammar, developers and businesses can talk the same language &mdash; nobody is
-excluded, isn't that great?
+excluded, isn’t that great?
 
 Those further steps (Process/Design Level) are getting us closer into the domain-driven-design and implementation. We (
 developers/architects) can start thinking how to change what we have learned into working code, because
@@ -331,7 +329,8 @@ developers/architects) can start thinking how to change what we have learned int
 
 If you are Allegro worker and you are interested in EventStorming &mdash; you want to develop, participate in workshops
 or help as a facilitator I strongly encourage you to join the guild.
-If you are not yet working at Allegro but are interested in how we use EventStroming maybe it is good opprtunity to join
+If you are not yet working at Allegro but are interested in how we use EventStorming maybe it is good opportunity to
+join
 us &mdash; [#dobrzetubyć](https://www.linkedin.com/company/allegro-pl/life/team).
 
 ## More about EventStroming
@@ -340,14 +339,14 @@ On the Internet you can find a lot of materials about EventStorming. Below some 
 
 ### Books
 
-1. [Introducing EventStorming](https://leanpub.com/introducing_eventstorming) Alberto Brandolini's book &mdash; *
+1. [Introducing EventStorming](https://leanpub.com/introducing_eventstorming) Alberto Brandolini’s book &mdash; *
    EventStorming Bible* &mdash; mandatory book!
 2. [The EventStorming Handbook](https://leanpub.com/eventstorming_handbook) by Paul Ryner &mdash; a great summary of *
-   Introducing EventStorming* with a lot of valuable tips, tricks and recipes. After you will be able to explain
+   Introducing EventStorming* with a lot of valuable tips, tricks and recipes. After that you will be able to explain
    EventStorming even to your own child.
 3. [GameStorming A Playbook for Innovators, Rulebreakers, and Changemakers](https://gamestorming.com/) by Dave Gray,
    Sunni Brown, James Macanufo &mdash; if you want to use the full potential of your storming sessions.
-4. [Facilitator's Guide to Participatory Decision-making](https://allegro.pl/oferta/facilitator-s-guide-to-participatory-decision-maki-10017700512)
+4. [Facilitator’s Guide to Participatory Decision-making](https://allegro.pl/oferta/facilitator-s-guide-to-participatory-decision-maki-10017700512)
    by Sam Kaner, Lenny Lind &mdash; how to be a better facilitator, not only for EventStorming. You will find precious
    information about divergent, emergent and convergent thinking and why it is important.
 
@@ -359,4 +358,4 @@ On the Internet you can find a lot of materials about EventStorming. Below some 
 
 ## Thanks
 
-I would like to thank all of my colleagues from *Allegro EventStorimng Guild* for their help in creating this article.
+I would like to thank all of my colleagues from *Allegro EventStorming Guild* for their help in creating this article.
