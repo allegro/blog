@@ -97,7 +97,7 @@ ByteBuffer.allocateDirect(1000000000)
 
 The chart below shows heap memory profile comparison for both programs (on-heap on the left vs. off-heap on the right):
 
-![on-heap vs off-heap](/img/articles/2022-06-01-gc-hands-off-my-data/compare.png)
+![on-heap vs off-heap](/img/articles/2022-06-30-gc-hands-off-my-data/compare.png)
 
 Such a possibility to bypass Garbage Collector may seem extremely tempting to
 developers struggling with long working time of the GC. However, this raises the question: what type of usage justifies
@@ -196,10 +196,10 @@ of off-heap space. Both the number of garbage collection cycles (63 vs. 65) and 
 are nearly identical in both cases:
 
 *The GC profile of on-heap variant:*
-![on-heap GC chart](/img/articles/2022-06-01-gc-hands-off-my-data/on-heap-small-gc.png)
+![on-heap GC chart](/img/articles/2022-06-30-gc-hands-off-my-data/on-heap-small-gc.png)
 
 *The GC profile of off-heap variant:*
-![on-heap GC chart](/img/articles/2022-06-01-gc-hands-off-my-data/off-heap-small-gc.png)
+![on-heap GC chart](/img/articles/2022-06-30-gc-hands-off-my-data/off-heap-small-gc.png)
 
 Not much of an improvement for small to medium cache size. However, this result is not disappointing to me because
 I expected it. GC is designed to handle much more memory than 400 MB, it would therefore be strange if we obtained
@@ -217,21 +217,21 @@ The configuration of the second test is as follows:
 Let’s take a look at the results.
 
 *The GC profile of on-heap variant:*
-![on-heap GC chart](/img/articles/2022-06-01-gc-hands-off-my-data/on-heap-gc.png)
+![on-heap GC chart](/img/articles/2022-06-30-gc-hands-off-my-data/on-heap-gc.png)
 Memory usage increases throughout the test, there are 40 GC collection cycles that together last 0.212s.
 
 *The GC profile of off-heap variant:*
-![on-heap GC chart](/img/articles/2022-06-01-gc-hands-off-my-data/off-heap-gc.png)
+![on-heap GC chart](/img/articles/2022-06-30-gc-hands-off-my-data/off-heap-gc.png)
 This time heap memory usage chart definitely looks different, is shaped like a saw, and reaches half of the previous value.
 Please note also, that this time there are only 13 GC cycles with total time of 0.108s.
 
 The results of the GC profile comparison are therefore as expected, and what about the response times?
 
 *jMeter metrics of on-heap variant:*
-![on-heap GC chart](/img/articles/2022-06-01-gc-hands-off-my-data/on-heap-jmeter.png)
+![on-heap GC chart](/img/articles/2022-06-30-gc-hands-off-my-data/on-heap-jmeter.png)
 
 *jMeter metrics of off-heap variant:*
-![on-heap GC chart](/img/articles/2022-06-01-gc-hands-off-my-data/off-heap-jmeter.png)
+![on-heap GC chart](/img/articles/2022-06-30-gc-hands-off-my-data/off-heap-jmeter.png)
 
 Request time metrics data is also in line with predictions, off-heap variant proved to be slightly slower than on-heap.
 
