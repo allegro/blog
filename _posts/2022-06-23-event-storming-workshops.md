@@ -2,38 +2,34 @@
 layout: post
 title: How to facilitate EventStorming workshop
 author: [krzysztof.przychodzki]
-tags: [tech, communication]
+tags: [eventstorming, tech, communication]
 ---
 
 ## Goal of this article
-
-The goal of this article is to present the technique and its possibilities. I am not discovering anything new, just
-gathering available knowledge in one place. What I will try to show is a few tips on how to conduct and facilitate
-EventStorming workshops.
+With this article, I would like to introduce you to EventStorming and explain to you how to get started. I am not discovering
+anything new, just gathering available knowledge in one place. What I will try to show is a few tips on how to conduct
+and facilitate EventStorming workshops.
 
 # Guide to Big Picture EventStorming
 
 ## Introducing EventStorming
 
 In 2013 Alberto Brandolini posted an [article](https://ziobrando.blogspot.com/2013/11/introducing-event-storming.html)
-about a new workshop format for quickly exploring complex business domains. It was warmly welcomed by the DDD community
-In 2015, [Technology Radar](https://www.thoughtworks.com/radar/techniques/event-storming) described Event Storming as *worthy of attention* and three years later as *a recommended method* for business domain modeling in information systems.
-the [Technology Radar](https://www.thoughtworks.com/radar/techniques/event-storming) EventStorming has been indicated as
-*worthy of attention* and three years later is *a recommended method* for business domain modelling in information
-systems.
+about a new workshop format for quickly exploring complex business domains. It was warmly welcomed by the DDD community.
+In 2015, [Technology Radar](https://www.thoughtworks.com/radar/techniques/event-storming) described EventStorming as *worthy of attention*
+and three years later as *a recommended method* for business domain modeling in information systems.
 
 During the years a lot has changed, the technique has developed and matured but the main idea remained the same:
-> *Event Storming is a flexible workshop format that allows a massive collaborative exploration of complex domains (...)
+> *EventStorming is a flexible workshop format that allows a massive collaborative exploration of complex domains (...)
 > where software and business practitioners are building together a behavioural model of the whole business line.*
 
-Above definition is from Alberto Brandolini’s
-The above definition is from Alberto Brandolini's *[Introducing EventStorming](https://leanpub.com/introducing_eventstorming)*, to which I will be referring in this article.
-article.
+The above definition is from Alberto Brandolini's *[Introducing EventStorming](https://leanpub.com/introducing_eventstorming)*,
+to which I will be referring in this article.
 
 ## Building blocks
 
-I focus here on the main building blocks without going into details. A comprehensive description can be found in the book mentioned earlier. 
-book I mentioned earlier.
+I focus here on the main building blocks without going into details. A comprehensive description can be found in the
+book mentioned earlier.
 
 ### Invite the right people - business, UX, IT
 
@@ -102,7 +98,7 @@ everybody gets bored. Generally you can omit this step and ask only new particip
 
 What is necessary - we need to set a goal. What will we model? Tell what is our goal, what we will model and try to
 analyse.
-> **Tip**: Remember - event storming is not a goal by itself - it is only a tool / framework.
+> **Tip**: Remember - EventStorming is not a goal by itself - it is only a tool / framework.
 
 ### Because the Big Picture is all about events.
 
@@ -339,10 +335,10 @@ On the Internet you can find a lot of materials about EventStorming. Below some 
 
 ### Books
 
-1. [Introducing EventStorming](https://leanpub.com/introducing_eventstorming) Alberto Brandolini’s book &mdash; *
-   EventStorming Bible* &mdash; mandatory book!
-2. [The EventStorming Handbook](https://leanpub.com/eventstorming_handbook) by Paul Rayner &mdash; a great summary of *
-   Introducing EventStorming* with a lot of valuable tips, tricks and recipes. After that you will be able to explain
+1. [Introducing EventStorming](https://leanpub.com/introducing_eventstorming) Alberto Brandolini’s book &mdash;
+   *EventStorming Bible* &mdash; mandatory book!
+2. [The EventStorming Handbook](https://leanpub.com/eventstorming_handbook) by Paul Rayner &mdash; a great summary of
+   *Introducing EventStorming* with a lot of valuable tips, tricks and recipes. After that you will be able to explain
    EventStorming even to your own child.
 3. [GameStorming A Playbook for Innovators, Rulebreakers, and Changemakers](https://gamestorming.com/) by Dave Gray,
    Sunni Brown, James Macanufo &mdash; if you want to use the full potential of your storming sessions.
@@ -353,8 +349,7 @@ On the Internet you can find a lot of materials about EventStorming. Below some 
 ### Link
 
 1. [Awesome EventStorming](https://github.com/mariuszgil/awesome-eventstorming) by Mariusz Gil &mdash; I guess this is
-   the
-   biggest source of links about EventStorming topics.
+   the biggest source of links about EventStorming topics.
 
 ## Thanks
 
