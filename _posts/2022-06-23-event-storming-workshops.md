@@ -17,22 +17,22 @@ EventStorming workshops.
 
 In 2013 Alberto Brandolini posted an [article](https://ziobrando.blogspot.com/2013/11/introducing-event-storming.html)
 about a new workshop format for quickly exploring complex business domains. It was warmly welcomed by the DDD community
-and quickly spread around. Since 2015, in
+In 2015, [Technology Radar](https://www.thoughtworks.com/radar/techniques/event-storming) described Event Storming as *worthy of attention* and three years later as *a recommended method* for business domain modeling in information systems.
 the [Technology Radar](https://www.thoughtworks.com/radar/techniques/event-storming) EventStorming has been indicated as
 *worthy of attention* and three years later is *a recommended method* for business domain modelling in information
 systems.
 
-During years a lot has changed, technique has developed and matured but main idea remain the same:
+During the years a lot has changed, the technique has developed and matured but the main idea remained the same:
 > *Event Storming is a flexible workshop format that allows a massive collaborative exploration of complex domains (...)
 > where software and business practitioners are building together a behavioural model of the whole business line.*
 
 Above definition is from Alberto Brandolini’s
-book *[Introducing EventStorming](https://leanpub.com/introducing_eventstorming)* to which I will be referring in this
+The above definition is from Alberto Brandolini's *[Introducing EventStorming](https://leanpub.com/introducing_eventstorming)*, to which I will be referring in this article.
 article.
 
 ## Building blocks
 
-Here I have focused on the main building blocks and only mention them, a comprehensive description can be found in the
+I focus here on the main building blocks without going into details. A comprehensive description can be found in the book mentioned earlier. 
 book I mentioned earlier.
 
 ### Invite the right people - business, UX, IT
