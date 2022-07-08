@@ -59,8 +59,7 @@ For example:
 
 - we have verbs in past tense,
 - its are relevant changes in our *blog business*,
-- also we know who, when at what have done
-
+- also we know who, when at what have done.
 
 ## Before launching
 
@@ -113,7 +112,7 @@ system. Imagine you do not have a computer and by the end of the day every event
 down in a notebook, by hand. Is the event ‘offer was shown’ a relevant change you want or is worth noting?
 
 > **Tip**: A good ice-breaker is also demonstrating how to peel the sticky note so it would not curl
-> up… [for example here](https://www.youtube.com/watch?v=rPHLxOLuyLY)
+> up… [for example here](https://www.youtube.com/watch?v=rPHLxOLuyLY).
 
 ## Phase 1 Chaotic exploration (brain dump)
 
@@ -150,7 +149,7 @@ where they lead us. Once again you should encourage the participants to generate
 > workshops.
 >
 > Try to eliminate actors from the events - because we don’t want to impose mental boundaries as we may not notice that
-> there is some other case. For example instead of `Buyer added item to cart` use `Item added to cart`
+> there is some other case. For example instead of `Buyer added item to cart` use `Item added to cart`.
 
 ### How to manage people
 
@@ -209,7 +208,7 @@ write the issue down, but it is not a good time to deliberate about it now, we t
 ### What is happening:
 
 Next step is to do a walk through by creating some sort of story that can be told based on events placed on the board.
-During this step a lot of talks (argues) are going to happen, maybe some events are missing - so do not hesitate to add,
+During this step a lot of discussions (arguments) are going to take place, maybe some events are missing - so do not hesitate to add,
 remove or change some sticky notes on the board. We should focus on the happy path in the first place.
 
 ### 1. Explicit walk-through
@@ -217,13 +216,13 @@ remove or change some sticky notes on the board. We should focus on the happy pa
 ### Your role as a facilitator:
 
 Pick some random person who is going to start telling a story based on available events according to timeflow (from left
-to right). Sometimes the team gets blocked in this situation you can add or move an event and place it in an obviously
-wrong place. Your error will be quickly fixed and it helps the team to move on.
+to right). Sometimes the team gets blocked. In this situation you can add or move an event and place it in an obviously
+wrong place. Your error will be fixed quickly and help the team to move on.
 
 ### How to help participants to discover more?
 
-And the answer is simple &mdash; by asking questions. There are some useful questions that you can ask almost at each
-event, e.g.:
+And the answer is simple &mdash; by asking questions. There are some useful questions that you can ask when discussing
+almost every event, e.g.:
 
 - Why did this event happened?
 - What are the consequences of this event?
@@ -236,7 +235,7 @@ Going deeper (of course that depends on how deep you want to go)
 - How does this affect the system / business
 
 > **Tip**: Also in this phase it can be convenient to introduce actors (phase 4 - people and systems) &mdash; if it
-> helps to tell a story or better understand the process do not hesitate (remember I told you that ES is a tool?)
+> helps to tell a story or better understand the process do not hesitate (remember I told you that EventStorming is a tool?)
 
 ### 2. Reverse narrative
 
@@ -307,7 +306,7 @@ share general understanding of the process. They have gone through the massive l
 shared the common knowledge &mdash; everybody uses the domain language. Due to the fact that we used simple building
 blocks the outcome is understandable to everyone PMs, UX designers, dev etc.
 
-The steps described above and their sequence should be regarded as an option which can be used during the session.
+The steps described above and their sequence should be regarded as optional during the session.
 Because there is no such thing as one recipe. For example if during the *timeline step* you feel that introduction of
 people and systems is going to help &mdash; do not hesitate to do so. In other cases you will be interested only in
 finding impediments or where your system is delivering values and do not feel obligated to use all steps.
@@ -317,7 +316,7 @@ As Alberto says:
 ### Nobody is excluded
 
 Big Picture EventStorming is the first and crucial step, its outcome is visible and valuable. Depending on the team
-needs it can be sufficient but if we want to go deeper and explore more next are Process Level and Design Level
+needs it can be sufficient but if we want to go deeper and explore more, next there are Process Level and Design Level
 EventStorming. We use the same stickies’ grammar enhanced with more colours to explain the complexity of our system. Due
 to the fact that we use the same grammar, developers and businesses can talk the same language &mdash; nobody is
 excluded, isn’t that great?
@@ -332,11 +331,11 @@ If you are Allegro worker and you are interested in EventStorming &mdash; you wa
 or help as a facilitator I strongly encourage you to join the guild.
 If you are not yet working at Allegro but are interested in how we use EventStorming maybe it is good opportunity to
 join
-us &mdash; [#dobrzetubyć](https://www.linkedin.com/company/allegro-pl/life/team).
+us &mdash; [#goodtobehere](https://www.linkedin.com/company/allegro-pl/life/team).
 
 ## More about EventStroming
 
-On the Internet you can find a lot of materials about EventStorming. Below some of them that I found most valuable
+On the Internet you can find a lot of materials about EventStorming. Below is a list of those I found most valuable.
 
 ### Books
 
@@ -353,7 +352,7 @@ On the Internet you can find a lot of materials about EventStorming. Below some 
 
 ### Link
 
-1. [Awesome EventStorming](https://github.com/mariuszgil/awesome-eventstorming) by Mariusz Gil &mdash; I guess this is
+1. [Awesome EventStorming](https://github.com/mariuszgil/awesome-eventstorming) by Mariusz Gil &mdash; I belive this is
    the biggest source of links about EventStorming topics.
 
 ## Thanks
