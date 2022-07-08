@@ -264,7 +264,7 @@ When we finish enforcing the timeline and we have a consistent story/flow of our
 systems. We need them for clarity and better understanding of events and forces governing our process / business.
 
 For marking people we use a yellow sticky note with a symbolic drawing of a person or clock if we want to show that time
-matters. External Systems may be represented by large pink stickies with its name on it.
+matters. External Systems may be represented by large pink stickies with their names on it.
 
 ![actor](/img/articles/2022-06-23-eventstorming/image3.png)
 
@@ -272,14 +272,14 @@ matters. External Systems may be represented by large pink stickies with its nam
 
 ### Who is an actor?
 
-Alberto Brandolini is explaining that
+In his book Alberto Brandolini explains that
 > *The goal is not to match the right yellow sticky note to every event in the flow. Adding significant people adds more
 > clarity, but the goal is to trigger some insightful conversation: wherever the behaviour depends on a different type
 > of user, wherever special actions need to be taken, and so on.*
 
 The lack of precision is helping in discussion and exploration &mdash; it can be a specific person for example *in our
-business model only Mrs. Smith can issue an invoice*, or after some time reservation is cancelled &mdash; so even *Time*
-can be an actor. Another example *order cancellation* can have two actors: client and CEX worker.
+business model only Mrs. Smith can issue an invoice*, or after some time reservation is cancelled &mdash; so even *time*
+can be an actor. Another example: *order cancellation* can have two actors: client and CEX worker.
 
 System - application / department / other companies - is a piece of the whole process, but is beyond our control.
 
@@ -291,20 +291,20 @@ is a great occasion for additional discussion and a subject for further explorat
 
 > **Tip**: Remember that each *hot spot* should be addressed and resolved before the next session takes place.
 
-Another way to find where problems might lay is either voting for a specific problem or marking with for example green
-and red stickies events that indicate where in our flow we are generating / losing money or value. For example by green
-stripes we indicate events where we are earning money, by red stripes &mdash; we lose money or value.
+Another way to find where problems might lay is voting for a specific event or marking events that indicate where in our
+flow we are generating / losing money or value. For example by green stripes we indicate events where we are earning money,
+by red stripes where we lose money or value.
 
 ## It is like Pizzas
 
 When all hotspots are addressed, you have found the biggest impediment, or you know on what part you have to focus
-during next session, the only thing left to do is to close the workshop. Thankyou’s to all stakeholders and
-participants, schedule the next session and ask about feedback.
+during next session, the only thing left to do is to close the workshop. Thank all stakeholders and participants,
+schedule the next session and ask for feedback.
 
 After the session, you will have a clear business narrative on the board. What is more important, participants will
 share general understanding of the process. They have gone through the massive learning process, gained experience and
 shared the common knowledge &mdash; everybody uses the domain language. Due to the fact that we used simple building
-blocks the outcome is understandable to everyone PMs, UX designers, dev etc.
+blocks the outcome is understandable to everyone PMs, UX designers, developers etc.
 
 The steps described above and their sequence should be regarded as optional during the session.
 Because there is no such thing as one recipe. For example if during the *timeline step* you feel that introduction of
