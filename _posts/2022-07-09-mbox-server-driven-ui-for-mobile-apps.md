@@ -29,10 +29,10 @@ interpret the requirements slightly differently.
 
 Using server-side rendering solves that problem because each business feature is implemented only once on the backend
 service. That gives us consistency out of the box and shortens the time needed to implement the feature. Also,
-developers don't need to know mobile frameworks to develop for mobile anymore.
+developers don’t need to know mobile frameworks to develop for mobile anymore.
 
 Another advantage of server-side rendering is that it allows releasing features independently from the release train. We
-can deploy changes multiple times a day and when something goes wrong - roll back to the previous version immediately.
+can deploy changes multiple times a day and when something goes wrong — roll back to the previous version immediately.
 It gives teams a lot more flexibility and allows them to experiment and iterate much faster. What is more, deployed
 changes are visible to all clients, no matter which app version they use.
 
@@ -41,9 +41,9 @@ changes are visible to all clients, no matter which app version they use.
 ### Defining the screen layout
 
 While designing MBox, we wanted to create a tool that will give developers total flexibility to implement any layout
-they need - as long as it's consistent with our design system, Metrum.
+they need — as long as it’s consistent with our design system, Metrum.
 
-That's why MBox screens are built using primitive components, which our rendering libraries map to native views.
+That’s why MBox screens are built using primitive components, which our rendering libraries map to native views.
 
 // TODO - OBRAZEK Z ROZBICIEM EKRANU NA KOMPONENTY MBOXOWE
 
@@ -61,13 +61,13 @@ indistinguishable.
 
 Creating more complex reusable views is also possible. For example, our design system specifies something called the
 message: an element with a vertical line, an icon, and some texts and buttons. However, because this element is complex
-and its requirements may change over time, it's defined on the backend service as a widget - the element that developers
+and its requirements may change over time, it’s defined on the backend service as a widget — the element that developers
 can reuse across different screens.
 
 // TODO obrazek metrum message i rozbicie na elementy MBoxowe
 
 If the requirements for the message widget change, we can easily change it on the backend side without the need to
-release the app. That's because it's not defined directly in the MBox libraries included in the mobile apps but
+release the app. That’s because it’s not defined directly in the MBox libraries included in the mobile apps but
 specified on the backend using MBox components.
 
 ### Unified tracking
@@ -75,7 +75,7 @@ specified on the backend using MBox components.
 Besides defining layouts, MBox also allows us to specify track events on the backend.
 
 For tracking events, consistency is crucial. If events are not triggered under the same scenarios and with the same data
-on both platforms, it's hard to compare the data and make business decisions.
+on both platforms, it’s hard to compare the data and make business decisions.
 
 MBox solves that problem. All events tracked on MBox screens are defined on the backend, meaning unified tracking
 between Android and iOS and across different app versions.
@@ -108,9 +108,9 @@ different use cases.
 ### For example:
 
 One of the first challenges that we faced was allowing the implementation of an “add to watched” star in MBox. We
-could've just added the ”watched star” component that checks if a user is logged in (redirects to the login page if it's
+could’ve just added the ”watched star” component that checks if a user is logged in (redirects to the login page if it’s
 not), adds an offer to the watched, and changes the star icon from empty to full. In the short term, it should have been
-easier. But it's not a way that would allow MBox to scale.
+easier. But it’s not a way that would allow MBox to scale.
 
 Instead, we designed a couple of atomic mechanisms that allow building this feature on the backend and could be reused
 in the future in different use cases.
@@ -124,18 +124,18 @@ redirecting to the login screen if needed. That allows ensuring the user is logg
 // TODO - obrazek schemat rozbicie akcji dla “add to watched” star
 
 Of course, doing it this way took much more time than just implementing the ”add to watched” component in MBox libraries
-natively. But it's the way that scales and gives us flexibility.
+natively. But it’s the way that scales and gives us flexibility.
 
 Over time mechanisms that we designed earlier were reused on other screens. And more and more often, when the new team
 wanted to use MBox on their screen, most of the building blocks they needed were already there. And it definitely
-wouldn't be the case if not for our atomic approach.
+wouldn’t be the case if not for our atomic approach.
 
 ## How does MBox connect to other parts of the Allegro ecosystem?
 
 Consistency across mobile platforms is not everything. Another important aspect of our work is making sure mobile and
 web platforms are as consistent as possible, respecting native differences that make each platform unique.
 
-MBox integrates with our content management system, also used for the web (Opbox Page Manager). The screen's content
+MBox integrates with our content management system, also used for the web (Opbox Page Manager). The screen’s content
 configured in the admin panel is sent through the Opbox services to the MBox backend service. The MBox service maps the
 data into MBox components that make up the MBox screen. Then the screen definition in JSON format is sent to apps and is
 rendered using native views.
@@ -145,15 +145,15 @@ for the web: Opbox Components, which describe how to map the data into HTML elem
 
 // TODO - obrazek z architektura
 
-Integration with the Opbox gives us a lot of advantages. Very often, to change the content in the app and web, you don't
-need to change the code at all - all you need to do is change the content in the admin panel.
+Integration with the Opbox gives us a lot of advantages. Very often, to change the content in the app and web, you don’t
+need to change the code at all — all you need to do is change the content in the admin panel.
 
 Another huge advantage is that we have unified tracking between all platforms and can use the same tools for A/B testing
 that are used for the web. Previously code for A/B tests had to be written for each mobile platform separately in native
 code and then cleaned up after the finished experiment. Now, some experiments work out of the box since Opbox sends
 different data to MBox depending on the experiment variant the user falls into. Sometimes a little bit of code in the
-MBox backend is required to conduct an experiment, but it's not comparable to the amount of work A/B tests take when
-they're performed in the native code without MBox.
+MBox backend is required to conduct an experiment, but it’s not comparable to the amount of work A/B tests take when
+they’re performed in the native code without MBox.
 
 ## Conclusions
 
@@ -168,10 +168,10 @@ Currently MBox is used on over 25 screens in Allegro mobile apps and the number 
 2022 alone, 27 teams made changes to the app using MBox and created about 300 Pull Requests. We deployed changes over
 100 times which means ~4.15 releases a week.
 
-We're confident that it's not the end of the possibilities ahead of us. We still see how we can make MBox even more
-powerful. We'd love to shorten development time even more by providing tools that allow defining MBox screens in
-TypeScript. That'll enable developers to reuse some parts of the code between mobile and web and take advantage of
-better tools such as hot reload. Another thing we're currently focused on is adding the binding mechanism to MBox and
+We’re confident that it’s not the end of the possibilities ahead of us. We still see how we can make MBox even more
+powerful. We’d love to shorten development time even more by providing tools that allow defining MBox screens in
+TypeScript. That’ll enable developers to reuse some parts of the code between mobile and web and take advantage of
+better tools such as hot reload. Another thing we’re currently focused on is adding the binding mechanism to MBox and
 the client-side logic to allow defining the business logic on the backend. Implementing those mechanisms will allow
 introducing even more interactivity into MBox screens.
 
