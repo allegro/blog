@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Server-driven UI for mobile apps"
+title: "MBox: server-driven UI for mobile apps"
 author: [paulina.sadowska]
 tags: [tech, "Server-driven UI", mobile, mbox]
 excerpt: >
