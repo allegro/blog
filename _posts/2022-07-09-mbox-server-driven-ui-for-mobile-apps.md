@@ -176,4 +176,4 @@ better tools such as hot reload. Another thing we’re currently focused on is a
 the client-side logic to allow defining the business logic on the backend. Implementing those mechanisms will allow
 introducing even more interactivity into MBox screens.
 
-But that is the topic for the following articles. Stay tuned!
+But that is the topic for the next articles. Stay tuned!
