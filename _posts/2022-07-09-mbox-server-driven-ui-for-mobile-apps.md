@@ -18,7 +18,8 @@ In 2019 we created the first version of the in-house server-driven rendering too
 main page in the Allegro app on Android and iOS. We have come a long way since then, and now we use this tool to render
 more and more screens in the Allegro apps.
 
-After almost three years of working on MBox, we want to share how it works and the key advantages of using this approach.
+After almost three years of working on MBox, we want to share how it works and the key advantages of using this
+approach.
 
 ## Why server-driven UI?
 
@@ -45,7 +46,7 @@ they need — as long as it’s consistent with our design system, Metrum.
 
 That’s why MBox screens are built using primitive components, which our rendering libraries map to native views.
 
-// TODO - OBRAZEK Z ROZBICIEM EKRANU NA KOMPONENTY MBOXOWE
+![MessageWidget structure](/img/articles/2022-07-09-mbox-server-driven-ui-for-mobile-apps/1_MBox_SG.png)
 
 Developers can arrange MBox components freely using different types of containers that MBox supports (`flex-container`,
 `stack-container`, `absolute-container`, `list-container`, etc.). Those components can be styled and configured to match
@@ -53,9 +54,8 @@ different business scenarios.
 
 MBox renders components on mobile apps consistently, but it also respects slight differences unique to the Android or
 iOS platform. That gives MBox screens a native look and feel and perfectly blends in with parts of the app developed
-natively, without MBox. We even needed to add a new developer option: a label that shows which parts of the app are
-rendered by MBox. Because even for mobile developers, MBox and pure native screens were, in many cases,
-indistinguishable.
+natively, without MBox. We even needed to add a label that shows which parts of the app are rendered by MBox, because
+even for mobile developers, MBox and pure native screens were, in many cases, indistinguishable.
 
 ### What about more complex views?
 
@@ -64,7 +64,7 @@ message: an element with a vertical line, an icon, and some texts and buttons. H
 and its requirements may change over time, it’s defined on the backend service as a widget — the element that developers
 can reuse across different screens.
 
-// TODO obrazek metrum message i rozbicie na elementy MBoxowe
+![MessageWidget structure](/img/articles/2022-07-09-mbox-server-driven-ui-for-mobile-apps/2_MessageWidget.png)
 
 If the requirements for the message widget change, we can easily change it on the backend side without the need to
 release the app. That’s because it’s not defined directly in the MBox libraries included in the mobile apps but
@@ -116,7 +116,8 @@ Instead, we designed a couple of atomic mechanisms that allow building this feat
 in the future in different use cases.
 
 We added a logic component called `multivariant` that allows changing one component into another thanks to the
-`changeVariant` action. That enabled us to switch the star icon from empty to full. Next, we added the `sendRequest` action
+`changeVariant` action. That enabled us to switch the star icon from empty to full. Next, we added the `sendRequest`
+action
 that sends requests with given URL, headers, and other data to our services. That allows adding and removing an offer to
 and from the watched list. Lastly, we added the `loginInNeeded` action that allows checking if an user is logged in and
 redirecting to the login screen if needed. That allows ensuring the user is logged in before making the request.
