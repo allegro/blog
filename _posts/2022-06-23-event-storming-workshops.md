@@ -16,7 +16,7 @@ and facilitate EventStorming workshops.
 In 2013 Alberto Brandolini posted an [article](https://ziobrando.blogspot.com/2013/11/introducing-event-storming.html)
 about a new workshop format for quickly exploring complex business domains. It was warmly welcomed by the DDD community.
 In 2015 [Technology Radar](https://www.thoughtworks.com/radar/techniques/event-storming) described EventStorming as *worthy of attention*
-and three years later as *a recommended method* for business domain modeling in information systems.
+and three years later as *a recommended method* for business domain modelling in information systems.
 
 During the years a lot has changed, the technique has developed and matured but the main idea remained the same:
 > *EventStorming is a flexible workshop format that allows a massive collaborative exploration of complex domains (...)
@@ -46,7 +46,7 @@ On which we will write down our events in the following form:
 
 * *Verb in past tense* to indicate that it already happened
 * *Relevant for domain experts* - describing specific and pertinent events / changes in our business / system - these
-  are changes that at the end of the day we want to save in the database.
+  are changes that, at the end of the day we want to save in the database.
 
   ![domain event](/img/articles/2022-06-23-eventstorming/image1.png)
 
@@ -58,7 +58,7 @@ For example:
 ![example of events](/img/articles/2022-06-23-eventstorming/image5.png)
 
 - we have verbs in past tense,
-- its are relevant changes in our *blog business*,
+- they are all relevant changes in our *blog business*,
 - also we know who, when at what have done.
 
 ## Before launching
@@ -74,7 +74,7 @@ For stationery session you need:
 * stickies in different colours, shapes and quantity (will discuss it later),
 * markers
 
-When it has to be online you can use a virtual boards such as:
+When it has to be online, you can use a virtual boards such as:
 
 * [miro](https://miro.com/)
 * [mural](https://www.mural.co/)
@@ -83,12 +83,12 @@ When it has to be online you can use a virtual boards such as:
 
 There are two approaches to facilitate and that depends on general participants’ understanding of the business process.
 
-If your team does not know the domain - it is good to conduct a workshop in an exploratory way, because there is a lot
-of unknown. You can start with adding a central event out, or if the domain is large - several events. Then look at
-what is happening before and after those events, regarding time flow.
+If your team does not know the domain it is good to conduct a workshop in an exploratory way, because there are a lot
+of unknowns. You can start with adding a central event out, or if the domain is large - several events. Then look at
+what is happening before and after those events regarding time flow.
 
 However, if your participants are familiar with the system (domain) and the goal is to discover only a part of it, see
-how something works or immerse into a specific *use-case*, you may want to impose certain limits/boundaries - e.g. by
+how something works or immerse into a specific *use-case*. You may want to impose certain limits/boundaries - e.g. by
 initial and final events.
 
 # Phases of Big Picture EventStorming workshop
@@ -101,7 +101,7 @@ everybody gets bored. Generally you can omit this step and ask only new particip
 > *We are going to explore the business process as a whole by placing all the relevant events along a timeline. We will
 > highlight ideas, risks and opportunities along the way.*
 
-What is necessary - we need to set a goal. What will we model? Say, what is our goal, what we will model and try to
+What is necessary - we need to set a goal. What will we model? Say &ldquo;What is our goal? What we will model?&rdquo; and try to
 analyse.
 > **Tip**: Remember - EventStorming is not a goal by itself - it is only a tool / framework.
 
@@ -109,7 +109,7 @@ analyse.
 
 Provide participants with an idea of a domain event, why it is important and that it has to be a relevant change in our
 system. Imagine you do not have a computer and by the end of the day every event in our system needs to be written
-down in a notebook, by hand. Is the event ‘offer was shown’ a relevant change you want or is worth noting?
+down in a notebook, by hand. Is the event ‘offer was shown’ a relevant change you want or is it worth noting?
 
 > **Tip**: A good ice-breaker is also demonstrating how to peel the sticky note so it would not curl
 > up… [for example here](https://www.youtube.com/watch?v=rPHLxOLuyLY).
@@ -138,7 +138,7 @@ place (try to capture events people are arguing about). Encourage the team to tr
 If somebody is wrong, it’s okay and others will correct.
 
 When someone is mentioning some mysterious term, capture its definition. As a facilitator you can and you should ask
-obvious questions as it takes the burden off others participants.
+obvious questions as it takes the burden off the other participants.
 
 This is also a phase where divergent thinking takes place as a part of *chaotic exploration*. So on the board we have a lot
 of events (ideas). Some of them are better and some are worse but we do not judge them at this point &mdash; later we will see
@@ -154,19 +154,19 @@ where they lead us. Once again you should encourage the participants to generate
 ### How to manage people
 
 Sometimes it is a good idea to divide them into smaller groups and make them work together on the same issue
-or, quite opposite, to focus on different areas of the system.
+or, quite the opposite, to focus on different areas of the system.
 
 Depending on whether we are exploring or modelling the process, especially during online sessions, I think it is good to
 have boundaries &mdash; like a start event and an end event &mdash; among which everybody can create their vision. Then
-the most difficult part is to merge it. Another approach is to leave a free hand to your participants and see how the process is going to develop.
+the most difficult part is to merge it. Another approach is to give a free hand to your participants and see how the process is going to develop.
 
 ### How long should it take?
 
-When the speed of new events showing up dramatically slows down &mdash; it is a good time to proceed to the next phase.
+When the speed of new events showing up dramatically slows down, it is a good time to proceed to the next phase.
 Usually chaotic exploration takes about 5 to 15 minutes, but I have noticed that after about 8 minutes people are getting
 bored and busy with other things. So especially during online meetings, when you do not control the environment (like
-computers, phones, slack, mails…) it is easy to lose attention. And if you add to it a *zoom fatigue* syndrome - you can
-spoil the whole session, when key participants leave.
+computers, phones, slack, mails…) it is easy to lose attention. And if you add to it a *zoom fatigue* syndrome, you can
+spoil the whole session when key participants leave.
 
 ## Phase 2 Timeline
 
@@ -184,12 +184,13 @@ A lot of events are going to change their place, also participants will find the
 okay. Remove the duplicates, but be careful &mdash; ask if those duplicated events mean the same thing for everybody! Do
 not hesitate to add, remove or change some sticky notes on the board.
 
-At this step some issue points may appear - so it is good to mark it as a **hotspot** &mdash; use red sticky notes,
-write the issue down, but it is not a good time to deliberate about it now, we try to postpone this discussion.
+At this step some issue points may appear, so it is good to mark it as a **hotspot**. Use red sticky notes and
+write the issue down but this is not a good time to deliberate about it now. Try to postpone this discussion until we have
+structured the whole process.
 
 ![hot-spot](/img/articles/2022-06-23-eventstorming/image2.png)
 
-> **Tip**: During the online session when everybody is working solo it is hard to merge all events and, including
+> **Tip**: During the online session when everybody is working solo, it is hard to merge all events and, including
 > attention problems, you may be left alone. So my solution is to introduce the next phase right now.
 >
 > Depending on the team - you can pick some random person who is going to start creating a timeline based
@@ -200,15 +201,15 @@ write the issue down, but it is not a good time to deliberate about it now, we t
 > the room, when you tell the story you can make intentional errors or ask silly questions. All of this eventually will
 > help to explore the domain.
 >
-> Because as a facilitator you do not have to know everything, especially the domain or business your participants are
+> Because as a facilitator you do not have to know everything &mdash; especially the domain or business your participants are
 > exploring &mdash; you help them effectively and safely discover processes, find new solutions or define problems.
 
 ## Phase 3 Explicit walk-through and reverse narrative
 
 ### What is happening:
 
-Next step is to do a walk through by creating some sort of story that can be told based on events placed on the board.
-During this step a lot of discussions (arguments) are going to take place, maybe some events are missing - so do not hesitate to add,
+Next step is to do a walk-through by creating some sort of a story that can be told based on the events placed on the board.
+During this step a lot of discussions (arguments) are going to take place. Maybe some events are missing, so do not hesitate to add,
 remove or change some sticky notes on the board. We should focus on the happy path in the first place.
 
 ### 1. Explicit walk-through
@@ -219,12 +220,12 @@ Pick some random person who is going to start telling a story based on available
 to right). Sometimes the team gets blocked. In this situation you can add or move an event and place it in an obviously
 wrong place. Your error will be fixed quickly and help the team to move on.
 
-### How to help participants to discover more?
+### How to help participants discover more?
 
-And the answer is simple &mdash; by asking questions. There are some useful questions that you can ask when discussing
+The answer is simple &mdash; by asking questions. There are some useful questions that you can ask when discussing
 almost every event, e.g.:
 
-- Why did this event happened?
+- Why did this event happen?
 - What are the consequences of this event?
 - What has to / needs to happen next?
 
@@ -249,7 +250,7 @@ Some questions you can ask:
 
 * Before
     * *What has happened before X*
-    * *What else has to happened for X to happen*
+    * *What else has to happen for X to happen*
 * Between - we take two corresponding events
     * *Is there anything else happening between X and Y*
 * Alternative - ask about alternative events
@@ -264,7 +265,7 @@ When we finish enforcing the timeline and we have a consistent story/flow of our
 systems. We need them for clarity and better understanding of events and forces governing our process / business.
 
 For marking people we use a yellow sticky note with a symbolic drawing of a person or clock if we want to show that time
-matters. External Systems may be represented by large pink stickies with their names on it.
+matters. External systems may be represented by large pink stickies with their names on it.
 
 ![actor](/img/articles/2022-06-23-eventstorming/image3.png)
 
@@ -297,26 +298,26 @@ by red stripes where we lose money or value.
 
 ## It is like Pizzas
 
-When all hotspots are addressed, you have found the biggest impediment, or you know on what part you have to focus
-during next session, the only thing left to do is to close the workshop. Thank all stakeholders and participants,
+When all hotspots are addressed, you have found the biggest impediment, or you know on what part you have to focus on
+during next session. The only thing left to do is to close the workshop, thank all stakeholders and participants,
 schedule the next session and ask for feedback.
 
-After the session, you will have a clear business narrative on the board. What is more important, participants will
+After the session you will have a clear business narrative on the board. What is more important, participants will
 share general understanding of the process. They have gone through the massive learning process, gained experience and
 shared the common knowledge &mdash; everybody uses the domain language. Due to the fact that we used simple building
-blocks the outcome is understandable to everyone PMs, UX designers, developers etc.
+blocks, the outcome is understandable to everyone PMs, UX designers, developers etc.
 
 The steps described above and their sequence should be regarded as optional during the session.
-Because there is no such thing as one recipe. For example if during the *timeline step* you feel that introduction of
-people and systems is going to help &mdash; do not hesitate to do so. In other cases you will be interested only in
-finding impediments or where your system is delivering values and do not feel obligated to use all steps.
+There is no such thing as one recipe. For example, if during the *timeline step* you feel that introduction of
+people and systems is going to help, do not hesitate to do so. In other cases you will be interested only in
+finding impediments or where your system is delivering values and do not feel obligated to use all the steps.
 As Alberto says:
 > *I like to think about it like Pizzas: there’s a common base, but different toppings.*
 
 ### Nobody is excluded
 
-Big Picture EventStorming is the first and crucial step, its outcome is visible and valuable. Depending on the team
-needs it can be sufficient but if we want to go deeper and explore more, next there are Process Level and Design Level
+Big Picture EventStorming is the first and crucial step, its outcome is visible and valuable. Depending on what the team
+needs, it can be sufficient, but if we want to go deeper and explore more, next there are Process Level and Design Level
 EventStorming. We use the same stickies’ grammar enhanced with more colours to explain the complexity of our system. Due
 to the fact that we use the same grammar, developers and businesses can talk the same language &mdash; nobody is
 excluded, isn’t that great?
@@ -327,7 +328,7 @@ developers/architects) can start thinking how to change what we have learned int
 
 ## Call for action
 
-If you are Allegro worker and you are interested in EventStorming &mdash; you want to develop, participate in workshops
+If you are Allegro worker and you are interested in EventStorming, you want to develop, participate in workshops
 or help as a facilitator I strongly encourage you to join the guild.
 If you are not yet working at Allegro but are interested in how we use EventStorming maybe it is good opportunity to
 join
