@@ -6,7 +6,7 @@ tags: [eventstorming, tech, communication]
 ---
 
 With this article, I would like to introduce you to EventStorming and explain to you how to get started. I am not discovering
-anything new, just gathering available knowledge in one place. What I will try to show is a few tips on how to conduct
+anything new, just gathering available knowledge in one place. What I will show you is a few tips on how to conduct
 and facilitate EventStorming workshops.
 
 ## Guide to Big Picture EventStorming
@@ -14,7 +14,7 @@ and facilitate EventStorming workshops.
 ### Introducing EventStorming
 
 In 2013 Alberto Brandolini posted an [article](https://ziobrando.blogspot.com/2013/11/introducing-event-storming.html)
-about a new workshop format for quickly exploring complex business domains. It was warmly welcomed by the DDD community.
+about a new workshop format for quick exploration of complex business domains. It was warmly welcomed by the DDD community.
 In 2015 [Technology Radar](https://www.thoughtworks.com/radar/techniques/event-storming) described EventStorming as *worthy of attention*
 and three years later as *a recommended method* for business domain modelling in information systems.
 
@@ -25,42 +25,6 @@ During the years a lot has changed, the technique has developed and matured but 
 The above definition is from Alberto Brandolini's *[Introducing EventStorming](https://leanpub.com/introducing_eventstorming)*,
 to which I will be referring in this article.
 
-### Building blocks
-
-I focus here on the main building blocks without going into details. A comprehensive description can be found in the
-book mentioned earlier.
-
-### Invite the right people - business, UX, IT
-*but how do you describe the right people?*
-
-* those who have questions
-    * developers, architects, designers etc.
-* and those who know the answers
-    * you will need people that care about the problem
-    * people who know the business. Try to gather people who know and understand it. Don’t confuse them with users &mdash;
-      people who are using our business/system &mdash; these two are totally opposite.
-
-### Orange sticky note
-
-On which we will write down our events in the following form:
-
-* *Verb in past tense* to indicate that it already happened
-* *Relevant for domain experts* - describing specific and pertinent events / changes in our business / system - these
-  are changes that, at the end of the day we want to save in the database.
-
-  ![domain event](/img/articles/2022-06-23-eventstorming/image1.png)
-
-> **Tip**: It is a good practice to define the concept of an event together (with participants) at the beginning of the
-> workshop. Then we can verify our definition with events that are appearing on the wall.
-
-For example:
-
-![example of events](/img/articles/2022-06-23-eventstorming/image5.png)
-
-- we have verbs in past tense,
-- they are all relevant changes in our *blog business*,
-- also we know who, when at what have done.
-
 ## Before launching
 
 ### Provide unlimited modelling space
@@ -68,7 +32,7 @@ For example:
 Why is it important? Because you want participants to explore and experiment during the workshop. You don’t want to
 impose limits on them or to allow a situation where someone doesn’t add an event because there is no space left.
 
-For stationery session you need:
+For stationary session you need:
 
 * wall where you attach plotter paper (it is easier to stick post-its on plotter paper),
 * stickies in different colours, shapes and quantity (will discuss it later),
@@ -91,7 +55,53 @@ However, if your participants are familiar with the system (domain) and the goal
 how something works or immerse into a specific *use-case*. You may want to impose certain limits/boundaries - e.g. by
 initial and final events.
 
-# Phases of Big Picture EventStorming workshop
+Depending on what you want to achieve and how deep you want to explore your business, we can distinguish three possible formats:
+
+* Big Picture EventStorming - when you want to look at your business from above (*a helicopter view*)
+* Process Level EventStorming - going deeper in details but still focus on whole view
+* Design Level EventStorming - you take you previous steps apart and focus on one thing and start modelling this part
+
+In his book Alberto Brandolini is mention also other formats, however, in my opinion, mentioned above formats are the most
+important. In this article I focus on the *Big Picture* approach as it is the first and crucial step to start exploring our business.
+
+### Building blocks
+
+I focus here on the main building blocks without going into details. A comprehensive description can be found in the
+book mentioned earlier.
+
+### Invite the right people - business, UX, IT
+*but how do you describe the right people?*
+
+* those who have questions
+    * developers, architects, designers etc.
+* and those who know the answers
+    * you will need people that care about the problem
+    * people who know the business. Try to gather people who know and understand it. Don’t confuse them with users &mdash;
+      people who are using our business/system (I mean these two words interchangeably and will use *business* across the
+      article) &mdash; these two are totally opposite.
+
+### Orange sticky note
+
+On which we will write down our events in the following form:
+
+* *Verb in past tense* to indicate that it already happened
+* *Relevant for domain experts* - describing specific and pertinent events or changes in our business - these
+  are changes that at the end of the day we want to save in the database.
+
+  ![domain event](/img/articles/2022-06-23-eventstorming/image1.png)
+
+> **Tip**: It is a good practice to define the concept of an event together (with participants) at the beginning of the
+> workshop. Then we can verify our definition with events that are appearing on the wall.
+
+For example:
+
+![example of events](/img/articles/2022-06-23-eventstorming/image5.png)
+
+- we have verbs in past tense,
+- they are all relevant changes in our *blog business*,
+- *also it is not explicitly written, but subliminally we know who, when and what have done.*
+
+## Phases of Big Picture EventStorming workshop
 
 ## Introduction
 
@@ -129,9 +139,9 @@ happening before and after. Sometimes it is worth showing the importance of time
 
 - a locker was opened,
 - a package was taken out,
-- the door was closed
+- the door was closed,
 
-in a different order it does not make sense.
+In a different order it does not make sense.
 
 Your role as a facilitator is to listen and observe - how fast new stickies are appearing, where discussion is taking
 place (try to capture events people are arguing about). Encourage the team to try to identify as many events as possible.
@@ -145,7 +155,7 @@ of events (ideas). Some of them are better and some are worse but we do not judg
 where they lead us. Once again you should encourage the participants to generate new ideas and set aside critical thinking and judgement.
 
 > **Tips**:
-> As an icebreaker you can put the first event or events out - to show how easy it is, and help draw participants into
+> As an icebreaker you can place the first event or events - to show how easy it is, and help draw participants into
 > workshops.
 >
 > Try to eliminate actors from the events - because we don’t want to impose mental boundaries as we may not notice that
@@ -184,7 +194,7 @@ A lot of events are going to change their place, also participants will find the
 okay. Remove the duplicates, but be careful &mdash; ask if those duplicated events mean the same thing for everybody! Do
 not hesitate to add, remove or change some sticky notes on the board.
 
-At this step some issue points may appear, so it is good to mark it as a **hotspot**. Use red sticky notes and
+At this step some issue points may appear, so it is good to mark them as **hotspots**. Use red sticky notes and
 write the issue down but this is not a good time to deliberate about it now. Try to postpone this discussion until we have
 structured the whole process.
 
@@ -220,7 +230,7 @@ Pick some random person who is going to start telling a story based on available
 to right). Sometimes the team gets blocked. In this situation you can add or move an event and place it in an obviously
 wrong place. Your error will be fixed quickly and help the team to move on.
 
-### How to help participants discover more?
+### How to help the participants discover more?
 
 The answer is simple &mdash; by asking questions. There are some useful questions that you can ask when discussing
 almost every event, e.g.:
@@ -231,9 +241,9 @@ almost every event, e.g.:
 
 Going deeper (of course that depends on how deep you want to go)
 
-- What, how, when, why is it changing
-- When it can’t change
-- How does this affect the system / business
+- What, how, when, why is it changing?
+- When it can’t change?
+- How does this affect the business?
 
 > **Tip**: Also in this phase it can be convenient to introduce actors (phase 4 - people and systems) &mdash; if it
 > helps to tell a story or better understand the process do not hesitate (remember I told you that EventStorming is a tool?)
@@ -255,17 +265,18 @@ Some questions you can ask:
     * *Is there anything else happening between X and Y*
 * Alternative - ask about alternative events
     * *What if X did not happen*
-    * *What if 10% of X happened or 150% of X happened *
+    * *What if 10% of X happened or 150% of X happened*
 
 ## Phase 4 People and systems
 
 ### What is happening
 
-When we finish enforcing the timeline and we have a consistent story/flow of our business we can add people and external
-systems. We need them for clarity and better understanding of events and forces governing our process / business.
+When we finish enforcing the timeline and we have a consistent flow of our business we can add people and external
+systems. We need them for clarity and better understanding of events and forces governing our business.
 
 For marking people we use a yellow sticky note with a symbolic drawing of a person or clock if we want to show that time
-matters. External systems may be represented by large pink stickies with their names on it.
+matters. External systems may be represented by large pink stickies with their names on it. By an external system I mean
+a piece of the whole process which is beyond our control e.g. an application, a department, other companies.
 
 ![actor](/img/articles/2022-06-23-eventstorming/image3.png)
 
@@ -278,11 +289,14 @@ In his book Alberto Brandolini explains that
 > clarity, but the goal is to trigger some insightful conversation: wherever the behaviour depends on a different type
 > of user, wherever special actions need to be taken, and so on.*
 
-The lack of precision is helping in discussion and exploration &mdash; it can be a specific person for example *in our
-business model only Mrs. Smith can issue an invoice*, or after some time reservation is cancelled &mdash; so even *time*
-can be an actor. Another example: *order cancellation* can have two actors: client and CEX worker.
+The lack of precision is helping in discussion and exploration. It can be a specific person for example:
 
-System - application / department / other companies - is a piece of the whole process, but is beyond our control.
+* *in our business model only Mrs. Smith can issue an invoice*.
+* or *after some time reservation is cancelled* so even *time* can be an actor.
+
+Another example:
+
+* *order cancellation* can have two actors: client and CEX worker.
 
 ## Phase 5 Opportunities and risks
 
@@ -294,7 +308,7 @@ is a great occasion for additional discussion and a subject for further explorat
 
 Another way to find where problems might lay is voting for a specific event or marking events that indicate where in our
 flow we are generating / losing money or value. For example by green stripes we indicate events where we are earning money,
-by red stripes where we lose money or value.
+by red stripes where we are losing money or value.
 
 ## It is like Pizzas
 
