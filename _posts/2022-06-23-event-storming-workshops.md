@@ -57,9 +57,9 @@ initial and final events.
 
 Depending on what you want to achieve and how deep you want to explore your business, we can distinguish three possible formats:
 
-* Big Picture EventStorming - when you want to look at your business from above (*a helicopter view*)
-* Process Level EventStorming - going deeper in details but still focus on whole view
-* Design Level EventStorming - you take you previous steps apart and focus on one thing and start modelling this part
+* Big Picture EventStorming - when you want to look at your business from above (*a helicopter view*),
+* Process Level EventStorming - going deeper with details but you still focus on whole view,
+* Design Level EventStorming - you break down your current process into smaller areas and then model them step by step using DDD, CQRS and/or Event Sourcing.
 
 In his book Alberto Brandolini is mentioning also other formats, however, I would like to narrow the scope for the most
 important ones. In this article I focus on the *Big Picture* approach as it is the first and crucial step to start exploring our business.
