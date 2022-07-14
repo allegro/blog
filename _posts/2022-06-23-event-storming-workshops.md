@@ -64,7 +64,7 @@ Depending on what you want to achieve and how deep you want to explore your busi
 In his book Alberto Brandolini is mentioning also other formats, however, I would like to narrow the scope for the most
 important ones. In this article I focus on the *Big Picture* approach as it is the first and crucial step to start exploring our business.
 
-### Building blocks
+## Building blocks
 
 I focus here on the main building blocks without going into details. A comprehensive description can be found in the
 book mentioned earlier.
@@ -99,11 +99,11 @@ For example:
 
 - we have verbs in past tense,
 - they are all relevant changes in our *blog business*,
-- *also it is not explicitly written, but subliminally we know who, when and what have done.*
+
 
 ## Phases of Big Picture EventStorming workshop
 
-## Introduction
+### Introduction
 
 It is good to start the workshop with a short introduction of all participants - but it has to be rather quick before
 everybody gets bored. Generally you can omit this step and ask only new participants to introduce themselves.
@@ -115,7 +115,7 @@ What is necessary - we need to set a goal. What will we model? Say &ldquo;What i
 analyse.
 > **Tip**: Remember - EventStorming is not a goal by itself - it is only a tool / framework.
 
-### Because the Big Picture is all about events.
+### Because the Big Picture is all about events
 
 Provide participants with an idea of a domain event, why it is important and that it has to be a relevant change in our
 system. Imagine you do not have a computer and by the end of the day every event in our system needs to be written
