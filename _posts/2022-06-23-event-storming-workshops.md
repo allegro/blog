@@ -61,8 +61,8 @@ Depending on what you want to achieve and how deep you want to explore your busi
 * Process Level EventStorming - going deeper in details but still focus on whole view
 * Design Level EventStorming - you take you previous steps apart and focus on one thing and start modelling this part
 
-In his book Alberto Brandolini is mention also other formats, however, in my opinion, mentioned above formats are the most
-important. In this article I focus on the *Big Picture* approach as it is the first and crucial step to start exploring our business.
+In his book Alberto Brandolini is mentioning also other formats, however, I would like to narrow the scope for the most
+important ones. In this article I focus on the *Big Picture* approach as it is the first and crucial step to start exploring our business.
 
 ### Building blocks
 
