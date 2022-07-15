@@ -52,8 +52,8 @@ Developers can arrange MBox components freely using different types of container
 `stack-container`, `absolute-container`, `list-container`, etc.). Those components can be styled and configured to match
 different business scenarios.
 
-MBox renders components on mobile apps consistently, but it also respects slight differences unique to the Android or
-iOS platform. That gives MBox screens a native look and feel and perfectly blends in with parts of the app developed
+MBox renders components on mobile apps consistently, but it also respects slight differences unique to Android and
+iOS platforms. That gives MBox screens a native look and feel and perfectly blends in with parts of the app developed
 natively, without MBox. We even needed to add a label that shows which parts of the app are rendered by MBox, because
 even for mobile developers, MBox and pure native screens were, in many cases, indistinguishable.
 
@@ -88,8 +88,8 @@ allows us to find out early about the possible regressions.
 
 Teams that develop screens using MBox also have various tools that allow them to test their features. They can write
 unit tests in the MBox backend service and check if correct MBox components are created for a given data. They can also
-add an URL of their page to the Visual Regression. A screenshot of this page is done whenever someone commits anything
-to the MBox backend and If any change is detected, the author would be automatically notified in their Pull Request.
+add an URL of their page to Visual Regression. A screenshot of this page is done whenever someone commits anything
+to the MBox backend and if any change is detected, the author would be automatically notified in their Pull Request.
 
 Feature teams can also write UI tests for the native apps to test how their page integrates with the rest of the app and
 if all interactions work as expected. However, those tests have to be written on both platforms by the mobile developers
@@ -137,7 +137,7 @@ Consistency across mobile platforms is not everything. Another important aspect 
 web platforms are as consistent as possible, respecting native differences that make each platform unique.
 
 MBox integrates with our content management system, also used for the web (Opbox Page Manager). The screen’s content
-configured in the admin panel is sent through the Opbox services to the MBox backend service. The MBox service maps the
+configured in the Opbox admin panel is sent through the Opbox services to the MBox backend service. The MBox service maps the
 data into MBox components that make up the MBox screen. Then the screen definition in JSON format is sent to apps and is
 rendered using native views.
 
@@ -147,7 +147,7 @@ for the web: Opbox Components, which describe how to map the data into HTML elem
 ![Add to watched - scheme](/img/articles/2022-07-09-mbox-server-driven-ui-for-mobile-apps/4_architecture.png)
 
 Integration with the Opbox gives us a lot of advantages. Very often, to change the content in the app and web, you don’t
-need to change the code at all — all you need to do is change the content in the admin panel.
+need to change the code at all — all you need to do is change the content in the Opbox admin panel.
 
 Another huge advantage is that we have unified tracking between all platforms and can use the same tools for A/B testing
 that are used for the web. Previously code for A/B tests had to be written for each mobile platform separately in native
@@ -165,7 +165,7 @@ We have come a long way during those three years since we started working on MBo
 a tool that would be used on content screens with very few interactions. Over time we pushed the boundaries of what MBox
 is capable of and entered screens with more and more interactions with the user.
 
-Currently MBox is used on over 25 screens in Allegro mobile apps and the number is still growing. In the first half of
+Currently MBox is used in over 25 screens in Allegro mobile apps and the number is still growing. In the first half of
 2022 alone, 27 teams made changes to the app using MBox and created about 300 Pull Requests. We deployed changes over
 100 times which means ~4.15 releases a week.
 
