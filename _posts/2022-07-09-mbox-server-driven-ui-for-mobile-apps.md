@@ -34,7 +34,7 @@ developers don’t need to know mobile frameworks to develop for mobile anymore.
 
 Another advantage of server-side rendering is that it allows releasing features independently from the release train. We
 can deploy changes multiple times a day and when something goes wrong — roll back to the previous version immediately.
-It gives teams a lot more flexibility and allows them to experiment and iterate much faster. What is more, deployed
+It gives teams a lot more flexibility and allows them to experiment and iterate much faster. What's more, deployed
 changes are visible to all clients, no matter which app version they use.
 
 ## How does MBox work?
@@ -54,8 +54,8 @@ different business scenarios.
 
 MBox renders components on mobile apps consistently, but it also respects slight differences unique to Android and
 iOS platforms. That gives MBox screens a native look and feel and perfectly blends in with parts of the app developed
-natively, without MBox. We even needed to add a label that shows which parts of the app are rendered by MBox, because
-even for mobile developers, MBox and pure native screens were, in many cases, indistinguishable.
+natively, without MBox. We had to add a label that shows which parts of the app are rendered by MBox, because
+even mobile developers couldn't tell where native screens ended and MBox started.
 
 ### What about more complex views?
 
@@ -66,7 +66,7 @@ can reuse across different screens.
 
 ![MessageWidget structure](/img/articles/2022-07-09-mbox-server-driven-ui-for-mobile-apps/2_MessageWidget.png)
 
-If the requirements for the message widget change, we can easily change it on the backend side without the need to
+If the requirements for the message widget change, we can easily modify it on the backend side without the need to
 release the app. That’s because it’s not defined directly in the MBox libraries included in the mobile apps but
 specified on the backend using MBox components.
 
