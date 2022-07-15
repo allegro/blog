@@ -16,7 +16,7 @@ In this article, we want to share our approach to using server-side rendering in
 
 In 2019 we created the first version of the in-house server-driven rendering tool called MBox and used it to render the
 main page in the Allegro app on Android and iOS. We have come a long way since then, and now we use this tool to render
-more and more screens in the Allegro apps.
+more and more screens in the Allegro app.
 
 After almost three years of working on MBox, we want to share how it works and the key advantages of using this
 approach.
@@ -119,7 +119,7 @@ We added a logic component called `multivariant` that allows changing one compon
 `changeVariant` action. That enabled us to switch the star icon from empty to full. Next, we added the `sendRequest`
 action
 that sends requests with given URL, headers, and other data to our services. That allows adding and removing an offer to
-and from the watched list. Lastly, we added the `loginInNeeded` action that allows checking if an user is logged in and
+and from the watched list. Lastly, we added the `loginInNeeded` action that allows checking if a user is logged in and
 redirecting to the login screen if needed. That allows ensuring the user is logged in before making the request.
 
 ![Add to watched - scheme](/img/articles/2022-07-09-mbox-server-driven-ui-for-mobile-apps/3_add_to_watched.png)
