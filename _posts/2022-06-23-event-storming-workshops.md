@@ -48,11 +48,11 @@ When it has to be online, you can use a virtual boards such as:
 There are two approaches to facilitate and that depends on general participants’ understanding of the business process.
 
 If your team does not know the domain it is good to conduct a workshop in an exploratory way, because there are a lot
-of unknowns. You can start with adding a central event out, or if the domain is large - several events. Then look at
+of unknowns. You can start with adding a central event, or if the domain is large - several events. Then look at
 what is happening before and after those events regarding time flow.
 
 However, if your participants are familiar with the system (domain) and the goal is to discover only a part of it, see
-how something works or immerse into a specific *use-case*. You may want to impose certain limits/boundaries - e.g. by
+how something works or immerse into a specific *use-case*. You may want to impose certain boundaries - e.g. by
 initial and final events.
 
 Depending on what you want to achieve and how deep you want to explore your business, we can distinguish three possible formats:
@@ -139,7 +139,7 @@ happening before and after. Sometimes it is worth showing the importance of time
 
 - a locker was opened,
 - a package was taken out,
-- the door was closed,
+- the door was closed.
 
 In a different order it does not make sense.
 
@@ -175,7 +175,7 @@ the most difficult part is to merge it. Another approach is to give a free hand 
 When the speed of new events showing up dramatically slows down, it is a good time to proceed to the next phase.
 Usually chaotic exploration takes about 5 to 15 minutes, but I have noticed that after about 8 minutes people are getting
 bored and busy with other things. So especially during online meetings, when you do not control the environment (like
-computers, phones, slack, mails…) it is easy to lose attention. And if you add to it a *zoom fatigue* syndrome, you can
+computers, phones, chat, mails…) it is easy to lose attention. And if you add to it a *zoom fatigue* syndrome, you can
 spoil the whole session when key participants leave.
 
 ## Phase 2 Timeline
@@ -207,7 +207,7 @@ structured the whole process.
 > on available events. To sustain attention, replace this person with another one. In case of inconsistencies with the timeline,
 > we complete it with the missing events.
 >
-> However, you can do all of it &mdash; if among participants are some shy people or your participants’ supervisor is in
+> However, you can do all of it &mdash; if among participants there are some shy people or your participants’ supervisor is in
 > the room, when you tell the story you can make intentional errors or ask silly questions. All of this eventually will
 > help to explore the domain.
 >
@@ -333,7 +333,7 @@ As Alberto says:
 Big Picture EventStorming is the first and crucial step, its outcome is visible and valuable. Depending on what the team
 needs, it can be sufficient, but if we want to go deeper and explore more, next there are Process Level and Design Level
 EventStorming. We use the same stickies’ grammar enhanced with more colours to explain the complexity of our system. Due
-to the fact that we use the same grammar, developers and businesses can talk the same language &mdash; nobody is
+to the fact that we use the same grammar, developers and businesses can speak the same language &mdash; nobody is
 excluded, isn’t that great?
 
 Those further steps (Process/Design Level) are getting us closer into the domain-driven-design and implementation. We (
