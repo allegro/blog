@@ -122,7 +122,7 @@ that sends requests with given URL, headers, and other data to our services. Tha
 and from the watched list. Lastly, we added the `loginInNeeded` action that allows checking if an user is logged in and
 redirecting to the login screen if needed. That allows ensuring the user is logged in before making the request.
 
-// TODO - obrazek schemat rozbicie akcji dla “add to watched” star
+![Add to watched - scheme](/img/articles/2022-07-09-mbox-server-driven-ui-for-mobile-apps/3_add_to_watched.png)
 
 Of course, doing it this way took much more time than just implementing the ”add to watched” component in MBox libraries
 natively. But it’s the way that scales and gives us flexibility.
@@ -144,7 +144,7 @@ rendered using native views.
 The same data from Opbox is also used to render the web equivalent of the same screen. Opbox defines its own mappings
 for the web: Opbox Components, which describe how to map the data into HTML elements that make up the Allegro web pages.
 
-// TODO - obrazek z architektura
+![Add to watched - scheme](/img/articles/2022-07-09-mbox-server-driven-ui-for-mobile-apps/4_architecture.png)
 
 Integration with the Opbox gives us a lot of advantages. Very often, to change the content in the app and web, you don’t
 need to change the code at all — all you need to do is change the content in the admin panel.
