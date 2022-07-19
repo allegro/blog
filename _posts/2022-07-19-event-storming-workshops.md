@@ -88,14 +88,14 @@ On which we will write down our events in the following form:
 * *Relevant for domain experts* - describing specific and pertinent events or changes in our business - these
   are changes that at the end of the day we want to save in the database.
 
-  ![domain event](/img/articles/2022-06-23-eventstorming/image1.png)
+  ![domain event](/img/articles/2022-07-19-eventstorming/image1.png)
 
 > **Tip**: It is a good practice to define the concept of an event together (with participants) at the beginning of the
 > workshop. Then we can verify our definition with events that are appearing on the wall.
 
 For example:
 
-![example of events](/img/articles/2022-06-23-eventstorming/image5.png)
+![example of events](/img/articles/2022-07-19-eventstorming/image5.png)
 
 - we have verbs in past tense,
 - they are all relevant changes in our *blog business*,
@@ -198,7 +198,7 @@ At this step some issue points may appear, so it is good to mark them as **hotsp
 write the issue down but this is not a good time to deliberate about it now. Try to postpone this discussion until we have
 structured the whole process.
 
-![hot-spot](/img/articles/2022-06-23-eventstorming/image2.png)
+![hot-spot](/img/articles/2022-07-19-eventstorming/image2.png)
 
 > **Tip**: During the online session when everybody is working solo, it is hard to merge all events and, including
 > attention problems, you may be left alone. So my solution is to introduce the next phase right now.
@@ -278,9 +278,9 @@ For marking people we use a yellow sticky note with a symbolic drawing of a pers
 matters. External systems may be represented by large pink stickies with their names on it. By an external system I mean
 a piece of the whole process which is beyond our control e.g. an application, a department, other companies.
 
-![actor](/img/articles/2022-06-23-eventstorming/image3.png)
+![actor](/img/articles/2022-07-19-eventstorming/image3.png)
 
-![system](/img/articles/2022-06-23-eventstorming/image4.png)
+![system](/img/articles/2022-07-19-eventstorming/image4.png)
 
 ### Who is an actor?
 
