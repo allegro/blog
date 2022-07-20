@@ -8,7 +8,7 @@ excerpt: >
     In 2019 we created the first version of the in-house server-driven rendering tool called MBox and used it to render the
     main page in the Allegro app on Android and iOS. We have come a long way since then, and now we use this tool to render
     more and more screens in the Allegro apps.
-    After almost three years of working on MBox, we want to share how it works and the key advantages of
+    After almost three years of working on MBox, we want to share how it works and the key advantages and challenges of
     using this approach.
 ---
 
