@@ -4,7 +4,7 @@ title: "MBox: server-driven UI for mobile apps"
 author: [paulina.sadowska]
 tags: [tech, "Server-driven UI", mobile, mbox]
 excerpt: >
-    In this article, we want to share our approach to using server-side rendering in native mobile apps.
+    In this article, we want to share our approach to using server-driven UI in native mobile apps.
     In 2019 we created the first version of the in-house server-driven rendering tool called MBox and used it to render the
     main page in the Allegro app on Android and iOS. We have come a long way since then, and now we use this tool to render
     more and more screens in the Allegro apps.
@@ -12,13 +12,14 @@ excerpt: >
     using this approach.
 ---
 
-In this article, we want to share our approach to using server-side rendering in native mobile apps.
+In this article, we want to share our approach to using server-driven UI in native mobile apps.
 
 In 2019 we created the first version of the in-house server-driven rendering tool called MBox and used it to render the
 main page in the Allegro app on Android and iOS. We have come a long way since then, and now we use this tool to render
 more and more screens in the Allegro app.
 
-After almost three years of working on MBox, we want to share how it works and the key advantages of using this
+After over three years of working on MBox, we want to share how it works and the key advantages and challenges of using
+this
 approach.
 
 ## Why server-driven UI?
@@ -28,11 +29,11 @@ feature twice for Android and iOS takes a lot of time and requires two people wi
 Android and iOS frameworks). There is also the risk that both apps will not behave consistently because each person may
 interpret the requirements slightly differently.
 
-Using server-side rendering solves that problem because each business feature is implemented only once on the backend
+Using server-driven UI solves that problem because each business feature is implemented only once on the backend
 service. That gives us consistency out of the box and shortens the time needed to implement the feature. Also,
 developers don’t need to know mobile frameworks to develop for mobile anymore.
 
-Another advantage of server-side rendering is that it allows releasing features independently from the release train. We
+Another advantage of server-driven UI is that it allows releasing features independently from the release train. We
 can deploy changes multiple times a day and when something goes wrong — roll back to the previous version immediately.
 It gives teams a lot more flexibility and allows them to experiment and iterate much faster. What's more, deployed
 changes are visible to all clients, no matter which app version they use.
@@ -53,7 +54,13 @@ Developers can arrange MBox components freely using different types of container
 different business scenarios.
 
 MBox renders components on mobile apps consistently, but it also respects slight differences unique to Android and
-iOS platforms. That gives MBox screens a native look and feel and perfectly blends in with parts of the app developed
+iOS platforms.
+For example, dialog action in MBox, supports the same functionalities on both platforms, but the dialog itself looks
+differently on Android and iOS:
+
+![MBox dialog action on Android and iOS](/img/articles/2022-07-09-mbox-server-driven-ui-for-mobile-apps/TODO-DIALOG.png)
+
+That gives MBox screens a native look and feel and perfectly blends in with parts of the app developed
 natively, without MBox. We had to add a label that shows which parts of the app are rendered by MBox, because
 even mobile developers couldn't tell where native screens ended and MBox started.
 
@@ -131,13 +138,54 @@ Over time mechanisms that we designed earlier were reused on other screens. And 
 wanted to use MBox on their screen, most of the building blocks they needed were already there. And it definitely
 wouldn’t be the case if not for our atomic approach.
 
+## The challenges
+
+Of course, we also encounter many challenges while working on MBox.
+
+### Consistency of the engines
+
+We create two separate rendering
+engines for mobile platforms, so we must be extra cautious to ensure everything works consistently. Even the tiny
+inconsistency in the behavior of the engines may be hugely problematic for the developers that use MBox. It may force
+them
+to, for example, define different layouts for each mobile platform.
+
+To make sure the engines are consistent, each feature in MBox is implemented synchronously by the pair of developers
+(Android and iOS) who consult with each other regularly. During the work, they're making sure that they interpret the
+requirements and cover edge cases in the same way.
+The new features are ready to merge only after thorough tests on both platforms that check both correctness and
+consistency.
+
+### Versioning
+
+On MBox, we also have to pay close attention to versioning. We use semantic versioning in the engines. Each new feature
+have to be marked with the same minor and major version on both platforms. We also prepare changelogs containing
+information about what
+functionalities are available in which version.
+
+On the backend, we allow checking the version of the MBox engine that the user has and serve different content depending
+on it.
+For example, when the screen contains the `switch` component, supported from version `1.21`,
+we can define that for users who have the app with the older versions of MBox, `checkbox` will be displayed instead.
+
+![Fallback mechanism](/img/articles/2022-07-09-mbox-server-driven-ui-for-mobile-apps/TODO-FALLBACK.png)
+
+### Testing changes introduced to the engines
+
+And last but not least: testing. Because MBox is used to render various screens in Allegro mobile apps, we must be
+cautious whenever we introduce engine changes to avoid negatively impacting existing MBox screens.
+The screenshot and UI tests cover every MBox component and action. We're also encouraging the feature teams to add their
+screens to the Visual Regression and cover their screens with the UI tests in the mobile repositories. All those things
+allow us to minimize the risk of introducing a regression.
+
 ## How does MBox connect to other parts of the Allegro ecosystem?
 
 Consistency across mobile platforms is not everything. Another important aspect of our work is making sure mobile and
 web platforms are as consistent as possible, respecting native differences that make each platform unique.
 
 MBox integrates with our content management system, also used for the web (Opbox Page Manager). The screen’s content
-configured in the Opbox admin panel is sent through the Opbox services to the MBox backend service. The MBox service maps the
+configured in the Opbox admin panel is sent through the Opbox services to the MBox backend service. The MBox service
+maps the
 data into MBox components that make up the MBox screen. Then the screen definition in JSON format is sent to apps and is
 rendered using native views.
 
