@@ -58,7 +58,7 @@ iOS platforms.
 For example, dialog action in MBox, supports the same functionalities on both platforms, but the dialog itself looks
 differently on Android and iOS:
 
-![MBox dialog action on Android and iOS](/img/articles/2022-07-09-mbox-server-driven-ui-for-mobile-apps/TODO-DIALOG.png)
+![MBox dialog action on Android and iOS](/img/articles/2022-07-09-mbox-server-driven-ui-for-mobile-apps/6_alert.png)
 
 That gives MBox screens a native look and feel and perfectly blends in with parts of the app developed
 natively, without MBox. We had to add a label that shows which parts of the app are rendered by MBox, because
@@ -168,7 +168,7 @@ on it.
 For example, when the screen contains the `switch` component, supported from version `1.21`,
 we can define that for users who have the app with the older versions of MBox, `checkbox` will be displayed instead.
 
-![Fallback mechanism](/img/articles/2022-07-09-mbox-server-driven-ui-for-mobile-apps/TODO-FALLBACK.png)
+![Fallback mechanism](/img/articles/2022-07-09-mbox-server-driven-ui-for-mobile-apps/5_fallback.png)
 
 ### Testing changes introduced to the engines
 
