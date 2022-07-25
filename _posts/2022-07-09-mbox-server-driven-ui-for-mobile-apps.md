@@ -12,15 +12,13 @@ excerpt: >
     using this approach.
 ---
 
-In this article, we want to share our approach to using server-driven UI in native mobile apps.
-
-In 2019 we created the first version of the in-house server-driven rendering tool called MBox and used it to render the
+In this article, we want to share our approach to using server-driven UI in native mobile apps. In 2019 we created the
+first version of the in-house server-driven rendering tool called MBox and used it to render the
 homepage in the Allegro app on Android and iOS. We have come a long way since then, and now we use this tool to render
 more and more screens in the Allegro app.
 
-After over three years of working on MBox, we want to share how it works and the key advantages and challenges of using
-this
-approach.
+After over three years of working on MBox, we want to share how it works and what are the key advantages and challenges
+of using this approach.
 
 ## Why server-driven UI?
 
@@ -91,11 +89,12 @@ between Android and iOS and across different app versions.
 
 Since the MBox rendering engine is a core of more and more screens in the app, it had to be thoroughly covered by unit
 tests and integration tests. We also have screenshot tests that ensure that MBox components render correctly. That
-allows us to find out early about the possible regressions.
+allows us to find out early about possible regressions.
 
 Teams that develop screens using MBox also have various tools that allow them to test their features. They can write
-unit tests in the MBox backend service and check if correct MBox components are created for a given data. They can also
-add an URL of their page to Visual Regression. A screenshot of this page is done whenever someone commits anything
+unit tests in the MBox backend service and check if correct MBox components are created for the given data. They can
+also
+add an URL of their page to Visual Regression. A screenshot of this page is created whenever someone commits anything
 to the MBox backend and if any change is detected, the author would be automatically notified in their Pull Request.
 
 Feature teams can also write UI tests for the native apps to test how their page integrates with the rest of the app and
@@ -106,7 +105,7 @@ and should take into account that the content of the page under tests can be cha
 
 When we started working on MBox, we were focused mainly on pages that contain a lot of frequently changing content but
 not many interactions with users. In the first version of MBox, it was possible to define only basic actions like
-opening a new screen or adding an offer to the cart. That changed gradually when the new teams started using MBox.
+opening a new screen or adding an offer to the cart. That changed gradually when new teams started using MBox.
 
 To make MBox more interactive, we used the same atomic approach we adopted when designing MBox layout components. We
 gradually added generic actions that were not custom-made to serve specific business features but were reusable across
@@ -126,13 +125,13 @@ We added a logic component called `multivariant` that allows changing one compon
 `changeVariant` action. That enabled us to switch the star icon from empty to full. Next, we added the `sendRequest`
 action
 that sends requests with given URL, headers, and other data to our services. That allows adding and removing an offer to
-and from the watched list. Lastly, we added the `loginInNeeded` action that allows checking if a user is logged in and
+and from the watched list. Lastly, we added the `loginIfNeeded` action that allows checking if a user is logged in and
 redirecting to the login screen if needed. That allows ensuring the user is logged in before making the request.
 
 ![Add to watched - scheme](/img/articles/2022-07-09-mbox-server-driven-ui-for-mobile-apps/3_add_to_watched.png)
 
 Of course, doing it this way took much more time than just implementing the ”add to watched” component in MBox libraries
-natively. But it’s the way that scales and gives us flexibility.
+natively. But this is the way that scales and gives us flexibility.
 
 Over time mechanisms that we designed earlier were reused on other screens. And more and more often, when the new team
 wanted to use MBox on their screen, most of the building blocks they needed were already there. And it definitely
@@ -140,7 +139,7 @@ wouldn’t be the case if not for our atomic approach.
 
 ## The challenges
 
-Of course, we also encounter many challenges while working on MBox.
+We also encountered many challenges while working on MBox.
 
 ### Consistency of the engines
 
@@ -194,7 +193,7 @@ for the web: Opbox Components, which describe how to map the data into HTML elem
 
 ![Add to watched - scheme](/img/articles/2022-07-09-mbox-server-driven-ui-for-mobile-apps/4_architecture.png)
 
-Integration with the Opbox gives us a lot of advantages. Very often, to change the content in the app and web, you don’t
+Integration with Opbox gives us a lot of advantages. Very often, to change the content in the app and web, you don’t
 need to change the code at all — all you need to do is change the content in the Opbox admin panel.
 
 Another huge advantage is that we have unified tracking between all platforms and can use the same tools for A/B testing
