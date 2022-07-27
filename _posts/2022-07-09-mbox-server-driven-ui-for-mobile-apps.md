@@ -22,14 +22,14 @@ of using this approach.
 
 ## Why server-driven UI?
 
-The idea behind MBox was to make mobile development faster without compromising the app quality. Implementing the
+The idea behind MBox was to make mobile development faster without compromising the app quality. Implementing a
 feature twice for Android and iOS takes a lot of time and requires two people with unique skill sets (knowledge of
 Android and iOS frameworks). There is also the risk that both apps will not behave consistently because each person may
 interpret the requirements slightly differently.
 
-Using server-driven UI solves that problem because each business feature is implemented only once on the backend
-service. That gives us consistency out of the box and shortens the time needed to implement the feature. Also,
-developers don’t need to know mobile frameworks to develop for mobile anymore.
+Using server-driven UI solves that problem because each business feature is implemented only once on the backend.
+That gives us consistency out of the box and shortens the time needed to implement the feature.
+Also, developers don’t need to know mobile frameworks to develop for mobile anymore.
 
 Another advantage of server-driven UI is that it allows releasing features independently from the release train. We
 can deploy changes multiple times a day and when something goes wrong — roll back to the previous version immediately.
@@ -53,7 +53,7 @@ different business scenarios.
 
 MBox renders components on mobile apps consistently, but it also respects slight differences unique to Android and
 iOS platforms.
-For example, dialog action in MBox, supports the same functionalities on both platforms, but the dialog itself looks
+For example, dialog action in MBox supports the same functionalities on both platforms, but the dialog itself looks
 differently on Android and iOS:
 
 ![MBox dialog action on Android and iOS](/img/articles/2022-07-09-mbox-server-driven-ui-for-mobile-apps/6_alert.png)
@@ -64,7 +64,7 @@ even mobile developers couldn't tell where native screens ended and MBox started
 
 ### What about more complex views?
 
-Creating more complex reusable views is also possible. For example, our design system specifies something called the
+Creating more complex, reusable views is also possible. For example, our design system specifies something called the
 message: an element with a vertical line, an icon, and some texts and buttons. However, because this element is complex
 and its requirements may change over time, it’s defined on the backend service as a widget — the element that developers
 can reuse across different screens.
@@ -173,8 +173,8 @@ we can define that for users who have the app with the older versions of MBox, `
 
 And last but not least: testing. Because MBox is used to render various screens in Allegro mobile apps, we must be
 cautious whenever we introduce engine changes to avoid negatively impacting existing MBox screens.
-The screenshot and UI tests cover every MBox component and action. We're also encouraging the feature teams to add their
-screens to the Visual Regression and cover their screens with the UI tests in the mobile repositories. All those things
+The screenshot and UI tests cover every MBox component and action. We're also encouraging feature teams to add their
+screens to the Visual Regression and cover their screens with UI tests in the mobile repositories. All those things
 allow us to minimize the risk of introducing a regression.
 
 ## How does MBox connect to other parts of the Allegro ecosystem?
@@ -197,7 +197,7 @@ Integration with Opbox gives us a lot of advantages. Very often, to change the c
 need to change the code at all — all you need to do is change the content in the Opbox admin panel.
 
 Another huge advantage is that we have unified tracking between all platforms and can use the same tools for A/B testing
-that are used for the web. Previously code for A/B tests had to be written for each mobile platform separately in native
+that are used for the web. Previously, code for A/B tests had to be written for each mobile platform separately in native
 code and then cleaned up after the finished experiment. Now, some experiments work out of the box since Opbox sends
 different data to MBox depending on the experiment variant the user falls into. Sometimes a little bit of code in the
 MBox backend is required to conduct an experiment, but it’s not comparable to the amount of work A/B tests take when
@@ -209,11 +209,11 @@ MBox is a tool that changed how we work on mobile apps in Allegro. It allowed us
 compromising the quality and stability of the app and without losing the native look and feel of the Allegro apps.
 
 We have come a long way during those three years since we started working on MBox. At first, our ambition was to create
-a tool that would be used on content screens with very few interactions. Over time we pushed the boundaries of what MBox
+a tool that would be used on content screens with very few interactions. Over time, we pushed the boundaries of what MBox
 is capable of and entered screens with more and more interactions with the user.
 
 Currently MBox is used in over 25 screens in Allegro mobile apps and the number is still growing. In the first half of
-2022 alone, 27 teams made changes to the app using MBox and created about 300 Pull Requests. We deployed changes over
+2022 alone, 27 teams made changes to the app using MBox and created about 300 pull requests. We deployed changes over
 100 times which means ~4.15 releases a week.
 
 We’re confident that it’s not the end of the possibilities ahead of us. We still see how we can make MBox even more
