@@ -94,10 +94,12 @@ Please also have a look at [README.md](README.md) for a general introduction to 
 
 ## Repo permissions
 
-Until Allegro has completely migrated from Stash to GitHub, you will probably need to apply for some permissions before you can access the repository:
-* You need a personal GitHub account.
-* Have your account connected to the [Allegro organization on GitHub](https://github.com/allegro). Ask for the current procedure on #help-github Slack channel.
-* Ask for write permissions to the blog repo on #allegro-tech-blog channel.
+The repository for blog authors is at https://github.com/allegro-internal/blog/ (the project at allegro/blog is only
+technical, used for publishing the blog outsie of the organziation, and actually contains a copy of
+allegro-internal/blog but without full commit and review history).
+
+You need to add yourself to the `blog-authors` AD group in [SIM](https://sim.allegrogroup.com/) in order to gain write
+permissions to allegro-internal/blog repository.
 
 ## What goes into your PR
 
