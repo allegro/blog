@@ -77,9 +77,8 @@ specified on the backend using MBox components.
 
 ### Unified tracking
 
-Besides defining layouts, MBox also allows us to specify tracking events on the backend.
-
-For tracking events, consistency is crucial. If events are not triggered under the same scenarios and with the same data
+Besides defining layouts, MBox also allows us to specify tracking events on the backend. For tracking events,
+consistency is crucial. If events are not triggered under the same scenarios and with the same data
 on both platforms, it’s hard to compare the data and make business decisions.
 
 MBox solves that problem. All events tracked on MBox screens are defined on the backend, meaning unified tracking
@@ -93,8 +92,8 @@ allows us to find out early about possible regressions.
 
 Teams that develop screens using MBox also have various tools that allow them to test their features. They can write
 unit tests in the MBox backend service and check if correct MBox components are created for the given data.
-They can also add an URL of their page to Visual Regression. Visual Regression is a tool that creates a screenshot of
-the page whenever someone commits anything to the MBox backend. If any change in the page is detected, the author is
+They can also add an URL of their page to Visual Regression - the tool that creates a screenshot of
+the page whenever someone commits anything to the MBox backend and if any change in the page is detected, the author is
 automatically notified in their pull request.
 
 Feature teams can also write UI tests for the native apps to test how their page integrates with the rest of the app and
