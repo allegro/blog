@@ -72,7 +72,7 @@ can reuse across different screens.
 ![MessageWidget structure](/img/articles/2022-07-09-mbox-server-driven-ui-for-mobile-apps/2_MessageWidget.png)
 
 If the requirements for the message widget change, we can easily modify it on the backend side without the need to
-release the app. That’s because it’s not defined directly in the MBox libraries included in the mobile apps but
+release the app. That’s because it’s not defined directly in the MBox libraries included in the mobile apps, but
 specified on the backend using MBox components.
 
 ### Unified tracking
@@ -92,10 +92,10 @@ tests and integration tests. We also have screenshot tests that ensure that MBox
 allows us to find out early about possible regressions.
 
 Teams that develop screens using MBox also have various tools that allow them to test their features. They can write
-unit tests in the MBox backend service and check if correct MBox components are created for the given data. They can
-also
-add an URL of their page to Visual Regression. A screenshot of this page is created whenever someone commits anything
-to the MBox backend and if any change is detected, the author would be automatically notified in their Pull Request.
+unit tests in the MBox backend service and check if correct MBox components are created for the given data.
+They can also add an URL of their page to Visual Regression. Visual Regression is a tool that creates a screenshot of
+the page whenever someone commits anything to the MBox backend. If any change in the page is detected, the author is
+automatically notified in their pull request.
 
 Feature teams can also write UI tests for the native apps to test how their page integrates with the rest of the app and
 if all interactions work as expected. However, those tests have to be written on both platforms by the mobile developers
@@ -115,7 +115,7 @@ different use cases.
 
 One of the first challenges that we faced was allowing the implementation of an “add to watched” star in MBox. We
 could’ve just added the ”watched star” component that checks if a user is logged in (redirects to the login page if it’s
-not), adds an offer to the watched, and changes the star icon from empty to full. In the short term, it should have been
+not), adds an offer to the watched list, and changes the star icon from empty to full. In the short term, it should have been
 easier. But it’s not a way that would allow MBox to scale.
 
 Instead, we designed a couple of atomic mechanisms that allow building this feature on the backend and could be reused
@@ -134,7 +134,7 @@ Of course, doing it this way took much more time than just implementing the ”a
 natively. But this is the way that scales and gives us flexibility.
 
 Over time mechanisms that we designed earlier were reused on other screens. And more and more often, when the new team
-wanted to use MBox on their screen, most of the building blocks they needed were already there. And it definitely
+wanted to use MBox on their screen, most of the building blocks they needed were already there. It definitely
 wouldn’t be the case if not for our atomic approach.
 
 ## The challenges
@@ -149,8 +149,8 @@ inconsistency in the behavior of the engines may be hugely problematic for the d
 them
 to, for example, define different layouts for each mobile platform.
 
-To make sure the engines are consistent, each feature in MBox is implemented synchronously by the pair of developers
-(Android and iOS) who consult with each other regularly. During the work, they're making sure that they interpret the
+To make sure the engines are consistent, each feature in MBox is implemented synchronously by a pair of developers
+(Android and iOS) who consult with each other regularly. During the work, they make sure that they interpret the
 requirements and cover edge cases in the same way.
 The new features are ready to merge only after thorough tests on both platforms that check both correctness and
 consistency.
@@ -158,7 +158,7 @@ consistency.
 ### Versioning
 
 On MBox, we also have to pay close attention to versioning. We use semantic versioning in the engines. Each new feature
-have to be marked with the same minor and major version on both platforms. We also prepare changelogs containing
+has to be marked with the same minor and major version on both platforms. We also prepare changelogs containing
 information about what
 functionalities are available in which version.
 
