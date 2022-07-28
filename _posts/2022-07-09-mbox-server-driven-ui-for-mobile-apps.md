@@ -77,7 +77,7 @@ specified on the backend using MBox components.
 
 ### Unified tracking
 
-Besides defining layouts, MBox also allows us to specify track events on the backend.
+Besides defining layouts, MBox also allows us to specify tracking events on the backend.
 
 For tracking events, consistency is crucial. If events are not triggered under the same scenarios and with the same data
 on both platforms, it’s hard to compare the data and make business decisions.
