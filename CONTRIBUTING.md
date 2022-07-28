@@ -95,7 +95,7 @@ Please also have a look at [README.md](README.md) for a general introduction to 
 ## Repo permissions
 
 The repository for blog authors is at https://github.com/allegro-internal/blog/ (the project at allegro/blog is only
-technical, used for publishing the blog outsie of the organziation, and actually contains a copy of
+technical, used for publishing the blog outside the organization, and actually contains a copy of
 allegro-internal/blog but without full commit and review history).
 
 You need to add yourself to the `blog-authors` AD group in [SIM](https://sim.allegrogroup.com/) in order to gain write
