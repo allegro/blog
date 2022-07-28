@@ -31,7 +31,7 @@ Using server-driven UI solves that problem because each business feature is impl
 That gives us consistency out of the box and shortens the time needed to implement the feature.
 Also, developers don’t need to know mobile frameworks to develop for mobile anymore.
 
-Another advantage of server-driven UI is that it allows releasing features independently from the release train. We
+Another advantage of server-driven UI is that it allows releasing features independently of the release train. We
 can deploy changes multiple times a day and when something goes wrong — roll back to the previous version immediately.
 It gives teams a lot more flexibility and allows them to experiment and iterate much faster. What's more, deployed
 changes are visible to all clients, no matter which app version they use.
