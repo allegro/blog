@@ -14,11 +14,11 @@ excerpt: >
 
 In this article, we want to share our approach to using server-driven UI in native mobile apps. In 2019 we created the
 first version of the in-house server-driven rendering tool called MBox and used it to render the
-homepage in the Allegro app on Android and iOS. We have come a long way since then, and now we use this tool to render
-more and more screens in the Allegro app.
+homepage in the Allegro app on [Android](https://play.google.com/store/apps/details?id=pl.allegro)
+and [iOS](https://apps.apple.com/pl/app/allegro/id305659772). We have come a long way since then, and now we use this
+tool to render more and more screens in the Allegro app.
 
-After over three years of working on MBox, we want to share how it works and what are the key advantages and challenges
-of using this approach.
+After over three years of working on MBox, we want to share how it works and the key advantages and challenges of using this approach.
 
 ## Why server-driven UI?
 
@@ -27,20 +27,20 @@ feature twice for Android and iOS takes a lot of time and requires two people wi
 Android and iOS frameworks). There is also the risk that both apps will not behave consistently because each person may
 interpret the requirements slightly differently.
 
-Using server-driven UI solves that problem because each business feature is implemented only once on the backend.
+Using a server-driven UI solves that problem because each business feature is implemented only once on the backend.
 That gives us consistency out of the box and shortens the time needed to implement the feature.
 Also, developers don’t need to know mobile frameworks to develop for mobile anymore.
 
 Another advantage of server-driven UI is that it allows releasing features independently of the release train. We
 can deploy changes multiple times a day and when something goes wrong — roll back to the previous version immediately.
-It gives teams a lot more flexibility and allows them to experiment and iterate much faster. What's more, deployed
+It gives teams a lot more flexibility and allows them to experiment and iterate much faster. What’s more, deployed
 changes are visible to all clients, no matter which app version they use.
 
 ## How does MBox work?
 
 ### Defining the screen layout
 
-While designing MBox, we wanted to create a tool that will give developers total flexibility to implement any layout
+While designing MBox, we wanted to create a tool that would give developers total flexibility to implement any layout
 they need — as long as it’s consistent with our design system, Metrum.
 
 That’s why MBox screens are built using primitive components, which our rendering libraries map to native views.
@@ -54,13 +54,13 @@ different business scenarios.
 MBox renders components on mobile apps consistently, but it also respects slight differences unique to Android and
 iOS platforms.
 For example, dialog action in MBox supports the same functionalities on both platforms, but the dialog itself looks
-differently on Android and iOS:
+different on Android and iOS:
 
 ![MBox dialog action on Android and iOS](/img/articles/2022-07-09-mbox-server-driven-ui-for-mobile-apps/6_alert.png)
 
 That gives MBox screens a native look and feel and perfectly blends in with parts of the app developed
 natively, without MBox. We had to add a label that shows which parts of the app are rendered by MBox, because
-even mobile developers couldn't tell where native screens ended and MBox started.
+even mobile developers couldn’t tell where native screens ended and MBox started.
 
 ### What about more complex views?
 
@@ -92,7 +92,7 @@ allows us to find out early about possible regressions.
 
 Teams that develop screens using MBox also have various tools that allow them to test their features. They can write
 unit tests in the MBox backend service and check if correct MBox components are created for the given data.
-They can also add an URL of their page to Visual Regression - the tool that creates a screenshot of
+They can also add a URL of their page to Visual Regression — the tool that creates a screenshot of
 the page whenever someone commits anything to the MBox backend and if any change in the page is detected, the author is
 automatically notified in their pull request.
 
@@ -112,10 +112,10 @@ different use cases.
 
 ### For example:
 
-One of the first challenges that we faced was allowing the implementation of an “add to watched” star in MBox. We
-could’ve just added the ”watched star” component that checks if a user is logged in (redirects to the login page if it’s
-not), adds an offer to the watched list, and changes the star icon from empty to full. In the short term, it should have been
-easier. But it’s not a way that would allow MBox to scale.
+One of the first challenges that we faced was allowing the implementation of an “add to watchlist” star in MBox. We
+could’ve just added the ”watchlist star” component that checks if a user is logged in (redirects to the login page if it’s
+not), adds an offer to the watchlist, and changes the star icon from empty to full. In the short term, it should have
+been easier. But it’s not a way that would allow MBox to scale.
 
 Instead, we designed a couple of atomic mechanisms that allow building this feature on the backend and could be reused
 in the future in different use cases.
@@ -124,12 +124,12 @@ We added a logic component called `multivariant` that allows changing one compon
 `changeVariant` action. That enabled us to switch the star icon from empty to full. Next, we added the `sendRequest`
 action
 that sends requests with given URL, headers, and other data to our services. That allows adding and removing an offer to
-and from the watched list. Lastly, we added the `loginIfNeeded` action that allows checking if a user is logged in and
+and from the watchlist. Lastly, we added the `loginIfNeeded` action that allows checking if a user is logged in and
 redirecting to the login screen if needed. That allows ensuring the user is logged in before making the request.
 
-![Add to watched - scheme](/img/articles/2022-07-09-mbox-server-driven-ui-for-mobile-apps/3_add_to_watched.png)
+![Add to watchlist: scheme](/img/articles/2022-07-09-mbox-server-driven-ui-for-mobile-apps/3_add_to_watched.png)
 
-Of course, doing it this way took much more time than just implementing the ”add to watched” component in MBox libraries
+Of course, doing it this way took much more time than just implementing the ”add to watchlist” component in MBox libraries
 natively. But this is the way that scales and gives us flexibility.
 
 Over time mechanisms that we designed earlier were reused on other screens. And more and more often, when the new team
@@ -142,11 +142,9 @@ We also encountered many challenges while working on MBox.
 
 ### Consistency of the engines
 
-We create two separate rendering
-engines for mobile platforms, so we must be extra cautious to ensure everything works consistently. Even the tiny
-inconsistency in the behavior of the engines may be hugely problematic for the developers that use MBox. It may force
-them
-to, for example, define different layouts for each mobile platform.
+We create two separate rendering engines for mobile platforms, so we must be extra cautious to ensure everything works consistently.
+Even a tiny inconsistency in the behavior of the engines may be hugely problematic for the developers that use MBox.
+It may force them to, for example, define different layouts for each mobile platform.
 
 To make sure the engines are consistent, each feature in MBox is implemented synchronously by a pair of developers
 (Android and iOS) who consult with each other regularly. During the work, they make sure that they interpret the
@@ -163,7 +161,7 @@ functionalities are available in which version.
 
 On the backend, we allow checking the version of the MBox engine that the user has and serve different content depending
 on it.
-For example, when the screen contains the `switch` component, supported from version `1.21`,
+For example, when the screen contains the `switch` component, supported since version `1.21`,
 we can define that for users who have the app with the older versions of MBox, `checkbox` will be displayed instead.
 
 ![Fallback mechanism](/img/articles/2022-07-09-mbox-server-driven-ui-for-mobile-apps/5_fallback.png)
@@ -172,7 +170,7 @@ we can define that for users who have the app with the older versions of MBox, `
 
 And last but not least: testing. Because MBox is used to render various screens in Allegro mobile apps, we must be
 cautious whenever we introduce engine changes to avoid negatively impacting existing MBox screens.
-The screenshot and UI tests cover every MBox component and action. We're also encouraging feature teams to add their
+The screenshot and UI tests cover every MBox component and action. We’re also encouraging feature teams to add their
 screens to the Visual Regression and cover their screens with UI tests in the mobile repositories. All those things
 allow us to minimize the risk of introducing a regression.
 
@@ -181,7 +179,7 @@ allow us to minimize the risk of introducing a regression.
 Consistency across mobile platforms is not everything. Another important aspect of our work is making sure mobile and
 web platforms are as consistent as possible, respecting native differences that make each platform unique.
 
-MBox integrates with our content management system, also used for the web (Opbox Page Manager). The screen’s content
+MBox integrates with our content management system, also used for the web ([Opbox](https://blog.allegro.tech/2016/03/Managing-Frontend-in-the-microservices-architecture.html) Page Manager). The screen’s content
 configured in the Opbox admin panel is sent through the Opbox services to the MBox backend service. The MBox service
 maps the
 data into MBox components that make up the MBox screen. Then the screen definition in JSON format is sent to apps and is
@@ -190,13 +188,14 @@ rendered using native views.
 The same data from Opbox is also used to render the web equivalent of the same screen. Opbox defines its own mappings
 for the web: Opbox Components, which describe how to map the data into HTML elements that make up the Allegro web pages.
 
-![Add to watched - scheme](/img/articles/2022-07-09-mbox-server-driven-ui-for-mobile-apps/4_architecture.png)
+![Add to watchlist: scheme](/img/articles/2022-07-09-mbox-server-driven-ui-for-mobile-apps/4_architecture.png)
 
 Integration with Opbox gives us a lot of advantages. Very often, to change the content in the app and web, you don’t
 need to change the code at all — all you need to do is change the content in the Opbox admin panel.
 
 Another huge advantage is that we have unified tracking between all platforms and can use the same tools for A/B testing
-that are used for the web. Previously, code for A/B tests had to be written for each mobile platform separately in native
+that are used for the web. Previously, code for A/B tests had to be written for each mobile platform separately in
+native
 code and then cleaned up after the finished experiment. Now, some experiments work out of the box since Opbox sends
 different data to MBox depending on the experiment variant the user falls into. Sometimes a little bit of code in the
 MBox backend is required to conduct an experiment, but it’s not comparable to the amount of work A/B tests take when
@@ -208,7 +207,8 @@ MBox is a tool that changed how we work on mobile apps in Allegro. It allowed us
 compromising the quality and stability of the app and without losing the native look and feel of the Allegro apps.
 
 We have come a long way during those three years since we started working on MBox. At first, our ambition was to create
-a tool that would be used on content screens with very few interactions. Over time, we pushed the boundaries of what MBox
+a tool that would be used on content screens with very few interactions. Over time, we pushed the boundaries of what
+MBox
 is capable of and entered screens with more and more interactions with the user.
 
 Currently MBox is used in over 25 screens in Allegro mobile apps and the number is still growing. In the first half of
