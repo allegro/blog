@@ -45,7 +45,7 @@ they need — as long as it’s consistent with our design system, Metrum.
 
 That’s why MBox screens are built using primitive components, which our rendering libraries map to native views.
 
-![MessageWidget structure](/img/articles/2022-07-09-mbox-server-driven-ui-for-mobile-apps/1_MBox_SG.png)
+![MessageWidget structure](/img/articles/2022-08-03-mbox-server-driven-ui-for-mobile-apps/1_MBox_SG.png)
 
 Developers can arrange MBox components freely using different types of containers that MBox supports (`flex-container`,
 `stack-container`, `absolute-container`, `list-container`, etc.). Those components can be styled and configured to match
@@ -56,7 +56,7 @@ iOS platforms.
 For example, dialog action in MBox supports the same functionalities on both platforms, but the dialog itself looks
 different on Android and iOS:
 
-![MBox dialog action on Android and iOS](/img/articles/2022-07-09-mbox-server-driven-ui-for-mobile-apps/6_alert.png)
+![MBox dialog action on Android and iOS](/img/articles/2022-08-03-mbox-server-driven-ui-for-mobile-apps/6_alert.png)
 
 That gives MBox screens a native look and feel and perfectly blends in with parts of the app developed
 natively, without MBox. We had to add a label that shows which parts of the app are rendered by MBox, because
@@ -69,7 +69,7 @@ message: an element with a vertical line, an icon, and some texts and buttons. H
 and its requirements may change over time, it’s defined on the backend service as a widget — the element that developers
 can reuse across different screens.
 
-![MessageWidget structure](/img/articles/2022-07-09-mbox-server-driven-ui-for-mobile-apps/2_MessageWidget.png)
+![MessageWidget structure](/img/articles/2022-08-03-mbox-server-driven-ui-for-mobile-apps/2_MessageWidget.png)
 
 If the requirements for the message widget change, we can easily modify it on the backend side without the need to
 release the app. That’s because it’s not defined directly in the MBox libraries included in the mobile apps, but
@@ -127,7 +127,7 @@ that sends requests with given URL, headers, and other data to our services. Tha
 and from the watchlist. Lastly, we added the `loginIfNeeded` action that allows checking if a user is logged in and
 redirecting to the login screen if needed. That allows ensuring the user is logged in before making the request.
 
-![Add to watchlist: scheme](/img/articles/2022-07-09-mbox-server-driven-ui-for-mobile-apps/3_add_to_watched.png)
+![Add to watchlist: scheme](/img/articles/2022-08-03-mbox-server-driven-ui-for-mobile-apps/3_add_to_watched.png)
 
 Of course, doing it this way took much more time than just implementing the ”add to watchlist” component in MBox libraries
 natively. But this is the way that scales and gives us flexibility.
@@ -164,7 +164,7 @@ on it.
 For example, when the screen contains the `switch` component, supported since version `1.21`,
 we can define that for users who have the app with the older versions of MBox, `checkbox` will be displayed instead.
 
-![Fallback mechanism](/img/articles/2022-07-09-mbox-server-driven-ui-for-mobile-apps/5_fallback.png)
+![Fallback mechanism](/img/articles/2022-08-03-mbox-server-driven-ui-for-mobile-apps/5_fallback.png)
 
 ### Testing changes introduced to the engines
 
@@ -188,7 +188,7 @@ rendered using native views.
 The same data from Opbox is also used to render the web equivalent of the same screen. Opbox defines its own mappings
 for the web: Opbox Components, which describe how to map the data into HTML elements that make up the Allegro web pages.
 
-![Add to watchlist: scheme](/img/articles/2022-07-09-mbox-server-driven-ui-for-mobile-apps/4_architecture.png)
+![Add to watchlist: scheme](/img/articles/2022-08-03-mbox-server-driven-ui-for-mobile-apps/4_architecture.png)
 
 Integration with Opbox gives us a lot of advantages. Very often, to change the content in the app and web, you don’t
 need to change the code at all — all you need to do is change the content in the Opbox admin panel.
