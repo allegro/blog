@@ -1,7 +1,14 @@
+{% assign avatarPath = "/img/authors/default.svg" %}
+{% for static_file in site.static_files %}
+    {% capture potentialAvatar %}/img/authors/{{authorKey}}.jpg{% endcapture %}
+    {% if static_file.path == potentialAvatar %}
+        {% assign avatarPath = static_file.path %}
+    {% endif %}
+{% endfor %}
 {%if include.showLinkToPost %}
-<a href="/authors/{{authorKey}}" aria-hidden="true" tabindex="-1"><img src="/img/authors/{{authorKey}}.jpg" alt="" class="avatar" /></a>
+<a href="/authors/{{authorKey}}" aria-hidden="true" tabindex="-1"><img src="{{avatarPath}}" alt="" class="avatar" /></a>
 {% else %}
-<img src="/img/authors/{{authorKey}}.jpg" alt="" class="avatar" /> {% endif %}
+<img src="{{avatarPath}}" alt="" class="avatar" /> {% endif %}
 <h3 lang="pl-PL">
 {%if include.showLinkToPost %}
     <a href="/authors/{{authorKey}}"> {{authorData.name}}</a>
