@@ -79,8 +79,9 @@ functionality. So, we have planned the following modules:
 
 The contract is a special module containing all the necessary interfaces, classes and methods that allow you to use the
 functionality in other places in an easy way. It is defined inside the module containing the functionality
-implementation. This solution means that every developer working on the project knows where to find the necessary
-information and interfaces to run a given feature.
+implementation. It should be emphasized here that the implementation module can only be based on a contract. This
+solution means that every developer working on the project knows where to find the necessary information and interfaces
+to run a given feature.
 
 ```kotlin
 interface AllegroPaySomeProcessHandler {
@@ -120,14 +121,12 @@ The Allegro application consists of many modules and it is important to provide 
 effectively. In the organization, the delivery of this type of tools is handled by the core team. A tool that allows us
 to check whether our module meets the requirement set for it is
 the [Module Graph Assert](https://github.com/jraska/modules-graph-assert). It is a Gradle plugin which „helps keep your
-module graph healthy and lean.”
-![Example of dependency visualization.](https://user-images.githubusercontent.com/6277721/70832705-18980e00-1df6-11ea-8b78-fc07ba570a2b.png)
-This tool defines the types of modules that are allowed in the application, the dependencies between them and the height
-of the dependency tree. The following types are defined in the Allegro application: App, Feature, Contract, Library,
-Util and NeedsMigration. The last type informs that the module still requires work from its owners and appropriate
-adaptation to one of the other types. We can also define allowed and restricted dependencies between modules, e.g. a
-contract may depend only on another contract or a module marked as a feature depends only on the contract or library.
-Allegro app configuration:
+module graph healthy and lean.” This tool defines the types of modules that are allowed in the application, the
+dependencies between them and the height of the dependency tree. The following types are defined in the Allegro
+application: *App*, *Feature*, *Contract*, *Library*, *Util* and *NeedsMigration*. The last type informs that the module
+still requires work from its owners and appropriate adaptation to one of the other types. We can also define allowed and
+restricted dependencies between modules, e.g. a contract may depend only on another contract or a module marked as a
+feature depends only on the contract or library. Allegro app configuration:
 
 ```groovy
 moduleGraphAssert {
@@ -192,13 +191,14 @@ module contains almost 2k lines of code.
 
 ## Fin
 
-Probably for some of you, the division used may be associated with the Latin term *divide et impera*. This paradigm of
+Probably for some of you, the division used may be associated with the Latin term divide et impera. This paradigm of
 algorithm design could also be used in the modularization process by dividing one large module into several smaller
 ones, specialized in one task. The use of the concept of this paradigm, encapsulation by creating a contract and
 configuration of a gradle allowed to significantly reduce the build time and speed up the development of the
-application. The problem with the redundant conflicts and chance of introducing a bug by changing a code snippet have
-been minimalized. After the implementation of the modules described above, the main module containing the Allegro Pay
-responsibilities has shrunk significantly, and now contains around 18.4k LoC (which means it has been cut in half). In
-addition, modularization will allow us to add new features and extend the existing ones in an easier and safer way. It
-was an interesting challenge from a technical point of view.
+application. This solution introduces consistency in the module and decreases the possibility of making the regression
+by encapsulation specify domain. Also the problem with the redundant conflicts has been minimalized. After the
+implementation of the modules described above, the main module containing the Allegro Pay responsibilities has shrunk
+significantly, and now contains around 18.4k LoC (which means it has been cut in half). In addition, modularization will
+allow us to add new features and extend the existing ones in an easier and safer way. Modularization is one of the
+processes in the software lifecycle. It was an interesting challenge from a technical point of view.
 ![Build time in seconds and LoC.](/img/articles/2022-08-30-example-of-modularization-in-allegro-pay-android-application/after_both.png)
