@@ -22,9 +22,9 @@ independently build, test, and debug each module.”
 ### Background
 
 People who use Allegro Pay know how many functionalities it has, those who don’t use it yet will know after reading this
-article. It was all in 3 modules. At the time of writing this article the Allegro application for the Android platform
-currently consists of over 120 modules, 9 of which are maintained by Allegro Pay Team. In this quarter, we focused on
-separating several domains (features) from the main Allegro Pay module into separate, smaller and specialized modules.
+article. It started from 3 modules. At the time of writing this article the Allegro application for the Android platform
+consists of over 120 modules, 9 of which are maintained by Allegro Pay Team. In this quarter, we focused on extracting
+several domains (features) from the main Allegro Pay module into separate, smaller and specialized modules.
 
 ## What made us start the modularization process?
 
@@ -37,8 +37,8 @@ functionality.
 
 ### Cheat
 
-I mention the build time for a reason. In our case, in a multi—module project, we use some gradle instructions. Gradle
-is a tool for the automatization build process. Our gradle.properties file looks something like this:
+I mention the build time for a reason. In our case, in a multi—module project, we use some gradle instructions. Our
+gradle.properties file looks something like this:
 
 ```groovy
 // some instructions
@@ -102,7 +102,7 @@ internal class AllegroPaySomeProcessHandlerImpl : AllegroPaySomeProcessHandler {
 }
 ```
 
-The above example shows how one of the assumptions of object—oriented programming — encapsulation looks like in
+The above example shows how one of the assumptions of object—oriented programming — encapsulation — looks like in
 practice. The *AllegroPaySomeProcessHandler* interface provides two methods, one of them creates the intent necessary to
 run the process, and the other observes its result. The exact implementation is hidden in an internal class, not
 accessible from the contract module. Every change of interface implementation is transparent to contract clients.
@@ -191,7 +191,8 @@ module contains almost 2k lines of code.
 ![Build time in seconds and LoC.](/img/articles/2022-08-30-example-of-modularization-in-allegro-pay-android-application/sa_both.png)
 
 ## Fin
-Probably for some of you, the division used may be associated with the Latin term *divide et impera*. This paradigmat of
+
+Probably for some of you, the division used may be associated with the Latin term *divide et impera*. This paradigm of
 algorithm design could also be used in the modularization process by dividing one large module into several smaller
 ones, specialized in one task. The use of the concept of this paradigm, encapsulation by creating a contract and
 configuration of a gradle allowed to significantly reduce the build time and speed up the development of the
