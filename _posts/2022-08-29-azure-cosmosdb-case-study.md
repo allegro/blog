@@ -31,12 +31,12 @@ scenario. So let’s specify our technical requirements explicitly:
   million records, but if in one year we will be writing 100 million, all these requirements should still be met - of
   course, not at an exponentially higher price.
 
-The outcomes of this case study are published as an open source repository (see [Our library](#_2o8mwa95ma6r)).
+The outcomes of this case study are published as an open source repository (see [Our library](#our-library)).
 
 ## Cosmos DB - the basics
 
 Before going into details, let’s look at the Cosmos DB's basic concepts. If you are familiar with this service and its
-provisioning modes, you may want to jump directly to the [Database utilization](#_hfx4vdougwwn) chapter. As already
+provisioning modes, you may want to jump directly to the [Database utilization](#database-utilization) chapter. As already
 mentioned, Cosmos DB is a no-SQL database available in the Azure cloud. Some of its core features are unlimited
 automatic scaling and guaranteed read and write latencies at any
 scale ([source](https://azure.microsoft.com/en-us/services/cosmos-db/#features)). If we compare them with the previously
