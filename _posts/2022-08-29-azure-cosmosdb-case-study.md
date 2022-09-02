@@ -92,9 +92,9 @@ database and bill us for the consumed resources.
 ### Manual
 
 In the manual mode (aka “provisioned throughput”), we declare how many RUs are we going to consume per second - the
-higher we set this limit, the higher the price. The minimal value is 100 RU/s (but it was 400 not so long ago) which
-converts to around 20 euros per month. This can be increased at any time if needed, but we will pay more. The billing is
-per hour, so we pay for the highest configured value during a single wall-clock hour.
+higher we set this limit, the higher the price. The minimal value is 400 RU/s which converts to around 20 euros per
+month. This can be increased at any time if needed, but we will pay more. The billing is per hour, so we pay for the
+highest configured value during a single wall-clock hour.
 
 What happens if we try to exceed this declared value? Some of the requests will be rejected with HTTP status code 429 (
 Too Many Requests) - Cosmos DB will throttle the traffic so that the actual sum of the consumed RU in each second does
