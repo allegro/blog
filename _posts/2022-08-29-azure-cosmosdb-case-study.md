@@ -36,8 +36,8 @@ The outcomes of this case study are published as an open source repository (see 
 ## Cosmos DB - the basics
 
 Before going into details, let’s look at the Cosmos DB's basic concepts. If you are familiar with this service and its
-provisioning modes, you may want to jump directly to the [Database utilization](#database-utilization) chapter. As already
-mentioned, Cosmos DB is a no-SQL database available in the Azure cloud. Some of its core features are unlimited
+provisioning modes, you may want to jump directly to the [Database utilization](#database-utilization) chapter. As
+already mentioned, Cosmos DB is a no-SQL database available in the Azure cloud. Some of its core features are unlimited
 automatic scaling and guaranteed read and write latencies at any
 scale ([source](https://azure.microsoft.com/en-us/services/cosmos-db/#features)). If we compare them with the previously
 set requirements, it seems like the Cosmos DB is a perfect choice. It scales automatically, so the database should scale
@@ -51,8 +51,8 @@ update process. Its pseudocode may look like that:
 foreach record
 {
     Item = CosmosClient.Get(record.ID)
-    ProcessChange (Item)
-    CosmosClient.Update (Item)
+    ProcessChange(Item)
+    CosmosClient.Update(Item)
 }
 ```
 
@@ -122,10 +122,10 @@ from time to time without affecting other processes. It seems that the autoscale
 
 ### Serverless
 
-The last mode is serverless. It works very simply - at the end of the month, we pay for the exact amount of RUs that we
-have consumed. No need to declare anything, no need to scale. A million RUs cost around 25 euro cents. This may sound
-tempting. We can calculate how much it costs to process a million records, estimate how many millions do we process
-during a month, and when we put it together, it may look like the final price is not even very high.
+The last mode is serverless. It's rather straightforward - at the end of the month, we pay for the exact amount of RUs
+that we have consumed. No need to declare anything, no need to scale. A million RUs cost around 25 euro cents. This may
+sound tempting. We can calculate how much it costs to process a million records, estimate how many millions do we
+process during a month, and when we put it together, it may look like the final price is not even very high.
 
 ![](/img/articles/2022-08-29-azure-cosmosdb-case-study/img04.png)
 
@@ -152,8 +152,8 @@ Let’s go back to the sample code I was running.
 Foreach record
 {
     Item = CosmosClient.Get(record.ID)
-    ProcessChange (Item)
-    CosmosClient.Update (Item)
+    ProcessChange(Item)
+    CosmosClient.Update(Item)
 }
 ```
 
@@ -167,7 +167,7 @@ It’s utilization was only around 6% during the batch processing. It’s a bit 
 If we look back at the code I was running, it’s easy to see that it’s lacking one important thing - parallelism. The
 operations are executed one after another synchronously, which makes it impossible to fully utilize the database.
 Sending the requests in parallel is a simple optimization that obviously comes to mind. Let’s see what happens if we run
-the modified code.
+the modified code (the only change is the parallelization of the loop).
 
 This time, with the database scaled up to 40k RU/s, the processing of 1 million records took 8 minutes. What’s more, the
 database utilization was reaching 100%. This may look very promising, but hang on a minute - running at 100% database
@@ -187,7 +187,7 @@ releasing the queued requests.
 
 ![](/img/articles/2022-08-29-azure-cosmosdb-case-study/img06.png)
 
-The mechanism sounds pretty simple, doesn’t it? And here is how it worked. I run another test, this time with RU limiter
+The mechanism sounds pretty simple, doesn’t it? And here is how it worked. I ran another test, this time with RU limiter
 set to 32k RU/s. Although the requests were being limited, the processing of 1 million records took only 5 minutes this
 time and no request was throttled. Below we can see the Total Request Units metric during the test. The consumption was
 almost precisely 1,92 mln RU / minute, which gives us 32k RU/s - exactly as the RU limiter was configured.
