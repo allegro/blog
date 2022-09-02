@@ -55,10 +55,10 @@ Elasticsearch has a special function: cardinality, which is used to determine th
 specifically this function to count unique occurrences that I mentioned earlier.
 It may seem that counting unique occurrences of values is a trivial task.
 Let's go back to our example with the banknotes. You can think of many ways to check how many
-unique values are in this list, probably one of the simplest is to use the HashSet class. One of its main features is
+unique values are in this list, probably one of the simplest is to use the ```HashSet``` class. One of its main features is
 that it de-duplicates the elements added to it, thus it stores only one occurrence of each.
 
-After adding 10 values of banknotes: [10, 20, 50, 20, 50, 100, 50, 20, 10, 10] to an instance of the HashSet
+After adding 10 values of banknotes: [10, 20, 50, 20, 50, 100, 50, 20, 10, 10] to an instance of the ```HashSet```
 class, it will ultimately only store the values [10, 20, 50, 100] (not necessarily in that order, but it
 doesn't matter it this case). So all we need to do is check the size of this set and we have the result we were
 looking for: 4.
@@ -75,7 +75,7 @@ How to address this issue? In such a situation we can switch to one of ingenious
 main feature is that they give approximate rather than exact results. The huge advantage, on the
 other hand, is that they are much less resource-intensive.
 
-## Near-optimal cardinality estimation
+## Near-optimal cardinality estimator
 
 One such algorithm - HyperLogLog (HLL) - has been implemented in the aforementioned
 Elasticsearch to build the cardinality function. It is used to count the unique values of a given field of
@@ -97,7 +97,8 @@ purposes - is available the next day, when we count it accurately using, for exa
 Implementing such a counter of unique visitors into a site operating on huge data sets, we could
 therefore consider using the HLL algorithm.
 
-Readers interested in a detailed description of the HLL algorithm are referred to this [document].
+Readers interested in a detailed description of the HLL algorithm are referred to Damn Cool Algorithms blog
+[post](http://blog.notdot.net/2012/09/Dam-Cool-Algorithms-Cardinality-Estimation)].
 However, its most important features are worth noting here:
 * the results, although approximate, are deterministic,
 * the maximum possible error is known,
@@ -106,48 +107,108 @@ However, its most important features are worth noting here:
 The last two features are closely related and can be controlled, we can decrease the error level by increasing
 the available memory limit and vice versa.
 There are many ready-made implementations of the HLL algorithm available, so it's worth reaching
-for one of them and doing some experiments. I will use [this one] and compare the memory
-consumption with the classic approach using the HashSet. Moreover, I will add a third variant based
-on a distinct method from the Kotlin language, which - like the HashSet constructor - de-duplicates
+for one of them and doing some experiments. I will use [datasketches](https://datasketches.apache.org/docs/HLL/HLL.html)
+and compare the memory consumption with the classic approach using the ```HashSet```. Moreover, I will add a third variant based
+on a ```distinct``` method from the Kotlin language, which - like the ```HashSet``` constructor - de-duplicates
 elements from the list.
 
-Below there are programs that do exactly the same thing: determine the cardinal number of a set of
-numbers. In order to be able to run some trials, I’ve introduced a couple of basic parameters. The
-input list consists of n numbers, while using the f parameter and the modulo function I decide what
-part of the input list is unique. For example, for n=1000 and f=0.1, the result will be a cardinal
+Below there is a code snippet of a simple program that determines the cardinal number of a set of numbers using ```HashSet```
+class from Java language. In order to be able to run some trials, I’ve introduced a couple of basic parameters. The
+input list consists of ```n``` numbers, while using the ```f``` parameter and the modulo function I decide what
+part of the input list is unique. For example, for ```n=1000``` and ```f=0.1```, the result will be a cardinal
 number equal to 100.
 
-The first program uses the HashSet class mentioned above, the second uses the distinct method
-available in the Kotlin language, and in the third one I used an implementation of the HLL algorithm.
-All three programs, in addition to the result, also measure total execution time. Moreover, using jConsole I am also
-able to measure the amount of memory used. I decided to measure the total memory used by the
+``` java
+val set = HashSet<Long>()
+val mod = (n * f).toLong()
+
+val elapsed = measureTimeMillis {
+    for (i in 0 until n) {
+        set.add(i % mod)
+    }
+
+    cardinality = set.size
+}
+```
+
+Two other programs do exactly the same thing: determine the cardinal number of a set of numbers, one using Kotlin
+```distinct``` method and the second one using HLL algorithm. You can find full code on this [repo].
+
+All three programs, in addition to the result, also measure total execution time. Moreover, using
+[jConsole](https://openjdk.java.net/tools/svc/jconsole/) I am also able to measure the amount of memory used. I decided
+to measure the total memory used by the
 programs, because measuring the size of the data structures is not a trivial task.
 
 We start by checking the variant n=1000000/f=0.25 as a result of which we should get a power of set
 equal 250000; here are the results:
 
+*n=1000000/f=0.25*
+
+| Metric\Variant | HashSet | distinct | HLL      |
+| -------------- | ------- | ---------|----------|
+| cardinality | 250000 | 250000 | 249979,9 |
+| error [%] | 0 | 0 | 0.01     |
+| time [ms] | 71 | 106 | 53       |
+| memory [MB] | 42 | 686 | 21       |
+
+
 In case of such a small set the deviation of the result of the HLL variant from the true value less than
 1%, while in this case you can already see the benefits of this method; the amount of memory used is
-twice less compared to the HashSet version and as much as 3 times less when compared to the
+twice less compared to the ```HashSet``` version and as much as 3 times less when compared to the
 version using the Kotlin language function. During the next attempt we increase the value of the n
 parameter tenfold:
 
+*n=10000000/f=0.25*
+
+| Metric\Variant | HashSet | distinct | HLL |
+| -------------- | ------- | ---------|----------|
+| cardinality | 2500000 | 2500000 | 2484301,4 |
+| error [%] | 0 | 0 | 0.63 |
+| time [ms] | 520 | 863 | 189 |
+| memory [MB] | 233 | 574 | 21 |
+
 The error value has increased slightly, while the difference in memory usage and the performance
 time is even greater than before. Therefore, it is worthwhile to increase the size of the set again:
+
+*n=100000000/f=0.25*
+
+| Metric\Variant | HashSet  | distinct | HLL        |
+| -------------- |----------|----------|------------|
+| cardinality | 25000000 | 25000000 | 25301157,2 |
+| error [%] | 0        | 0        | 1.2        |
+| time [ms] | 4447     | 7718     | 1538       |
+| memory [MB] | 1800     | 5300     | 21         |
 
 Deviation from the correct result exceeded 1%; the times also went up, although they are still many
 times shorter compared to other variants. It's worth noting that the amount of the memory used has practically not changed.
 
 Now let's see what happens when we change the second parameter, which determines the number of
-unique elements in the input set. Here are the results for the following configurations:
-n=10000000/f=0.5 and n=10000000/f=0.75:
+unique elements in the input set:
+
+*n=10000000/f=0.5*
+
+| Metric\Variant | HashSet | distinct | HLL       |
+| -------------- |---------|----------|-----------|
+| cardinality | 5000000 | 5000000  | 5067045,2 |
+| error [%] | 0       | 0        | 1.34      |
+| time [ms] | 597     | 914      | 183       |
+| memory [MB] | 420     | 753      | 21        |
+
+*n=10000000/f=0.75*
+
+| Metric\Variant | HashSet | distinct | HLL       |
+| -------------- |---------|----------|-----------|
+| cardinality | 7500000 | 7500000  | 7619136,7 |
+| error [%] | 0       | 0        | 1.59      |
+| time [ms] | 758     | 1187     | 191       |
+| memory [MB] | 616     | 843      | 26        |
 
 Again, the results clearly show the advantages of the HLL algorithm. With a relatively low error we
 significantly reduced the amount of memory used and the time required for calculations.
 As you can see and as expected, the classical approach gives accurate results but it consumes a lot of
 memory, while the solution using HLL brings results characterized by approx. 1% error, but in return
-we use much less memory. A certain surprise for me is the poor result of the Kotlin distinct function; I
-expected results more similar to the variant based on the HashSet.
+we use much less memory. A certain surprise for me is the poor result of the Kotlin ```distinct``` function; I
+expected results more similar to the variant based on the ```HashSet```.
 
 The HLL algorithm is implemented in several solutions, including the aforementioned Elasticsearch,
 as well as in e.g. Redis. The above experiments clearly show that the approximate method, in case
@@ -163,7 +224,7 @@ Imagine that we want to test whether there is a 100 value banknote in my wallet.
 for the 200 value banknote should be false, since there is no such a banknote in the wallet.
 
 Of course, we are able again to implement a solution to this problem by simply using the properties
-of the HashSet class and the contains method. However, similarly as in case of determining the
+of the ```HashSet``` class and the contains method. However, similarly as in case of determining the
 cardinality - the memory requirement increases with the size of the dataset.
 Again, the solution for this problem may be the approximate method.
 
@@ -191,17 +252,18 @@ has already read.
 At this point it is worth checking how much we gain by accepting the inconvenience described
 above. I have prepared two implementations of a program that adds to a set of values and then
 checks if they are there.
-The first program uses the classic approach - the HashSet class, while the second uses the Bloom
-Filter available in the popular guava library. Again, using jConsole we register for both programs the
-amount of memory used, and additionally - for the version with the Bloom Filter we also check the
+The first program uses the classic approach - the ```HashSet``` class, while the second uses the Bloom
+Filter available in the popular [guava](https://guava.dev/releases/20.0/api/docs/com/google/common/hash/BloomFilter.html) library.
+Again, using jConsole we register for both programs the amount of memory used, and additionally - for the version with
+the Bloom Filter we also check the
 number of false positives. This value can be easily controlled, as the maximum allowed false positive
 rate can be set in the API; for needs of the following tests we will set it to 1%.
 
 Moreover, we will measure the total time of adding values to the set and the total time of queries
 whether there are values in the set.
 
-Same as before we will perform a number of tests using the following parameters: n - the size of the set of
-numbers, and f - what part of it should be added to the set. The configuration n=100 and f=0.1 means
+Same as before we will perform a number of tests using the following parameters: ```n``` - the size of the set of
+numbers, and ```f``` - what part of it should be added to the set. The configuration n=100 and f=0.1 means
 that the first 10 numbers out of 100 will be added to the set. So, in the first part, the program will
 add 10 numbers to the set and then - in the second stage - it will perform a presence test
 by checking whether the numbers above 10 belong to the set. There is no point in checking the
@@ -209,16 +271,71 @@ numbers added to the set beforehand, because we know that Bloom Filters do not g
 negative results. On the other hand, if any number above 10 is found according to the Bloom Filter in
 the set, we will consider it a false positive.
 
-We start with the variant n=10000000/f=0.1:
+Following code snippet presents fragment of the Bloom Filter variant:
+
+``` java
+val insertions = (n * f).toInt()
+val filter = BloomFilter.create(Funnels.integerFunnel(), insertions, 0.01)
+var falsePositives = 0
+
+val insertTime = measureTimeMillis {
+    for (i in 0 until insertions) {
+        filter.put(i)
+    }
+}
+
+val queryTime = measureTimeMillis {
+    for (i in insertions until n) {
+        if (filter.mightContain(i)) {
+            falsePositives++;
+        }
+    }
+}
+
+val fpRatio = falsePositives/n.toDouble()
+```
+
+Again - you can find full code of both programs on aforementioned [repo].
+
+Let's start with the following configuration: n=10000000/f=0.1:
+
+*n=10000000/f=0.1*
+
+| Metric\Variant   | HashSet | Bloom filter |
+|------------------|---------|--------------|
+| error[%]         | 0       | 0,9          |
+| insert time [ms] | 87      | 293          |
+| query time [ms]  | 82      | 846          |
+| memory [MB]      | 94      | 30           |
 
 As you can see, the Bloom Filter returned less than 1% false results, but - at the same time - it used three times
 less memory than HashSet variant. Unfortunately, the times of Bloom Filter's version are significantly higher.
 Let's check what happens when we increase the size of the input set:
 
+*n=100000000/f=0.1*
+
+| Metric\Variant   | HashSet | Bloom filter |
+|------------------|---------|--------------|
+| error[%]         | 0       | 0,9          |
+| insert time [ms] | 633     | 318          |
+| query time [ms]  | 811     | 944          |
+| memory [MB]      | 876     | 29           |
+
+*n=500000000/f=0.1*
+
+| Metric\Variant   | HashSet | Bloom filter |
+|------------------|---------|--------------|
+| error[%]         | 0       | 0,9          |
+| insert time [ms] | 3080    | 1372         |
+| query time [ms]  | 4255    | 4923         |
+| memory [MB]      | 4400    | 81           |
+
 The number of false positives is still below the preset 1%, the amount of memory used is still lower
 than the classical implementation, and interestingly also the times of the probabilistic variant are
 lower. Thus, it can be seen that along with the increase in the size of the data the benefit of this
 method increases.
+
+## Summary
 
 The above example clearly shows that by accepting a small share of false answers, we can gain significant savings in memory usage.
 Similarly to the HLL algorithm, the structure based on the Bloom Filters is available in many popular
