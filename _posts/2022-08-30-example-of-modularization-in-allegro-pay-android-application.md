@@ -199,6 +199,6 @@ application. This solution introduces consistency in the module and decreases th
 by encapsulation specify domain. Also the problem with the redundant conflicts has been minimalized. After the
 implementation of the modules described above, the main module containing the Allegro Pay responsibilities has shrunk
 significantly, and now contains around 18.4k LoC (which means it has been cut in half). In addition, modularization will
-allow us to add new features and extend the existing ones in an easier and safer way. Modularization is one of the
-processes in the software lifecycle. It was an interesting challenge from a technical point of view.
+allow us to add new features and extend the existing ones in an easier and safer way. It was an interesting challenge
+from a technical point of view.
 ![Build time in seconds and LoC.](/img/articles/2022-08-30-example-of-modularization-in-allegro-pay-android-application/after_both.png)
