@@ -4,12 +4,10 @@ title: "Probabilistic Data Structures and Algorithms in NoSQL databases"
 author: [michal.knasiecki]
 tags: [tech, performance, NoSQL]
 excerpt: >
-    What would you say if we stored
-    1,000 records in a database, and the database claimed that there were only 998 of them? Or, if we
-    created a database storing sets of values and in some cases the database would claim that an
-    element is in that set, while it is not in fact?
-    Such behavior is not necessarily an error, as long as we use a database
-    that uses probabilistic algorithms and data structures.
+    What would you say if we stored 1,000 records in a database, and the database claimed that there were only 998 of them?
+    Or, if we created a database storing sets of values and in some cases the database would claim that some
+    element is in that set, while it is not in fact? It definitely must be a bug, right?
+    It turns out such behavior is not necessarily an error, as long as we use a database that implements probabilistic algorithms and data structures.
     In this post we will learn about two probability-based techniques, perform some experiments and
     consider when it is worth using a database that lies to us a bit.
 ---
@@ -31,7 +29,7 @@ even in this generalized form — is no longer so obvious. What would you say if
 created a database storing sets of values and in some cases the database would claim that an
 element is in that set, while it is not in fact? Seeing such a behavior many would probably start
 looking for an error. However, behavior like this is not necessarily an error, as long as we use a database
-that uses probabilistic algorithms and data structures. Solutions based on these methods allow some
+that implements probabilistic algorithms and data structures. Solutions based on these methods allow some
 inaccuracy in the results, but in return they are able to provide us with great savings in the resources
 used. More interesting is that there is a good chance that you are already using such a base.
 
@@ -103,8 +101,8 @@ purposes — is available the next day, when we count it accurately using, for e
 Implementing such a counter of unique visitors into a site operating on huge data sets, we could
 therefore consider using the HLL algorithm.
 
-Readers interested in a detailed description of the HLL algorithm are referred to a great article on Damn Cool Algorithms
-[blog post](http://blog.notdot.net/2012/09/Dam-Cool-Algorithms-Cardinality-Estimation).
+Readers interested in a detailed description of the HLL algorithm are referred to a great article on
+[Damn Cool Algorithms post](http://blog.notdot.net/2012/09/Dam-Cool-Algorithms-Cardinality-Estimation).
 However, its most important features are worth noting here:
 * the results, although approximate, are deterministic,
 * the maximum possible error is known,
@@ -120,7 +118,7 @@ elements from the list.
 
 Below there is a code snippet of a simple program that determines the cardinal number of a set of numbers using ```HashSet```
 class from Java language. In order to be able to run some trials, I’ve introduced a couple of basic parameters. The
-input list consists of ```n``` numbers, while using the ```f``` parameter and the modulo function I decide what
+input list consists of ```n``` numbers, while using the ```f``` parameter and the ```modulo``` function I decide what
 part of the input list is unique. For example, for ```n=1000``` and ```f=0.1```, the result will be a cardinal
 number equal to 100.
 
@@ -152,11 +150,11 @@ equal 250000. Let’s take a look at the results:
 *n=1000000/f=0.25*
 
 | Metric\Variant | HashSet | distinct | HLL      |
-| -------------- | ------- | ---------|----------|
-| cardinality | 250000 | 250000 | 249979,9 |
-| error [%] | 0 | 0 | 0.01     |
-| time [ms] | 71 | 106 | 53       |
-| memory [MB] | 42 | 686 | 21       |
+| -------------- | ------- |----------|----------|
+| cardinality | 250000 | 250000   | 249979,9 |
+| error [%] | 0 | 0        | 0.01     |
+| time [ms] | 71 | 106      | 53       |
+| memory [MB] | 42 | 73       | 21       |
 
 
 In case of such a small set the deviation of the result of the HLL variant from the true value far less than
@@ -338,13 +336,13 @@ Let’s check what happens when we increase the size of the input set:
 | memory [MB]      | 4400    | 81           |
 
 The number of false positives is still below the preset 1%, the amount of memory used is still lower
-than the classical implementation, and interestingly also the times of the probabilistic variant are
-lower. Thus, it can be seen that along with the increase in the size of the data the benefit of this
+than the classic implementation, and interestingly also the times of the probabilistic variant are
+lower, at least for inserting. Thus, it can be seen that along with the increase in the size of the data the benefit of this
 method increases.
 
 ## Summary
 
-The above example clearly shows that by accepting a small share of false answers, we can gain significant savings in memory usage.
+The above results clearly show that by accepting a small share of false answers, we can gain significant savings in memory usage.
 Similarly to the HLL algorithm, the structure based on the Bloom Filters is available in many popular
 databases like [Redis](https://redis.com/redis-best-practices/bloom-filter-pattern/),
 [HBase](https://hbase.apache.org/2.2/devapidocs/org/apache/hadoop/hbase/util/BloomFilter.html)
