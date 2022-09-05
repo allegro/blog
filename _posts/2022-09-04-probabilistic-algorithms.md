@@ -18,15 +18,15 @@ One of the [four fundamental](https://en.wikipedia.org/wiki/ACID) features of tr
 transaction is committed, the stored data remains available even if the database crashes. To put it in a
 nutshell, if we upload some information into the database, we must be able to read it later, no matter what happens.
 
-It is so elementary that we frequently don't even think about it: if we save a record with the '42'
-value in a database, we will get '42' every time we read that
+It is so elementary that we frequently don’t even think about it: if we save a record with the ’42’
+value in a database, we will get ’42’ every time we read that
 record, until the next modification. The durability concept can be generalized somewhat, in this manner to consider not only transactional
 databases but also such ones that do not provide transactions. After all, in each of them, after a
 correct write we can be sure that the stored information is in the database and we have access
 to it.
 
-But it turns out that there are databases that provide us with solutions making that the durability idea -
-even in this generalized form - is no longer so obvious. What would you say if we stored
+But it turns out that there are databases that provide us with solutions making that the durability idea —
+even in this generalized form — is no longer so obvious. What would you say if we stored
 1,000 records in a database, and the database claimed that there were only 998 of them? Or, if we
 created a database storing sets of values and in some cases the database would claim that an
 element is in that set, while it is not in fact? Seeing such a behavior many would probably start
@@ -42,25 +42,31 @@ consider when it is worth using a database that lies to us a bit.
 
 Some time ago I had the opportunity to work on a service based on Elasticsearch. This service collects
 huge amounts of data, which later is analyzed by our customer care specialist. One of the key elements to be analyzed
-is a simple aggregate - the number of unique occurrences of certain values. In mathematics, this
+is a simple aggregate — the number of unique occurrences of certain values. In mathematics, this
 quantity is called the power of the set or the cardinal number.
 
 The easiest way to understand this is to use an example: imagine that I take out all the banknotes
-from my wallet and it turns out that I have 10 of them, with the following nominal values: [10, 20, 50,
-20, 50, 100, 50, 20, 10, 10]. If we arranged them by value, we would end up collecting these 10
+from my wallet and it turns out that I have 10 of them, with the following nominal values:
+
+```javascript
+[10, 20, 50, 20, 50, 100, 50, 20, 10, 10]
+```
+
+If we arranged them by value, we would end up collecting these 10
 banknotes in four piles with values: [10, 20, 50, 100], so the cardinal number of the set containing my 10
 banknotes equals: 4.
 
-Elasticsearch has a special function: cardinality, which is used to determine the power of the set and we use
+Elasticsearch has a special function: [cardinality](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics-cardinality-aggregation.html), which is used to determine the power of the set and we use
 specifically this function to count unique occurrences that I mentioned earlier.
+
 It may seem that counting unique occurrences of values is a trivial task.
-Let's go back to our example with the banknotes. You can think of many ways to check how many
+Let’s go back to our example with the banknotes. You can think of many ways to check how many
 unique values are in this list, probably one of the simplest is to use the ```HashSet``` class. One of its main features is
 that it de-duplicates the elements added to it, thus it stores only one occurrence of each.
 
 After adding 10 values of banknotes: [10, 20, 50, 20, 50, 100, 50, 20, 10, 10] to an instance of the ```HashSet```
 class, it will ultimately only store the values [10, 20, 50, 100] (not necessarily in that order, but it
-doesn't matter it this case). So all we need to do is check the size of this set and we have the result we were
+doesn’t matter it this case). So all we need to do is check the size of this set and we have the result we were
 looking for: 4.
 
 This solution is very simple and looks tempting, yet it has a certain drawback: the more unique elements the set stores,
@@ -77,12 +83,12 @@ other hand, is that they are much less resource-intensive.
 
 ## Near-optimal cardinality estimator
 
-One such algorithm - HyperLogLog (HLL) - has been implemented in the aforementioned
+One such algorithm — HyperLogLog (HLL) — has been implemented in the aforementioned
 Elasticsearch to build the cardinality function. It is used to count the unique values of a given field of
 an indexed document, and it does so with a certain approximation, using very little memory.
 Interestingly, you can control the accuracy of this approximation with a special parameter. This is
 because in addition to the field to be counted, the cardinality function also accepts a
-precision_threshold argument, due to which we can specify how much inaccuracy we agree to, in
+```precision_threshold``` argument, due to which we can specify how much inaccuracy we agree to, in
 exchange for less or more memory usage.
 
 Obviously, in some cases even a small error is unacceptable. We must then abandon the probabilistic
@@ -91,14 +97,14 @@ approximation is completely sufficient. Imagine a video clip uploaded to a popul
 If the author of the clip has a bit of luck, the counter of unique views of his/her work starts spinning
 very quickly. In case of very high popularity, when displaying the current number of visits, full
 accuracy will not matter so much; we can reconcile with displaying a value that differs from the
-actual one by a few percent. It is completely sufficient that the accurate data - e.g. for monetization
-purposes - is available the next day, when we count it accurately using, for example, Spark.
+actual one by a few percent. It is completely sufficient that the accurate data — e.g. for monetization
+purposes — is available the next day, when we count it accurately using, for example, Apache Spark.
 
 Implementing such a counter of unique visitors into a site operating on huge data sets, we could
 therefore consider using the HLL algorithm.
 
-Readers interested in a detailed description of the HLL algorithm are referred to Damn Cool Algorithms blog
-[post](http://blog.notdot.net/2012/09/Dam-Cool-Algorithms-Cardinality-Estimation)].
+Readers interested in a detailed description of the HLL algorithm are referred to a great article on Damn Cool Algorithms
+[blog post](http://blog.notdot.net/2012/09/Dam-Cool-Algorithms-Cardinality-Estimation).
 However, its most important features are worth noting here:
 * the results, although approximate, are deterministic,
 * the maximum possible error is known,
@@ -106,10 +112,10 @@ However, its most important features are worth noting here:
 
 The last two features are closely related and can be controlled, we can decrease the error level by increasing
 the available memory limit and vice versa.
-There are many ready-made implementations of the HLL algorithm available, so it's worth reaching
+There are many ready-made implementations of the HLL algorithm available, so it’s worth reaching
 for one of them and doing some experiments. I will use [datasketches](https://datasketches.apache.org/docs/HLL/HLL.html)
 and compare the memory consumption with the classic approach using the ```HashSet```. Moreover, I will add a third variant based
-on a ```distinct``` method from the Kotlin language, which - like the ```HashSet``` constructor - de-duplicates
+on a ```distinct``` method from the Kotlin language, which — like the ```HashSet``` constructor — de-duplicates
 elements from the list.
 
 Below there is a code snippet of a simple program that determines the cardinal number of a set of numbers using ```HashSet```
@@ -131,8 +137,9 @@ val elapsed = measureTimeMillis {
 }
 ```
 
-Two other programs do exactly the same thing: determine the cardinal number of a set of numbers, one using Kotlin
-```distinct``` method and the second one using HLL algorithm. You can find full code on this [repo].
+Two other programs do exactly the same thing: determine the cardinal number of a set of numbers, but one is using Kotlin
+```distinct``` method and the second one is using HLL algorithm. You can find full code of all three applications
+on this [repository](https://github.com/mknasiecki/prob-alg-post).
 
 All three programs, in addition to the result, also measure total execution time. Moreover, using
 [jConsole](https://openjdk.java.net/tools/svc/jconsole/) I am also able to measure the amount of memory used. I decided
@@ -140,7 +147,7 @@ to measure the total memory used by the
 programs, because measuring the size of the data structures is not a trivial task.
 
 We start by checking the variant n=1000000/f=0.25 as a result of which we should get a power of set
-equal 250000; here are the results:
+equal 250000. Let’s take a look at the results:
 
 *n=1000000/f=0.25*
 
@@ -152,7 +159,7 @@ equal 250000; here are the results:
 | memory [MB] | 42 | 686 | 21       |
 
 
-In case of such a small set the deviation of the result of the HLL variant from the true value less than
+In case of such a small set the deviation of the result of the HLL variant from the true value far less than
 1%, while in this case you can already see the benefits of this method; the amount of memory used is
 twice less compared to the ```HashSet``` version and as much as 3 times less when compared to the
 version using the Kotlin language function. During the next attempt we increase the value of the n
@@ -180,9 +187,9 @@ time is even greater than before. Therefore, it is worthwhile to increase the si
 | memory [MB] | 1800     | 5300     | 21         |
 
 Deviation from the correct result exceeded 1%; the times also went up, although they are still many
-times shorter compared to other variants. It's worth noting that the amount of the memory used has practically not changed.
+times shorter compared to other variants. It’s worth noting that the amount of the memory used has practically not changed.
 
-Now let's see what happens when we change the second parameter, which determines the number of
+Now let’s see what happens when we change the second parameter, which determines the number of
 unique elements in the input set:
 
 *n=10000000/f=0.5*
@@ -211,7 +218,7 @@ we use much less memory. A certain surprise for me is the poor result of the Kot
 expected results more similar to the variant based on the ```HashSet```.
 
 The HLL algorithm is implemented in several solutions, including the aforementioned Elasticsearch,
-as well as in e.g. Redis. The above experiments clearly show that the approximate method, in case
+as well as in e.g. [Redis](https://redis.com/redis-best-practices/counting/hyperloglog/) and [Presto](https://prestodb.io/docs/current/functions/hyperloglog.html). The above experiments clearly show that the approximate method, in case
 we need to process huge amounts of data, is a good idea provided that we allow a result with a small
 error.
 
@@ -224,8 +231,8 @@ Imagine that we want to test whether there is a 100 value banknote in my wallet.
 for the 200 value banknote should be false, since there is no such a banknote in the wallet.
 
 Of course, we are able again to implement a solution to this problem by simply using the properties
-of the ```HashSet``` class and the contains method. However, similarly as in case of determining the
-cardinality - the memory requirement increases with the size of the dataset.
+of the ```HashSet``` class and the ```contains``` method. However, similarly as in case of determining the
+cardinality — the memory requirement increases with the size of the dataset.
 Again, the solution for this problem may be the approximate method.
 
 Similarly as in case of the HLL algorithm the Bloom Filter allows for some inaccuracy, and in this case
@@ -236,7 +243,7 @@ our example with the content of my wallet, the Bloom Filter could therefore assu
 200 value banknote in it, while standing at the checkout in a store it would turn out that,
 unfortunately, it is not there. What a pity...
 
-Before we move on to examine how this algorithm works, let's consider where it could be useful. A
+Before we move on to examine how this algorithm works, let’s consider where it could be useful. A
 typical example is a recommendation system. Imagine we are designing a system intended to suggest
 articles for users to read, as it takes place in popular social networks. Such a system needs to store a
 list of articles read by each user so that it does not suggest them again. It is easy to imagine that
@@ -252,9 +259,9 @@ has already read.
 At this point it is worth checking how much we gain by accepting the inconvenience described
 above. I have prepared two implementations of a program that adds to a set of values and then
 checks if they are there.
-The first program uses the classic approach - the ```HashSet``` class, while the second uses the Bloom
+The first program uses the classic approach — the ```HashSet``` class, while the second uses the Bloom
 Filter available in the popular [guava](https://guava.dev/releases/20.0/api/docs/com/google/common/hash/BloomFilter.html) library.
-Again, using jConsole we register for both programs the amount of memory used, and additionally - for the version with
+Again, using jConsole we register for both programs the amount of memory used, and additionally — for the version with
 the Bloom Filter we also check the
 number of false positives. This value can be easily controlled, as the maximum allowed false positive
 rate can be set in the API; for needs of the following tests we will set it to 1%.
@@ -262,10 +269,10 @@ rate can be set in the API; for needs of the following tests we will set it to 1
 Moreover, we will measure the total time of adding values to the set and the total time of queries
 whether there are values in the set.
 
-Same as before we will perform a number of tests using the following parameters: ```n``` - the size of the set of
-numbers, and ```f``` - what part of it should be added to the set. The configuration n=100 and f=0.1 means
+Same as before we will perform a number of tests using the following parameters: ```n``` — the size of the set of
+numbers, and ```f``` — what part of it should be added to the set. The configuration n=100 and f=0.1 means
 that the first 10 numbers out of 100 will be added to the set. So, in the first part, the program will
-add 10 numbers to the set and then - in the second stage - it will perform a presence test
+add 10 numbers to the set and then — in the second stage — it will perform a presence test
 by checking whether the numbers above 10 belong to the set. There is no point in checking the
 numbers added to the set beforehand, because we know that Bloom Filters do not give false
 negative results. On the other hand, if any number above 10 is found according to the Bloom Filter in
@@ -295,9 +302,9 @@ val queryTime = measureTimeMillis {
 val fpRatio = falsePositives/n.toDouble()
 ```
 
-Again - you can find full code of both programs on aforementioned [repo].
+Again — you can find full code of both programs on aforementioned [repository](https://github.com/mknasiecki/prob-alg-post).
 
-Let's start with the following configuration: n=10000000/f=0.1:
+Let’s start with the following configuration: n=10000000/f=0.1:
 
 *n=10000000/f=0.1*
 
@@ -308,9 +315,9 @@ Let's start with the following configuration: n=10000000/f=0.1:
 | query time [ms]  | 82      | 846          |
 | memory [MB]      | 94      | 30           |
 
-As you can see, the Bloom Filter returned less than 1% false results, but - at the same time - it used three times
-less memory than HashSet variant. Unfortunately, the times of Bloom Filter's version are significantly higher.
-Let's check what happens when we increase the size of the input set:
+As you can see, the Bloom Filter returned less than 1% false results, but — at the same time — it used three times
+less memory than HashSet variant. Unfortunately, the times of Bloom Filter’s version are significantly higher.
+Let’s check what happens when we increase the size of the input set:
 
 *n=100000000/f=0.1*
 
@@ -339,7 +346,9 @@ method increases.
 
 The above example clearly shows that by accepting a small share of false answers, we can gain significant savings in memory usage.
 Similarly to the HLL algorithm, the structure based on the Bloom Filters is available in many popular
-databases.
+databases like [Redis](https://redis.com/redis-best-practices/bloom-filter-pattern/),
+[HBase](https://hbase.apache.org/2.2/devapidocs/org/apache/hadoop/hbase/util/BloomFilter.html)
+or [Cassandra](https://cassandra.apache.org/doc/latest/cassandra/operating/bloom_filters.html).
 
 The simple experiments we conducted showed that probabilistic algorithms can save a lot
 of memory, which is especially important if our database stores huge amounts of data. In such cases it
