@@ -61,7 +61,7 @@ it in the database. The Cosmos’ API is quite simple, allowing us to perform si
 record by an ID, updating, inserting etc. It also allows querying through multiple APIs, such as SQL, MongoDB,
 Cassandra, Gremlin or Azure Table API, which is out of this document’s scope.
 
-What’s the result of executing this code? It processed 50k records in about 10 minutes. It doesn’t seem too long, but if
+What’s the result of executing this code? It processed 50k records in about 10 minutes. This doesn’t seem too long, but if
 we estimate the time needed to process a million records, that would be more than 3 hours. Or even worse, if we think
 about processing tens or hundreds of millions, it becomes almost impossible. But that’s not all — looking at the Cosmos
 DB metrics, I noticed that the database utilization was as low as about 6%. To explain what exactly it means, I will
