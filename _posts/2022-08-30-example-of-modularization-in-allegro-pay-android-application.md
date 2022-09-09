@@ -70,7 +70,7 @@ separate modules. Every new module should contain the implemented part of the do
 name and a small contract module that can be attached to other modules in order to provide them with the implemented
 functionality. So, we have planned the following modules:
 
-1. ais with contract module,
+1. ais (a banking service that isn't relevant in the context of this article) with contract module,
 2. common,
 3. consolidation with contract module,
 4. onboarding with contract module,
@@ -172,7 +172,7 @@ consolidation, 10.6 seconds for the repayment. The extraction process was analog
 ## Onboarding module
 
 This module was the most challenging and possibly the most time consuming. This was due to the combination of the
-process between the screens available in different modules and ensuring unchanged functionality. During this
+process being available from multiple screens in different modules and ensuring unchanged functionality. During this
 modularization process, we discovered the possibility of optimizing and reducing the amount of code. This module
 contains approximately 10k LoC and the build time is less than 20 seconds. It is a really huge module.
 ![Build time in seconds and LoC.](/img/articles/2022-08-30-example-of-modularization-in-allegro-pay-android-application/onboarding_both.png)
