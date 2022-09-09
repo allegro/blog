@@ -6,7 +6,7 @@ tags: [tech, kotlin, android, modularization, gradle, allegro-pay]
 ---
 Currently, in the Android world, the topic of modularization is very popular. Many bloggers describe their experiences
 with it and analyze what [Google recommends](https://developer.android.com/topic/modularization/patterns). Our team
-started the modularization process before it was so hot. I will describe our reasons, decisions, problems and give you
+started the modularization process before it was hot. I will describe our reasons, decisions, problems and give you
 some advice. We will see if modularization makes sense and what it brings to the table. I will also post some statistics
 showing what it looked like before and after the modularization process.
 
