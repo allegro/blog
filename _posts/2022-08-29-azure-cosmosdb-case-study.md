@@ -270,7 +270,7 @@ This way, we have fulfilled all the requirements that were set at the beginning:
 
 The outcomes of this work have been published as an opensource .NET library on our GitHub page:
 [Allegro.CosmosDb.BatchUtilities](https://github.com/allegro/cosmosdb-utils/tree/main/src/Allegro.CosmosDb.BatchUtilities).
-Feel free to use it or even contribute with new features.
+Feel free to use it or even contribute new features.
 
 ## Conclusions
 
