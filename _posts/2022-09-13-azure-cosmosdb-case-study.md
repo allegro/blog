@@ -74,7 +74,7 @@ terms of CPU, memory and IO needed to execute the request. This way, we don’t 
 machines that are being used or their parameters — the database size and the operation costs are always expressed in
 RUs. Microsoft estimates a single read operation of a 1KB item as 1 RU and other operations’ cost correspondingly more.
 
-![Cosmos DB Request Units overview](/img/articles/2022-08-29-azure-cosmosdb-case-study/img01.png)
+![Cosmos DB Request Units overview](/img/articles/2022-09-13-azure-cosmosdb-case-study/img01.png)
 
 Source: <https://docs.microsoft.com/en-us/azure/cosmos-db/request-units>
 
@@ -100,7 +100,7 @@ What happens if we try to exceed this declared value? Some of the requests will 
 (Too Many Requests) — Cosmos DB will throttle the traffic so that the actual sum of the consumed RU in each second does
 not exceed the configured limit.
 
-![Manual mode visualized](/img/articles/2022-08-29-azure-cosmosdb-case-study/img02.png)
+![Manual mode visualized](/img/articles/2022-09-13-azure-cosmosdb-case-study/img02.png)
 
 ### Autoscale
 
@@ -111,7 +111,7 @@ limit will be 400 RU/s, which converts to 20 euros per month. If we try to consu
 to 4000 RU/s, which converts to 200 euros per month. The bill at the end of the month will range between 20 and 200
 euros, depending on how many times and how much the database needed to scale.
 
-![Autoscale mode visualized](/img/articles/2022-08-29-azure-cosmosdb-case-study/img03.png)
+![Autoscale mode visualized](/img/articles/2022-09-13-azure-cosmosdb-case-study/img03.png)
 
 What’s the catch? We can easily set the max autoscale throughput to any value we want, but we will not always be able to
 return to the previous value. In fact, we can only decrease it to 1/10 of the maximum value we ever set. For example,
@@ -127,7 +127,7 @@ that we have consumed. No need to declare anything, no need to scale. A million 
 sound tempting. We can calculate how much it costs to process a million records, estimate how many we process during
 a month, and when we put it together, it may look like the final price is not even very high.
 
-![Serverless mode visualized](/img/articles/2022-08-29-azure-cosmosdb-case-study/img04.png)
+![Serverless mode visualized](/img/articles/2022-09-13-azure-cosmosdb-case-study/img04.png)
 
 Unfortunately, if we read the docs, we can find some additional information:
 
@@ -159,7 +159,7 @@ Foreach record
 
 It processed 50k records in about 10 minutes. How loaded was the database?
 
-![Normalized RU Consumption metric](/img/articles/2022-08-29-azure-cosmosdb-case-study/img05.png)
+![Normalized RU Consumption metric](/img/articles/2022-09-13-azure-cosmosdb-case-study/img05.png)
 
 Normalized RU Consumption shows the percentage of the database load, which at this time was scaled up to 4000 RU/s.
 Its utilization was only around 6% during the batch processing. It’s a bit low and it obviously could take more load.
@@ -185,21 +185,21 @@ that, we implemented a simple counter that tracks RUs consumed in a given interv
 outgoing requests so that RU limit is not exceeded in any second, but instead wait until the next second before
 releasing the queued requests.
 
-![RU limiter visualized](/img/articles/2022-08-29-azure-cosmosdb-case-study/img06.png)
+![RU limiter visualized](/img/articles/2022-09-13-azure-cosmosdb-case-study/img06.png)
 
 The mechanism sounds pretty simple, doesn’t it? And here is how it worked. I ran another test, this time with RU limiter
 set to 32k RU/s. Although the requests were being limited, the processing of 1 million records took only 5 minutes this
 time and no request was throttled. Below we can see the Total Request Units metric during the test. The consumption was
 almost precisely 1,92 mln RU / minute, which gives us 32k RU/s — exactly as the RU limiter was configured.
 
-![Total Request Units metric](/img/articles/2022-08-29-azure-cosmosdb-case-study/img07.png)
+![Total Request Units metric](/img/articles/2022-09-13-azure-cosmosdb-case-study/img07.png)
 
 ### Partition key ranges
 
 It almost looks as if we could wrap up and call it a day. But let’s take another look at the Normalized RU
 Consumption metric.
 
-![Normalized RU Consumption metric](/img/articles/2022-08-29-azure-cosmosdb-case-study/img08.png)
+![Normalized RU Consumption metric](/img/articles/2022-09-13-azure-cosmosdb-case-study/img08.png)
 
 Something is not right here. With the database scaled up to 40k RU/s and the consumption rate of precisely 32k RU/s
 (confirmed with the Total Request Units metric), the database utilization should be around 80%, not 100%. What exactly
@@ -212,7 +212,7 @@ from each range make up a physical partition. The problem is that these ranges a
 are, but there are periods when Cosmos has just split some of the partitions, but has not yet split others. Below is
 the Normalized RU Consumption metric split by partitions.
 
-![Normalized RU Consumption metric split by Partition Key ranges](/img/articles/2022-08-29-azure-cosmosdb-case-study/img09.png)
+![Normalized RU Consumption metric split by Partition Key ranges](/img/articles/2022-09-13-azure-cosmosdb-case-study/img09.png)
 
 If we dig into the documentation even further it turns out that the 40k RU/s that we configured as the provisioned
 throughput is equally split between the partitions — even if their sizes are not equal. Odds are that even if we consume
@@ -250,7 +250,7 @@ starting, and scale back down when the batch processing has finished. All we nee
 Max Autoscale Throughput, we can only go 10x lower. If we scale up to 60k RU/s — we can go back just to 6k RU/s Max
 Autoscale Throughput (meaning Cosmos will be scaled in range of 600-6000k RU/s).
 
-![Autoscaler visualized during batch processing](/img/articles/2022-08-29-azure-cosmosdb-case-study/img10.png)
+![Autoscaler visualized during batch processing](/img/articles/2022-09-13-azure-cosmosdb-case-study/img10.png)
 
 With this one simple trick, we created an “Autoscaler auto scaler”, as we automatically scale the Cosmos DB’s Autoscaler
 range and achieve in turn the possibility to scale 100x times instead of just 10x. When the traffic on the database is
