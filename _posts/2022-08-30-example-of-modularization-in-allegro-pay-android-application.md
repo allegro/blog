@@ -40,7 +40,7 @@ functionality.
 ### Cheat
 
 I mention the build time for a reason. In our case, in a multi—module project, we use some gradle instructions. Our
-gradle.properties file looks something like this:
+`gradle.properties` file looks something like this:
 
 ```groovy
 // some instructions
