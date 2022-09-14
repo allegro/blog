@@ -193,7 +193,7 @@ module contains almost 2k lines of code.
 
 ## Fin
 
-Probably for some of you, the division method used may be associated with the Latin term divide et impera. This paradigm
+Probably for some of you, the division method used may be associated with the Latin term _divide et impera_. This paradigm
 of algorithm design could also be used in the modularization process by dividing one large module into several smaller
 ones, each specialized in one task. The use of the concept of this paradigm, encapsulation by creating a contract and
 gradle configuration allowed to significantly reduce the build time and speed up the development of the application.
