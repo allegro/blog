@@ -6,8 +6,8 @@ tags: [tech, kotlin, android, modularization, gradle, allegro-pay]
 ---
 Currently, in the Android world, the topic of modularization is very popular. Many bloggers describe their experiences
 with it and analyze what [Google recommends](https://developer.android.com/topic/modularization/patterns). Our team
-started the modularization process before it was hot. I will describe our reasons, decisions, problems and give you
-some advice. We will see if modularization makes sense and what it brings to the table. I will also post some statistics
+started the modularization process before it was hot. I will describe our reasons, decisions, problems and give you some
+advice. We will see if modularization makes sense and what it brings to the table. I will also post some statistics
 showing what it looked like before and after the modularization process.
 
 ## Some theory
@@ -39,7 +39,7 @@ functionality.
 
 ### Cheat
 
-I mention the build time for a reason. In our case, in a multi—module project, we use some gradle instructions. Our
+I mention the build time for a reason. In our case, in a multi-module project, we use some Gradle instructions. Our
 `gradle.properties` file looks something like this:
 
 ```groovy
@@ -52,11 +52,11 @@ org.gradle.caching = true
 
 The first instruction
 enables [parallelization](https://docs.gradle.org/current/userguide/performance.html#parallel_execution)
-so that gradle can perform more than one task at a time as long as the tasks are in different modules. The second one
+so that Gradle can perform more than one task at a time as long as the tasks are in different modules. The second one
 allows you to
 [configure modules](https://docs.gradle.org/current/userguide/multi_project_configuration_and_execution.html#sec:configuration_on_demand)
 that are relevant only to the task you want, rather than configuring them all, which is the default behavior.
-Importantly, this instruction should be used for multi—module projects. And the last one is
+Importantly, this instruction should be used for multi-module projects. And the last one is
 [caching](https://docs.gradle.org/current/userguide/build_cache.html). It is „a cache mechanism that aims to save time
 by reusing outputs produced by other builds. The build cache works by storing (locally or remotely) build outputs and
 allowing builds to fetch these outputs from the cache when it is determined that inputs have not changed, avoiding the
@@ -106,10 +106,11 @@ internal class AllegroPaySomeProcessHandlerImpl : AllegroPaySomeProcessHandler {
 ```
 
 The above example shows what one of the assumptions of object-oriented programming — encapsulation — looks like in
-practice. The *AllegroPaySomeProcessHandler* interface provides two methods, one of them creates the intent necessary to
-run the process, and the other observes its result. The exact implementation is hidden in an internal class, not
-accessible from the contract module. Every change of interface implementation is transparent to contract clients.
-Example of how to declare a dependency on a contract:
+practice. The *AllegroPaySomeProcessHandler* interface provides two methods, one of them creates
+the [Intent](https://developer.android.com/reference/android/content/Intent) necessary to run the process, and the other
+observes its result. The exact implementation is hidden in an internal class, not accessible from the contract module.
+Every change of interface implementation is transparent to contract clients. Example of how to declare a dependency on a
+contract:
 
 ```kotlin
 dependencies {
@@ -125,10 +126,10 @@ to check whether our module meets the requirement set for it is
 the [Module Graph Assert](https://github.com/jraska/modules-graph-assert). It is a Gradle plugin which „helps keep your
 module graph healthy and lean.” This tool defines the types of modules that are allowed in the application, the
 dependencies between them and the height of the dependency tree. The following types are defined in the Allegro
-application: *App*, *Feature*, *Contract*, *Library*, *Util* and *NeedsMigration*. The last type tells us that the module
-still requires work from its owners and appropriate adaptation to one of the other types. We can also define allowed and
-restricted dependencies between modules, e.g. a contract may depend only on another contract or a module marked as a
-feature depends only on the contract or library. Allegro app configuration:
+application: *App*, *Feature*, *Contract*, *Library*, *Util* and *NeedsMigration*. The last type tells us that the
+module still requires work from its owners and appropriate adaptation to one of the other types. We can also define
+allowed and restricted dependencies between modules, e.g. a contract may depend only on another contract or a module
+marked as a feature depends only on the contract or library. Allegro app configuration:
 
 ```groovy
 moduleGraphAssert {
@@ -193,14 +194,14 @@ module contains almost 2k lines of code.
 
 ## Fin
 
-Probably for some of you, the division method used may be associated with the Latin term _divide et impera_. This paradigm
-of algorithm design could also be used in the modularization process by dividing one large module into several smaller
-ones, each specialized in one task. The use of the concept of this paradigm, encapsulation by creating a contract and
-gradle configuration allowed to significantly reduce the build time and speed up the development of the application.
-This solution introduces consistency in the module and decreases the possibility of introducing a regression by
-encapsulating each individual domain. Also the problem with the redundant conflicts has been minimalized. After the
-implementation of the modules described above, the main module containing the Allegro Pay responsibilities has shrunk
-significantly, and now contains around 18.4k LoC (which means it was reduced by half). In addition, modularization will
-allow us to add new features and extend the existing ones in an easier and safer way. It was an interesting challenge
-from a technical point of view.
+Probably for some of you, the division method used may be associated with the Latin term _divide et impera_. This
+paradigm of algorithm design could also be used in the modularization process by dividing one large module into several
+smaller ones, each specialized in one task. The use of the concept of this paradigm, encapsulation by creating a
+contract and Gradle configuration allowed to significantly reduce the build time and speed up the development of the
+application. This solution introduces consistency in the module and decreases the possibility of introducing a
+regression by encapsulating each individual domain. Also the problem with the redundant conflicts has been minimalized.
+After the implementation of the modules described above, the main module containing the Allegro Pay responsibilities has
+shrunk significantly, and now contains around 18.4k LoC (which means it was reduced by half). In addition,
+modularization will allow us to add new features and extend the existing ones in an easier and safer way. It was an
+interesting challenge from a technical point of view.
 ![Build time in seconds and LoC.](/img/articles/2022-08-30-example-of-modularization-in-allegro-pay-android-application/after_both.png)
