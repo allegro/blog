@@ -21,7 +21,7 @@ showing what it looked like before and after the modularization process.
 
 ### Background
 
-Allegro Pay is a payment method on Allegro that allows you to postpone the payment by 30 day or divide it into smaller
+Allegro Pay is a payment method on Allegro that allows you to postpone the payment by 30 days or divide it into smaller
 parts. People who use Allegro Pay know how many functionalities it has, those who don’t use it yet will know after
 reading this article. It started from 3 modules. At the time of writing this article the Allegro application for the
 Android platform consists of over 120 modules, 9 of which are maintained by Allegro Pay Team. In this quarter, we
