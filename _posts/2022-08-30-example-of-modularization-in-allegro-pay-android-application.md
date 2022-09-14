@@ -125,7 +125,7 @@ to check whether our module meets the requirement set for it is
 the [Module Graph Assert](https://github.com/jraska/modules-graph-assert). It is a Gradle plugin which „helps keep your
 module graph healthy and lean.” This tool defines the types of modules that are allowed in the application, the
 dependencies between them and the height of the dependency tree. The following types are defined in the Allegro
-application: *App*, *Feature*, *Contract*, *Library*, *Util* and *NeedsMigration*. The last type informs that the module
+application: *App*, *Feature*, *Contract*, *Library*, *Util* and *NeedsMigration*. The last type tells us that the module
 still requires work from its owners and appropriate adaptation to one of the other types. We can also define allowed and
 restricted dependencies between modules, e.g. a contract may depend only on another contract or a module marked as a
 feature depends only on the contract or library. Allegro app configuration:
