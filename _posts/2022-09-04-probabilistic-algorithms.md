@@ -9,7 +9,7 @@ excerpt: >
     element is in that set, while in fact it was not? It definitely must be a bug, right?
     It turns out such behavior is not necessarily an error, as long as we use a database that implements probabilistic algorithms and data structures.
     In this post we will learn about two probability-based techniques, perform some experiments and
-    consider when it is worth using a database that lies to us a little.
+    consider when it is worth using a database that lies to us a bit.
 ---
 
 One of the [four fundamental](https://en.wikipedia.org/wiki/ACID) features of transactional databases is durability. It says that once a
@@ -119,12 +119,17 @@ elements from the list.
 Below there is a code snippet of a simple program that determines the cardinal number of a set of numbers using `HashSet`
 class from Java language. In order to be able to run some trials, I’ve introduced a couple of basic parameters. The
 input list consists of `n` numbers, while using the `f` parameter and the `modulo` function I decide what
-part of the input list is unique. For example, for `n=1000` and `f=0.1`, the result will be a cardinal
-number equal to 100.
+part of the input list is unique. For example, for `n=1,000,000` and `f=0.1`, the result will be a cardinal
+number equal to 100,000.
+
+Please note the `HashSet` constructor parameter. By default, when the constructor is empty - this class is
+[initialized with the value 16](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/HashSet.html#%3Cinit%3E()),
+which means that before adding the 17th element, memory reallocation must occur for next portion of elements, which takes time.
+To eliminate this extra time I allocate in advance as much memory as needed.
 
 ``` kotlin
-val set = HashSet<Long>()
 val mod = (n * f).toLong()
+val set = HashSet<Long>(mod.toInt())
 
 val elapsed = measureTimeMillis {
     for (i in 0 until n) {
@@ -151,7 +156,7 @@ equal 250000. Let’s take a look at the results:
 
 | Metric\Variant | HashSet | distinct | HLL      |
 | -------------- | ------- |----------|----------|
-| cardinality | 250000 | 250000   | 249979,9 |
+| cardinality | 250000 | 250000   | 249979.9 |
 | error [%] | 0 | 0        | 0.01     |
 | time [ms] | 71 | 106      | 53       |
 | memory [MB] | 42 | 73       | 21       |
@@ -160,17 +165,25 @@ equal 250000. Let’s take a look at the results:
 In case of such a small set the deviation of the result of the HLL variant from the true value is far less than
 1%, while in this case you can already see the benefits of this method; the amount of memory used is
 half compared to the `HashSet` version and as much as 3 times less when compared to the
-version using the Kotlin language function. During the next attempt we increase the value of the n
-parameter tenfold:
+version using the Kotlin language function.
+
+It is worth pausing here for a moment to consider what is the reason for such a big difference in consumed memory.
+The first two programs are based on collections of objects, thus storing in memory entire instances along with their references.
+The HLL method, on the other hand, uses memory-efficient bit arrays that store data based on object hashes. This makes
+it insensitive to the original size of the processed data. It means that the benefits of using HLL increase with the
+memory needed to store the objects you want to count. The results presented above would be even more spectacular if we
+used, for example, email addresses or IP addresses instead of numbers.
+
+During the next attempt we increase the value of the `n` parameter tenfold:
 
 *n=10000000/f=0.25*
 
-| Metric\Variant | HashSet | distinct | HLL |
-| -------------- | ------- | ---------|----------|
-| cardinality | 2500000 | 2500000 | 2484301,4 |
-| error [%] | 0 | 0 | 0.63 |
-| time [ms] | 520 | 863 | 189 |
-| memory [MB] | 233 | 574 | 21 |
+| Metric\Variant | HashSet | distinct | HLL       |
+| -------------- |---------| ---------|-----------|
+| cardinality | 2500000 | 2500000 | 2484301.4 |
+| error [%] | 0       | 0 | 0.63      |
+| time [ms] | 483     | 863 | 189       |
+| memory [MB] | 233     | 574 | 21        |
 
 The error value has increased slightly, while the difference in memory usage and the performance
 time is even greater than before. Therefore, it is worthwhile to increase the size of the set again:
@@ -179,9 +192,9 @@ time is even greater than before. Therefore, it is worthwhile to increase the si
 
 | Metric\Variant | HashSet  | distinct | HLL        |
 | -------------- |----------|----------|------------|
-| cardinality | 25000000 | 25000000 | 25301157,2 |
+| cardinality | 25000000 | 25000000 | 25301157.2 |
 | error [%] | 0        | 0        | 1.2        |
-| time [ms] | 4447     | 7718     | 1538       |
+| time [ms] | 3857     | 7718     | 1538       |
 | memory [MB] | 1800     | 5300     | 21         |
 
 Deviation from the correct result exceeded 1%; the times also went up, although they are still many
@@ -194,18 +207,18 @@ unique elements in the input set:
 
 | Metric\Variant | HashSet | distinct | HLL       |
 | -------------- |---------|----------|-----------|
-| cardinality | 5000000 | 5000000  | 5067045,2 |
+| cardinality | 5000000 | 5000000  | 5067045.2 |
 | error [%] | 0       | 0        | 1.34      |
-| time [ms] | 597     | 914      | 183       |
+| time [ms] | 467     | 914      | 183       |
 | memory [MB] | 420     | 753      | 21        |
 
 *n=10000000/f=0.75*
 
 | Metric\Variant | HashSet | distinct | HLL       |
 | -------------- |---------|----------|-----------|
-| cardinality | 7500000 | 7500000  | 7619136,7 |
+| cardinality | 7500000 | 7500000  | 7619136.7 |
 | error [%] | 0       | 0        | 1.59      |
-| time [ms] | 758     | 1187     | 191       |
+| time [ms] | 589     | 1187     | 191       |
 | memory [MB] | 616     | 843      | 26        |
 
 Again, the results clearly show the advantages of the HLL algorithm. With a relatively low error we
@@ -213,7 +226,8 @@ significantly reduced the amount of memory used and the time required for calcul
 As you can see and as expected, the classical approach gives accurate results but it consumes a lot of
 memory, while the solution using HLL brings results characterized by approx. 1% error, but in return
 we use much less memory. A certain surprise for me is the poor result of the Kotlin `distinct` function; I
-expected results more similar to the variant based on the `HashSet`.
+expected results more similar to the variant based on the `HashSet`. Presumably the key difference is that it returns an instance
+of the `List` class rather than `HashSet`. This requires further investigation, which is beyond the scope of my considerations.
 
 The HLL algorithm is implemented in several solutions, including the aforementioned Elasticsearch,
 as well as in e.g. [Redis](https://redis.com/redis-best-practices/counting/hyperloglog/) and [Presto](https://prestodb.io/docs/current/functions/hyperloglog.html). The above experiments clearly show that the approximate method, in case
@@ -264,16 +278,16 @@ the Bloom Filter we also check the
 number of false positives. This value can be easily controlled, as the maximum allowed false positive
 rate can be set in the API; for needs of the following tests we will set it to 1%.
 
-Moreover, we will measure the total time of adding values to the set and the total time of querying 
+Moreover, we will measure the total time of adding values to the set and the total time of querying
 whether there are values in the set.
 
 Same as before we will perform a number of tests using the following parameters: `n` — the size of the set of
-numbers, and `f` — what part of it should be added to the set. The configuration n=100 and f=0.1 means
-that the first 10 numbers out of 100 will be added to the set. So, in the first part, the program will
-add 10 numbers to the set and then — in the second stage — it will perform a presence test
-by checking whether the numbers above 10 belong to the set. There is no point in checking the
+numbers, and `f` — what part of it should be added to the set. The configuration n=1,000,000 and f=0.1 means
+that the first 100,000 numbers out of 1,000,000 will be added to the set. So, in the first part, the program will
+add 100,000 numbers to the set and then — in the second stage — it will perform a presence test
+by checking whether the numbers above 100,000 belong to the set. There is no point in checking the
 numbers added to the set beforehand, because we know that Bloom Filters do not give false
-negative results. On the other hand, if any number above 10 is found according to the Bloom Filter in
+negative results. On the other hand, if any number above 100,000 is found according to the Bloom Filter in
 the set, we will consider it a false positive.
 
 Following code snippet presents fragment of the Bloom Filter variant:
@@ -308,8 +322,8 @@ Let’s start with the following configuration: n=10000000/f=0.1:
 
 | Metric\Variant   | HashSet | Bloom filter |
 |------------------|---------|--------------|
-| error[%]         | 0       | 0,9          |
-| insert time [ms] | 87      | 293          |
+| error[%]         | 0       | 0.9          |
+| insert time [ms] | 81      | 293          |
 | query time [ms]  | 82      | 846          |
 | memory [MB]      | 94      | 30           |
 
@@ -321,18 +335,18 @@ Let’s check what happens when we increase the size of the input set:
 
 | Metric\Variant   | HashSet | Bloom filter |
 |------------------|---------|--------------|
-| error[%]         | 0       | 0,9          |
-| insert time [ms] | 633     | 318          |
-| query time [ms]  | 811     | 944          |
+| error[%]         | 0       | 0.9          |
+| insert time [ms] | 593     | 318          |
+| query time [ms]  | 988     | 944          |
 | memory [MB]      | 876     | 29           |
 
 *n=500000000/f=0.1*
 
 | Metric\Variant   | HashSet | Bloom filter |
 |------------------|---------|--------------|
-| error[%]         | 0       | 0,9          |
-| insert time [ms] | 3080    | 1372         |
-| query time [ms]  | 4255    | 4923         |
+| error[%]         | 0       | 0.9          |
+| insert time [ms] | 1975    | 1372         |
+| query time [ms]  | 4115    | 4923         |
 | memory [MB]      | 4400    | 81           |
 
 The number of false positives is still below the preset 1%, the amount of memory used is still lower
