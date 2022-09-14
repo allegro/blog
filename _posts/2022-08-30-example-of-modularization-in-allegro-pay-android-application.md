@@ -14,10 +14,10 @@ showing what it looked like before and after the modularization process.
 
 ### Module
 
-„A [module](https://developer.android.com/studio/projects#:~:text=inside%20your%20project.-,Modules,test%2C%20and%20debug%20each%20module)
-is a collection of source files and build settings that allow you to divide your project into discrete units of
-functionality. Your project can have one or many modules, and one module may use another module as a dependency. You can
-independently build, test, and debug each module.”
+> A [module](https://developer.android.com/studio/projects#:~:text=inside%20your%20project.-,Modules,test%2C%20and%20debug%20each%20module)
+> is a collection of source files and build settings that allow you to divide your project into discrete units of
+> functionality. Your project can have one or many modules, and one module may use another module as a dependency. You can
+> independently build, test, and debug each module.
 
 ### Background
 
