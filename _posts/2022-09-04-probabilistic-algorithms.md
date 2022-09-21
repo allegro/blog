@@ -4,9 +4,9 @@ title: "Probabilistic Data Structures and Algorithms in NoSQL databases"
 author: [michal.knasiecki]
 tags: [tech, performance, NoSQL]
 excerpt: >
-    What would you say if we stored 1,000 records in a database, and the database claimed that there were only 998 of them?
+    What would you say if we stored 1&nbsp;000 records in a database, and the database claimed that there were only 998 of them?
     Or, if we created a database storing sets of values and in some cases the database would claim that some
-    element is in that set, while in fact it was not? It definitely must be a bug, right?
+    element was in that set, while in fact it was not? It definitely must be a bug, right?
     It turns out such behavior is not necessarily an error, as long as we use a database that implements probabilistic algorithms and data structures.
     In this post we will learn about two probability-based techniques, perform some experiments and
     consider when it is worth using a database that lies to us a bit.
@@ -25,9 +25,9 @@ to it.
 
 But it turns out that there are databases that provide us with solutions making that the concept of durability —
 even in this generalized form — no longer so obvious. What would you say if we stored
-1,000 records in a database, and the database claimed that there were only 998 of them? Or, if we
+1&nbsp;000 records in a database, and the database claimed that there were only 998 of them? Or, if we
 created a database storing sets of values and in some cases the database would claim that an
-element is in that set, while in fact it was not? Seeing such a behavior many would probably start
+element was in that set, while in fact it was not? Seeing such a behavior many would probably start
 looking for an error. However, behavior like this is not necessarily an error, as long as we use a database
 that implements probabilistic algorithms and data structures. Solutions based on these methods allow some
 inaccuracy in the results, but in return they are able to provide us with great savings in the resources
@@ -39,7 +39,7 @@ consider when it is worth using a database that lies to us a bit.
 ## Fast cardinality aggregation
 
 Some time ago I had the opportunity to work on a service based on Elasticsearch. This service collects
-huge amounts of data, which later is analyzed by our customer care specialists. One of the key elements to be analyzed
+huge amounts of data, which is later analyzed by our customer care specialists. One of the key elements to be analyzed
 is a simple aggregate — the number of unique occurrences of certain values. In mathematics, this
 quantity is called the power of the set or the cardinal number.
 
@@ -51,26 +51,26 @@ from my wallet and it turns out that I have 10 of them, with the following nomin
 ```
 
 If we arranged them by value, we would end up collecting these 10
-banknotes in four piles with values: [10, 20, 50, 100], so the cardinal number of the set containing my 10
+banknotes in four piles with values: `[10, 20, 50, 100]`, so the cardinal number of the set containing my 10
 banknotes equals: 4.
 
 Elasticsearch has a special function: [cardinality](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics-cardinality-aggregation.html), which is used to determine the power of the set and we use
-specifically this function to count unique occurrences that I mentioned earlier.
+this function specifically to count unique occurrences that I mentioned earlier.
 
 It may seem that counting unique occurrences of values is a trivial task.
 Let’s go back to our example with the banknotes. You can think of many ways to check how many
 unique values there are in this list, probably one of the simplest is to use the `HashSet` class. One of its main features is
 that it de-duplicates the elements added to it, thus it stores only one occurrence of each.
 
-After adding 10 values of banknotes: [10, 20, 50, 20, 50, 100, 50, 20, 10, 10] to an instance of the `HashSet`
-class, it will ultimately only store the values [10, 20, 50, 100] (not necessarily in that order, but it
+After adding 10 values of banknotes: `[10, 20, 50, 20, 50, 100, 50, 20, 10, 10]` to an instance of the `HashSet`
+class, it will ultimately only store the values `[10, 20, 50, 100]` (not necessarily in that order, but it
 doesn’t matter it this case). So all we need to do is check the size of this set and we have the result we were
 looking for: 4.
 
-This solution is very simple and looks tempting, yet it has a certain drawback: the more unique elements the set stores,
+This solution is simple and looks tempting, yet it has a certain drawback: the more unique elements the set stores,
 the more memory our program needs. In an extreme case, when each added element is different from
 the others, the memory complexity of this approach will be linear. This is bad news when we
-want to operate on a large volume of data, because we will very quickly use all available memory.
+want to operate on a large volume of data, because we will immediately use all available memory.
 If, additionally, requests for the cardinal number come from
 clients with high intensity, and the input set contains billions of elements, it is easy to imagine that the
 approach described above has no chance of success.
@@ -119,8 +119,8 @@ elements from the list.
 Below there is a code snippet of a simple program that determines the cardinal number of a set of numbers using `HashSet`
 class from Java language. In order to be able to run some trials, I’ve introduced a couple of basic parameters. The
 input list consists of `n` numbers, while using the `f` parameter and the `modulo` function I decide what
-part of the input list is unique. For example, for `n=1,000,000` and `f=0.1`, the result will be a cardinal
-number equal to 100,000.
+part of the input list is unique. For example, for n=1&nbsp;000&nbsp;000 and f=0.1, the result will be a cardinal
+number equal to 100&nbsp;000.
 
 Please note the `HashSet` constructor parameter. By default, when the constructor is empty - this class is
 [initialized with the value 16](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/HashSet.html#%3Cinit%3E()),
@@ -140,8 +140,8 @@ val elapsed = measureTimeMillis {
 }
 ```
 
-Two other programs do exactly the same thing: determine the cardinal number of a set of numbers, but one is using Kotlin
-`distinct` method and the second one is using HLL algorithm. You can find full code of all three applications
+Two other programs do exactly the same thing: determine the cardinal number of a set of numbers, but one uses Kotlin
+`distinct` method and the second one uses HLL algorithm. You can find full code of all three applications
 on this [repository](https://github.com/mknasiecki/prob-alg-post).
 
 All three programs, in addition to the result, also measure total execution time. Moreover, using
@@ -149,14 +149,14 @@ All three programs, in addition to the result, also measure total execution time
 to measure the total memory used by the
 programs, because measuring the size of the data structures is not a trivial task.
 
-We start by checking the variant n=1000000/f=0.25 as a result of which we should get a power of set
-equal 250000. Let’s take a look at the results:
+We start by checking the variant n=1&nbsp;000&nbsp;000/f=0.25 as a result of which we should get a power of set
+equal 250&nbsp;000. Let’s take a look at the results:
 
-*n=1000000/f=0.25*
+*n=1&nbsp;000&nbsp;000/f=0.25*
 
 | Metric\Variant | HashSet | distinct | HLL      |
 | -------------- | ------- |----------|----------|
-| cardinality | 250000 | 250000   | 249979.9 |
+| cardinality | 250&nbsp;000 | 250&nbsp;000   | 249&nbsp;979.9 |
 | error [%] | 0 | 0        | 0.01     |
 | time [ms] | 71 | 106      | 53       |
 | memory [MB] | 42 | 73       | 21       |
@@ -176,11 +176,11 @@ used, for example, email addresses or IP addresses instead of numbers.
 
 During the next attempt we increase the value of the `n` parameter tenfold:
 
-*n=10000000/f=0.25*
+*n=10&nbsp;000&nbsp;000/f=0.25*
 
 | Metric\Variant | HashSet | distinct | HLL       |
 | -------------- |---------| ---------|-----------|
-| cardinality | 2500000 | 2500000 | 2484301.4 |
+| cardinality | 2&nbsp;500&nbsp;000 | 2&nbsp;500&nbsp;000 | 2&nbsp;484&nbsp;301.4 |
 | error [%] | 0       | 0 | 0.63      |
 | time [ms] | 483     | 863 | 189       |
 | memory [MB] | 233     | 574 | 21        |
@@ -188,11 +188,11 @@ During the next attempt we increase the value of the `n` parameter tenfold:
 The error value has increased slightly, while the difference in memory usage and the performance
 time is even greater than before. Therefore, it is worthwhile to increase the size of the set again:
 
-*n=100000000/f=0.25*
+*n=100&nbsp;000&nbsp;000/f=0.25*
 
 | Metric\Variant | HashSet  | distinct | HLL        |
 | -------------- |----------|----------|------------|
-| cardinality | 25000000 | 25000000 | 25301157.2 |
+| cardinality | 25&nbsp;000&nbsp;000 | 25&nbsp;000&nbsp;000 | 25&nbsp;301&nbsp;157.2 |
 | error [%] | 0        | 0        | 1.2        |
 | time [ms] | 3857     | 7718     | 1538       |
 | memory [MB] | 1800     | 5300     | 21         |
@@ -203,20 +203,20 @@ times shorter compared to other variants. It’s worth noting that the amount of
 Now let’s see what happens when we change the second parameter, which determines the number of
 unique elements in the input set:
 
-*n=10000000/f=0.5*
+*n=10&nbsp;000&nbsp;000/f=0.5*
 
 | Metric\Variant | HashSet | distinct | HLL       |
 | -------------- |---------|----------|-----------|
-| cardinality | 5000000 | 5000000  | 5067045.2 |
+| cardinality | 5&nbsp;000&nbsp;000 | 5&nbsp;000&nbsp;000  | 5&nbsp;067&nbsp;045.2 |
 | error [%] | 0       | 0        | 1.34      |
 | time [ms] | 467     | 914      | 183       |
 | memory [MB] | 420     | 753      | 21        |
 
-*n=10000000/f=0.75*
+*n=10&nbsp;000&nbsp;000/f=0.75*
 
 | Metric\Variant | HashSet | distinct | HLL       |
 | -------------- |---------|----------|-----------|
-| cardinality | 7500000 | 7500000  | 7619136.7 |
+| cardinality | 7&nbsp;500&nbsp;000 | 7&nbsp;500&nbsp;000  | 7&nbsp;619&nbsp;136.7 |
 | error [%] | 0       | 0        | 1.59      |
 | time [ms] | 589     | 1187     | 191       |
 | memory [MB] | 616     | 843      | 26        |
@@ -238,7 +238,7 @@ error.
 
 It turns out that the HLL is not the only probabilistic algorithm available in popular databases —
 another example of this approach is the Bloom Filter. This is an implementation of a memory-saving structure that is
-used to so-called presence test. Let’s go back for our example with my cash: [10, 20, 50, 20, 50, 100, 50, 20, 10, 10].
+used in the so-called presence test. Let’s go back to our example with my cash: `[10, 20, 50, 20, 50, 100, 50, 20, 10, 10]`.
 Imagine that we want to test whether there is a 100 value banknote in my wallet. In this case the answer is positive, but the test
 for the 200 value banknote should be false, since there is no such a banknote in the wallet.
 
@@ -282,12 +282,12 @@ Moreover, we will measure the total time of adding values to the set and the tot
 whether there are values in the set.
 
 Same as before we will perform a number of tests using the following parameters: `n` — the size of the set of
-numbers, and `f` — what part of it should be added to the set. The configuration n=1,000,000 and f=0.1 means
-that the first 100,000 numbers out of 1,000,000 will be added to the set. So, in the first part, the program will
-add 100,000 numbers to the set and then — in the second stage — it will perform a presence test
-by checking whether the numbers above 100,000 belong to the set. There is no point in checking the
+numbers, and `f` — what part of it should be added to the set. The configuration n=1&nbsp;000&nbsp;000 and f=0.1 means
+that the first 100&nbsp;000 numbers out of 1&nbsp;000&nbsp;000 will be added to the set. So, in the first part, the program will
+add 100&nbsp;000 numbers to the set and then — in the second stage — it will perform a presence test
+by checking whether the numbers above 100&nbsp;000 belong to the set. There is no point in checking the
 numbers added to the set beforehand, because we know that Bloom Filters do not give false
-negative results. On the other hand, if any number above 100,000 is found according to the Bloom Filter in
+negative results. On the other hand, if any number above 100&nbsp;000 is found according to the Bloom Filter in
 the set, we will consider it a false positive.
 
 Following code snippet presents fragment of the Bloom Filter variant:
@@ -316,9 +316,9 @@ val fpRatio = falsePositives/n.toDouble()
 
 Again — you can find full code of both programs on aforementioned [repository](https://github.com/mknasiecki/prob-alg-post).
 
-Let’s start with the following configuration: n=10000000/f=0.1:
+Let’s start with the following configuration: n=10&nbsp;000&nbsp;000/f=0.1:
 
-*n=10000000/f=0.1*
+*n=10&nbsp;000&nbsp;000/f=0.1*
 
 | Metric\Variant   | HashSet | Bloom filter |
 |------------------|---------|--------------|
@@ -331,7 +331,7 @@ As you can see, the Bloom Filter returned less than 1% false results, but — at
 less memory than HashSet variant. Unfortunately, the times of Bloom Filter’s version are significantly higher.
 Let’s check what happens when we increase the size of the input set:
 
-*n=100000000/f=0.1*
+*n=100&nbsp;000&nbsp;000/f=0.1*
 
 | Metric\Variant   | HashSet | Bloom filter |
 |------------------|---------|--------------|
@@ -340,7 +340,7 @@ Let’s check what happens when we increase the size of the input set:
 | query time [ms]  | 988     | 944          |
 | memory [MB]      | 876     | 29           |
 
-*n=500000000/f=0.1*
+*n=500&nbsp;000&nbsp;000/f=0.1*
 
 | Metric\Variant   | HashSet | Bloom filter |
 |------------------|---------|--------------|
@@ -364,4 +364,4 @@ or [Cassandra](https://cassandra.apache.org/doc/latest/cassandra/operating/bloom
 
 The simple experiments we conducted showed that probabilistic algorithms can save a lot
 of memory, which is especially important if our database stores huge amounts of data. In such cases it
-is sometimes worth it letting your database lie to you a little.
+is sometimes worth letting your database lie to you a little.
