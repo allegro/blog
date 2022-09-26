@@ -2,7 +2,7 @@
 layout: post
 title: "Example of modularization in Allegro Pay Android application"
 author: [michal.kwiatek]
-tags: [tech, kotlin, android, modularization, gradle, allegro-pay]
+tags: [tech, kotlin, mobile, android, modularization, gradle, allegro-pay]
 ---
 Currently, in the Android world, the topic of modularization is very popular. Many bloggers describe their experiences
 with it and analyze what [Google recommends](https://developer.android.com/topic/modularization/patterns). Our team
@@ -35,7 +35,7 @@ Allegro Pay domain. Our internal monitoring tools showed that build times starte
 worst point grew to just over 120 seconds. The module contains over 40k LoC (lines of code). In addition, we faced
 problems when introducing changes, such as conflicts or the possibility of accidental modification of another
 functionality.
-![Build time in seconds and LoC.](/img/articles/2022-08-30-example-of-modularization-in-allegro-pay-android-application/before_both.png)
+![Build time in seconds and LoC.](/img/articles/2022-09-26-example-of-modularization-in-allegro-pay-android-application/before_both.png)
 
 ### Cheat
 
@@ -161,14 +161,14 @@ needed to run the overpayment process. The feature module includes user-visible 
 communication. Several thousand lines of code were added to this module and the time needed to build the main Allegro
 Pay module was shortened. At that time, the build time of the main module was around 87.5 seconds, common and
 overpayment modules around 10.5 seconds.
-![Build time in seconds and LoC.](/img/articles/2022-08-30-example-of-modularization-in-allegro-pay-android-application/first_modules_both.png)
+![Build time in seconds and LoC.](/img/articles/2022-09-26-example-of-modularization-in-allegro-pay-android-application/first_modules_both.png)
 
 ## Following modules
 
 In the next stages, we separated the ais, consolidation and repayment modules. The current values of the build times of
 individual modules are around 33.7 seconds for the Allegro Pay main module, 13.4 seconds for the ais, 12 seconds for the
 consolidation, 10.6 seconds for the repayment. The extraction process was analogous to that of the first module.
-![Build time in seconds and LoC.](/img/articles/2022-08-30-example-of-modularization-in-allegro-pay-android-application/few_both.png)
+![Build time in seconds and LoC.](/img/articles/2022-09-26-example-of-modularization-in-allegro-pay-android-application/few_both.png)
 
 ## Onboarding module
 
@@ -176,7 +176,7 @@ This module was the most challenging and possibly the most time consuming. This 
 process being available from multiple screens in different modules and ensuring unchanged functionality. During this
 modularization process, we discovered the possibility of optimizing and reducing the amount of code. This module
 contains approximately 10k LoC and the build time is less than 20 seconds. It is a really huge module.
-![Build time in seconds and LoC.](/img/articles/2022-08-30-example-of-modularization-in-allegro-pay-android-application/onboarding_both.png)
+![Build time in seconds and LoC.](/img/articles/2022-09-26-example-of-modularization-in-allegro-pay-android-application/onboarding_both.png)
 
 ## Other two modules
 
@@ -184,13 +184,13 @@ If you remember, I mentioned three modules at the beginning of this text. So far
 largest module. Let me now describe others in more detail. The first is the special analytical module. Includes an
 external library and a small contract. It was created at the same time as the main Allegro Pay module. The current value
 of the build time is 3 seconds and the module has more than 150 lines of code.
-![Build time in seconds and LoC.](/img/articles/2022-08-30-example-of-modularization-in-allegro-pay-android-application/sms_both.png)
+![Build time in seconds and LoC.](/img/articles/2022-09-26-example-of-modularization-in-allegro-pay-android-application/sms_both.png)
 
 The second is the SMS verification module. It contains a functionality that allows users to authorize operations by
 providing SMS code. Currently, it is used in the processes of buying, consolidation, onboarding and overpayment. We only
 wrote a contract here, which provides a universal and easy interface. The build time is approximately 9 seconds and the
 module contains almost 2k lines of code.
-![Build time in seconds and LoC.](/img/articles/2022-08-30-example-of-modularization-in-allegro-pay-android-application/sa_both.png)
+![Build time in seconds and LoC.](/img/articles/2022-09-26-example-of-modularization-in-allegro-pay-android-application/sa_both.png)
 
 ## Fin
 
@@ -204,4 +204,4 @@ After the implementation of the modules described above, the main module contain
 shrunk significantly, and now contains around 18.4k LoC (which means it was reduced by half). In addition,
 modularization will allow us to add new features and extend the existing ones in an easier and safer way. It was an
 interesting challenge from a technical point of view.
-![Build time in seconds and LoC.](/img/articles/2022-08-30-example-of-modularization-in-allegro-pay-android-application/after_both.png)
+![Build time in seconds and LoC.](/img/articles/2022-09-26-example-of-modularization-in-allegro-pay-android-application/after_both.png)
