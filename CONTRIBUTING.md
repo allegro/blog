@@ -293,3 +293,9 @@ source: [practicaltypography.com](https://practicaltypography.com)
 You can visit [fsymbols](http://fsymbols.com/keyboard/linux/compose/) for information about configuring and using Compose key on Linux.
 On Windows, you can install [WinCompose](http://wincompose.info/) to get similar functionality.
 You can also [enter any Unicode character based on its hex code](http://fsymbols.com/keyboard/linux/unicode/).
+
+## Avoiding image optimization
+By default, a github action (defined in `.github/workflows/calibreapp-image-actions.yml`) optimizes all images added
+to the PR. Sometimes it overdoes its job: in particular, it may break animated WebP files by removing the animation
+and keeping only the first frame. You can avoid this by giving your branch a name that ends with `-no-img-opt`:
+such a name will prevent the action from running.
