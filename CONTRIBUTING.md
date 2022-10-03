@@ -299,3 +299,6 @@ By default, a github action (defined in `.github/workflows/calibreapp-image-acti
 to the PR. Sometimes it overdoes its job: in particular, it may break animated WebP files by removing the animation
 and keeping only the first frame. You can avoid this by giving your branch a name that ends with `-no-img-opt`:
 such a name will prevent the action from running.
+
+## Souvenirs
+Contributors can receive our blog t-shirt. Ask the editors how you can get yours. There is a single unisex style; available sizes are S, M, L, and XL.
