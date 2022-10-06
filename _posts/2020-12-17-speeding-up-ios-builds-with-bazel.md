@@ -2,7 +2,7 @@
 layout: post
 title: Speeding up iOS builds with Bazel
 author: [kamil.pyc]
-tags: [ios, bazel]
+tags: [mobile, ios, bazel]
 ---
 
 When we developed our Allegro iOS app adding new features and with more people contributing to the codebase, we noticed

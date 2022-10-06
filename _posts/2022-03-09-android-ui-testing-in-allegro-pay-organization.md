@@ -2,7 +2,7 @@
 layout: post
 title: "Android UI testing in Allegro Pay organization"
 author: [michal.kwiatek]
-tags: [tech, kotlin, android, ui-testing, allegro-pay]
+tags: [tech, mobile, kotlin, android, ui-testing, allegro-pay]
 ---
 
 Will automatic UI tests be able to replace manual testers as artificial intelligence will try to replace
