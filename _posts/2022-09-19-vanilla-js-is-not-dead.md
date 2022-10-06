@@ -65,7 +65,7 @@ the [Model-View-Intent pattern from cycle.js](https://cycle.js.org/model-view-in
 where the html is provided by the server and “hydrated” on the client side. The idea is simple: we mount event handlers
 in Intent, map it to state in Model and react to changes in View. At the end of the system there are side effects
 that run as a result of reactive subscriptions inside View. It’s still vanilla js/ts on the server side and
-vanilla js/ts with a touch of reactivity on the client§ side.
+vanilla js/ts with a touch of reactivity on the client side.
 
 ###
 This one can be rendered on the server side, but then always hydrates on the client side. It can also be entirely
