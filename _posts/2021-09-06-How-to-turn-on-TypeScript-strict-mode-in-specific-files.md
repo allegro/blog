@@ -33,6 +33,10 @@ If you are now thinking something like "Hmmm... does it mean that I will have to
 The answer is yes - be we've automated it. Plugin package does export command line tool that adds this comment to every file with strict
 mode errors!
 
+Thanks to this approach every new file will be strictly checked out of the box - you don't need to do anything. On the other hand
+if you want to change file to be strict you will just remove a comment on top of the file and that's it - file will be strictly checked.
+Simple as that.
+
 Unfortunately, typescript plugins do not work at compilation time, they work only in IDEs. Another nice feature that comes in the
 package is a compile-time tool that allows you to connect the strict plugin to your CI pipeline, or a pre-commit hook. It checks
 marked files with strict mode and prints to the console all strict errors found. If a single strict error is found, the tool
