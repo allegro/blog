@@ -76,7 +76,7 @@ yarn add -D typescript-strict-plugin
 
 ### Run script from the command line to update all files with comment
 
-Before (every file is not strictly checked):
+Before (now every file is strictly checked):
 
 ```typescript
 const name: string = null; // TS2322: Type ‘null’ is not assignable to type ‘string’.
