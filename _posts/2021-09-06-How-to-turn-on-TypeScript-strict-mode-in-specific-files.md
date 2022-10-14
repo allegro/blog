@@ -76,7 +76,7 @@ yarn add -D typescript-strict-plugin
 
 ### Run script from the command line to update all files with comment
 
-Before:
+Before (every file is not strictly checked):
 
 ```typescript
 const name: string = null; // TS2322: Type ‘null’ is not assignable to type ‘string’.
@@ -96,6 +96,8 @@ After:
 ...
 const name: string = null; // no error here
 ```
+
+Now files that were already strict do not have this comment on top and those that need some work have.
 
 You can also directly specify directories you want to be strict. In the following example, every file in `src` and `test`
 directories will be strictly checked.
