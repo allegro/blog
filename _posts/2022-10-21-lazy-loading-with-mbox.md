@@ -60,8 +60,6 @@ spinner {
 }
 ```
 
-![Lazy Loading MBox DSL](/img/articles/2022-10-21-lazy-loading-with-mbox/lazy-loading-mbox-dsl.png)
-
 At the end of the first part of the Allegro homepage, we added **Spinner** component with **replaceComponent** action triggered on **Spinner** shows.
 
 Action **replaceComponent** loads the second part of the homepage and alters **Spinner** with it.
