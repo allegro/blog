@@ -9,23 +9,27 @@ excerpt: >
 
 Since version 4.0, transactions have been introduced to the world of Mongo databases. However, the way they are working differs greatly from the tried and true world of SQL.
 
-In the SQL world, we had transactions based on tables and relations with all those READ_UNCOMMITEDs, READ_COMMITEDs, REPEATABLE_READs and SERIALIZABLEs. These isolation levels helped us by making sure that the record we are working on is not dirty or vice versa - to make sure that we will have our work committed for other people to use safely. In the world of documents, shards and replicas, the changes made to a single document are already atomic by design.
+In databases like PostgreSQL or MySQL, we had transactions based on tables and relations with isolation levels such as READ_UNCOMMITEDs, READ_COMMITEDs, REPEATABLE_READs and SERIALIZABLEs. These help us to recognize if the record we’re working on is dirty, both when we want to access it or when someone else wants to do it after we’ve made some changes. In the world of documents, shards and replicas, the changes made to a single document are already atomic by design.
 
-Why do we need transactions then? Because, as you can see, we only talked about single documents. What about multi-document data, shards and replicas?
+Why do we need transactions then? Because I only talked about single documents. What about multi-document data, shards and replicas?
 
-That’s why transactions were introduced into MongoDB. We will try to look at them in this blog post, check how they work and what their use cases are.
+That’s why transactions were introduced into MongoDB. In this blog post, we will check how they work and what their use cases are.
 
-### What is a transaction, really?
+### What is a transaction?
 
-According to Wikipedia, a [Database transaction](https://en.wikipedia.org/wiki/Database_transaction) is an ‘unit of work’, designed to handle the changes made to data in the database in such a way that the output of the data is consistent and that it provides error recovery. We can also change the data from multiple points of entry concurrently. Many of you will basically shout at the screen that it’s all ACID. This is precisely what we are looking for.
+A Database transaction is a unit of work, designed to handle the changes of data in the database. It makes sure that the output of the data is consistent and does’t generate errors. It helps with concurrent changes to the database, and makes it more scalable.
 
-We are then faced with a question: Is MongoDB designed with ACID in mind, or does it provide it out of the box? Well yes, but not really.
+By definition, database transactions are atomic, consistent, isolated and durable. Sounds familiar? Exactly, it’s **ACID**.
+
+### Does MongoDB implement ACID?
+
+Before implementing transactions? Not really. Of course, there are some properties of ACID that are present (as stated earlier), but before version 4.0 they were impossible to achieve in a distributed ecosystem.
 
 Here’s an excerpt from the MongoDB website: [we estimate that 80%-90% of applications that leverage the document model will not need to utilize transactions in MongoDB](https://www.mongodb.com/basics/acid-transactions)
 
-Why is that? Well, MongoDB is a database designed for high throughput, so you’d be better off having heaps of data in MongoDB rather than Oracle, for example. The catch is that it’d be preferable for you to keep data in a single document. But what if you have data that spans multiple documents, or it is even distributed across multiple shards? What if you need to replicate it across multiple replica sets? That’s where your overall quality could suffer.
+Alas, when you need to make changes to multiple documents, or worse, if they are split across multiple shards then there is no guarantee that the changes will adhere to ACID properties. That’s why the need for ACID transactions arose.
 
-Fortunately, since 4.0 transactions were added to MongoDB, first for multi-document changes, and then, in 4.2, for distributed data.
+Fortunately, since version 4.0 transactions were added to MongoDB, first for multi-document changes, and then, in 4.2, for distributed data.
 
 ### Specifics of MongoDB transactions
 
