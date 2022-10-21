@@ -9,7 +9,7 @@ excerpt: >
 
 Since version 4.0, transactions have been introduced to the world of Mongo databases. However, the way they are working differs greatly from the tried and true world of SQL.
 
-In databases like PostgreSQL or MySQL, we had transactions based on tables and relations with isolation levels such as READ_UNCOMMITEDs, READ_COMMITEDs, REPEATABLE_READs and SERIALIZABLEs. These help us to recognize if the record we’re working on is dirty, both when we want to access it or when someone else wants to do it after we’ve made some changes. In the world of documents, shards and replicas, the changes made to a single document are already atomic by design.
+In databases like PostgreSQL or MySQL, we had transactions based on tables and relations with isolation levels such as READ_UNCOMMITED, READ_COMMITED, REPEATABLE_READ and SERIALIZABLE. These help us to recognize if the record we’re working on is dirty, both when we want to access it or when someone else wants to do it after we’ve made some changes. In the world of documents, shards and replicas, the changes made to a single document are already atomic by design.
 
 Why do we need transactions then? Because I only talked about single documents. What about multi-document data, shards and replicas?
 
@@ -17,7 +17,7 @@ That’s why transactions were introduced into MongoDB. In this blog post, we wi
 
 ### What is a transaction?
 
-A Database transaction is a unit of work, designed to handle the changes of data in the database. It makes sure that the output of the data is consistent and does’t generate errors. It helps with concurrent changes to the database, and makes it more scalable.
+A Database transaction is a unit of work, designed to handle the changes of data in the database. It makes sure that the output of the data is consistent and doesn’t generate errors. It helps with concurrent changes to the database, and makes it more scalable.
 
 By definition, database transactions are atomic, consistent, isolated and durable. Sounds familiar? Exactly, it’s **ACID**.
 
