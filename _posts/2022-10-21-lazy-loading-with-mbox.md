@@ -49,15 +49,13 @@ We used the **Spinner** component, which shows the native spinner view in the ap
 which can fetch new MBox components from the given endpoint and replace another one with them.
 The homepage endpoint had already supported pagination.
 
-
+![Lazy Loading MBox DSL](/img/articles/2022-10-21-lazy-loading-with-mbox/lazy-loading-mbox-dsl.png)
 
 At the end of the first part of the Allegro homepage, we added **Spinner** component with **replaceComponent** action triggered on **Spinner** shows.
 
 Action **replaceComponent** loads the second part of the homepage and alters **Spinner** with it.
 
-
-
-
+![Lazy Loading Homepage](/img/articles/2022-10-21-lazy-loading-with-mbox/lazy-loading-homepage.png)
 
 Thanks to modular architecture, independent elements, and a clear interface between them, all we needed to do was combine them.
 
@@ -70,9 +68,8 @@ Here are some results.
 ### The result
 
 First, we learned about our user's interactions with the homepage.
-
-After introducing lazy loading, we learned that only **5% of iOS** and **9% of Android** users load the second part of the Allegro homepage.
-Most users do not scroll down, and loading the whole screen has wasted our resources (as we expected).
+After introducing lazy loading, only **5% of iOS** and **9% of Android** users load the second part of the Allegro homepage.
+Most users do not scroll down, and loading the whole screen has wasted our resources.
 
 The Allegro app measures **First Meaningful Paint (FMP)** for screen content. This metric tells us how fast the primary content is visible to the user.
 After introducing lazy loading, **FMP** improved, and the first content is visible to users **61% faster** than before on both platforms (iOS and Android).
@@ -85,5 +82,4 @@ We could do that because, when we load the homepage for a user, we use **about 9
 
 We designed **MBox** to allow developers to create and modify mobile screens faster and easier, but we are pleased that
 it is also helpful in dealing with other problems. Thanks to MBox, and its modular architecture, we were able to modify
-code on the server and introduce this improvement on both platforms (iOS and Android) fast and deliver it to most of
-the users of the Allegro apps without a long mobile release process.
+code on the server and introduce this improvement on both platforms (iOS and Android) fast, and deliver it to most of the users of the Allegro apps without a long mobile release process.
