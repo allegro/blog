@@ -90,5 +90,5 @@ We could do that because, when we load the homepage for a user, we use **about 9
 ### Summary
 
 We designed **MBox** to allow developers to create and modify mobile screens faster and easier, but we are pleased that
-it is also helpful in dealing with other problems. Thanks to MBox, and its modular architecture, we were able to modify
+it is also allowed improving app performance. Thanks to MBox, and its modular architecture, we were able to modify
 code on the server and introduce this improvement on both platforms (iOS and Android) fast, and deliver it to most of the users of the Allegro apps without a long mobile release process.
