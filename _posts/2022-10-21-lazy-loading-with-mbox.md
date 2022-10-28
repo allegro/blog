@@ -66,7 +66,7 @@ Action **replaceComponent** loads the second part of the homepage and alters **S
 
 ![Lazy Loading Homepage](/img/articles/2022-10-21-lazy-loading-with-mbox/lazy-loading-homepage.png)
 
-Thanks to modular architecture, independent elements, and a clear interface between them, all we needed to do was combine them.
+Thanks to modular architecture, independent elements, and a clear interface between them, all we needed to do was combine already existing mechanisms.
 
 This change was implemented entirely on a server-side and was available on both platforms (iOS and Android) without a new application release.
 
