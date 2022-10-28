@@ -45,20 +45,8 @@ Implementation of lazy loading at the Allegro homepage also had to be done on th
 After discussing the problem and potential solution, it turned out that all the **MBox** building blocks and actions we
 needed were already there on the mobile side and DSL.
 
-We used the **Spinner** component, which shows the native spinner view in the applications, and **replaceComponent** action,
-which can fetch the next portion of the mobile screen and display it in place of some other component.
+We used the **Spinner** component, which shows the native spinner view in the applications, and **replaceComponent** action, which can fetch the next portion of the mobile screen and display it in place of some other component.
 The homepage endpoint had already supported pagination.
-
-```kotlin
-spinner {
-    id = "spinnerID"
-    actions {
-        show {
-            replaceComponent(componentId = "spinnerID", route = "url-to-second-part")
-        }
-    }
-}
-```
 
 At the end of the first part of the Allegro homepage, we added **Spinner** component with **replaceComponent** action triggered on **Spinner** shows.
 
@@ -72,18 +60,41 @@ This change was implemented entirely on a server-side and was available on both 
 
 These few lines of **MBox** code helped us fix our original performance problem.
 
+```kotlin
+spinner {
+    id = "spinnerID"
+    actions {
+        show {
+            replaceComponent(componentId = "spinnerID", route = "url-to-second-part")
+        }
+    }
+}
+```
+
 Here are some results.
 
 ### The result
 
 First, we learned about our user's interactions with the homepage.
-After introducing lazy loading, only **5% of iOS** and **9% of Android** users load the second part of the Allegro homepage.
+After introducing lazy loading, only about **5% of iOS** and about **10% of Android** users load the second part of the Allegro homepage.
+
+![Lazy Loading mobile requests](/img/articles/2022-10-21-lazy-loading-with-mbox/lazy-loading-mobile-requests.png)
+
 Most users do not scroll down, and loading the whole screen has wasted our resources.
 
 The Allegro app measures **First Meaningful Paint (FMP)** for screen content. This metric tells us how fast the primary content is visible to the user.
+
+![Lazy loading fmp](/img/articles/2022-10-21-lazy-loading-with-mbox/lazy-loading-fmp.png)
+
 After introducing lazy loading, **FMP** improved, and the first content is visible to users **61% faster** than before on both platforms (iOS and Android).
 
-**FMP** improved because we reduced the response size of the Allegro homepage load by **about 90%**, and the backend rendering time by **about 56%**.
+**FMP** improved because we reduced the response size of the Allegro homepage load by **about 90%**, 
+
+![Lazy loading response size](/img/articles/2022-10-21-lazy-loading-with-mbox/lazy-loading-response-size.png)
+
+and the backend rendering time by **about 56%**.
+
+![Lazy loading render time](/img/articles/2022-10-21-lazy-loading-with-mbox/lazy-loading-render-time.png)
 
 We could do that because, when we load the homepage for a user, we use **about 90% fewer** data sources (services we used to prepare data for the user) than before.
 
