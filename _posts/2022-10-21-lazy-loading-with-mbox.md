@@ -46,7 +46,7 @@ After discussing the problem and potential solution, it turned out that all the 
 needed were already there on the mobile side and DSL.
 
 We used the **Spinner** component, which shows the native spinner view in the applications, and **replaceComponent** action,
-which can fetch new MBox components from the given endpoint and replace another one with them.
+which can fetch the next portion of the mobile screen and display it in place of some other component.
 The homepage endpoint had already supported pagination.
 
 ```kotlin
