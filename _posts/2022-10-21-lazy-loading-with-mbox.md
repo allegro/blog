@@ -21,7 +21,7 @@ and [iOS](https://apps.apple.com/pl/app/allegro/id305659772), the first screen a
 Originally it was a long screen with a lot of content rendered with data from tens of, sometimes costly, data sources.
 A lot was happening there.
 
-It was not a big problem earlier but become one when the number of users of our applications started growing.
+It was not a big problem earlier but became one when the number of users of our applications started growing.
 During one year, the number of requests sent to our infrastructure from the Allegro homepage increased drastically,
 consequently becoming a performance issue.
 
