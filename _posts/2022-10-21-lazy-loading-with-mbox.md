@@ -10,7 +10,7 @@ excerpt: >
 
 ---
 
-Sometimes great results in code performance come after a small code change.
+Sometimes great results in code performance come after a small amount of work.
 We'd like to tell you a story about how we changed the Allegro mobile homepage
 and reduced usage of Allegro service infrastructure with only a few lines of code.
 
@@ -22,8 +22,9 @@ Originally it was a long screen with a lot of content rendered with data from te
 A lot was happening there.
 
 It was not a big problem earlier but became one when the number of users of our applications started growing.
-During one year, the number of requests sent to our infrastructure from the Allegro homepage increased drastically,
-consequently becoming a performance issue.
+During one year, the number of requests sent to our infrastructure from the Allegro homepage increased drastically, consequently becoming a performance issue.
+
+![Lazy Loading Homepage](/img/articles/2022-10-21-lazy-loading-with-mbox/lazy-loading-rps.png)
 
 ### The solution
 
@@ -43,7 +44,7 @@ If you want to learn more about MBox, you can read its introduction on our blog:
 
 Implementation of lazy loading at the Allegro homepage also had to be done on the server side.
 After discussing the problem and potential solution, it turned out that all the **MBox** building blocks and actions we
-needed were already there on the mobile side and DSL.
+needed were already there on the mobile side and MBox DSL.
 
 We used the **Spinner** component, which shows the native spinner view in the applications, and **replaceComponent** action, which can fetch the next portion of the mobile screen and display it in place of some other component.
 The homepage endpoint had already supported pagination.
@@ -80,7 +81,7 @@ After introducing lazy loading, only about **5% of iOS** and about **10% of Andr
 
 ![Lazy Loading mobile requests](/img/articles/2022-10-21-lazy-loading-with-mbox/lazy-loading-mobile-requests.png)
 
-Most users do not scroll down, and loading the whole screen has wasted our resources.
+Most users do not scroll down, and preparing the entire homepage at once was an unnecessary use of our resources.
 
 The Allegro app measures **First Meaningful Paint (FMP)** for screen content. This metric tells us how fast the primary content is visible to the user.
 
@@ -100,6 +101,5 @@ We could do that because, when we load the homepage for a user, we use **about 9
 
 ### Summary
 
-We designed **MBox** to allow developers to create and modify mobile screens faster and easier, but we are pleased that
-it is also allowed improving app performance. Thanks to MBox, and its modular architecture, we were able to modify
+We designed **MBox** to allow developers to create and modify mobile screens faster and easier, but we are pleased that it also helps improve app performance. Thanks to MBox, and its modular architecture, we were able to modify
 code on the server and introduce this improvement on both platforms (iOS and Android) fast, and deliver it to most of the users of the Allegro apps without a long mobile release process.
