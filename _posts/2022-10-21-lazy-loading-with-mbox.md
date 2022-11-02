@@ -1,12 +1,11 @@
 ---
 layout: post
-title: "MBox: How we solve performance issue with few line of MBox code."
+title: "How we solve performance issue with a few lines of MBox code."
 author: [lukasz.solniczek]
 tags: [tech, "Server-driven UI", mobile, mbox, performance]
 excerpt: >
     Sometimes great results in code performance come after a small code change.
-    We would like to tell you a story about how we changed the Allegro mobile homepage
-    and reduced usage of Allegro service infrastructure with only a few lines of code.
+    We would like to tell you a story about how we changed the Allegro mobile homepage and reduced usage of Allegro service infrastructure with only a few lines of code.
 
 ---
 
