@@ -32,7 +32,7 @@ and implemented efficient solutions. One problem has been described in the artic
 [CSS Architecture and Performance in Micro Frontends](https://blog.allegro.tech/2021/07/css-architecture-and-performance-of-micro-frontends.html).
 To clear things up a little bit, imagine building a page made of tens of components, delivered by independent teams.
 Every component, even the simplest one was implemented using one of the popular libraries. Seems harmless, but it can
-truly hurt web performance. Rendering plain HTML on a server is much faster than evaluation of library mechanisms to
+truly hurt web performance. Rendering plain HTML on the server is much faster than evaluation of library mechanisms to
 produce static markup. Moreover, client bundles need to be fetched in a browser, but they are pretty heavy as they
 include not only the custom code, but the libraries’ code as well… It’s going to take even more time when the internet
 connection is weak (try setting up throttling in the dev tools). Well, undeniably working with distributed components
@@ -50,7 +50,7 @@ For organizational purposes, we decided to define three types of complexity of U
 three technology stacks that are suitable to solve different kinds of problems. Let’s dive into the details.
 
 ### Simple UI Component
-This one doesn’t do anything spectacular. In most cases, it’s entirely rendered on a server and has no
+This one doesn’t do anything spectacular. In most cases, it’s entirely rendered on the server and has no
 client side scripting, or it may have some simple event handling. You can easily navigate through the platform using
 just an HTML anchor, can’t you? Also, CSS is so powerful nowadays that javascript is not always necessary to implement
 dynamic behaviors in browsers. The approach for such a component is simple: take the response of the backend service,
@@ -74,8 +74,8 @@ rendered on the client side, forming a single-page application. It’s strongly 
 and re-renders. Also, state changes affect many parts of the DOM. You surely know it is a great use case for libraries
 like React, where state changes trigger a reconciliation algorithm, which figures out what has changed and operates on
 an effective layer called Virtual DOM. I don’t think this approach requires any more explanation, as it’s the most
-popular approach in the frontend world nowadays. We just write one piece of code, run renderToString() on a server and hydrate()
-on a client, that’s it.
+popular approach in the frontend world nowadays. We just write one piece of code, run renderToString() on the server
+and hydrate() on the client, that’s it.
 
 ## Conclusions
 The presented approach may sound artificially complicated, but it does do its job. Using a sledgehammer to crack a nut
