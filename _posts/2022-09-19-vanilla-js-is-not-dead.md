@@ -59,9 +59,9 @@ write some HTML and CSS representing this data and send it to the client.
 ### UI Component that is reactive
 In this case, the component is rendered server-side, but the client side scripts run in a browser
 to provide reactivity. Partial changes of the state require updating the existing parts of the DOM. The challenge here
-is to implement a fine-grained reactivity mechanism, organize the code organized in a functional manner and separate
+is to implement a fine-grained reactivity mechanism, organize the code in a functional manner and separate
 side effects. The first thing can be easily handled using reactive streams like [xstream](https://github.com/staltz/xstream),
-which is lighter than the well known rxjs, but still powerful. To keep code in a functional manner we borrowed
+which is lighter than the well known rxjs, but still powerful. To keep code organized in a functional manner we borrowed
 the [Model-View-Intent pattern from cycle.js](https://cycle.js.org/model-view-intent.html) and adjusted it to our case,
 where the HTML is provided by the server and “hydrated” on the client side. The idea is simple: we mount event handlers
 in Intent, map it to state in Model and react to changes in View. At the end of the system there are side effects
