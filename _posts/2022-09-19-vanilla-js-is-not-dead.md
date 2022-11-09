@@ -93,4 +93,4 @@ running out of limits.
 and easily testable. There are a bunch of patterns and state management libraries that can help you.
 - Respond fast by rendering on the server side, and hydrate wisely on the client side. If the component you create
 is not reactive, make it a server component that does not need to hydrate on the client. It’s a great way to optimize
-the TTI metric.
+website interactivity.
