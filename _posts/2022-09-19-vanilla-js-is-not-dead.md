@@ -25,7 +25,7 @@ Allegro platform is built upon frontend microservices.
 The idea of splitting up the frontend of a big e-commerce platform into smaller pieces has been described in
 the article [Managing Frontend in the Microservices Architecture](https://blog.allegro.tech/2016/03/Managing-Frontend-in-the-microservices-architecture.html).
 It’s been 6 years since the article appeared and even more since the architecture was implemented at Allegro.
-Nowadays, we manage over 1000 microservices and 600+ Opbox components that power up the Allegro platform.
+Nowadays, we manage over 1000 microservices and 600+ Opbox components that power the Allegro platform.
 We can say that it works pretty well for us. As software engineers, we don’t need to worry about things like routing,
 SSR or monitoring, because they’re already served by Opbox. Also, we have overcome the problems the architecture causes
 and implemented efficient solutions. One problem has been described in the article
