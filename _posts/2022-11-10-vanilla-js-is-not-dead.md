@@ -23,13 +23,14 @@ Allegro platform is built upon frontend microservices.
 
 ## Dealing with the frontend microservices architecture
 The idea of splitting up the frontend of a big e-commerce platform into smaller pieces has been described in
-the article [Managing Frontend in the Microservices Architecture](https://blog.allegro.tech/2016/03/Managing-Frontend-in-the-microservices-architecture.html).
+the article [Managing Frontend in the Microservices Architecture](/2016/03/Managing-Frontend-in-the-microservices-architecture.html).
 It’s been 6 years since the article appeared and even more since the architecture was implemented at Allegro.
 Nowadays, we manage over 1000 microservices and 600+ Opbox components that power the Allegro platform.
 We can say that it works pretty well for us. As software engineers, we don’t need to worry about things like routing,
 SSR or monitoring, because they’re already served by Opbox. Also, we have overcome the problems the architecture causes
 and implemented efficient solutions. One problem has been described in the article
-[CSS Architecture and Performance in Micro Frontends](https://blog.allegro.tech/2021/07/css-architecture-and-performance-of-micro-frontends.html).
+[CSS Architecture and Performance in Micro Frontends](/2021/07/css-architecture-and-performance-of-micro-frontends.html).
+
 To clear things up a little bit, imagine building a page made of tens of components, delivered by independent teams.
 Every component, even the simplest one was implemented using one of the popular libraries. Seems harmless, but it can
 truly hurt web performance. Rendering plain HTML on the server is much faster than evaluation of library mechanisms to
@@ -38,7 +39,8 @@ include not only the custom code, but the libraries’ code as well… It’s go
 connection is weak (try setting up throttling in the dev tools). Well, undeniably working with distributed components
 requires a lot of discipline. Also, monitoring and measuring is pretty important to figure out if the components
 the team takes care of perform well. If you want to learn more, take a look at the article
-[Measuring Web Performance](https://blog.allegro.tech/2021/06/measuring-web-performance.html).
+[Measuring Web Performance](/2021/06/measuring-web-performance.html).
+
 How much discipline do you need to keep the system fast and efficient? Enough to have a reasonable approach to
 pick out the correct technology to solve the problem. You know you’re asking for trouble, when you decide to use
 a complex rendering library for rendering static labels that don’t behave in a reactive way. What could you do instead?
