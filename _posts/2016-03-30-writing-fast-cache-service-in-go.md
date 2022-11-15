@@ -167,7 +167,7 @@ so we investigated it.
 
 We heard that Go JSON serializer wasn’t as fast as in other languages. Most benchmarks were done in 2013, so before 1.3 version.
 When we saw [issue-5683](https://github.com/golang/go/issues/5683) claiming Go was 3 times slower than Python and
-[mailing list]( https://groups.google.com/forum/#!topic/golang-nuts/zCBUEB_MfVs) saying it was 5 times slower than Python [simplejson](https://pypi.python.org/pypi/simplejson/),
+[mailing list](https://groups.google.com/forum/#!topic/golang-nuts/zCBUEB_MfVs) saying it was 5 times slower than Python [simplejson](https://pypi.python.org/pypi/simplejson/),
 we started searching for a better solution.
 
 JSON over HTTP is definitely not the best choice if you need speed. Unfortunately, all our services talk to each other in JSON,
