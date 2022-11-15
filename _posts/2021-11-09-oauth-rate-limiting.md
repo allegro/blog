@@ -28,10 +28,9 @@ up until their expiration period. When they expire, the
 provided [refresh token](https://datatracker.ietf.org/doc/html/rfc6749#section-1.5) should be used to receive a new
 access token via refresh token grant.
 
-Some of the clients rarely refresh tokens or even don’t reuse them at all. This causes a lot of unnecessary traffic (
-often in the form of sudden spikes)
-that can lead to potential issues on both sides. We had pretty good monitoring of this issue, but we needed better tools
-to deal with that problem as well as to educate the clients to make proper use of OAuth.
+Some of the clients rarely refresh tokens or even don’t reuse them at all. This causes a lot of unnecessary traffic (often
+in the form of sudden spikes) that can lead to potential issues on both sides. We had pretty good monitoring of this issue,
+but we needed better tools to deal with that problem as well as to educate the clients to make proper use of OAuth.
 
 ## Planning the solution
 
