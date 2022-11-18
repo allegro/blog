@@ -37,11 +37,11 @@ It allows developers to focus on the value-providing implementation rather than 
 Last but not least, software architecture is often defined as *the things that are hard to change*, so choosing a proper architectural approach to your new application is of key
 importance on its future development and maintenance.
 ## About the Onion
-The idea, firstly introduced by Jeffrey Palermo in a [series of articles](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/), and recently reiterated in 
-Robert “Uncle Bob” Martin’s book [Clean Architecture](https://www.amazon.com/Clean-Architecture-Craftsmans-Software-Structure/dp/0134494164) is similar to Hexagonal / Ports and Adapters approach on architecture. The core concept in both styles is the same - to make the domain the most central part of the application, and remove infrastructure concerns (such as talking via HTTP, messaging, database mapping, testing, etc.) away from it. The core of the business logic should be free (in theory at least) from any of the technical, and framework-related problems, allowing for easy testing and rapid development.
+The idea, introduced by Jeffrey Palermo in a [series of articles](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/), and recently reiterated in 
+Robert C. Martin’s book [Clean Architecture](https://www.amazon.com/Clean-Architecture-Craftsmans-Software-Structure/dp/0134494164) is similar to Hexagonal / Ports and Adapters approach on architecture. The core concept in all of the styles is the same - to make the domain the most central part of the application, and remove infrastructure concerns (such as talking via HTTP, messaging, database mapping, testing, etc.) away from it. The core of the business logic should be free (in theory at least) from any of the technical, and framework-related problems, allowing for easy testing and rapid development. To put it using *Uncle Bob* words: *Though these architectures all vary somewhat in their details, they are very similar. They all have the same objective, which is the separation of concerns. They all achieve this separation by dividing the software into layers. Each has at least one layer for business rules, and another for interfaces.*
 
-The main difference between Hexagonal Architecture and Onion Architecture lies mostly in the overall, more structured approach to the code layout of the latter.
-Both styles rely on conscious usage of interfaces, the [Dependency Inversion Principle](https://web.archive.org/web/20041221102842/http://www.objectmentor.com/resources/articles/dip.pdf)[^2], and encapsulation, but the Onion, like the real vegetable, has layers, which guide an implementation and give more clear structure to the codebase.
+The main difference I've found in the implementations of Hexagonal Architecture and Onion Architecture lies mostly in the overall, more structured approach to the code layout of the latter.
+Both styles rely on conscious usage of interfaces, the [Dependency Inversion Principle](https://web.archive.org/web/20041221102842/http://www.objectmentor.com/resources/articles/dip.pdf)[^2], and encapsulation, but the Onion, like the real vegetable, has explicitly defined layers. Making the concept a first-class citizen represented in the code guides an implementation and gives more clear overall structure to the codebase.
 
 This Architecture style does have some learning curve for developers on the project, but once mastered, pays back many times. Finally, as with every solution in
 the IT industry, it is not a one-size-fits-all, and you should always consider if the architecture style matches your needs.
@@ -131,7 +131,9 @@ Using Gradle setup as an example, one can define three modules - domain, applica
 
 TODO przykład dla Gradle.
 
-Notice, that the biggest file is the one for instractuture layer. It should not be a supprise by now. The infrastructure has all of the framework - in this case Spring Boot - database driver, and other dependencies, and depends on both domain and application. There's of course nothing preventing you from declaring extra dependencies, say Lombok, in the domain build file, but the most important thing to note is with that build setup it will not be possible 
+Notice, that the biggest file is the one for instractuture layer. It should not be a supprise by now. The infrastructure has all of the framework - in this case Spring Boot - database driver, and other dependencies, and depends on both domain and application. There's of course nothing preventing you from declaring extra dependencies, say Lombok, in the domain build file, but the most important thing to note is with that build setup it will not be possible to reverse the order of dependencies between the layers. Moreover, if you're using Kotlin as the primary language in your codebase, finally the `internal` keyword will make sense. The classes marked as `internal` will not be visible to the other layers even when placed in the same package.
+
+TODO przykład z Kotlinem
 
 ## Final Thoughts
 - The Problems The Onion solves
