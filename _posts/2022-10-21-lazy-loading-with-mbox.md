@@ -17,11 +17,12 @@ and reduced usage of Allegro service infrastructure with only a few lines of cod
 
 The story is about the homepage in the Allegro app on [Android](https://play.google.com/store/apps/details?id=pl.allegro)
 and [iOS](https://apps.apple.com/pl/app/allegro/id305659772), the first screen a user sees when opening the app.
-Originally it was a long screen with a lot of content rendered with data from tens of, sometimes costly, data sources.
+Originally it was a long screen with a lot of content rendered with data from tens of, sometimes costly, data sources (services we used to prepare data for the user).
+
 A lot was happening there.
 
 It was not a big problem earlier but became one when the number of users of our applications started growing.
-During one year, the number of requests sent to our infrastructure from the Allegro homepage increased drastically, consequently becoming a performance issue.
+During one year, the number of requests sent to our infrastructure from the Allegro homepage increased almost 3 times, consequently becoming a performance issue.
 
 ![Lazy Loading Homepage](/img/articles/2022-10-21-lazy-loading-with-mbox/lazy-loading-rps.png)
 
@@ -36,14 +37,12 @@ Lazy loading isn't something new, it is used web-wide in many places, but in our
 entirely on the server side. We can change it without modifying the native code in the applications.
 
 
-> What is **MBox**? It is our library for **Server Driven UI (SDUI)**, which we use in Allegro to create and release mobile screens
-faster on both platforms (iOS and Android). It is a collection of building blocks that let us develop views and actions
-that link MBox screens with other parts of the application or introduce some interaction on a screen.
+> What is **MBox**? It is our **Server Driven UI (SDUI)** solution, which we use in Allegro to create and release mobile screens faster on both platforms (iOS and Android). It is a collection of building blocks that let us develop views and actions that link MBox screens with other parts of the application or introduce some interaction on a screen.
 If you want to learn more about MBox, you can read its introduction on our blog: [MBox: server-driven UI for mobile apps](https://blog.allegro.tech/2022/08/mbox-server-driven-ui-for-mobile-apps.html).
 
 Implementation of lazy loading at the Allegro homepage also had to be done on the server side.
 After discussing the problem and potential solution, it turned out that all the **MBox** building blocks and actions we
-needed were already there on the mobile side and MBox DSL.
+needed were already there.
 
 We used the **Spinner** component, which shows the native spinner view in the applications, and **replaceComponent** action, which can fetch the next portion of the mobile screen and display it in place of some other component.
 The homepage endpoint had already supported pagination.
@@ -76,13 +75,19 @@ Here are some results.
 ### The result
 
 First, we learned about our user's interactions with the homepage.
-After introducing lazy loading, only about **5% of iOS** and about **10% of Android** users load the second part of the Allegro homepage.
-
-![Lazy Loading mobile requests](/img/articles/2022-10-21-lazy-loading-with-mbox/lazy-loading-mobile-requests.png)
-
 Most users do not scroll down, and preparing the entire homepage at once was an unnecessary use of our resources.
 
-The Allegro app measures **First Meaningful Paint (FMP)** for screen content. This metric tells us how fast the primary content is visible to the user.
+Only about **5% of iOS** users, 
+
+![Lazy Loading mobile requests](/img/articles/2022-10-21-lazy-loading-with-mbox/lazy-loading-mobile-requests-ios.png)
+
+and about **10% of Android** users
+
+![Lazy Loading mobile requests](/img/articles/2022-10-21-lazy-loading-with-mbox/lazy-loading-mobile-requests-android.png)
+
+load the second part of the Allegro homepage.
+
+The Allegro app measures **First Meaningful Paint (FMP)** for screen content. This metric shows us how quickly the primary content is visible to the user.
 
 ![Lazy loading fmp](/img/articles/2022-10-21-lazy-loading-with-mbox/lazy-loading-fmp.png)
 
@@ -96,7 +101,7 @@ and the backend rendering time by **about 56%**.
 
 ![Lazy loading render time](/img/articles/2022-10-21-lazy-loading-with-mbox/lazy-loading-render-time.png)
 
-We could do that because, when we load the homepage for a user, we use **about 90% fewer** data sources (services we used to prepare data for the user) than before.
+We could do that because, when we load the homepage for a user, we use **about 90% fewer** data sources than before.
 
 ### Summary
 
