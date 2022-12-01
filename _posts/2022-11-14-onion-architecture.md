@@ -12,43 +12,39 @@ excerpt: >
 # Onion Architecture - The most tasteful Software Architecture Style
 **TODO ilustracja ze zdjęciem cebularza i opisem, że to lubelski produkt regionalny.**
 
-Onion Architecture is a software architectural style which strongly promotes the separation of concerns between the most important part of a business
-application - the domain code - and its technical aspects like HTTP or database. It does so with ideas similar to [Hexagonal Architecture](https://en.wikipedia.org/wiki/Hexagonal_architecture_(software)) 
-(more on that comparison later), but reuses the concept of layers, which, from my experience, enhance the readability and maintainability of the codebase. Additional
-complexity to the build setup and extra learning curve introduced by the layered approach, pays back during the development. It reduces cognitive load on the
-programmer by giving a more concrete structural foundation and guidance.
-## The text
-An issue I have with many architecture-related tech articles is that they are usually high-level, and don’t give code examples. So after an introductory
-description I’ll try to illustrate the concepts with concrete code examples. If you want to jump straight into the code, do make sure to check out the GitHub
-repository with a runnable example. TODO link
+Onion Architecture is a software architectural style which strongly promotes the separation of concerns between the most important part of a business application - the domain code - and its technical aspects like HTTP or database. It does so with ideas similar to Hexagonal Architecture, and other related architecture styles.
+
+This post gives a description of the ideas of Onion Architecture and discusses a sample implementation which explicitly defines layers in the code and build setup.
+
+Additional complexity to the build setup and extra learning curve introduced by the layered approach, pays back during the development. It reduces cognitive load on the programmer by giving a more concrete structural foundation and guidance.
+
+## The Repository
+The code samples are taken from an example repository, which you can find on GitHub. TODO Link
+
 ## Why does Software Architecture matter?
-During my Engineering career I’ve worked on multiple projects using different architecture styles. From a happy-go-lucky approach without any obvious structure,
-through “classic”[^1] three-tier enterprise style, to highly structured architecture, reflected by the setup of the build tool and supported by the compiler.
+During my Engineering career I’ve worked on multiple projects using different architecture styles. From a happy-go-lucky approach without any obvious structure, through “classic”[^1] three-tier enterprise style, to highly structured architecture, reflected by the setup of the build tool and supported by the compiler.
 
-The experience of working in those projects was also very different. Having to introduce a change in a shapeless blob of spaghetti code was always a painful
-experience, connected with stressful moments of *Have I broken something?* Or *Oh no! A gazillion of unrelated tests broke…*
+The experience of working in those projects was also very different. Having to introduce a change in a shapeless blob of spaghetti code was always a painful experience, connected with stressful moments of *Have I broken something?* Or *Oh no! A gazillion of unrelated tests broke…*
 
-On the other hand, working in a more rigid, but at the same time more expressive, and structured environment of well-architected application, was a breeze and a
-real pleasure. Not to mention that the time required to introduce the change was smaller, and the estimates more precise and predictable.
+On the other hand, working in a more rigid, but at the same time more expressive, and structured environment of well-architected application, was a breeze and a real pleasure. Not to mention that the time required to introduce the change was smaller, and the estimates more precise and predictable.
 
-Good architecture guides the implementation, makes it easy to introduce new changes, andm to some degree prevents, less experienced team members from making doubtful decisions.
-It allows developers to focus on the value-providing implementation rather than thinking *Hmm where should I put this class?*.
+Good architecture guides the implementation, makes it easy to introduce new changes, andm to some degree prevents, less experienced team members from making doubtful decisions. It allows developers to focus on the value-providing implementation rather than thinking *Hmm where should I put this class?*.
 
-Last but not least, software architecture is often defined as *the things that are hard to change*, so choosing a proper architectural approach to your new application is of key
-importance on its future development and maintenance.
+Last but not least, software architecture is often defined as *the things that are hard to change*, so choosing a proper architectural approach to your new application is of key importance on its future development and maintenance.
+
 ## About the Onion
-The idea, introduced by Jeffrey Palermo in a [series of articles](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/), and recently reiterated in 
-Robert C. Martin’s book [Clean Architecture](https://www.amazon.com/Clean-Architecture-Craftsmans-Software-Structure/dp/0134494164) is similar to Hexagonal / Ports and Adapters approach on architecture. The core concept in all of the styles is the same - to make the domain the most central part of the application, and remove infrastructure concerns (such as talking via HTTP, messaging, database mapping, testing, etc.) away from it. The core of the business logic should be free (in theory at least) from any of the technical, and framework-related problems, allowing for easy testing and rapid development. To put it using *Uncle Bob* words: *Though these architectures all vary somewhat in their details, they are very similar. They all have the same objective, which is the separation of concerns. They all achieve this separation by dividing the software into layers. Each has at least one layer for business rules, and another for interfaces.*
+The idea of Onion Architecture, firstly introduced by Jeffrey Palermo in a series of articles, is similar to other clean architecture approaches presented in Robert “Uncle Bob” Martin’s blog post and his recent book Clean Architecture. It can be successfully used as an alternative to a popular Hexagonal / Ports and Adapters architecture, and as such is predominantly used in the backend, business applications and services.
 
-The main difference I've found in the implementations of Hexagonal Architecture and Onion Architecture lies mostly in the overall, more structured approach to the code layout of the latter.
-Both styles rely on conscious usage of interfaces, the [Dependency Inversion Principle](https://web.archive.org/web/20041221102842/http://www.objectmentor.com/resources/articles/dip.pdf)[^2], and encapsulation, but the Onion, like the real vegetable, has explicitly defined layers. Making the concept a first-class citizen represented in the code guides an implementation and gives more clear overall structure to the codebase.
+The core concept in both styles is the same - to make the domain the most central part of the application, and remove all infrastructure concerns, such as talking via HTTP, messaging, database mapping, testing, etc., away from the domain code. The core of the business logic should be free (in theory at least) from any of the technical, and framework-related problems, allowing for easy testing and rapid development. 
 
-This Architecture style does have some learning curve for developers on the project, but once mastered, pays back many times. Finally, as with every solution in
-the IT industry, it is not a one-size-fits-all, and you should always consider if the architecture style matches your needs.
+To put it using Uncle Bob’s words: *Though these architectures all vary somewhat in their details, they are very similar. They all have the same objective, which is the separation of concerns. They all achieve this separation by dividing the software into layers. Each has at least one layer for business rules, and another for interfaces*.
+
+The main difference I've found in the implementations of Hexagonal Architecture and Onion Architecture lies mostly in the overall, more structured approach to the code layout of the latter. Both styles rely on conscious usage of interfaces, the [Dependency Inversion Principle](https://web.archive.org/web/20041221102842/http://www.objectmentor.com/resources/articles/dip.pdf)[^2], and encapsulation, but the Onion, like a real vegetable, has explicitly defined layers. Making the concept a first-class citizen represented in the code guides an implementation and gives more clear overall structure to the codebase.
+
+This Architecture style does have some learning curve for developers in the project, but once mastered, pays back many times. Finally, as with every solution in the IT industry, it is not a one-size-fits-all, and you should always consider if the architecture style matches your needs.
+
 ## The Onion has Layers
-Onion Architecture is a form of layered architecture. The main difference between “the classic” three-tier architecture and the Onion, is that every outer layer
-sees classes from all inner layers, not only the one directly below. Moreover, the dependency direction always goes from outside to the inside, never the other way
-around.
+Onion Architecture is a form of layered architecture. The main difference between “the classic” three-tier architecture and the Onion, is that every outer layer sees classes from all inner layers, not only the one directly below. Moreover, the dependency direction always goes from outside to the inside, never the other way around.
 
 But wait, what are the layers of Onion Architecture, what they describe, and why they matter?
 
@@ -63,73 +59,145 @@ TODO: obrazek z trzema kółkami
 ### The Domain Layer
 This is the layer that you place your classes describing the core of your business.
 
-Let’s use a simple example. An application written to help manage a Library would most probably have classes like Book, Reader, Copy and so on. The classes, relations
-and interactions between them describe the core of the domain of the application, i.e. what business needs it fulfils and in what way. In the Library there
-would be a process of adding new titles to the catalogue, a process of borrowing and returning copies of a book, charging readers for overdue books, and
-many more.
+Let’s use a simple example. An application written to help manage a Library would most probably have classes like Book, Reader, Copy and so on. The classes, relations and interactions between them describe the core of the domain of the application, i.e. what business needs it fulfils and in what way. In the Library there would be a process of adding new titles to the catalogue, a process of borrowing and returning copies of a book, charging readers for overdue books, and many more.
 
-TODO przykład klasy domenowej w Javie
+```Java
+@ToString
+@EqualsAndHashCode(of = "id")
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+abstract sealed class Book {
 
-Since the domain changes the most - here is the place where you put all the new features, and business requirements - it should be as easy as possible to
-modify. Thus, it should not be concerned which database is used in the project, nor should it know which communication style, synchronous RPC calls,
-asynchronous messaging, or a mix of is used to trigger the logic or maybe that it’s triggered by unit tests and not real user interactions.
+    protected final BookId id;
+    protected final Version version;
+    protected final AuthorId author;
+    protected final Title title;
+    protected final CreatedAt createdAt;
+    protected final ApprovedAt approvedAt;
+    protected final RejectedAt rejectedAt;
+    protected final ArchivedAt archivedAt;
+
+    // static factory method for assembling a new instance of a Book - hides the internal representation
+    static Book create(AuthorId author, Title title, CreatedAt createdAt) {
+        return new NewBook(BookId.next(), Version.first(), author, title, createdAt);
+    }
+
+    // One of the subclasses representing the current state of the book entity
+    // Other subclasses omitted for brevity.
+    private static final class NewBook extends Book {
+
+        private NewBook(BookId id, Version version, AuthorId author, Title title, CreatedAt createdAt) {
+            super(id, version, author, title, createdAt, null, null, null);
+        }
+
+        @Override
+        protected BookSnapshot.Status status() {
+            return BookSnapshot.Status.AWAITING_APPROVAL;
+        }
+
+        @Override
+        Book approve(ApprovedAt approvedAt) {
+            return new ApprovedBook(id, version, author, title, createdAt, approvedAt);
+        }
+
+        @Override
+        Book reject(RejectedAt rejectedAt) {
+            return new RejectedBook(id, version, author, title, createdAt, rejectedAt);
+        }
+    }
+
+    // Available domain operations
+    Book approve(ApprovedAt approvedAt) {
+        throw new UnsupportedOperationException("Unsupported state transition. Cannot approve book in state [%s]".formatted(status()));
+    }
+
+    Book reject(RejectedAt rejectedAt) {
+        throw new UnsupportedOperationException("Unsupported state transition. Cannot reject book in state [%s]".formatted(status()));
+    }
+
+    Book archive(ArchivedAt archivedAt) {
+        throw new UnsupportedOperationException("Unsupported state transition. Cannot archive book in state [%s]".formatted(status()));
+    }
+} 
+```
+
+Since the domain changes the most - here is the place where you put all the new features, and business requirements - it should be as easy as possible to modify. Thus, it should not be concerned which database is used in the project, nor should it know which communication style, synchronous RPC calls, asynchronous messaging, or a mix of is used to trigger the logic or maybe that it’s triggered by unit tests and not real user interactions.
+
 ### The Application Layer
-This is the layer where you place your application services. The services describe the use cases of the application and coordinate the work of the domain
-classes. For example, we can imagine that adding a new title to the book catalogue would involve checking if the title does not yet exist, validating that all
-the necessary data is present, and finally calling a repository to save the new catalogue entry.
+This is the layer where you place your classes that describe the use cases of the application and coordinate the work of the domain classes. For example, we can imagine that a new title added to the library undergoes an approval process: the book is fetched from the repository, a timestamp of approval is generated, the book state (only new books can be approved) is checked, and if it's OK, a modified book is than saved using the repository. 
+
+This is also the layer that “knows” which operations should be performed atomically, thus usually the transaction-related code is placed here.
 
 The code describing such a use case can look like this:
-TODO przykład w Javie
 
-This is also the layer that “knows” which operations should be performed atomically, thus usually the transaction-related code is placed here. The same goes for
-security aspects - this layer should check if the user has appropriate rights and privileges to perform the action.
+```Java
+    public BookSnapshot approve(BookId id) {
+        return transactions.execute(() -> {
+            final Book book = bookRepository.getById(id);
+            final ApprovedAt approvedAt = new ApprovedAt(timeMachine.now());
+            final Book approved = book.approve(approvedAt);
+            return bookRepository.update(approved).snapshot();
+        });
+    }
+```
 
-TODO przykład w Javie
 ### The Infrastructure Layer
-This layer, the outermost layer of our Onion, is a place where all framework, and technology related stuff goes. It tends to be the most "thick", since it
-contains the implementations of the interfaces defined in the more inner layers. Need an HTTP controller, a message listener or database adapter (an implementation of repository interface
-defined at domain layer) - infrastructure is the place to go.
+This layer, the outermost layer of our Onion, is a place where all framework, and technology related stuff goes. It tends to be the most "thick", since it contains the implementations of the interfaces defined in the more inner layers. Need an HTTP controller, a message listener or database adapter (an implementation of repository interface defined at domain layer) - infrastructure is the place to go.
 
-The domain, although the most important part of the application, tends to be also the smallest in terms of code size. The reverse is true about the infrastructre code - all the supporting
-mechanisms, which are placed at the infrastructure layer, are the backbone which animates the domain behaviour, and as such that part of the service should not be neglected. 
+The domain, although the most important part of the application, tends to be also the smallest in terms of code size. The reverse is true about the infrastructre code - all the supporting mechanisms, which are placed at the infrastructure layer, are the backbone which animates the domain behaviour, and as such that part of the service should not be neglected. 
+
 ## Wait! What about context?
-It happens quite often that a domain logic requires a more broad context to make a decistion, than that of a single class, effectively requiring an access to the database. If the
-domain layer does not have such an access, nor the application layer, how can that need be fulfilled? Fear not, Dependency Inversion Principle to the rescue.
+It happens quite often that a domain logic requires a more broad context to make a decistion, than that of a single class, effectively requiring an access to the database. If the domain layer does not have such an access, nor the application layer, how can that need be fulfilled? Fear not, Dependency Inversion Principle to the rescue.
 
-Say, when borrowing a book, the age of the reader has to be verified, and the loan rejected if the reader is below a certain threshold defined by the Library policy
-for the given book category. Here’s how it can be coded.
+Say, when borrowing a book, the age of the reader has to be verified, and the loan rejected if the reader is below a certain threshold defined by the Library policy for the given book category. Here’s how it can be coded.
 
 TODO: przykład z polityką
 
-The BookCopy class can have a borrowBy method taking two parameters: a ReaderId and BookBorrowingPolicy. The second argument is a class with a single method:
-isSatisfiedBy(readerId, bookId). The implementation of the class takes a ReaderRepository interface as constructor parameter - the interface is defined in the
-domain layer, but its implementation lies in the infrastructure. Thus the domain operates on the high level of abstraction leaving the underlying details of
-talking to a DB, converting from Mongo or MySQL entities into the domain classes to infrastructure. Only the business is what it does.
+The Book class can have a borrow method taking two parameters: a ReaderId and BookBorrowingPolicy. The second argument is a class with a single method: isSatisfiedBy(readerId, bookId). The implementation of the class takes a ReaderRepository interface as constructor parameter - the interface is defined in the domain layer, but its implementation lies in the infrastructure. Thus the domain operates on the high level of abstraction leaving the underlying details of talking to a DB, converting from Mongo or MySQL entities into the domain classes to infrastructure. Only the business is what it does.
 
 Looking it at an more abstract level, define the desired behaviour at the domain level using interfaces, but flesh it out with an implementation on the infra level.
+
 ## The Flavours of The Onion or how to represent layers in code?
 There are two basic approaches to representing the layers in the code. The one that we have used in our most recent project was to use package naming
 convention.
 
-TODO obrazek z pakietami
+![onion packages](/img/articles/2022-11-14-onion-architecture/onion-packages.png)
 
-Every domain package has three subpackages: domain, application and infrastructure. This method is clear, easy to understand and navigate, and does not require
-changes to the build tool setup. The downside is that, except for the agreed convention, and Code Review process to check them, there is no mechanism preventing
-you from using a class defined in the application layer in the domain layer, thus breaking the direction of the dependencies. One can always use such tools like
-ArchUnit [TODO link] to write tests checking if there are no "prohibited" imports, but in my opinion this is not the best way to go, as this is an extra tool that needs to be 
-maintained.
+Every domain package has three subpackages: domain, application and infrastructure. This method is clear, easy to understand and navigate, and does not require changes to the build tool setup. The downside is that, except for the agreed convention, and Code Review process to check them, there is no mechanism preventing you from using a class defined in the application layer in the domain layer, thus breaking the direction of the dependencies. One can always use such tools like ArchUnit [TODO link] to write tests checking if there are no "prohibited" imports, but in my opinion this is not the best way to go, as this is an extra tool that needs to be maintained.
 
-TODO przykład kodu no-no
 ### Build tools to the rescue
-The more involved approach is to define compilation modules representing the layers. The con of this approach is a more complicated build structure and setup of
-your build tool of choice. On the flip side though, having the compiler on your side is very helpful, and prevents the above mentioned issue. The direction of
-the dependencies between layers is clearly defined in the module build files.
+The more involved approach is to define compilation modules representing the layers. The con of this approach is a more complicated build structure and setup of your build tool of choice. On the flip side though, having the compiler on your side is very helpful, and prevents the above mentioned issue. The direction of the dependencies between layers is clearly defined in the module build files.
 
-TODO przykład dla Gradle
+```Gradle
+// settings.gradle
+rootProject.name = 'onion'
+
+include('domain', 'application', 'infrastructure')
+```
 
 Using Gradle setup as an example, one can define three modules - domain, application, and infrastructure - in `settings.gradle` file. Than in build files corresponding to each of the modules, daclare its dependencies, clearly defining the direction of dependencies. 
 
-TODO przykład dla Gradle.
+```Gradle
+// /application/build.gradle
+dependencies {
+    implementation(project(':domain'))
+}
+// /infrastructure/build.gradle
+plugins {
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+    id 'com.revolut.jooq-docker' version '0.3.7'
+}
+
+dependencies {
+    implementation(project(':domain'))
+    implementation(project(':application'))
+
+    implementation('org.springframework.boot:spring-boot-starter-web')
+    implementation('org.springframework.boot:spring-boot-starter-jooq')
+ 
+    // other dependencies and settings removed for brevity
+}
+```
 
 Notice, that the biggest file is the one for instractuture layer. It should not be a supprise by now. The infrastructure has all of the framework - in this case Spring Boot - database driver, and other dependencies, and depends on both domain and application. There's of course nothing preventing you from declaring extra dependencies, say Lombok, in the domain build file, but the most important thing to note is with that build setup it will not be possible to reverse the order of dependencies between the layers. Moreover, if you're using Kotlin as the primary language in your codebase, finally the `internal` keyword will make sense. The classes marked as `internal` will not be visible to the other layers even when placed in the same package.
 
