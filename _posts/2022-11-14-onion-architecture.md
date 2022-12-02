@@ -2,17 +2,15 @@ layout:
 post                                                                                                                                                                               
 title: "Onion Architecture - The most tasteful Software Architecture
 Style"                                                                                                                   
-author: [tomasz.tarczynski]                                                                                                                                                                 
-tags: [tech, architecture, software, engineering]                                                                                                                                                           
+author: [tomasz.tarczynski]                               
+tags: [tech, architecture, software, engineering]                          
 excerpt: >
     Software Architecture is an elusive thing which, if neglected, can lead to a hard to develop and maintain codebase, and 
     in more drastic circumstances to the failure of a product. This article discuses one of the backend application architecture styles which proved to be - from the author's perspective - 
     successful in providing a good foundation for building and maintaining an application in the long run: Onion Architecture.
 --- 
 # Onion Architecture - The most tasteful Software Architecture Style
-**TODO ilustracja ze zdjęciem cebularza i opisem, że to lubelski produkt regionalny.**
-
-Onion Architecture is a software architectural style which strongly promotes the separation of concerns between the most important part of a business application - the domain code - and its technical aspects like HTTP or database. It does so with ideas similar to Hexagonal Architecture, and other related architecture styles.
+Onion Architecture is a software architectural style which strongly promotes the separation of concerns between the most important part of a business application - the domain code - and its technical aspects like HTTP or database. It does so with ideas similar to [Hexagonal Architecture](https://en.wikipedia.org/wiki/Hexagonal_architecture_(software)), [Clean Architecture](2021-12-13-clean-architecture-story.md) and [other related architecture styles](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html).
 
 This post gives a description of the ideas of Onion Architecture and discusses a sample implementation which explicitly defines layers in the code and build setup.
 
@@ -33,9 +31,9 @@ Good architecture guides the implementation, makes it easy to introduce new chan
 Last but not least, software architecture is often defined as *the things that are hard to change*, so choosing a proper architectural approach to your new application is of key importance on its future development and maintenance.
 
 ## About the Onion
-The idea of Onion Architecture, firstly introduced by Jeffrey Palermo in a series of articles, is similar to other clean architecture approaches presented in Robert “Uncle Bob” Martin’s blog post and his recent book Clean Architecture. It can be successfully used as an alternative to a popular Hexagonal / Ports and Adapters architecture, and as such is predominantly used in the backend, business applications and services.
+The idea of Onion Architecture, firstly introduced by Jeffrey Palermo in a [series of articles](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/), is similar to other clean architecture approaches presented in Robert “Uncle Bob” Martin’s [blog post](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html), his book [Clean Architecture](https://www.amazon.com/Clean-Architecture-Craftsmans-Software-Structure/dp/0134494164), and quite recently on our [blog](2021-12-13-clean-architecture-story.md). It can be successfully used as an alternative to a popular Hexagonal / Ports and Adapters architecture, and as such is predominantly used in the backend, business applications and services.
 
-The core concept in both styles is the same - to make the domain the most central part of the application, and remove all infrastructure concerns, such as talking via HTTP, messaging, database mapping, testing, etc., away from the domain code. The core of the business logic should be free (in theory at least) from any of the technical, and framework-related problems, allowing for easy testing and rapid development. 
+The core concept in all the above styles is the same - to make the domain the most central part of the application, and remove all infrastructure concerns, such as talking via HTTP, messaging, database mapping, testing, etc., away from the domain code. The core of the business logic should be free (in theory at least) from any of the technical, and framework-related problems, allowing for easy testing and rapid development. 
 
 To put it using Uncle Bob’s words: *Though these architectures all vary somewhat in their details, they are very similar. They all have the same objective, which is the separation of concerns. They all achieve this separation by dividing the software into layers. Each has at least one layer for business rules, and another for interfaces*.
 
@@ -221,6 +219,6 @@ services with a clear domain definition. This makes it a bad choice, for more te
 framework.
 
 ### Footnotes
-[^1]: The typical, “classic” enterprise architecture, usually consists of three layers: the presentation layer, the domain layer and the persistence (data) layer. The dependency direction goes top down, and in the strict approach a layer sees only its nearest neighbour. The clear advantage is the separation of concerns, and the reduction of the scope of responsibilities of each layer. There are two issues though - that architecture style often leads to a so-called anemic domain model, since most of the business logic is placed in service classes, because, and that’s the second issue domain classes depend on the persistence layer - and often become only data carriers without behaviour. For further reading see: M. Fowler, PresentationDomainDataLayering, M. Fowler, Anemic Domain Model. For comparison of different software architecture styles, see Software Architecture Patterns (e-book, pdf)
+[^1]: The typical, “classic” enterprise architecture, usually consists of three layers: the presentation layer, the domain layer and the persistence (data) layer. The dependency direction goes top down, and in the strict approach a layer sees only its nearest neighbour. The clear advantage is the separation of concerns, and the reduction of the scope of responsibilities of each layer. There are two issues though - that architecture style often leads to a so-called [anemic domain model](https://martinfowler.com/bliki/AnemicDomainModel.html), since most of the business logic is placed in service classes, because, and that’s the second issue domain classes depend on the persistence layer - and often become only data carriers without behaviour. For comparison of different software architecture styles, see [Software Architecture Patterns](https://get.oreilly.com/rs/107-FMS-070/images/Software-Architecture-Patterns.pdf) (e-book, pdf)
 [^2]: The term has been popularised by Robert C. Martin, and describes an approach to code design based on two premises: a) High-level modules should not import anything from low-level modules. Both should depend on abstractions (e.g., interfaces). b) Abstractions should not depend on details. Details (concrete implementations) should depend on abstractions. See linked article for detailed explanation.
 [^3]: The number of layers may differ. The three-tier division is usually sometimes called Simplified Onion Architecture. Another possible rendition of the division is to have five layers with a separate Repository layer above the domain and service layer above the repositories. I find that division to be a step towards overengineering, and found that the 3-layered approach strikes the best balance.
