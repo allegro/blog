@@ -118,7 +118,7 @@ which :
  2. can distinguish between different PCs behind a NAT
  3. is not affected by computer upgrades and browser updates, switching browsers, plugins or emptying local storage.
 
-(see [Privacy Enhancing Technologies]( http://pet-portal.eu/files/articles/2011/fingerprinting/cross-browser_fingerprinting.pdf ) )
+(see [Privacy Enhancing Technologies](http://pet-portal.eu/files/articles/2011/fingerprinting/cross-browser_fingerprinting.pdf) )
 
 Some of the features such as browser versioning, IP address, font list or canvas fingerprint can be used to track changes in the fingerprint,
 as there is almost no correlation between them in case of popular OSes.
