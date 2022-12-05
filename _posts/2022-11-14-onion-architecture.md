@@ -1,17 +1,17 @@
+---
 layout: post
-title: "Onion Architecture - The most tasteful Software Architecture Style"
-author: [tomasz.tarczynski]
+title: Onion Architecture
+author: tomasz.tarczynski
 tags: [tech, architecture, software, engineering]
-excerpt: >
+--- 
 Software Architecture is an elusive thing which, if neglected, can lead to a hard to develop and maintain codebase, and
 in more drastic circumstances to the failure of a product. This article discuses one of the backend application architecture styles which proved to be
 successful in providing a good foundation for building and maintaining an application in the long run: Onion Architecture.
---- 
 
-# Onion Architecture - The most tasteful Software Architecture Style
+### Onion Architecture
 
 Onion Architecture is a software architectural style which strongly promotes the separation of concerns between the most important part of a business
-application - the domain code - and its technical aspects like HTTP or database. It does so with ideas similar
+application — the domain code — and its technical aspects like HTTP or database. It does so with ideas similar
 to [Hexagonal Architecture](https://en.wikipedia.org/wiki/Hexagonal_architecture_(software)), [Clean Architecture](2021-12-13-clean-architecture-story.md)
 and [other related architecture styles](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html).
 
@@ -21,11 +21,11 @@ setup.
 Additional complexity to the build setup and extra learning curve introduced by the layered approach, pays back during the development. It reduces cognitive
 load on the programmer by giving a more concrete structural foundation and guidance.
 
-## The Repository
+### The Repository
 
-The code samples are taken from an example repository, which you can find on GitHub. TODO Link
+The code samples are taken from an example repository, which you can find on [GitHub](https://github.com/tarczynskitomek/onion-library).
 
-## Why does Software Architecture matter?
+### Why does Software Architecture matter?
 
 During my Engineering career I’ve worked on multiple projects using different architecture styles. From a happy-go-lucky approach without any obvious structure,
 through “classic”[^1] three-tier enterprise style, to highly structured architecture, reflected by the setup of the build tool and supported by the compiler.
@@ -36,13 +36,13 @@ experience, connected with stressful moments of *Have I broken something?* Or *O
 On the other hand, working in a more rigid, but at the same time more expressive, and structured environment of well-architected application, was a breeze and a
 real pleasure. Not to mention that the time required to introduce the change was smaller, and the estimates more precise and predictable.
 
-Good architecture guides the implementation, makes it easy to introduce new changes, and - to some degree - prevents less experienced team members from making
+Good architecture guides the implementation, makes it easy to introduce new changes, and — to some degree — prevents less experienced team members from making
 doubtful decisions. It allows developers to focus on the value-providing implementation rather than thinking *Hmm where should I put this class?*.
 
 Last but not least, software architecture is often defined as *the things that are hard to change*, so choosing a proper architectural approach to your new
 application is of key importance on its future development and maintenance.
 
-## About the Onion
+### About the Onion
 
 The idea of Onion Architecture, firstly introduced by Jeffrey Palermo in
 a [series of articles](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/), is similar to other clean architecture approaches presented in Robert
@@ -51,7 +51,7 @@ book [Clean Architecture](https://www.amazon.com/Clean-Architecture-Craftsmans-S
 our [blog](2021-12-13-clean-architecture-story.md). It can be successfully used as an alternative to a popular Hexagonal / Ports and Adapters architecture, and
 as such is predominantly used in the backend, business applications and services.
 
-The core concept in all the above styles is the same - to make the domain the most central part of the application, and remove all infrastructure concerns, such
+The core concept in all the above styles is the same — to make the domain the most central part of the application, and remove all infrastructure concerns, such
 as talking via HTTP, messaging, database mapping, testing, etc., away from the domain code. The core of the business logic should be free (in theory at least)
 from any of the technical, and framework-related problems, allowing for easy testing and rapid development.
 
@@ -59,7 +59,7 @@ To put it using Uncle Bob’s words: *Though these architectures all vary somewh
 which is the separation of concerns. They all achieve this separation by dividing the software into layers. Each has at least one layer for business rules, and
 another for interfaces*.
 
-The main difference I've found in the implementations of Hexagonal Architecture and Onion Architecture lies mostly in the overall, more structured approach to
+The main difference I’ve found in the implementations of Hexagonal Architecture and Onion Architecture lies mostly in the overall, more structured approach to
 the code layout of the latter. Both styles rely on conscious usage of interfaces,
 the [Dependency Inversion Principle](https://web.archive.org/web/20041221102842/http://www.objectmentor.com/resources/articles/dip.pdf)[^2], and encapsulation,
 but the Onion, like a real vegetable, has explicitly defined layers. Making the concept a first-class citizen represented in the code guides an implementation
@@ -68,7 +68,7 @@ and gives more clear overall structure to the codebase.
 This Architecture style does have some learning curve for developers in the project, but once mastered, pays back many times. Finally, as with every solution in
 the IT industry, it is not a one-size-fits-all, and you should always consider if the architecture style matches your needs.
 
-## The Onion has Layers
+### The Onion has Layers
 
 Onion Architecture is a form of layered architecture. The main difference between “the classic” three-tier architecture and the Onion, is that every outer layer
 sees classes from all inner layers, not only the one directly below. Moreover, the dependency direction always goes from outside to the inside, never the other
@@ -83,9 +83,9 @@ There are three[^3] main layers in Onion Architecture:
 - The infrastructure layer
   each of which has its responsibilities.
 
-TODO: obrazek z trzema kółkami
+![Onion Architecture Layers](/img/articles/2022-11-14-onion-architecture/onion-layers.png)
 
-### The Domain Layer
+#### The Domain Layer
 
 This is the layer that you place your classes describing the core of your business.
 
@@ -96,7 +96,7 @@ many more.
 
 A sample domain class could look like the one below:
 
-```Java
+```java
 
 @ToString
 @EqualsAndHashCode(of = "id")
@@ -112,7 +112,7 @@ abstract sealed class Book {
     protected final RejectedAt rejectedAt;
     protected final ArchivedAt archivedAt;
 
-    // static factory method for assembling a new instance of a Book - hides the internal representation
+    // static factory method for assembling a new instance of a Book — hides the internal representation
     static Book create(AuthorId author, Title title, CreatedAt createdAt) {
         return new NewBook(BookId.next(), Version.first(), author, title, createdAt);
     }
@@ -156,21 +156,21 @@ abstract sealed class Book {
 } 
 ```
 
-Since the domain changes the most - here is the place where you put all the new features, and business requirements - it should be as easy as possible to modify
+Since the domain changes the most — here is the place where you put all the new features, and business requirements — it should be as easy as possible to modify
 and test. Thus, it should not be concerned which database is used in the project, nor should it know which communication style, synchronous RPC calls,
-asynchronous messaging, or a mix of is used to trigger the logic or maybe that it’s triggered by unit tests and not real user interactions. This doesn't mean
-of course, that the domain classes can't have any dependencies. Like it the example above - the code uses Lombok annotations, generating the boilerplate which
+asynchronous messaging, or a mix of is used to trigger the logic or maybe that it’s triggered by unit tests and not real user interactions. This doesn’t mean
+of course, that the domain classes can’t have any dependencies. Like it the example above — the code uses Lombok annotations, generating the boilerplate which
 otherwise needs to be written by the programmer.
 
-### The Application Layer
+#### The Application Layer
 
 This is the layer where you place your classes, that describe the use cases of the application, and coordinate the work of the domain classes. For example, we
 can imagine that a new title added to the library undergoes an approval process: the book is fetched from the repository, a timestamp of approval is generated,
-the book state (only new books can be approved) is checked, and if it's OK, a modified book is than saved using the repository.
+the book state (only new books can be approved) is checked, and if it’s OK, a modified book is than saved using the repository.
 
 The code describing such a use case can look like this:
 
-```Java
+```java
 class Books {
     // other fields and methods omitted   
     public BookSnapshot approve(BookId id) {
@@ -188,7 +188,7 @@ class Books {
 This is also the layer that “knows” which operations should be performed atomically, thus the transaction-related code is placed here. Note however, that in the
 example above, the `transactions` field is actually an interface reference.
 
-```Java
+```java
 
 @FunctionalInterface
 public interface Transactions {
@@ -199,20 +199,20 @@ public interface Transactions {
 
 The application uses the *behaviour* expressed by the interface, the details of how the behaviour is executed lie in the infrastructure layer.
 
-### The Infrastructure Layer
+#### The Infrastructure Layer
 
 This layer, the outermost layer of Onion, is a place where all framework, and technology related stuff goes. It tends to be the most "thick", since it
 contains the implementations of the interfaces defined in the more inner layers. Need an HTTP controller, a message listener or database adapter (an
-implementation of repository interface defined at domain layer) - infrastructure is the place to go.
+implementation of repository interface defined at domain layer) — infrastructure is the place to go.
 
 The domain, although the most important part of the application, tends to be also the smallest in terms of code size. The reverse is true about the
-infrastructure code - all the supporting mechanisms, which are placed at the infrastructure layer, are the backbone which animates the domain behaviour, and as
+infrastructure code — all the supporting mechanisms, which are placed at the infrastructure layer, are the backbone which animates the domain behaviour, and as
 such that part of the service should not be neglected.
 
-Staying with the example of `Transactions` interface, let's take a look at possible implementations. A simple approach using Spring's programmatic transaction
+Staying with the example of `Transactions` interface, let’s take a look at possible implementations. A simple approach using Spring’s programmatic transaction
 handling could look like this:
 
-```Java
+```java
 
 @Component
 @AllArgsConstructor
@@ -251,7 +251,7 @@ policy for the given book category. Here’s how it can be coded.
 TODO: przykład z polityką
 
 The Book class can have a borrow method taking two parameters: a ReaderId and BookBorrowingPolicy. The second argument is a class with a single method:
-isSatisfiedBy(readerId, bookId). The implementation of the class takes a ReaderRepository interface as constructor parameter - the interface is defined in the
+isSatisfiedBy(readerId, bookId). The implementation of the class takes a ReaderRepository interface as constructor parameter — the interface is defined in the
 domain layer, but its implementation lies in the infrastructure. Thus, the domain operates on the high level of abstraction leaving the underlying details of
 talking to a DB, converting from Mongo or MySQL entities into the domain classes to infrastructure. Only the business is what it does.
 
@@ -268,8 +268,8 @@ convention.
 Every domain package has three subpackages: domain, application and infrastructure. This method is clear, easy to understand and navigate, and does not require
 changes to the build tool setup. The downside is that, except for the agreed convention, and Code Review process to check them, there is no mechanism preventing
 you from using a class defined in the application layer in the domain layer, thus breaking the direction of the dependencies. One can always use such tools like
-ArchUnit [TODO link] to write tests checking if there are no "prohibited" imports, but in my opinion this is not the best way to go, as this is an extra tool
-that needs to be maintained.
+[ArchUnit](https://www.archunit.org/) to write tests checking if there are no "prohibited" imports, but in my opinion we can do better by employing build tool
+modules support.
 
 ### Build tools to the rescue
 
@@ -284,7 +284,7 @@ rootProject.name = 'onion'
 include('domain', 'application', 'infrastructure')
 ```
 
-Using Gradle setup as an example, one can define three modules - domain, application, and infrastructure - in `settings.gradle` file. Then, in build files
+Using Gradle setup as an example, one can define three modules — domain, application, and infrastructure — in `settings.gradle` file. Then, in build files
 corresponding to each of the modules, declare its dependencies, clearly defining the direction of dependencies.
 
 ```Groovy
@@ -310,26 +310,26 @@ dependencies {
 }
 ```
 
-Notice, that the biggest file is the one for infrastructure layer. It should not be a surprise by now. The infrastructure has all the framework - in this case
-Spring Boot - database driver, and other dependencies, and depends on both domain and application. There's of course nothing preventing you from declaring extra
+Notice, that the biggest file is the one for infrastructure layer. It should not be a surprise by now. The infrastructure has all the framework — in this case
+Spring Boot — database driver, and other dependencies, and depends on both domain and application. There’s of course nothing preventing you from declaring extra
 dependencies, say Lombok, in the domain build file, but the most important thing to note is with that build setup it will not be possible to reverse the order
-of dependencies between the layers. Moreover, if you're using Kotlin as the primary language in your codebase, finally the `internal` keyword will make sense.
+of dependencies between the layers. Moreover, if you’re using Kotlin as the primary language in your codebase, finally the `internal` keyword will make sense.
 The classes marked as `internal` will not be visible to the other layers even when placed in the same package.
 
 TODO przykład z Kotlinem
 
 ## Final Thoughts
 
-- The Problems The Onion solves
+- The Problems Onion Architecture solves
   -- More structured, layered layout of the code makes code navigation easier, and makes the relationship between different parts of the codebase more visible
   at first glance
   -- Loose coupling between the domain and the infrastructure
-  -- Coupling is towards the centre of The Onion - expressed by the relationship between the layers
+  -- Coupling is towards the centre of The Onion — expressed by the relationship between the layers
   -- (Usually) No coupling between the domain and the infrastructure concerns of the application
   -- Build tool support in enforcing layers
-- The Problems The Onion creates
+- The Problems Onion Architecture creates
   -- Additional learning curve for new developers, and those used to other architecture styles
-  -- Increased overall complexity of the codebase - especially with the flavour utilising the modularizing capabilities of build tools such as Gradle or Maven.
+  -- Increased overall complexity of the codebase — especially with the flavour utilising the modularizing capabilities of build tools such as Gradle or Maven.
   -- Not everyone likes the smell of it.
 
 ## Final-Final Thoughts
@@ -340,16 +340,8 @@ framework.
 
 ### Footnotes
 
-[^1]: The typical, “classic” enterprise architecture, usually consists of three layers: the presentation layer, the domain layer and the persistence (data)
-layer. The dependency direction goes top down, and in the strict approach a layer sees only its nearest neighbour. The clear advantage is the separation of
-concerns, and the reduction of the scope of responsibilities of each layer. There are two issues though - that architecture style often leads to a
-so-called [anemic domain model](https://martinfowler.com/bliki/AnemicDomainModel.html), since most of the business logic is placed in service classes, because,
-and that’s the second issue domain classes depend on the persistence layer - and often become only data carriers without behaviour. For comparison of different
-software architecture styles, see [Software Architecture Patterns](https://get.oreilly.com/rs/107-FMS-070/images/Software-Architecture-Patterns.pdf) (e-book,
-pdf)
-[^2]: The term has been popularised by Robert C. Martin, and describes an approach to code design based on two premises: a) High-level modules should not import
-anything from low-level modules. Both should depend on abstractions (e.g., interfaces). b) Abstractions should not depend on details. Details (concrete
-implementations) should depend on abstractions. See linked article for detailed explanation.
-[^3]: The number of layers may differ. The three-tier division is usually sometimes called Simplified Onion Architecture. Another possible rendition of the
-division is to have five layers with a separate Repository layer above the domain and service layer above the repositories. I find that division to be a step
-towards over-engineering, and found that the 3-layered approach strikes the best balance.
+[^1]: The typical, “classic” enterprise architecture, usually consists of three layers: the presentation layer, the domain layer and the persistence (data) layer. The dependency direction goes top down, and in the strict approach a layer sees only its nearest neighbour. The clear advantage is the separation of concerns, and the reduction of the scope of responsibilities of each layer. There are two issues though — that architecture style often leads to a so-called [anemic domain model](https://martinfowler.com/bliki/AnemicDomainModel.html), since most of the business logic is placed in service classes, because, and that’s the second issue domain classes depend on the persistence layer — and often become only data carriers without behaviour. For comparison of different software architecture styles, see [Software Architecture Patterns](https://get.oreilly.com/rs/107-FMS-070/images/Software-Architecture-Patterns.pdf) (e-book, pdf)
+
+[^2]: The term has been popularised by Robert C. Martin, and describes an approach to code design based on two premises: a) High-level modules should not import anything from low-level modules. Both should depend on abstractions (e.g., interfaces). b) Abstractions should not depend on details. Details (concrete implementations) should depend on abstractions. See linked article for detailed explanation.
+
+[^3]: The number of layers may differ. The three-tier division is usually sometimes called Simplified Onion Architecture. Another possible rendition of the division is to have five layers with a separate Repository layer above the domain and service layer above the repositories. I find that division to be a step towards over-engineering, and found that the 3-layered approach strikes the best balance.
