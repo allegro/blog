@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Onion Architecture
-author: tomasz.tarczynski
+author: [tomasz.tarczynski]
 tags: [tech, architecture, software, engineering]
 --- 
 Software Architecture is an elusive thing which, if neglected, can lead to a hard to develop and maintain codebase, and
@@ -253,7 +253,7 @@ class JdbcTransactions implements Transactions {
 
 and for unit test, one can set up a fake, noop implementation:
 
-```Groovy
+```java
 class NoOpTransactionsFake implements Transactions {
 
     @Override
@@ -305,7 +305,7 @@ complicated build structure and setup of your build tool of choice. On the flip 
 side is very helpful, and prevents the above-mentioned issue. The direction of the dependencies between layers is
 clearly defined in the module build files.
 
-```Groovy
+```groovy
 // settings.gradle
 rootProject.name = 'onion'
 
@@ -316,7 +316,7 @@ Using Gradle setup as an example, one can define three modules — domain, appli
 in `settings.gradle` file. Then, in build files corresponding to each of the modules, declare its dependencies, clearly
 defining the direction of dependencies.
 
-```Groovy
+```groovy
 // /application/build.gradle
 dependencies {
     implementation(project(':domain'))
