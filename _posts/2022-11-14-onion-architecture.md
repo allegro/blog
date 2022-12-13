@@ -178,7 +178,7 @@ Since the domain changes the most — here is the place where you put all the ne
 should be as easy as possible to modify and test. Thus, it should not be concerned which database is used in the
 project, nor should it know which communication style, synchronous RPC calls, asynchronous messaging, or a mix of is
 used to trigger the logic or maybe that it’s triggered by unit tests and not real user interactions. This doesn’t mean
-of course, that the domain classes can’t have any dependencies. Like it the example above — the code uses Lombok
+of course, that the domain classes can’t have any dependencies. Like in the example above — the code uses Lombok
 annotations, generating the boilerplate which otherwise needs to be written by the programmer.
 
 #### The Application Layer
