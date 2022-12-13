@@ -60,7 +60,7 @@ quite recently on our [blog](2021-12-13-clean-architecture-story.md). It can be 
 popular Hexagonal / Ports and Adapters architecture, and as such is predominantly used in the backend, business
 applications and services.
 
-The core concept in all the above styles is the same — to make the domain the most central part of the application, and
+The core concept in all mentioned styles is the same — to make the domain the most central part of the application, and
 remove all infrastructure concerns, such as talking via HTTP, messaging, database mapping, testing, etc., away from the
 domain code. The core of the business logic should be free (in theory at least) from any of the technical, and
 framework-related problems, allowing for easy testing and rapid development.
