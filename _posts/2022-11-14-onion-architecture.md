@@ -273,7 +273,7 @@ certain threshold defined by the Library policy for the given book category. Her
 
 TODO: przykład z polityką
 
-The Book class can have a borrow method taking two parameters: a ReaderId and BookBorrowingPolicy. The second argument
+The Book class can have a borrow method taking two parameters: a `ReaderId` and `BookBorrowingPolicy`. The second argument
 is a class with a single method: `isSatisfiedBy(readerId, bookId)`. The implementation of the class takes a
 `ReaderRepository` interface as constructor parameter — the interface is defined in the domain layer, but its
 implementation lies in the infrastructure. Thus, the domain operates on the high level of abstraction leaving the
