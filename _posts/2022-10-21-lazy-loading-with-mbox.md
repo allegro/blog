@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "How we solve performance issue with a few lines of MBox code."
+title: "How we solved performance issue with a few line of code?"
 author: [lukasz.solniczek]
 tags: [tech, "Server-driven UI", mobile, mbox, performance]
 excerpt: >
@@ -17,11 +17,11 @@ and reduced usage of Allegro service infrastructure with only a few lines of cod
 
 The story is about the homepage in the Allegro app on [Android](https://play.google.com/store/apps/details?id=pl.allegro)
 and [iOS](https://apps.apple.com/pl/app/allegro/id305659772), the first screen a user sees when opening the app.
-Originally it was a long screen with a lot of content rendered with data from tens of, sometimes costly, data sources (services we used to prepare data for our frontend).
+Originally it was a long screen with a lot of content rendered with data from tens of, sometimes costly, data sources (services we use to prepare data for our frontend).
 
 A lot was happening there.
 
-It was not a big problem earlier but became one when the number of users of our applications started growing, after outbreak of COVID-19 pandemic.
+It was not a big problem earlier but became one when the number of users of our applications started growing, after outbreak of the COVID-19 pandemic.
 During one year, the number of requests sent to our infrastructure from the Allegro homepage increased almost 3 times, consequently becoming a performance issue.
 
 ![Lazy Loading Homepage](/img/articles/2022-10-21-lazy-loading-with-mbox/lazy-loading-rps.png)
@@ -33,14 +33,14 @@ And the second part will be loaded when the user scrolls to the end of the first
 This technique is called lazy loading.
 It is not something new, it is used web-wide in many places, but in our case, we had to think about it differently because …
 
-... we build the Allego homepage in applications using **MBox**, Allegro server-driven UI solution, which means that the content and screen logic is defined entirely on the server side. 
+... we've built the Allego homepage in applications using **MBox**, the server-driven UI solution created at Allegro, which means that the content and screen logic is defined entirely on the server side. 
 Implementation of lazy loading at the Allegro homepage also had to be done on the server side.
 
 > What is **MBox**? It is our **Server-Driven UI (SDUI)** solution, which we use in Allegro to create and release mobile screens faster on both platforms (iOS and Android). It is a collection of building blocks that let us develop views and actions that link MBox screens with other parts of the application or introduce some interaction on a screen.
 If you want to learn more about MBox, you can read its introduction on our blog: [MBox: server-driven UI for mobile apps](https://blog.allegro.tech/2022/08/mbox-server-driven-ui-for-mobile-apps.html).
 
 After discussing the problem and potential solution, it turned out that all the **MBox** building blocks and actions we
-needed were already there.
+needed to implement lazy-loading with MBox were already there.
 
 ### The Soultion
 
@@ -49,7 +49,7 @@ Thanks to modular architecture, independent elements, and a clear interface betw
 We used the **Spinner** component, which shows the native spinner view in the applications, and **replaceComponent** action, which can fetch the next portion of the mobile screen and display it in place of some other component.
 The homepage endpoint had already supported pagination.
 
-At the end of the first part of the Allegro homepage, we added **Spinner** component with **replaceComponent** action triggered on **Spinner** shows.
+At the end of the first part of the Allegro homepage, we added **Spinner** component with **replaceComponent** action triggered when the **Spinner** shows.
 
 Action **replaceComponent** loads the second part of the homepage and alters **Spinner** with it.
 
@@ -70,7 +70,7 @@ spinner {
 }
 ```
 
-Here are some results.
+And here are some results.
 
 ### The result
 
