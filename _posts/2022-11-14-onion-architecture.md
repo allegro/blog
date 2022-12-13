@@ -4,8 +4,7 @@ title: Onion Architecture
 author: [tomasz.tarczynski]
 tags: [tech, architecture, software, engineering]
 --- 
-Software Architecture is an elusive thing which, if neglected, can lead to a hard to develop and maintain codebase, and
-in more drastic circumstances to the failure of a product. This article discuses one of the backend application
+Software Architecture is an elusive thing. If neglected, it can lead to hasty decisions and unmanageable codebase. In more drastic circumstances it can even lead to the failure of a product. This article discuses one of the backend application
 architecture styles which proved to be successful in providing a good foundation for building and maintaining an
 application in the long run: Onion Architecture.
 
