@@ -62,7 +62,7 @@ For this example I’m using [MongoDB community edition 6.0 for macOS](https://w
 
 I’ve created a MongoDB server consisting of one config database and one shard replica set with three members. You can find the steps in the official MongoDB [documentation](https://www.mongodb.com/docs/manual/tutorial/deploy-shard-cluster/).
 
-To start, we need some data that’s already present in the database, so that we could see the changes that are being made. First, let’s connect to one of our nodes in a replica set:
+To start, we need some data that’s already present in the database, so that we can see the changes that are being made. First, let’s connect to one of our nodes in a replica set:
 
 ```mongosh --host localhost --port 27027```
 
