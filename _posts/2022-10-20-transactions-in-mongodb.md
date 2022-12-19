@@ -58,7 +58,7 @@ majority, which means that majority of nodes acknowledge the changes in data. Th
 
 ### Enough theory, I want to see it in action!
 
-For this example I’m using [MongoDB community edition 6.0 for macOS](https://www.mongodb.com/docs/manual/installation/)
+For this example I’m using [MongoDB community edition 6.0 for macOS](https://www.mongodb.com/docs/manual/installation/).
 
 I’ve created a MongoDB server consisting of one config database and one shard replica set with three members. You can find the steps in the official MongoDB [documentation](https://www.mongodb.com/docs/manual/tutorial/deploy-shard-cluster/).
 
