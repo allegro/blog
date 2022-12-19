@@ -43,7 +43,7 @@ Similarly, the **WriteConcern** property is us defining when we consider the dat
 
 (Side note: when we are talking about majority we are talking about calculated majority, you can read more about it in [Calculating majority count](https://www.mongodb.com/docs/manual/reference/write-concern/#std-label-calculating-majority-count))
 
-We distinguish between three levels of ReadConcern for transactions (others are unavailable to use in this case):
+We distinguish between three levels of `ReadConcern` for transactions (others are unavailable to use in this case):
 
 - local, which reads the latest data from a node that has been queried. There are no guarantees that the data read is the most recent across the system,
 - majority, which reads the data at the point of majority-commit. Said point is calculated by the primary node. This ReadConcern doesn’t guarantee consistency unless WriteConcern of at least majority is also stated,
