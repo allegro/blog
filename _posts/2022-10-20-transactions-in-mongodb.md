@@ -25,7 +25,7 @@ By definition, database transactions are atomic, consistent, isolated and durabl
 
 Before implementing transactions? Not really. Of course, there are some properties of ACID that are present (as stated earlier), but before version 4.0 they were impossible to achieve in a distributed ecosystem.
 
-Here’s an excerpt from the MongoDB website: [we estimate that 80%-90% of applications that leverage the document model will not need to utilize transactions in MongoDB](https://www.mongodb.com/basics/acid-transactions)
+Here’s an excerpt from the MongoDB website: [we estimate that 80%-90% of applications that leverage the document model will not need to utilize transactions in MongoDB](https://www.mongodb.com/basics/acid-transactions).
 
 Alas, when you need to make changes to multiple documents, or worse, if they are split across multiple shards then there is no guarantee that the changes will adhere to ACID properties. That’s why the need for ACID transactions arose.
 
