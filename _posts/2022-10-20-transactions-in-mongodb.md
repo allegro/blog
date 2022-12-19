@@ -16,7 +16,7 @@ That’s why transactions were introduced into MongoDB. In this blog post, we wi
 
 ### What is a transaction?
 
-A database transaction is a unit of work, designed to handle the changes of data in the database. It makes sure that the output of the data is consistent and doesn’t generate errors. It helps with concurrent changes to the database, and makes it more scalable.
+A database transaction is a unit of work, designed to handle the changes of data in the database. It makes sure that the output of the data is consistent and doesn’t generate errors. It helps with concurrent changes to the database, and makes the database more scalable.
 
 By definition, database transactions are atomic, consistent, isolated and durable. Sounds familiar? Exactly, it’s **ACID**.
 
@@ -26,21 +26,21 @@ Before implementing transactions? Not really. Of course, there are some properti
 
 Here’s an excerpt from the MongoDB website: [we estimate that 80%-90% of applications that leverage the document model will not need to utilize transactions in MongoDB](https://www.mongodb.com/basics/acid-transactions).
 
-Alas, when you need to make changes to multiple documents, or worse, if they are split across multiple shards then there is no guarantee that the changes will adhere to ACID properties. That’s why the need for ACID transactions arose.
+Alas, when you need to make changes to multiple documents, or worse, if they are split across multiple shards, then there is no guarantee that the changes will adhere to ACID properties. That’s why the need for ACID transactions arose.
 
 Fortunately, since version 4.0 transactions were added to MongoDB, first for multi-document changes, and then, in 4.2, for distributed data.
 
 ### Specifics of MongoDB transactions
 
-Having in mind the differences between MongoDB and SQL DB engines, we need to first take a look at how transactions in Mongo are specified. Since the problems that arise from having multiple documents, replica sets and shards differ from the issues of concurrent access to a table row, then also the resolutions to these problems would be different in nature.
+Having in mind the differences between MongoDB and SQL DB engines, we need to first take a look at how transactions in Mongo are specified. Since the problems that arise from having multiple documents, replica sets and shards differ from the issues of concurrent access to a table row, resolutions to these problems are also different in nature.
 
 The transaction in MongoDB is denoted by two properties: **ReadConcern** and **WriteConcern**.
 
-The **ReadConcern** property is used to control the consistency and isolation of the data we read from the database.
+A **ReadConcern** property is used to control the consistency and isolation of the data we read from the database.
 
 Similarly, the **WriteConcern** property is us defining when we consider the data we write to be consistent in the database.
 
-(Side note: when we are talking about majority we are talking about calculated majority, you can read more about it in [Calculating majority count](https://www.mongodb.com/docs/manual/reference/write-concern/#std-label-calculating-majority-count))
+(Side note: when we are talking about majority we are talking about calculated majority. You can read more about it in [Calculating majority count](https://www.mongodb.com/docs/manual/reference/write-concern/#std-label-calculating-majority-count))
 
 We distinguish between three levels of `ReadConcern` for transactions (others are unavailable to use in this case):
 
