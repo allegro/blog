@@ -4,12 +4,11 @@ title: "Transactions in MongoDB"
 author: [piotr.kisielewicz]
 tags: [tech, techradar, NoSQL]
 excerpt: >
-    Let's look at what transactions in MongoDB are and what their differences from SQL transactions are.
+    Let's look at what transactions in MongoDB are and how they differ from SQL transactions.
 ---
-
 Since version 4.0, transactions have been introduced to the world of Mongo databases. However, the way they work differs greatly from the tried and true world of SQL.
 
-In databases like PostgreSQL or MySQL we had transactions based on tables and relations with isolation levels such as READ_UNCOMMITED, READ_COMMITED, REPEATABLE_READ and SERIALIZABLE. These help us to recognize if the record we’re working on is dirty, both when we want to access it or when someone else wants to do it after we’ve made some changes. In the world of documents, shards and replicas, the changes made to a single document are already atomic by design.
+In databases like PostgreSQL or MySQL there are transactions based on tables and relations with isolation levels such as `READ_UNCOMMITED`, `READ_COMMITED`, `REPEATABLE_READ` and `SERIALIZABLE`. These help us to recognize if the record we’re working on is dirty, both when we want to access it or when someone else wants to do it after we’ve made some changes. In the world of documents, shards and replicas, the changes made to a single document are already atomic by design.
 
 Why do we need transactions then? I only talked about single documents. What about multi-document data, shards and replicas?
 
