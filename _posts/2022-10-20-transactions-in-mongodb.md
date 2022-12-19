@@ -262,7 +262,7 @@ try {
 
 ### Do we use MongoDB transactions at Allegro?
 
-That’s what this post is for! We are evaluating transactions internally and are checking whether they would fit our use cases.
+Not yet. We are evaluating transactions internally and are checking whether they would fit our use cases.
 
 ### Further reading
 
