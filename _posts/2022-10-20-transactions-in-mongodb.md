@@ -105,21 +105,21 @@ This should return all our data that we inserted earlier.
     _id: ObjectId("6311eebd6effda71326b35d3"),
     title: 'MBox: server-driven UI for mobile apps',
     author: 'Mobile Guru',
-    date: 'Aug 3 2022',
+    date: ISODate("2022-08-03"),
     url: 'https://blog.allegro.tech/2022/08/mbox-server-driven-ui-for-mobile-apps.html'
     },
     {
     _id: ObjectId("6311eebd6effda71326b35d2"),
     title: 'How to facilitate EventStorming workshops',
     author: 'Blog Stormer',
-    date: 'Jul 19 2022',
+    date: ISODate("2022-07-19"),
     url: 'https://blog.allegro.tech/2022/07/event-storming-workshops.html'
     },
     {
     _id: ObjectId("6311eebd6effda71326b35d1"),
     title: 'GC, hands off my data!',
     author: 'Allegro Blogperson',
-    date: 'Jun 30 2022',
+    date: ISODate("2022-06-30"),
     url: 'https://blog.allegro.tech/2022/06/gc-hands-off-my-data.html'
     }
 ]
@@ -143,7 +143,7 @@ We can now insert new data into our collection while transaction is active:
 blog.insertOne({
         "title": "Transactions in MongoDB",
         "author": "Piotr Kisielewicz",
-        "date": "Nov 30 2022",
+        "date": ISODate("2022-11-30"),
         "url": "https://blog.allegro.tech/2022/11/transactions-in-mongodb.html"
     })
 ```
@@ -160,21 +160,21 @@ db.blog.find()
     _id: ObjectId("6311eebd6effda71326b35d3"),
     title: 'MBox: server-driven UI for mobile apps',
     author: 'Mobile Guru',
-    date: 'Aug 3 2022',
+    date: ISODate("2022-08-03"),
     url: 'https://blog.allegro.tech/2022/08/mbox-server-driven-ui-for-mobile-apps.html'
     },
     {
     _id: ObjectId("6311eebd6effda71326b35d2"),
     title: 'How to facilitate EventStorming workshops',
     author: 'Blog Stormer',
-    date: 'Jul 19 2022',
+    date: ISODate("2022-07-19"),
     url: 'https://blog.allegro.tech/2022/07/event-storming-workshops.html'
     },
     {
     _id: ObjectId("6311eebd6effda71326b35d1"),
     title: 'GC, hands off my data!',
     author: 'Allegro Blogperson',
-    date: 'Jun 30 2022',
+    date: ISODate("2022-06-30"),
     url: 'https://blog.allegro.tech/2022/06/gc-hands-off-my-data.html'
     }
 ]
@@ -208,28 +208,28 @@ db.blog.find()
     _id: ObjectId("6311eebd6effda71326b35d3"),
     title: 'MBox: server-driven UI for mobile apps',
     author: 'Mobile Guru',
-    date: 'Aug 3 2022',
+    date: ISODate("2022-08-03"),
     url: 'https://blog.allegro.tech/2022/08/mbox-server-driven-ui-for-mobile-apps.html'
     },
     {
     _id: ObjectId("6311eebd6effda71326b35d2"),
     title: 'How to facilitate EventStorming workshops',
     author: 'Blog Stormer',
-    date: 'Jul 19 2022',
+    date: ISODate("2022-07-19"),
     url: 'https://blog.allegro.tech/2022/07/event-storming-workshops.html'
     },
     {
     _id: ObjectId("6311eebd6effda71326b35d1"),
     title: 'GC, hands off my data!',
     author: 'Allegro Blogperson',
-    date: 'Jun 30 2022',
+    date: ISODate("2022-06-30"),
     url: 'https://blog.allegro.tech/2022/06/gc-hands-off-my-data.html'
     },
     {
     _id: ObjectId("6319e60accc51dfa32ca495a"),
     title: 'Transactions in MongoDB',
     author: 'Piotr Kisielewicz',
-    date: 'Sep 30 2022',
+    date: ISODate("2022-09-30"),
     url: 'https://blog.allegro.tech/2022/09/transactions-in-mongodb.html'
     }
 ]
