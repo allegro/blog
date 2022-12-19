@@ -16,7 +16,7 @@ That’s why transactions were introduced into MongoDB. In this blog post, we wi
 
 ### What is a transaction?
 
-A Database transaction is a unit of work, designed to handle the changes of data in the database. It makes sure that the output of the data is consistent and doesn’t generate errors. It helps with concurrent changes to the database, and makes it more scalable.
+A database transaction is a unit of work, designed to handle the changes of data in the database. It makes sure that the output of the data is consistent and doesn’t generate errors. It helps with concurrent changes to the database, and makes it more scalable.
 
 By definition, database transactions are atomic, consistent, isolated and durable. Sounds familiar? Exactly, it’s **ACID**.
 
@@ -52,8 +52,8 @@ As we can see, we can draw some parallels between MongoDB's ReadConcern options 
 
 What about WriteConcerns? There are three main descriptors:
 - 1, which basically means that we are only interested in primary node committing the changes. Unfortunately, using this WriteConcern means that you will have no guarantees for any of the ReadConcerns stated above,
-- Any {number} greater than 1 states that we want to get the data committed by the primary and {number - 1} of secondary nodes. This WriteConcern depends on the amount of nodes in the system, since it can denote more than the majority of the nodes and in this case would provide us with read guarantees,
-majority, which means that majority of nodes acknowledge the changes in data. This WriteConcern provides us with read guarantees, and also gives us benefits of eventual consistency.
+- Any {number} greater than 1 states that we want to get the data committed by the primary and {number - 1} of secondary nodes. This WriteConcern depends on the number of nodes in the system, since it can denote more than the majority of the nodes and in this case would provide us with read guarantees,
+- majority, which means that majority of nodes acknowledge the changes in data. This WriteConcern provides us with read guarantees, and also gives us benefits of eventual consistency.
 
 ### Enough theory, I want to see it in action!
 
@@ -72,19 +72,19 @@ db.blog.insertMany([
     {
     "title": "GC, hands off my data!",
     "author": "Allegro Blogperson",
-    "date": "Jun 30 2022",
+    "date": ISODate("2022-06-30"),
     "url": "https://blog.allegro.tech/2022/06/gc-hands-off-my-data.html"
     },
     {
     "title": "How to facilitate EventStorming workshops",
     "author": "Blog Stormer",
-    "date": "Jul 19 2022",
+    "date": ISODate("2022-07-19"),
     "url": "https://blog.allegro.tech/2022/07/event-storming-workshops.html"
     },
     {
     "title": "MBox: server-driven UI for mobile apps",
     "author": "Mobile Guru",
-    "date": "Aug 3 2022",
+    "date": ISODate("2022-08-03"),
     "url": "https://blog.allegro.tech/2022/08/mbox-server-driven-ui-for-mobile-apps.html"
     }
 ])
