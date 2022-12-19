@@ -152,7 +152,7 @@ blog.insertOne({
 {acknowledged: true, insertedId: ObjectId("6319e60accc51dfa32ca495a")}
 ```
 
-Before committing our transaction, let’s try to read the data from another replica(in the second shell which we opened previously):
+Before committing our transaction, let’s try to read the data from another replica (in the second shell which we opened previously):
 
 ```javascript
 db.blog.find()
