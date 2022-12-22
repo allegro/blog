@@ -17,7 +17,7 @@ There is no doubt that Cloud and overall approach to hardware have matured in re
 
 The cornerstone of hardware management is a methodology called Infrastructure as a Code. Long gone are the days of brave men and women that would roam datacenters and manually install OS, plug cables into network interfaces and set up mainframes. Right now all those operations are still there but are abstracted away through a layer of standard components. 
 
-Thus, every component can be set up as a piece of code. The best part is there are a lot of tools that manage infrastructure so everyone can evaluate pros and cons and make the decision for themselves. 
+Thus, every component can be set up as a piece of code. However different IaaC tools use different paradigms and should be evaluated for pros and cons by every team before adoption.
 
 At Allegro we settled on Terraform. Code deploying infrastructure has to be versioned, reviewed and then executed. We also use a set of standard modules that enforce consistent setup. However, not everyone is a Cloud Engineer and not everyone has to be. That is why we created yet another layer of abstraction that aims at simplifying IaaC even further.
 
@@ -74,6 +74,7 @@ Under the hood this gets translated into Terraform code that uses our custom mod
 ### Artifact
 
 Once the IaaC gets reviewed and accepted, whether DSL or Terraform, it gets packaged into an artifact. The artifact is an immutable, versioned archive that contains infrastructure’s definition. No changes should be made outside the artifact and we prevent them by revoking permissions to those APIs. This means that we have a controlled and auditable environment. An added bonus is that we can easily roll back to the previous version should any change prove wrong. 
+
 Under the hood the artifact is a simple zip archive that can be extracted and inspected by hand to see whether it really contains what we expect. 
 ```
 unzip artifact.zip
@@ -127,16 +128,18 @@ We provide extensive documentation and support for all people using our deployme
 
 There is no free lunch and that is also the case with provisioning infrastructure. Although we did our best to create a coherent and enjoyable environment there are shortcomings that couldn’t be erased. 
 
-We need to acknowledge that Cloud is a fickle mistress. Though everyone does their best there is no question that we can’t completely hide the hardware. Thus we sometimes land on an island of incoherent state. Our runtime thinks that the infrastructure should look different than it is actually provisioned and report that it can’t reconcile the state automatically. This requires manual intervention which always reduces the user experience. 
+We need to acknowledge that Cloud is as fickle as the wind. Though everyone does their best to navigate its torrents there is no question that we can’t completely hide the hardware. Thus we sometimes land on an island of incoherent state. Occasionally, the automatic processes fail to apply changes. The runtime thinks that the infrastructure should look different than it is actually provisioned, reports that it can’t reconcile the state automatically and fails. This requires manual intervention which always reduces the user experience. 
 
-At the end of the day Cloud uses different primitives than software and Infrastructure as a Code has to acknowledge that. You don’t have atomic operations so provisioning a service can fail or land in an unknown state. You also can’t test for that without actually running a deployment. In essence you have a Schroedingers Cloud - you won’t be sure what will happen until you execute your change. This contrasts with all that we know and came to love about software which we try to test in all possible scenarios. 
+At the end of the day Cloud uses different primitives than software and Infrastructure as a Code has to acknowledge that. You don’t have atomic operations so provisioning a service can fail or land in an unknown state. You also can’t run unit tests for infrastrucutre without actually running a deployment. In essence you have a Schrödingers Cloud - you won’t be sure what will happen until you execute your change. This contrasts with all that we know and came to love about software which we try to test in all possible scenarios. 
 
 ## Conclusion
 
 Our migration to Cloud is an ongoing process. This may be a never ending challenge as both Cloud and our organization evolve. We needed to create a whole new environment that would be both flexible and invisible to the users. By using some simple patterns and components we encapsulated infrastructure provisioning in components used for microservices. Additionally those components are testable and extendable which helps adapt to changes and users’ feedback.
 
 At the moment of writing this the solution has been running in production for six months. More than one thousand deployments have been made to production and countless more to dev and test. 
+
 I hope this post will spark your creativity and inspire new ways of thinking about Cloud provisioning.
+
 
 
 
