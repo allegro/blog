@@ -5,13 +5,13 @@ author: lukasz.rokita
 tags: [java, k8s, cloud, gcp, terraform, iaac]
 ---
 
-Hardware is always hard. The amount of operations, maintenance and planning that goes into supporting a datacenter is a daunting challenge for any enterprise. Though often unseen without hardware there is no software. 
+Hardware is always hard. The amount of operations, maintenance and planning that goes into supporting a data center is a daunting challenge for any enterprise. Though often unseen, without hardware there is no software. 
 
-Although software seems to be a well defined domain with stable tools, practices and languages hardware had no such luck. That is why the complexities are often hidden. We try to hide networks, disk, memory and CPU behind abstractions pretending that those are all unfailable components. 
+Although software seems to be a well defined domain with stable tools, practices and languages, hardware had no such luck. That is why the complexities are often hidden. We try to hide networks, disk, memory and CPU behind abstractions pretending that those are all unfailable components. 
 
-That is also what Cloud computing promises. Resources available on demand, cheap, scalable and flexible. The promise has its allure. More and more companies start in the Cloud, migrate or use Cloud as a levee that can help us offload overflow traffic during unexpected peaks. 
+That is also what Cloud computing promises. Resources available on demand, cheap, scalable and flexible. The promise has its allure. More and more companies start in the Cloud, migrate or use Cloud as a levee that can help offload overflow traffic during unexpected peaks. 
 
-There is no doubt that Cloud and overall hardware has matured in recent years taking over practices that proved useful for software development. In this post I would like to explain how Allegro tries to manage Cloud and hide its inherent complexities. 
+There is no doubt that Cloud and overall approach to hardware have matured in recent years adopting practices that proved useful in software development. In this post I would like to explain how Allegro tries to manage Cloud and hide its inherent complexities. 
 
 ## Infrastructure as a Code
 
@@ -19,13 +19,13 @@ The cornerstone of hardware management is a methodology called Infrastructure as
 
 Thus, every component can be set up as a piece of code. The best part is there are a lot of tools that manage infrastructure so everyone can evaluate pros and cons and make the decision for themselves. 
 
-At Allegro we settled on Terraform. Code deploying infrastructure has to be versioned, reviewed and then executed. We also use a set of standard modules that enforce consistent setup. However, not everyone is a Cloud Engineer and not everyone has to be. That is why we created yet another layer of abstraction that aims at hiding IaaC altogether.
+At Allegro we settled on Terraform. Code deploying infrastructure has to be versioned, reviewed and then executed. We also use a set of standard modules that enforce consistent setup. However, not everyone is a Cloud Engineer and not everyone has to be. That is why we created yet another layer of abstraction that aims at simplifying IaaC even further.
 
 ## The Requirements
 
-We did that because our audience are Data Scientists and Data Analysts. People who, although make heavy use of Cloud, should be insulated from the complexities of its tools. Their day to day work focuses on finding new insights in the data and feeding the organization with insights to make the correct decisions. 
+We did that because our audience are Data Scientists and Data Analysts. People who, although make heavy use of Cloud, should be insulated from the complexities of its tools. Their day to day work focuses on finding new insights in the data and feeding them to the organization to help make the correct decisions. 
 
-Knowing that we had a simple requirement. Streamline creation of Cloud infrastructure needed to analyze and process large volumes of data.
+Knowing that, we had a simple requirement. Streamline creation of Cloud infrastructure that is needed to analyse and process large volumes of data.
 
 This coin had two sides. We had to come up with a standard set of tools, permissions and practices that should be common among most data analytics teams. We needed to create an architecture that would support any present and future needs. 
 
@@ -73,7 +73,7 @@ Under the hood this gets translated into Terraform code that uses our custom mod
 
 ### Artifact
 
-Once the IaaC gets reviewed and accepted, whether DSL or Terraform, it gets packaged into an artifact. The artifact is an immutable, versioned archive that contains infrastructure’s definition. No changes should be made outside the artifact and we prevent them by revoking permissions to those APIs. This means that we have a controlled and auditable environment. An added bonus is that we can easily roll back to the previous version should the change prove wrong. 
+Once the IaaC gets reviewed and accepted, whether DSL or Terraform, it gets packaged into an artifact. The artifact is an immutable, versioned archive that contains infrastructure’s definition. No changes should be made outside the artifact and we prevent them by revoking permissions to those APIs. This means that we have a controlled and auditable environment. An added bonus is that we can easily roll back to the previous version should any change prove wrong. 
 Under the hood the artifact is a simple zip archive that can be extracted and inspected by hand to see whether it really contains what we expect. 
 ```
 unzip artifact.zip
@@ -99,18 +99,18 @@ Archive:  artifact.zip
 ```
 ### Terraform modules
 
-We wrap and repackage external Terraform modules. We do that to provide sane defaults and create conventions that will be consistent across the entire organisations. We also provide libraries that integrate with this conventions so that users can use advanced functionalities without thinking about setup choices. They just work. 
+We wrap and repackage external Terraform modules. We do that to provide sane defaults and create conventions that will be consistent across the entire organisation. We also provide libraries that integrate with these conventions so that users can use advanced functionalities without thinking about setup choices. _They just work_. 
 
 ### Runtime
 
-At runtime the user has to go to his infrastructure project, choose which infrastructure version he would like to deploy and observe the changes as they are executed live, in the Cloud. 
+At runtime the user has to go to their infrastructure project, choose which infrastructure version would they like to deploy and observe the changes as they are executed live, in the Cloud. 
 This is what it looks like:
 
 ![console logs](/img/articles/2022-12-13-provisioning-cloud-infrastructure/appconsole.png)
 
-Under the hood a K8s job is created which uses a dedicated Docker runtime that helps us control environment versions and the overall process. This image is also quite useful for debugging and development, since we have access to the artifact and runtime environment the work is easy and done comfortably on our own machine. 
+Under the hood a K8s job is created which uses a dedicated Docker runtime that helps us control environment versions and the overall process. This image is also quite useful for debugging and development. Since we have access to the artifact and runtime environment the work is easy and done comfortably on our own machine. 
 
-K8s jobs have another useful feature, they are independent. We have a guaranteed stable environment that gets provisioned and cleaned on demand and is separated from every other. The orchestration is automated and supervised so that users need not think about installing Docker, Terraform and any other tool that would be required and we have the freedom to change the process provided that we stay compatible.
+K8s jobs have another useful feature - they are independent. We have a guaranteed stable environment that gets provisioned and cleaned up on demand and is separated from every other. The orchestration is automated and supervised so that users need not think about installing Docker, Terraform or any other tool that would otherwise be required and we have the freedom to change the process (provided that we stay compatible).
 
 ## The Good
 
@@ -135,8 +135,8 @@ At the end of the day Cloud uses different primitives than software and Infrastr
 
 Our migration to Cloud is an ongoing process. This may be a never ending challenge as both Cloud and our organization evolve. We needed to create a whole new environment that would be both flexible and invisible to the users. By using some simple patterns and components we encapsulated infrastructure provisioning in components used for microservices. Additionally those components are testable and extendable which helps adapt to changes and users’ feedback.
 
-At the moment of writing this the solution has been running in production for six months. More than one thousand deployments have been made to production and countless to dev and test. 
-I hope this post could inspire you to think about Cloud provisioning in new terms.
+At the moment of writing this the solution has been running in production for six months. More than one thousand deployments have been made to production and countless more to dev and test. 
+I hope this post will spark your creativity and inspire new ways of thinking about Cloud provisioning.
 
 
 
