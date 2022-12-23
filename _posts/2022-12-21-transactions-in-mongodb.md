@@ -99,6 +99,7 @@ We can verify here that the data is present:
 ```db.blog.find()```
 
 This should return all our data that we inserted earlier.
+
 ```javascript
 [
     {
