@@ -96,9 +96,12 @@ Let’s also connect to a different node in our replica set:
 
 We can verify here that the data is present:
 
-```db.blog.find()```
+```
+db.blog.find()
+```
 
 This should return all our data that we inserted earlier.
+
 
 ```javascript
 [
