@@ -253,8 +253,9 @@ val db = client.getDatabase("blog")
 val blogCollection = db.getCollection("blogPost", BlogPost::class.java)
 val session = client.startSession()
 try {
-    blogCollection.insertOne(session, BlogPost())
     session.startTransaction(TransactionOptions.builder().writeConcern(WriteConcern.MAJORITY).build())
+    blogCollection.insertOne(session, BlogPost())
+    session.commitTransaction()
 } catch (e: MongoCommandException) {
     session.abortTransaction()
 } finally {
