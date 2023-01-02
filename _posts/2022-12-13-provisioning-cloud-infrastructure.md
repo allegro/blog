@@ -31,7 +31,7 @@ To assure eager adoption. We needed to establish a set of standard tools, permis
 
 ## The Solution
 
-The solutions consists of four components:
+The solution consists of four components:
 - DSL
 - Terraform modules
 - Artifact
