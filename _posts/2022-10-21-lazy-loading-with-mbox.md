@@ -26,7 +26,7 @@ During one year, the number of requests sent to our infrastructure from the Alle
 
 ![Lazy Loading Homepage](/img/articles/2022-10-21-lazy-loading-with-mbox/lazy-loading-rps.png)
 
-### The Idea
+### The idea
 
 We have decided to split the homepage content into two parts. The first will be loaded when the user opens the app and will be available immediately.
 And the second part will be loaded when the user scrolls to the end of the first part.
