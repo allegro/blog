@@ -340,10 +340,10 @@ dependencies {
 
 Notice, that the biggest file is the one for infrastructure layer. It should not be a surprise by now. The
 infrastructure has all the framework — in this case Spring Boot — database driver, and other dependencies, and depends
-on both domain and application. There’s of course nothing preventing you from declaring extra dependencies, say Lombok,
-in the domain build file, but the most important thing to note is with that build setup it will not be possible to
-reverse the order of dependencies between the layers. Moreover, if you’re using Kotlin as the primary language in your
-codebase, finally the `internal` keyword will make sense. The classes marked as `internal` will not be visible to the
+on both domain and application. There’s of course nothing preventing you from declaring extra dependencies, say Lombok.
+The most important thing to note here, is that with this build setup it will not be possible to reverse the order of
+dependencies between the layers. Moreover, if you’re using Kotlin as the primary language in your codebase, finally
+the `internal` keyword will make sense. The classes marked as `internal` will not be visible to the
 other layers even when placed in the same package.
 
 TODO przykład z Kotlinem
