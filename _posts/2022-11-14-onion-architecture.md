@@ -4,7 +4,8 @@ title: Onion Architecture
 author: [tomasz.tarczynski]
 tags: [tech, architecture, software, engineering]
 --- 
-Software Architecture is an elusive thing. If neglected, it can lead to hasty decisions and unmanageable codebase. In more drastic circumstances it can even lead to the failure of a product. This article discuses one of the backend application
+Software Architecture is an elusive thing which, if neglected, can lead to a hard to develop and maintain codebase, and
+in more drastic circumstances to the failure of a product. This article discuses one of the backend application
 architecture styles which proved to be successful in providing a good foundation for building and maintaining an
 application in the long run: Onion Architecture.
 
@@ -60,7 +61,7 @@ quite recently on our [blog](2021-12-13-clean-architecture-story.md). It can be 
 popular Hexagonal / Ports and Adapters architecture, and as such is predominantly used in the backend, business
 applications and services.
 
-The core concept in all mentioned styles is the same — to make the domain the most central part of the application, and
+The core concept in all the above styles is the same — to make the domain the most central part of the application, and
 remove all infrastructure concerns, such as talking via HTTP, messaging, database mapping, testing, etc., away from the
 domain code. The core of the business logic should be free (in theory at least) from any of the technical, and
 framework-related problems, allowing for easy testing and rapid development.
@@ -178,7 +179,7 @@ Since the domain changes the most — here is the place where you put all the ne
 should be as easy as possible to modify and test. Thus, it should not be concerned which database is used in the
 project, nor should it know which communication style, synchronous RPC calls, asynchronous messaging, or a mix of is
 used to trigger the logic or maybe that it’s triggered by unit tests and not real user interactions. This doesn’t mean
-of course, that the domain classes can’t have any dependencies. Like in the example above — the code uses Lombok
+of course, that the domain classes can’t have any dependencies. Like it the example above — the code uses Lombok
 annotations, generating the boilerplate which otherwise needs to be written by the programmer.
 
 #### The Application Layer
@@ -262,27 +263,6 @@ class NoOpTransactionsFake implements Transactions {
 }
 ```
 
-## Wait! What about context?
-
-It happens quite often that a domain logic requires a more broad context to make a decision, than that of a single
-class, effectively requiring access to the database. If the domain layer does not have such an access, nor the
-application layer, how can that requirement be fulfilled? Fear not, Dependency Inversion Principle to the rescue.
-
-Say, when borrowing a book, the age of the reader has to be verified, and the loan rejected if the reader is below a
-certain threshold defined by the Library policy for the given book category. Here’s how it can be coded.
-
-TODO: przykład z polityką
-
-The Book class can have a borrow method taking two parameters: a `ReaderId` and `BookBorrowingPolicy`. The second argument
-is a class with a single method: `isSatisfiedBy(readerId, bookId)`. The implementation of the class takes a
-`ReaderRepository` interface as constructor parameter — the interface is defined in the domain layer, but its
-implementation lies in the infrastructure. Thus, the domain operates on the high level of abstraction leaving the
-underlying details of talking to a DB, converting from Mongo or MySQL entities into the domain classes to
-infrastructure. Only the business is what it does.
-
-Looking it at a more abstract level, define the desired behaviour at the domain level using interfaces, but flesh it out
-with an implementation on the infra level.
-
 ## The Flavours of The Onion or how to represent layers in code?
 
 There are two basic approaches to representing the layers in the code. The one that we have used in our most recent
@@ -333,20 +313,16 @@ dependencies {
 
     implementation('org.springframework.boot:spring-boot-starter-web')
     implementation('org.springframework.boot:spring-boot-starter-jooq')
- 
+
     // other dependencies and settings removed for brevity
 }
 ```
 
 Notice, that the biggest file is the one for infrastructure layer. It should not be a surprise by now. The
-infrastructure has all the framework — in this case Spring Boot — database driver, and other dependencies, and depends
-on both domain and application. There’s of course nothing preventing you from declaring extra dependencies, say Lombok.
-The most important thing to note here, is that with this build setup it will not be possible to reverse the order of
-dependencies between the layers. Moreover, if you’re using Kotlin as the primary language in your codebase, finally
-the `internal` keyword will make sense. The classes marked as `internal` will not be visible to the
-other layers even when placed in the same package.
-
-TODO przykład z Kotlinem
+infrastructure has all the framework — in this case Spring Boot — database driver, and other dependencies, and itself
+depends on both domain and application. There’s of course nothing preventing you from declaring extra dependencies,
+say Lombok. The most important thing to note here, is that with this build setup it will not be possible to reverse the
+order of dependencies between the layers.
 
 ## Final Thoughts
 
