@@ -1,11 +1,12 @@
 ---
 layout: post
-title: "How we solved performance issue with a few line of code?"
+title: "How we solved a mobile aplication performance issue with a few lines of code?"
 author: [lukasz.solniczek]
 tags: [tech, "Server-driven UI", mobile, mbox, performance]
 excerpt: >
-    Sometimes great results in code performance come after a small code change.
-    We would like to tell you a story about how we changed the Allegro mobile homepage and reduced usage of Allegro service infrastructure with only a few lines of code.
+    Sometimes great results in code performance come after a small amount of work.
+    We'd like to tell you a story about how we changed the Allegro mobile homepage
+    and reduced usage of Allegro service infrastructure with only a few lines of code.
 
 ---
 
@@ -29,7 +30,7 @@ During one year, the number of requests sent to our infrastructure from the Alle
 ### The idea
 
 We have decided to split the homepage content into two parts. The first will be loaded when the user opens the app and will be available immediately.
-And the second part will be loaded when the user scrolls to the end of the first part.
+And the second part would be loaded when the user scrolls to the end of the first part.
 This technique is called lazy loading.
 It is not something new, it is used web-wide in many places, but in our case, we had to think about it differently because …
 
@@ -55,7 +56,7 @@ Action **replaceComponent** loads the second part of the homepage and alters **S
 
 ![Lazy Loading Homepage](/img/articles/2022-10-21-lazy-loading-with-mbox/lazy-loading-homepage.png)
 
-This change was implemented entirely on a server-side and was available on both platforms (iOS and Android) without a new application release.
+This change was implemented entirely on a server-side and was available on both platforms (iOS and Android) **without a new application release**.
 
 These few lines of **MBox** code helped us divide the Allegro homepage into two parts, and fix our original performance problem.
 
