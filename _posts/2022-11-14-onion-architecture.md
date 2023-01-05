@@ -226,7 +226,7 @@ infrastructure layer.
 This layer, the outermost layer of Onion, is a place where all framework, and technology related stuff goes. It tends to
 be the most "thick", since it contains the implementations of the interfaces defined in the more inner layers. Need an
 HTTP controller, a message listener or database adapter (an implementation of repository interface defined at domain
-layer) — infrastructure is the place to go.
+layer)? Infrastructure is the place to go.
 
 The domain, although the most important part of the application, tends to be also the smallest in terms of code size.
 The reverse is true about the infrastructure code — all the supporting mechanisms, which are placed at the
