@@ -4,13 +4,13 @@ title: "How we solved a mobile application performance issue with a few lines of
 author: [lukasz.solniczek]
 tags: [tech, "Server-driven UI", mobile, mbox, performance]
 excerpt: >
-    Sometimes great results in code performance come after a small amount of work.
+    Sometimes great results in code performance come with a small amount of work.
     We'd like to tell you a story about how we changed the Allegro mobile homepage
     and reduced usage of Allegro service infrastructure with only a few lines of code.
 
 ---
 
-Sometimes great results in code performance come after a small amount of work.
+Sometimes great results in code performance come with a small amount of work.
 We'd like to tell you a story about how we changed the Allegro mobile homepage
 and reduced usage of Allegro service infrastructure with only a few lines of code.
 
@@ -43,7 +43,7 @@ If you want to learn more about MBox, you can read its introduction on our blog:
 After discussing the problem and potential solution, it turned out that all the **MBox** building blocks and actions we
 needed to implement lazy-loading with MBox were already there.
 
-### The Soultion
+### The Soulution
 
 Thanks to modular architecture, independent elements, and a clear interface between them, all we needed to do was combine already existing mechanisms.
 
@@ -75,7 +75,7 @@ And here are some results.
 
 ### The result
 
-We have added a logging to our lazy loading solution to gather information about how our user interact with new Allegro homepage.
+We have added metrics to our lazy loading solution to gather information about how our user interact with new Allegro homepage.
 We learned that only about **5% of iOS**, 
 
 ![Lazy Loading mobile requests](/img/articles/2022-10-21-lazy-loading-with-mbox/lazy-loading-mobile-requests-ios.png)
