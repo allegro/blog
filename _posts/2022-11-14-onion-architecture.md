@@ -9,7 +9,7 @@ in more drastic circumstances to the failure of a product. This article discuses
 architecture styles which proved to be successful in providing a good foundation for building and maintaining an
 application in the long run: Onion Architecture.
 
-### Onion Architecture
+## Onion Architecture
 
 Onion Architecture is a software architectural style which strongly promotes the separation of concerns between the most
 important part of a business application — the domain code — and its technical aspects like HTTP or database. It does so
@@ -21,8 +21,7 @@ This post gives a description of the ideas of Onion Architecture and discusses a
 defines layers in the code and build setup.
 
 Additional complexity to the build setup and extra learning curve introduced by the layered approach, pays back during
-the development. It reduces cognitive load on the programmer by giving a more concrete structural foundation and
-guidance.
+development. It reduces cognitive load on the programmer by giving a more concrete structural foundation and guidance.
 
 ### The Repository
 
@@ -40,7 +39,7 @@ spaghetti code was always a painful experience, connected with stressful moments
 no! A gazillion of unrelated tests broke…*
 
 On the other hand, working in a more rigid, but at the same time more expressive, and structured environment of
-well-architected application, was a breeze and a real pleasure. Not to mention that the time required to introduce the
+a well-architected application, was a breeze and a real pleasure. Not to mention that the time required to introduce the
 change was smaller, and the estimates more precise and predictable.
 
 Good architecture guides the implementation, makes it easy to introduce new changes, and — to some degree — prevents
@@ -48,7 +47,7 @@ less experienced team members from making doubtful decisions. It allows develope
 implementation rather than thinking *Hmm where should I put this class?*.
 
 Last but not least, software architecture is often defined as *the things that are hard to change*, so choosing a proper
-architectural approach to your new application is of key importance on its future development and maintenance.
+architectural approach to your new application is of key importance to its future development and maintenance.
 
 ### About the Onion
 
@@ -280,8 +279,8 @@ but in my opinion we can do better by employing build tool modules support.
 ### Build tools to the rescue
 
 The more involved approach is to define compilation modules representing the layers. The con of this approach is a more
-complicated build structure and setup of your build tool of choice. On the flip side though, having the compiler on your
-side is very helpful, and prevents the above-mentioned issue. The direction of the dependencies between layers is
+complicated build structure and setup of your build tool of choice. On the other side though, having the compiler on
+your side is very helpful, and prevents the above-mentioned issue. The direction of the dependencies between layers is
 clearly defined in the module build files.
 
 ```groovy
@@ -292,8 +291,8 @@ include('domain', 'application', 'infrastructure')
 ```
 
 Using Gradle setup as an example, one can define three modules — domain, application, and infrastructure —
-in `settings.gradle` file. Then, in build files corresponding to each of the modules, declare its dependencies, clearly
-defining the direction of dependencies.
+in `settings.gradle` file. Then, in build files corresponding to each of the modules, declare their dependencies,
+clearly defining the direction of dependencies.
 
 ```groovy
 // /application/build.gradle
@@ -341,14 +340,14 @@ order of dependencies between the layers.
 
 ## Final-Final Thoughts
 
-As mentioned above at the beginning of the article, Onion Architecture is not a one-size-fits all solution. It has its
+As mentioned above at the beginning of the article, Onion Architecture is not a one-size-fits-all solution. It has its
 learning curve and is best suited for services with a clear domain definition. This makes it a bad choice, for more
 technical-oriented services, e.g. a high-throughput proxy written in a reactive framework.
 
 ### Footnotes
 
-[^1]: The typical, “classic” enterprise architecture, usually consists of three layers: the presentation layer, the domain layer and the persistence (data) layer. The dependency direction goes top down, and in the strict approach a layer sees only its nearest neighbour. The clear advantage is the separation of concerns, and the reduction of the scope of responsibilities of each layer. There are two issues though — that architecture style often leads to a so-called [anemic domain model](https://martinfowler.com/bliki/AnemicDomainModel.html), since most of the business logic is placed in service classes, because, and that’s the second issue domain classes depend on the persistence layer — and often become only data carriers without behaviour. For comparison of different software architecture styles, see [Software Architecture Patterns](https://get.oreilly.com/rs/107-FMS-070/images/Software-Architecture-Patterns.pdf) (e-book, pdf)
+[^1]: The typical, “classic” enterprise architecture, usually consists of three layers: the presentation layer, the domain layer and the persistence (data) layer. The dependency direction goes top down, and in the strict approach a layer sees only its nearest neighbour. The clear advantage is the separation of concerns, and the reduction of the scope of responsibilities of each layer. There are two issues though — that architecture style often leads to a so-called [anemic domain model](https://martinfowler.com/bliki/AnemicDomainModel.html), since most of the business logic is placed in service classes, because, and that’s the second issue, domain classes depend on the persistence layer — and often become only data carriers without behaviour. For comparison of different software architecture styles, see [Software Architecture Patterns](https://get.oreilly.com/rs/107-FMS-070/images/Software-Architecture-Patterns.pdf) (e-book, pdf)
 
 [^2]: The term has been popularised by Robert C. Martin, and describes an approach to code design based on two premises: a) High-level modules should not import anything from low-level modules. Both should depend on abstractions (e.g., interfaces). b) Abstractions should not depend on details. Details (concrete implementations) should depend on abstractions. See linked article for detailed explanation.
 
-[^3]: The number of layers may differ. The three-tier division is usually sometimes called Simplified Onion Architecture. Another possible rendition of the division is to have five layers with a separate Repository layer above the domain and service layer above the repositories. I find that division to be a step towards over-engineering, and found that the 3-layered approach strikes the best balance.
+[^3]: The number of layers may differ. The three-tier division is usually called Simplified Onion Architecture. Another possible rendition of the division is to have five layers with a separate Repository layer above the domain and service layer above the repositories. I find that division to be a step towards over-engineering, and found that the 3-layered approach strikes the best balance.
