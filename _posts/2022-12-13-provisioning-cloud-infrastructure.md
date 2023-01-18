@@ -13,7 +13,7 @@ That is why the complexities are often hidden.
 We try to hide networks, disks and IO, memory and CPU behind abstractions pretending that those are all reliable components. 
 
 That is also what Cloud computing promises. Resources available on demand, cheap, scalable and flexible The promise has its allure.
-More and more companies start in the Cloud, migrate or use Cloud as a levee that can help offload overflow traffic during unexpected peaks. 
+Increasingly, companies are beginning in the Cloud, migrating, or utilizing the Cloud as a buffer for unexpected surges in traffic.
 
 There is no doubt that Cloud and overall approach to hardware have matured in recent years adopting practices that proved useful in software development.
 In this post I would like to explain how Allegro tries to manage Cloud and hide its inherent intricacies. 
