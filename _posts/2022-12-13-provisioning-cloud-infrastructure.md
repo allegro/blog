@@ -2,7 +2,7 @@
 layout: post
 title: Automating Cloud - hiding complexity of hardware provisioning
 author: lukasz.rokita
-tags: [java, k8s, cloud, gcp, terraform, iaac]
+tags: [java, k8s, cloud, gcp, terraform, iac]
 ---
 
 Hardware is always hard. The amount of operations, maintenance and planning that goes into supporting a data center 
@@ -15,21 +15,22 @@ We try to hide networks, disks and IO, memory and CPU behind abstractions preten
 That is also what Cloud computing promises. Resources available on demand, cheap, scalable and flexible The promise has its allure.
 Increasingly, companies are beginning in the Cloud, migrating, or utilizing the Cloud as a buffer for unexpected surges in traffic.
 
-There is no doubt that Cloud and overall approach to hardware have matured in recent years adopting practices that proved useful in software development.
+There is no doubt that Cloud and overall approach to hardware have matured in recent years,
+adopting practices that proved useful in software development.
 In this post I would like to explain how Allegro tries to manage Cloud and hide its inherent intricacies. 
 
-## Infrastructure as a Code
+## Infrastructure as Code
 
-The cornerstone of hardware management is a methodology called Infrastructure as a Code. Long gone are the days of brave men and women 
+The cornerstone of hardware management is a methodology called Infrastructure as Code. Long gone are the days of brave men and women 
 that would roam data centers and manually install OS, plug cables into network interfaces and set up mainframes.
 Right now all those operations are still there but are abstracted away through a layer of standard components. 
 
-Thus, every component can be set up as a piece of code. Each IaaC tool has its own unique set of strengths and weaknesses,
+Thus, every component can be set up as a piece of code. Each IaC tool has its own unique set of strengths and weaknesses,
 and it is crucial for teams to carefully weigh these factors before adoption.
 
-At Allegro we settled on Terraform. Code deploying infrastructure has to be versioned, reviewed and then executed.
+At Allegro we settled on [Terraform](https://www.terraform.io/). Code deploying infrastructure has to be versioned, reviewed and then executed.
 We also use a set of standard modules that enforce consistent setup. However, not everyone is a Cloud Engineer and not everyone has to be.
-That is why we created yet another layer of abstraction that aims at simplifying IaaC even further.
+That is why we created yet another layer of abstraction that aims at simplifying IaC even further.
 
 ## The Requirements
 
@@ -39,8 +40,8 @@ and feeding them to the organization to help make the correct decisions.
 
 Knowing that, we had a simple requirement. Streamline creation of Cloud infrastructure that is needed to analyse and process large volumes of data.
 
-To assure eager adoption.
-We needed to establish a set of standard tools, permissions, and practices that would be widely used among data analytics teams,
+To assure eager adoption,
+we needed to establish a set of standard tools, permissions, and practices that would be widely used among data analytics teams,
 and so we created an architecture that would support any current or future needs.
 
 ## The Solution
@@ -89,7 +90,7 @@ One has to choose freedom and maintenance cost over defaults and ease of getting
 
 ### Artifact
 
-Once the IaaC gets reviewed and accepted, whether DSL or Terraform, it gets packaged into an artifact.
+Once the IaC gets reviewed and accepted, whether DSL or Terraform, it gets packaged into an artifact.
 The artifact is an immutable, versioned archive that contains infrastructure's definition.
 We prevent manual changes by revoking permissions ine the Cloud. This means that we have a controlled and auditable environment.
 An added bonus is that we can easily roll back to the previous version should the change prove wrong. 
@@ -164,7 +165,7 @@ Thus we sometimes land on an island of incoherent state. Occasionally, the autom
 The runtime thinks that the infrastructure should look different than it is actually provisioned, reports that
 it can’t reconcile the state automatically and fails. This requires manual intervention which always worsens the user experience. 
 
-At the end of the day Cloud uses different primitives than software does and Infrastructure as a Code can't address that.
+At the end of the day Cloud uses different primitives than software does and Infrastructure as Code can't address that.
 You don’t have atomic operations so provisioning a service can fail or land in an unknown state.
 You also can’t run unit tests for infrastructure without actually running a deployment.
 In essence you have a Schrödingers Cloud - you won’t be sure what will happen until you execute your change.
