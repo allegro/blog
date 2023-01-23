@@ -34,7 +34,7 @@ That is why we created yet another layer of abstraction that aims at simplifying
 
 ## The Requirements
 
-We did that because our audience are Data Scientists and Data Analysts. People who, although make heavy use of Cloud,
+We did that because our audience are Data Scientists and Data Analysts. People who, although they make heavy use of Cloud,
 should be insulated from the complexities of its tools. Their day to day work focuses on finding new insights in the data
 and feeding them to the organization to help make the correct decisions. 
 
@@ -65,7 +65,7 @@ infrastructure:
         parameters:
           airflow_config_overrides:
             email-email_backend: airflow.utils.email.send_email_smtp
-            smtp-smtp_host: "smtp.qxlint"
+            smtp-smtp_host: "smtp.gateway.my.domain"
             smtp-smtp_mail_from: "my-team@allegro.pl"
             smtp-smtp_starttls: False
             smtp-smtp_user: ""
@@ -91,8 +91,8 @@ One has to choose freedom and maintenance cost over defaults and ease of getting
 ### Artifact
 
 Once the IaC gets reviewed and accepted, whether DSL or Terraform, it gets packaged into an artifact.
-The artifact is an immutable, versioned archive that contains infrastructure's definition.
-We prevent manual changes by revoking permissions ine the Cloud. This means that we have a controlled and auditable environment.
+The artifact is an immutable, versioned archive that contains infrastructure’s definition.
+We prevent manual changes by revoking permissions in the the Cloud. This means that we have a controlled and auditable environment.
 An added bonus is that we can easily roll back to the previous version should the change prove wrong. 
 
 Internally, the artifact is a simple zip archive that can be extracted and inspected by hand to see whether it really contains what we expect. 
@@ -152,7 +152,7 @@ From my point of view the good parts are what every engineer likes about a solut
 We achieved that by packaging the deployment into a couple of simple, decoupled steps.
 We based the solution on an existing process for microservices, which should already look familiar to everyone at Allegro.
 We provide extensive documentation, support for all people that use our deployment process, and try to exhaustively test every change
-so that users can focus on what's important in their day to day tasks and think of Cloud as just another data center.
+so that users can focus on what’s important in their day to day tasks and think of Cloud as just another data center.
 
 ## The Bad
 
@@ -165,7 +165,7 @@ Thus we sometimes land on an island of incoherent state. Occasionally, the autom
 The runtime thinks that the infrastructure should look different than it is actually provisioned, reports that
 it can’t reconcile the state automatically and fails. This requires manual intervention which always worsens the user experience. 
 
-At the end of the day Cloud uses different primitives than software does and Infrastructure as Code can't address that.
+At the end of the day Cloud uses different primitives than software does and Infrastructure as Code can’t address that.
 You don’t have atomic operations so provisioning a service can fail or land in an unknown state.
 You also can’t run unit tests for infrastructure without actually running a deployment.
 In essence you have a Schrödingers Cloud - you won’t be sure what will happen until you execute your change.
