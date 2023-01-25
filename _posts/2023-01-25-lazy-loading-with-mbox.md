@@ -25,7 +25,7 @@ A lot was happening there.
 It was not a big problem earlier but became one when the number of users of our applications started growing, after the outbreak of the COVID-19 pandemic.
 Within one year, the number of requests sent to our infrastructure from the Allegro homepage increased almost 3 times, consequently becoming a performance issue.
 
-![Lazy Loading Homepage](/img/articles/2022-10-21-lazy-loading-with-mbox/lazy-loading-rps.png)
+![Lazy Loading Homepage](/img/articles/2023-01-25-lazy-loading-with-mbox/lazy-loading-rps.png)
 
 ### The idea
 
@@ -54,7 +54,7 @@ At the end of the first part of the Allegro homepage, we added **Spinner** compo
 
 Action **replaceComponent** loads the second part of the homepage and alters **Spinner** with it.
 
-![Lazy Loading Homepage](/img/articles/2022-10-21-lazy-loading-with-mbox/lazy-loading-homepage.png)
+![Lazy Loading Homepage](/img/articles/2023-01-25-lazy-loading-with-mbox/lazy-loading-homepage.png)
 
 This change was implemented entirely server-side and was available on both platforms (iOS and Android) **without a new application release**.
 
@@ -78,28 +78,28 @@ And here are some results.
 We have added metrics to our lazy loading solution to gather information about how our users interact with new Allegro homepage.
 We learned that only about **5% of iOS**,
 
-![Lazy Loading mobile requests](/img/articles/2022-10-21-lazy-loading-with-mbox/lazy-loading-mobile-requests-ios.png)
+![Lazy Loading mobile requests](/img/articles/2023-01-25-lazy-loading-with-mbox/lazy-loading-mobile-requests-ios.png)
 
 and about **10% of Android** users
 
-![Lazy Loading mobile requests](/img/articles/2022-10-21-lazy-loading-with-mbox/lazy-loading-mobile-requests-android.png)
+![Lazy Loading mobile requests](/img/articles/2023-01-25-lazy-loading-with-mbox/lazy-loading-mobile-requests-android.png)
 
 load the second part of the Allegro homepage.
 Most users do not scroll down, and preparing the entire homepage at once was an unnecessary use of our resources.
 
 The Allegro app measures **First Meaningful Paint (FMP)** for screen content. This metric shows us how quickly the primary content is visible to the user.
 
-![Lazy loading fmp](/img/articles/2022-10-21-lazy-loading-with-mbox/lazy-loading-fmp.png)
+![Lazy loading fmp](/img/articles/2023-01-25-lazy-loading-with-mbox/lazy-loading-fmp.png)
 
 After introducing lazy loading, **FMP** improved, and the first content is visible to users **61% faster** than before on both platforms (iOS and Android).
 
 **FMP** improved because we reduced the response size of the Allegro homepage load by **about 90%**,
 
-![Lazy loading response size](/img/articles/2022-10-21-lazy-loading-with-mbox/lazy-loading-response-size.png)
+![Lazy loading response size](/img/articles/2023-01-25-lazy-loading-with-mbox/lazy-loading-response-size.png)
 
 and the backend rendering time by **about 56%**.
 
-![Lazy loading render time](/img/articles/2022-10-21-lazy-loading-with-mbox/lazy-loading-render-time.png)
+![Lazy loading render time](/img/articles/2023-01-25-lazy-loading-with-mbox/lazy-loading-render-time.png)
 
 We could do that because, when we load the homepage for a user, we use **about 90% fewer** data sources than before.
 
