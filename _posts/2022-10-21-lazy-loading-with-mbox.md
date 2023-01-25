@@ -34,7 +34,7 @@ And the second part would load when the user scrolls to the end of the first par
 This technique is called lazy loading.
 It is not something new, it is used web-wide in many places, but in our case, we had to think about it differently because …
 
-... we built the Allego homepage in applications using **MBox**, the server-driven UI solution created at Allegro, which means that the content and screen logic is defined entirely on the server side. 
+... we built the Allego homepage in applications using **MBox**, the server-driven UI solution created at Allegro, which means that the content and screen logic is defined entirely on the server side.
 Implementation of lazy loading for the Allegro homepage also had to be done on the server side.
 
 > What is **MBox**? It is our **Server-Driven UI (SDUI)** solution, which we use at Allegro to create and release mobile screens faster on both platforms (iOS and Android). It is a collection of building blocks that let us develop views and actions that link MBox screens with other parts of the application or introduce some interaction on a screen.
@@ -43,7 +43,7 @@ If you want to learn more about MBox, you can read its introduction on our blog:
 After discussing the problem and potential solution, it turned out that all the **MBox** building blocks and actions we
 needed to implement lazy-loading with MBox were already there.
 
-### The Soulution
+### The solution
 
 Thanks to modular architecture, independent elements, and a clear interface between them, all we needed to do was combine already existing mechanisms.
 
@@ -76,7 +76,7 @@ And here are some results.
 ### The result
 
 We have added metrics to our lazy loading solution to gather information about how our users interact with new Allegro homepage.
-We learned that only about **5% of iOS**, 
+We learned that only about **5% of iOS**,
 
 ![Lazy Loading mobile requests](/img/articles/2022-10-21-lazy-loading-with-mbox/lazy-loading-mobile-requests-ios.png)
 
@@ -93,7 +93,7 @@ The Allegro app measures **First Meaningful Paint (FMP)** for screen content. Th
 
 After introducing lazy loading, **FMP** improved, and the first content is visible to users **61% faster** than before on both platforms (iOS and Android).
 
-**FMP** improved because we reduced the response size of the Allegro homepage load by **about 90%**, 
+**FMP** improved because we reduced the response size of the Allegro homepage load by **about 90%**,
 
 ![Lazy loading response size](/img/articles/2022-10-21-lazy-loading-with-mbox/lazy-loading-response-size.png)
 
