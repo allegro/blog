@@ -96,9 +96,13 @@ Let’s also connect to a different node in our replica set:
 
 We can verify here that the data is present:
 
-```db.blog.find()```
+```
+db.blog.find()
+```
 
 This should return all our data that we inserted earlier.
+
+
 ```javascript
 [
     {
@@ -249,8 +253,9 @@ val db = client.getDatabase("blog")
 val blogCollection = db.getCollection("blogPost", BlogPost::class.java)
 val session = client.startSession()
 try {
-    blogCollection.insertOne(session, BlogPost())
     session.startTransaction(TransactionOptions.builder().writeConcern(WriteConcern.MAJORITY).build())
+    blogCollection.insertOne(session, BlogPost())
+    session.commitTransaction()
 } catch (e: MongoCommandException) {
     session.abortTransaction()
 } finally {
