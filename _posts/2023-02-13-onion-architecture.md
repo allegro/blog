@@ -336,8 +336,6 @@ Problems Onion Architecture creates
 - Increased overall complexity of the codebase — especially with the flavour utilising the modularizing capabilities of build tools such as Gradle or Maven
 - Not everyone likes the smell of it
 
-## Final-Final Thoughts
-
 As mentioned above at the beginning of the article, Onion Architecture is not a one-size-fits-all solution. It has its
 learning curve and is best suited for services with a clear domain definition. This makes it a bad choice, for more
 technical-oriented services, e.g. a high-throughput proxy written in a reactive framework.
