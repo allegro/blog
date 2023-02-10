@@ -94,7 +94,7 @@ There are three[^3] main layers in Onion Architecture:
 - The infrastructure layer
   each of which has its responsibilities.
 
-![Onion Architecture Layers](/img/articles/2022-11-14-onion-architecture/onion-layers.png)
+![Onion Architecture Layers](/img/articles/2023-12-13-onion-architecture/onion-layers.png)
 
 #### The Domain Layer
 
@@ -264,7 +264,7 @@ class NoOpTransactionsFake implements Transactions {
 There are two basic approaches to representing the layers in the code. The one that we used in our most recent
 project was to use a package naming convention.
 
-![onion packages](/img/articles/2022-11-14-onion-architecture/onion-packages.png)
+![onion packages](/img/articles/2023-12-13-onion-architecture/onion-packages.png)
 
 Every domain package has three subpackages: domain, application and infrastructure. This method is clear, easy to
 understand and navigate, and does not require changes to the build tool setup. The downside is that, except for the
