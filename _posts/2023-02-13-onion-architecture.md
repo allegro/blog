@@ -14,7 +14,7 @@ application in the long run: Onion Architecture.
 Onion Architecture is a software architectural style which strongly promotes the separation of concerns between the most
 important part of a business application — the domain code — and its technical aspects like HTTP or database. It does so
 with ideas similar to [Hexagonal Architecture](https://en.wikipedia.org/wiki/Hexagonal_architecture_(software)),
-[Clean Architecture](2021-12-13-clean-architecture-story.md) and
+[Clean Architecture](/2021/12/clean-architecture-story.html) and
 [other related architecture styles](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html).
 
 This post gives a description of the ideas of Onion Architecture and discusses a sample implementation which explicitly
