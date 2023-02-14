@@ -4,6 +4,31 @@
 @import "_header";
 @import "_footer";
 
+:root {
+    --m-color-desk: hsl(204, 15%, 94%);
+    --m-color-card:hsl(0, 0%, 100%);
+    --m-color-text: hsl(0, 0%, 13%);
+    --m-color-link: hsl(208, 100%, 40%);
+    --m-color-link-active: hsl(208, 65%, 80%);
+    --m-color-link-visited: hsl(208, 100%, 30%);
+    --m-color-link-visited-active:hsl(208, 63%, 45%);
+    --m-color-link-hover: hsl(208, 63%, 45%);
+    --m-color-border: hsl(0, 0%, 67%);
+}
+  
+@media (prefers-color-scheme: dark) {
+    :root {
+        --m-color-desk: hsl(0, 0%, 7%);
+        --m-color-card: hsl(0, 0%, 12%);
+        --m-color-text: hsl(0, 0%, 85%);
+        --m-color-link: hsl(208, 63%, 75%);
+        --m-color-link-visited: hsl(208, 100%, 66%);
+        --m-color-link-visited-active:hsl(208, 53%, 56%);
+        --m-color-link-hover: hsl(208, 57%, 68%);
+        --m-color-border: hsl(0, 0%, 30%);
+    }
+}
+
 html,
 body,
 ul,
@@ -17,11 +42,11 @@ html {
 }
 
 body {
-    background: #fff;
+    background: var(--m-color-card);
     font-family: 'Open Sans', Arial, sans-serif;
     font-size: 1.6em;
     line-height: 1.5;
-    color: #333;
+    color: var(--m-color-text);
 }
 
 .responsive-content {
@@ -73,20 +98,20 @@ h2 {
 }
 
 a:link {
-    color: #00a790;
+    color: var(--m-color-link);
     text-decoration: none;
 }
 
 a:visited {
-    color: #006456;
+    color: var(--m-color-link-visited);
 }
 
 a:hover {
-    color: #54cab6;
+    color: var(--m-color-link-hover);
 }
 
 a:active {
-    color: #7fdcca;
+    color: var(--m-color-link-active);
 }
 
 
@@ -101,7 +126,7 @@ a:active {
     margin: 161px auto 0;
     background: #35769e;
     padding: 32px;
-    color: #fff;
+    color: var(--m-color-card);
     z-index: 20;
 
     h2 {
