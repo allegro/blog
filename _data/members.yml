@@ -339,7 +339,9 @@ anna.wroblewska:
 
 lukasz.raczkowski:
     name: Łukasz Rączkowski
-    bio: Łukasz is a software engineer with a deep passion for science. He combines his work at Allegro with pursuing a PhD at the University of Warsaw. He wants to change the world for the better with his work as a computer scientist.
+    bio: Senior Research Engineer in the Machine Learning Research team at Allegro, where he works on applying and advancing NLP methods in the e-commerce domain. PhD candidate at the University of Warsaw, where he focuses on machine learning methods for histopathology.
+    linkedin: łukaszrączkowski
+    twitter: animgoeth
 
 tomasz.fijalkowski:
     name: Tomasz Fijałkowski
@@ -825,3 +827,23 @@ lukasz.solniczek:
     name: Łukasz Solniczek
     bio: iOS Mobile Software Engineer. Works on MBox - the Server-driven UI tool.
     linkedin: lukaszsolniczek
+    
+aleksandra.osowska-kurczab:
+    name: Aleksandra Osowska-Kurczab
+    bio: Research Engineer in the Machine Learning Research team, working on large-scale recommendation systems. She's pursuing her PhD in Computer Science at Warsaw University of Technology on deep learning in medical image analysis. AI enthusiast and geek. 
+    linkedin: aleksandra-osowska-kurczab
+    
+jacek.szczerbinski:
+    name: Jacek Szczerbiński
+    bio: Jacek Szczerbiński obtained his PhD in Chemistry from ETH Zurich. He then fell in love with ML and turned a Research Engineer at Allegro. Currently he is studying robustness of text classifiers against mislabeled training data. His superpower is explaining ML to non-technical people.
+    linkedin: szcz
+    
+klaudia.nazarko:
+    name: Klaudia Nazarko
+    bio: Research Engineer in the Machine Learning Research team working on large-scale recommendation systems.
+    linkedin: klaudianazarko
+    
+kalina.kobus:
+    name: Kalina Kobus
+    bio: Senior Research Engineer in the Machine Learning Research team, working on NLP in the e-commerce domain.
+    linkedin: kalina-jasinska-kobus-65687983
