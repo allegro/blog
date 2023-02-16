@@ -37,7 +37,7 @@ that for high noise levels, it is very hard to recover the true training signal 
 to correctly labelled examples. The dataset used here was ImageNet, corrupted with synthetic label noise.
 Image source: [[1]][robustness].
 
-How can this problem be mitigated? One approach is to simply put more effort into the labeling process - we can let
+How can this problem be mitigated? One approach is to simply put more effort into the labeling process — we can let
 multiple annotators label each data point and then evaluate the cross-annotator agreement. With enough time and effort,
 we hope to obtain a dataset free of label noise. However, in practice this approach is rarely feasible due to large
 volumes of training data and the need for efficient turnaround of machine learning projects. Consequently, we need
@@ -185,7 +185,7 @@ no severe computational overhead.
 Every offer has its right place at Allegro, belonging to one out of over 23,000 categories. The category structure
 is a tree consisting of:
 - the root (Allegro),
-- up to 7 levels of intermediate nodes (departments, metacategories, *etc.*) - over 2,600 nodes in total,
+- up to 7 levels of intermediate nodes (departments, metacategories, *etc.*) — over 2,600 nodes in total,
 - over 23,000 leaves.
 
 Offers located in wrong categories are hard to find and hard to buy. As such, we need a way to properly assign offers
@@ -194,7 +194,7 @@ for Allegro offers.
 
 The model in question is a large language model pre-trained on the Allegro catalogue (see more
 in [<i>Do you speak Allegro?</i>](https://www.youtube.com/watch?v=6T-R4kgIbBs&list=PLzveSKBX_3N7yPb4ErB5HJ83eB6XvH37C&index=20)) and fine-tuned for offer classification. Specifically, the downstream task here is extreme text classification: each offer is represented with
-text (title) and is classified into over 23,000 categories - hence the word <i>extreme</i>.
+text (title) and is classified into over 23,000 categories — hence the word <i>extreme</i>.
 
 Classification is particularly challenging for offers listed in ambiguous categories like *Other, Accessories, etc.*
 These categories are broad and hard to navigate, as they contain a wide variety of products. Most of those products
@@ -299,7 +299,7 @@ Cross-Entropy. Therefore, the accuracy for those methods was exactly the same as
 For mixup, the difference from the baseline was within the standard deviation range, so it was marked as no improvement
 as well.
 
-For CCE and JSD the performance degraded, but only slightly - by 0.04 p.p. for the former and 0.34 p.p. for the latter.
+For CCE and JSD the performance degraded, but only slightly — by 0.04 p.p. for the former and 0.34 p.p. for the latter.
 This drop is an acceptable compromise considering the robustness to noise that these methods enable (see below).
 
 ELR was the only method that improved upon the baseline, by 0.07 p.p. As ELR relies on temporal ensembling, which
@@ -328,7 +328,7 @@ to the baseline, while light blue denotes improvement. *Notation*: (mean $\pm$ s
             <td style="border-bottom-width: thick;">85.31 ± 0.08</td>
         </tr>
         <tr>
-            <td rowspan=5 style="font-weight:bold;transform: rotate(180deg);writing-mode: vertical-rl;text-align: center;vertical-align: middle;width: 4.5em">
+            <td rowspan=5 style="font-weight:bold;transform: rotate(180deg);writing-mode: vertical-rl;text-align: center;vertical-align: middle;width: 3em">
                 Robust loss<br>function
             </td>
             <td>Self-Paced Learning (SPL)</td>
@@ -356,7 +356,7 @@ to the baseline, while light blue denotes improvement. *Notation*: (mean $\pm$ s
             <td style="background:#E1F4F4;color:black">89.24 ± 0.01</td>
         </tr>
         <tr>
-            <td rowspan=2 style="font-weight:bold;transform: rotate(180deg);writing-mode: vertical-rl;white-space: wrap;text-align: center;vertical-align: middle;width: 4.5em;height: 8em">
+            <td rowspan=2 style="font-weight:bold;transform: rotate(180deg);writing-mode: vertical-rl;white-space: wrap;text-align: center;vertical-align: middle;width: 3em;height: 8em">
                 Implicit regularisation
             </td>
             <td>Co-teaching (CT)</td>
@@ -378,7 +378,7 @@ All methods discussed in this study improved the model's performance on the nois
 CT, SPL, PRL performed a bit worse, but still proved to be quite robust, improving upon the baseline by 3.41 p.p.,
 3.2 p.p. and 3.0 p.p., respectively.
 
-Mixup is a clear outlier - while it does improve upon the baseline by 0.71 p.p., this increase is noticeably smaller
+Mixup is a clear outlier — while it does improve upon the baseline by 0.71 p.p., this increase is noticeably smaller
 than for the other evaluated methods. Our interpretation is that the linear augmentation at the heart of this method
 regularises the DNN, but does not address label noise *per se*. Mixup treats all samples equally, even if their labels
 are corrupted. The marginal improvement upon the baseline is evident in the validation accuracy training curve
