@@ -316,7 +316,7 @@ to the baseline, while light blue denotes improvement. *Notation*: (mean $\pm$ s
             <th rowspan=2 colspan=2 style="text-align:center">Method</th>
             <th style="text-align:center" colspan=2>Test accuracy [%]</th>
         </tr>
-        <tr style="background:white">
+        <tr>
             <th style="text-align:center">clean dataset</th>
             <th style="text-align:center">noisy dataset</th>
         </tr>
@@ -324,49 +324,49 @@ to the baseline, while light blue denotes improvement. *Notation*: (mean $\pm$ s
     <tbody>
         <tr>
             <td colspan=2 style="border-bottom-width: thick;text-align:center;font-weight:bold">Baseline</td>
-            <td style="border-bottom-width: thick;">90.26 &#177 0.03</td>
-            <td style="border-bottom-width: thick;">85.31 &#177 0.08</td>
+            <td style="border-bottom-width: thick;">90.26 ± 0.03</td>
+            <td style="border-bottom-width: thick;">85.31 ± 0.08</td>
         </tr>
-        <tr style="background:white">
+        <tr>
             <td rowspan=5 style="font-weight:bold;transform: rotate(180deg);writing-mode: vertical-rl;text-align: center;vertical-align: middle;width: 4.5em">
                 Robust loss<br>function
             </td>
             <td>Self-Paced Learning (SPL)</td>
-            <td>90.26 &#177 0.03</td>
-            <td style="background:#E1F4F4">88.51 &#177 0.02</td>
+            <td>90.26 ± 0.03</td>
+            <td style="background:#E1F4F4;color:black">88.51 ± 0.02</td>
         </tr>
         <tr>
             <td>Provably Robust Learning (PRL)</td>
-            <td>90.26 &#177 0.03</td>
-            <td style="background:#E1F4F4">88.31 &#177 0.02</td>
+            <td>90.26 ± 0.03</td>
+            <td style="background:#E1F4F4;color:black">88.31 ± 0.02</td>
         </tr>
-        <tr style="background:white">
+        <tr>
             <td>Clipped Cross-Entropy (CCE)</td>
-            <td style="background:#ffdecb">90.22 &#177 0.03</td>
-            <td style="font-weight:bold;background:#E1F4F4">89.51 &#177 0.01</td>
+            <td style="background:#ffdecb;color:black">90.22 ± 0.03</td>
+            <td style="font-weight:bold;background:#E1F4F4;color:black">89.51 ± 0.01</td>
         </tr>
         <tr>
             <td>Early Learning Regularisation (ELR)</td>
-            <td style="font-weight:bold;background:#E1F4F4">90.33 &#177 0.01</td>
-            <td style="background:#E1F4F4">89.29 &#177 0.03</td>
+            <td style="font-weight:bold;background:#E1F4F4;color:black">90.33 ± 0.01</td>
+            <td style="background:#E1F4F4;color:black">89.29 ± 0.03</td>
         </tr>
-        <tr style="background:white">
+        <tr>
             <td>Jensen-Shannon Divergence (JSD) </td>
-            <td style="background:#ffdecb">89.92 &#177 0.02</td>
-            <td style="background:#E1F4F4">89.24 &#177 0.01</td>
+            <td style="background:#ffdecb;color:black">89.92 ± 0.02</td>
+            <td style="background:#E1F4F4;color:black">89.24 ± 0.01</td>
         </tr>
         <tr>
             <td rowspan=2 style="font-weight:bold;transform: rotate(180deg);writing-mode: vertical-rl;white-space: wrap;text-align: center;vertical-align: middle;width: 4.5em;height: 8em">
                 Implicit regularisation
             </td>
             <td>Co-teaching (CT)</td>
-            <td>90.26 &#177 0.03</td>
-            <td style="background:#E1F4F4">88.72 &#177 0.03</td>
+            <td>90.26 ± 0.03</td>
+            <td style="background:#E1F4F4;color:black">88.72 ± 0.03</td>
         </tr>
-        <tr style="background:white">
+        <tr>
             <td>Mixup</td>
-            <td>90.27 &#177 0.02</td>
-            <td style="background:#E1F4F4">86.02 &#177 0.06</td>
+            <td>90.27 ± 0.02</td>
+            <td style="background:#E1F4F4;color:black">86.02 ± 0.06</td>
         </tr>
     </tbody>
 </table>
