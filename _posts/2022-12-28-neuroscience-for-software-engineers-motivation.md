@@ -5,12 +5,10 @@ author: [paulina.szwed]
 tags: [tech, "soft skills", neuroscience, productivity]
 ---
 
-## Introduction
-
 Many of us, software engineers, have experienced those days when nothing really sparks joy in coding, debugging,
-preparing spikes or refining tasks for the next sprints. We would like to have as few of them as possible in order to
-deliver quality solutions in a timely manner, to learn new skills and to go through meetings effectively. A solution to
-this is definitely not tormenting our brains with guilt and forced labour — there are other ways, and I would like to
+preparing spikes or refining tasks for the next sprints. We would like to have as few of such days as possible in order
+to deliver quality solutions in a timely manner, to learn new skills and to go through meetings effectively. A solution
+to this is definitely not tormenting our brains with guilt and forced labour — there are other ways, and I would like to
 invite you to explore them with me and learn a little about our nervous systems in the process. We’ll find out where the
 motivation comes from on a biological and psychological level. We’ll also take a look at the changes you can introduce
 into your day to take advantage of certain mechanisms working on a neural level and boost your motivation and
@@ -30,8 +28,8 @@ neurons).
 
 In general, high levels of dopamine cause high drive, motivation and willingness to live, do and experience. Low levels
 of dopamine cause the opposite state — a lack of will to do any effort (doomscrolling or examining the contents of the
-fridge is still in ou). How much dopamine is currently in our system, how much dopamine there was a moment ago and how
-much we remember enjoying a particular state is for our brains a way to set our level of motivation.
+fridge is still in our reach). How much dopamine is currently in our system, how much dopamine there was a moment ago
+and how much we remember enjoying a particular state is for our brains a way to set our level of motivation.
 
 ### The workspace
 
@@ -45,7 +43,7 @@ ventral tegmental area (VTA) to the hippocampus, the nucleus accumbens and prefr
 
 ![Dopamine pathways in the brain](
 /img/articles/2022-12-28-neuroscience-for-software-engineers-motivation/1280px-Dopamine_pathways.svg.png
-"Dopamine pathways in the brain (from [Wikipedia](https://en.wikipedia.org/wiki/Dopamine#/media/File:Dopamine_pathways.svg))")
+"Dopamine pathways in the brain (Public Domain from [Wikipedia](https://en.wikipedia.org/wiki/Dopamine#/media/File:Dopamine_pathways.svg))")
 
 The complexity of this structure might be a hint for us, that there are a lot of implications of dopamine release but
 also many different ways to interact with this area.
@@ -85,7 +83,7 @@ for our society.
 
 ## How to get and stay motivated
 
-After that long lecture on neurobiology, those who are still with me may be asking a question “are we there yet”? Yes,
+After that long lecture on neurobiology, those who are still with me may be asking the question “are we there yet”? Yes,
 we are! That knowledge is going to let us dive into different strategies of managing our dopamine levels, hence
 modulating our motivation.
 
@@ -160,7 +158,7 @@ while we work. Listen to music while working — just not every time. Have that 
 with friends for a workout session — but also have those individual sessions once in a while.
 
 Some of us spend our time on meetings while trying to do our individual work at the same time. Some listen to podcasts
-while coding. Though we should keep in mind that multitasking is another way of layering dopamine and doing that on a
+while coding. We should keep in mind, though, that multitasking is another way of layering dopamine and doing that on a
 daily basis will have a negative effect on general motivation.
 
 ![A man multitasking at work ](
@@ -185,8 +183,8 @@ fulfilled. This is how intrinsic motivation works — no external reward is requ
 it be great if you had that in your job?
 
 Research shows that intrinsic motivation brings better results than extrinsic motivation. One could ask a question —
-what if we bring those two things together? Well, the results might surprise you. Researchers gave out to participants a
-rather enjoyable task like assembling the puzzles or drawing and measured their motivation to do so. Then, they
+what if we brought those two things together? Well, the results might surprise you. Researchers gave out to participants
+a rather enjoyable task like assembling the puzzles or drawing and measured their motivation to do so. Then, they
 introduced small rewards for finishing the puzzles. Curiously, the participants were no longer as motivated as at the
 beginning.
 
@@ -223,9 +221,9 @@ which is associated with higher dopamine levels.
 ## Summary
 
 After reading this post you should be aware of how your dopamine mechanisms work and how to use your biological hardware
-in order to modulate your overall motivation. What I want you to remember is that most important for your motivation is
-maintaining a high baseline dopamine level. You can achieve this by several means like avoiding dopamine peaks,
-differentiating stimuli when you work, exposing yourself to cold water or meditation. It’s also important to focus
+in order to modulate your overall motivation. What I want you to remember is that the thing most important for your
+motivation is maintaining a high baseline dopamine level. You can achieve this by several means such as avoiding dopamine
+peaks, differentiating stimuli when you work, exposing yourself to cold water or meditation. It’s also important to focus
 mostly (preferably only) on your intrinsic motivation to avoid the undermining effect.
 
 I hope provided information is going to be useful for you and help you slightly improve your professional life. See you
