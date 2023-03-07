@@ -35,7 +35,7 @@ that for high noise levels, it is very hard to recover the true training signal 
 <figure>
     <a id="figure2"></a>
     <img alt="Oh no, please, not the noise!" src="/img/articles/2023-02-16-learning-from-noisy-data/figure2-test-accuracy.png" style="display:block;float:none;margin-left:auto;margin-right:auto;width:70%;margin-bottom:10px">
-    <figcaption> <b> Figure 2. Test accuracy as a function of label noise percentage. </b> The X axis indicates the ratio of mislabelled to correctly labelled examples. The dataset used here was ImageNet, corrupted with synthetic label noise. Image source: [[1]][robustness]. </figcaption>
+    <figcaption> <b> Figure 2. Test accuracy as a function of label noise percentage. </b> The X axis indicates the ratio of mislabelled to correctly labelled examples. The dataset used here was ImageNet, corrupted with synthetic label noise. Image source: [^1]. </figcaption>
 </figure>
 
 How can this problem be mitigated? One approach is to simply put more effort into the labeling process — we can let
@@ -62,8 +62,7 @@ to noisy labels ([**Figure 3**](#figure3)):
 <figure>
     <a id="figure3"></a>
     <img alt="Flat-topped pyramids are better than sharp-topped ones." src="" style="display:block;float:none;margin-left:auto;margin-right:auto;width:80%;margin-bottom:10px">
-    <figcaption> <b> Figure 3. Strategies for robustness. </b> In this blog post, we focused on two main approaches improving model
-robustness: utilisation of a robust loss function and implicit regularisation. </figcaption>
+    <figcaption> <b> Figure 3. Strategies for robustness. </b> In this blog post, we focused on two main approaches improving model robustness: utilisation of a robust loss function and implicit regularisation. </figcaption>
 </figure>
 
 In the scope of this blog post, we present seven different methods that are strong baselines for improving
@@ -72,7 +71,7 @@ the generalisation of classifiers in the presence of label noise.
 ### Robust loss function
 
 #### Self-Paced Learning (SPL)
-The authors of **Self-Paced Learning** [[2]][SPL] noticed that large per-sample loss might be an indication of label
+The authors of **Self-Paced Learning**[^2] noticed that large per-sample loss might be an indication of label
 corruption, especially in the latter stages of training. Clean labels should be easy to learn, while corrupted labels
 would appear as difficult, resulting in a high per-sample loss.
 
@@ -87,7 +86,7 @@ SPL proposes to exclude some predefined ratio of examples from the batch dependi
 
 #### Provably Robust Learning (PRL)
 
-**Provably Robust Learning** [[3]][PRL] derives from the ideas presented in the SPL paper, but the authors state that
+**Provably Robust Learning**[^3] derives from the ideas presented in the SPL paper, but the authors state that
 corrupted labels should be detected depending on the gradient norm, instead of per sample loss ([**Figure 4b**](#figure4)).
 The underlying intuition is that corrupted samples provoke the optimiser to make inadequately large steps
 in the optimisation space. The rest of the logic is the same as in SPL.
@@ -102,19 +101,21 @@ from the batch, but rather alleviates their impact by clipping the per-sample lo
 
 It has been recently observed that DNNs first fit clean samples, and then start memorising the noisy ones. This
 phenomenon reduces the generalisation properties of the model, distracting it from learning true patterns present
-in the data. **Early Learning Regularisation** [[4]][ELR] mitigates memorisation with two tricks:
+in the data. **Early Learning Regularisation**[^4] mitigates memorisation with two tricks:
 
 - *Temporal ensembling* of targets: during the training step $[k]$, the original targets $\pmb{\text{t}}$ are mixed
 with the model’s predictions $\pmb{\text{p}}$ from previous training steps. This prevents the gradient from diverging
-hugely between subsequent steps. This trick is well-known in semi-supervised learning [[5]][SSL]:
+hugely between subsequent steps. This trick is well-known in semi-supervised learning[^5]:
+
 $$
 \pmb{\text{t}}^{[k]} = \left(\beta\ \pmb{\text{t}}^{[k-1]} + (1-\beta)\ \pmb{\text{p}}^{[k-1]}\right)
 $$
 
-- *Explicit regularisation*: an extra term is added to the default cross-entropy loss $\mathcal{L}_{CE}(\Theta)$ that
+- *Explicit regularisation*: an extra term is added to the default cross-entropy loss $\mathcal{L}\_{CE}(\Theta)$ that
 allows refinement of the early-learnt concepts, but penalises drastically contradicting predictions.
+
 $$
-\mathcal{L}_{ELR}(\Theta)=\mathcal{L}_{CE}(\Theta) + \frac{\lambda}{n} \sum\text{log}(1-\langle \pmb{\text{p}}, \pmb{\text{t}} \rangle)
+\mathcal{L}\_{ELR}(\Theta)=\mathcal{L}\_{CE}(\Theta) + \frac{\lambda}{n} \sum\text{log}(1-\langle \pmb{\text{p}}, \pmb{\text{t}} \rangle)
 $$
 
 Thus, the gradient gets a boost for the clean samples, while the impact of noisy samples is neutralised
@@ -122,32 +123,31 @@ by temporal ensembling.
 
 #### Jensen-Shannon Divergence Loss (JSD)
 
-The authors of **Jensen-Shannon Divergence Loss** [[6]][GJSD] take a yet another approach to loss construction,
+The authors of **Jensen-Shannon Divergence Loss** [^6] take a yet another approach to loss construction,
 which is inspired by an empirical comparison between Cross-Entropy (CE) and Mean Absolute Error (MAE) loss. CE is known
 for its fast convergence and brilliant training dynamics, while MAE provides spectacular robustness at the price
 of slow convergence.
 
 Englesson et al. came up with the idea to use Jensen-Shannon Divergence, which is a proven generalisation of CE
-and MAE loss ([**Figure 5**](#figure5)). JSD uses Kullback-Leibler Divergence $\text{D}_{\text{KL}}$ between the target
+and MAE loss ([**Figure 5**](#figure5)). JSD uses Kullback-Leibler Divergence $\text{D}\_{\text{KL}}$ between the target
 labels $\pmb{y}$ and predictions of the model $f(\pmb{x})$ vs. their averaged distribution $\pmb{m}$. Summing up, one
 can think of JSD as a CE with a robustness boost, or MAE with improved convergence.
 
 $$
-\mathcal{L}_{\text{JS}}(\pmb{x}, \pmb{y}) = \frac{1}{Z} \left( \pi_1 \text{D}_{\text{KL}}(\pmb{y}||\pmb{m}) + (1-\pi_1) \text{D}_{\text{KL}}(f(\pmb{x})||\pmb{m}) \right)
+\mathcal{L}\_{\text{JS}}(\pmb{x}, \pmb{y}) = \frac{1}{Z} \left( \pi_1 \text{D}\_{\text{KL}}(\pmb{y}||\pmb{m}) + (1-\pi_1) \text{D}\_{\text{KL}}(f(\pmb{x})||\pmb{m}) \right)
 $$
 
 <figure>
     <a id="figure5"></a>
     <img alt="Big proportion of pie makes your weight high." src="/img/articles/2023-02-16-learning-from-noisy-data/figure5-jsd.png" style="display:block;float:none;margin-left:auto;margin-right:auto;width:100%;margin-bottom:10px">
-    <figcaption> <b> Figure 5. JSD as a generalisation of CE and MAE loss. </b> Depending on the parameter $\pi_1$, JSD resembles
-CE or MAE. Image source: [[6]][GJSD]. </figcaption>
+    <figcaption> <b> Figure 5. JSD as a generalisation of CE and MAE loss. </b> Depending on the parameter $\pi_1$, JSD resembles CE or MAE. Image source: [^6]. </figcaption>
 </figure>
 
 ### Implicit regularisation
 
 #### Co-teaching (CT)
 
-In **co-teaching** [[7]][CT], we simultaneously train two independent DNNs ([**Figure 6**](#figure6)), and let them
+In **co-teaching** [^7], we simultaneously train two independent DNNs ([**Figure 6**](#figure6)), and let them
 exchange examples during the training. The *training feed* (learning samples) provided by the peer network should
 ideally consist only of clean samples. In CT, each network predicts which samples are clean and provides them to its
 counterpart. Deciding whether a sample is clean relies on the trick known from SPL: the sample’s label is probably
@@ -157,7 +157,7 @@ clean if its per-sample loss is low.
     <a id="figure6"></a>
     <img alt="Co-operation is key to success, especially when you want to reduce noise in your garage band." src="/img/articles/2023-02-16-learning-from-noisy-data/figure6-co-teaching.png" style="display:block;float:none;margin-left:auto;margin-right:auto;width:50%;margin-bottom:10px">
     <figcaption> <b> Figure 6. Exchange of training feed in co-teaching. </b> Two peer networks exchange samples that are expected
-to be clean from noise. Image source: [[7]][CT]. </figcaption>
+to be clean from noise. Image source: [^7]. </figcaption>
 </figure>
 
 Co-teaching is one of the most popular and universal baselines in the domain of learning from noisy data. It has
@@ -168,10 +168,9 @@ a consensus between the two networks, causing them to produce identical training
 
 #### Mixup
 
-**Mixup** [[8]][mixup] is a simple augmentation scheme that enforces linear behaviour of the model for in-between
+**Mixup**[^8] is a simple augmentation scheme that enforces linear behaviour of the model for in-between
 training samples ([**Figure 7**](#figure7)). It linearly combines two training samples $(\pmb{x}\_i, \pmb{y}\_i)$
-and $(\pmb{x}\_j, \pmb{y}\_j)$ with weight $\lambda$ sampled from the *Beta* distribution. It results in a new augmented
-sample with mixed input features $\pmb{x}\_{aug}$ and a soft label $\pmb{y}\_{aug}$:
+and $(\pmb{x}\_j, \pmb{y}\_j)$ with weight $\lambda$ sampled from the *Beta* distribution. It results in a new augmented sample with mixed input features $\pmb{x}\_{aug}$ and a soft label $\pmb{y}\_{aug}$:
 
 $$
 \pmb{x}_{aug} = \lambda \pmb{x}_i + (1 - \lambda)\pmb{x}_j \\
@@ -311,7 +310,7 @@ This drop is an acceptable compromise considering the robustness to noise that t
 ELR was the only method that improved upon the baseline, by 0.07 p.p. As ELR relies on temporal ensembling, which
 diminishes the impact of corrupted samples during training, we hypothesise that our clean dataset contained a small
 number of mislabelled examples. Such paradoxes are a frequent case in machine learning practice, even for renowned
-benchmark datasets like CIFAR-100 [[9]][label_errors].
+benchmark datasets like CIFAR-100[^9].
 
 <a id="table1"></a>**Table 1.** Test accuracy scores of the models trained on the clean and corrupted
 (20% synthetic noise) datasets for the 8 training methods. Light red highlight indicates deterioration in comparison
@@ -415,31 +414,12 @@ model robustness with a real-world dataset perturbed by instance-dependent noise
 
 If you’d like to know more about label noise and model robustness, please refer to the papers listed below.
 
-## References
-
-[robustness]: https://arxiv.org/abs/1705.10694 "Deep Learning is Robust to Massive Label Noise, Rolnick et al., 2018"
-[1] [*Deep Learning is Robust to Massive Label Noise*, Rolnick et al., 2018](https://arxiv.org/abs/1705.10694)
-
-[SPL]: https://papers.nips.cc/paper/2010/hash/e57c6b956a6521b28495f2886ca0977a-Abstract.html "Self-Paced Learning for Latent Variable Models, Kumar et al., 2010"
-[2] [*Self-Paced Learning for Latent Variable Models*, Kumar et al., 2010](https://papers.nips.cc/paper/2010/hash/e57c6b956a6521b28495f2886ca0977a-Abstract.html)
-
-[PRL]: https://arxiv.org/abs/2102.06735 "Learning Deep Neural Networks under Agnostic Corrupted Supervision, Liu et al., 2021"
-[3] [*Learning Deep Neural Networks under Agnostic Corrupted Supervision*, Liu et al., 2021](https://arxiv.org/abs/2102.06735)
-
-[ELR]: https://arxiv.org/abs/2007.00151 "Early-Learning Regularization Prevents Memorization of Noisy Labels, Liu et al., 2020"
-[4] [*Early-Learning Regularization Prevents Memorization of Noisy Labels*, Liu et al., 2020](https://arxiv.org/abs/2007.00151)
-
-[SSL]: https://arxiv.org/abs/1610.02242 "Temporal Ensembling for Semi-Supervised Learning, Laine et al., 2017"
-[5] [*Temporal Ensembling for Semi-Supervised Learning*, Laine et al., 2017](https://arxiv.org/abs/1610.02242)
-
-[GJSD]: https://arxiv.org/abs/2105.04522 "Generalized Jensen-Shannon Divergence Loss for Learning with Noisy Labels, Englesson et al., 2021"
-[6] [*Generalized Jensen-Shannon Divergence Loss for Learning with Noisy Labels*, Englesson et al., 2021](https://arxiv.org/abs/2105.04522)
-
-[CT]: https://arxiv.org/abs/1804.06872 "Co-teaching: Robust Training of Deep Neural Networks with Extremely Noisy Labels, Han et al., 2018"
-[7] [*Co-teaching: Robust Training of Deep Neural Networks with Extremely Noisy Labels*, Han et al., 2018](https://arxiv.org/abs/1804.06872)
-
-[mixup]: https://arxiv.org/abs/1710.09412 "mixup: Beyond Empirical Risk Minimization, Zhang et al., 2018"
-[8] [*mixup: Beyond Empirical Risk Minimization*, Zhang et al., 2018](https://arxiv.org/abs/1710.09412)
-
-[label_errors]: https://arxiv.org/abs/2103.14749 "Pervasive Label Errors in Test Sets Destabilize Machine Learning Benchmarks, Northcutt et al., 2021"
-[9] [*Pervasive Label Errors in Test Sets Destabilize Machine Learning Benchmarks*, Northcutt et al., 2021](https://arxiv.org/abs/2103.14749)
+[^1]: [*Deep Learning is Robust to Massive Label Noise*, Rolnick et al., 2018](https://arxiv.org/abs/1705.10694)
+[^2]: [*Self-Paced Learning for Latent Variable Models*, Kumar et al., 2010](https://papers.nips.cc/paper/2010/hash/e57c6b956a6521b28495f2886ca0977a-Abstract.html)
+[^3]: [*Learning Deep Neural Networks under Agnostic Corrupted Supervision*, Liu et al., 2021](https://arxiv.org/abs/2102.06735)
+[^4]: [*Early-Learning Regularization Prevents Memorization of Noisy Labels*, Liu et al., 2020](https://arxiv.org/abs/2007.00151)
+[^5]: [*Temporal Ensembling for Semi-Supervised Learning*, Laine et al., 2017](https://arxiv.org/abs/1610.02242)
+[^6]: [*Generalized Jensen-Shannon Divergence Loss for Learning with Noisy Labels*, Englesson et al., 2021](https://arxiv.org/abs/2105.04522)
+[^7]: [*Co-teaching: Robust Training of Deep Neural Networks with Extremely Noisy Labels*, Han et al., 2018](https://arxiv.org/abs/1804.06872)
+[^8]: [*mixup: Beyond Empirical Risk Minimization*, Zhang et al., 2018](https://arxiv.org/abs/1710.09412)
+[^9]: [*Pervasive Label Errors in Test Sets Destabilize Machine Learning Benchmarks*, Northcutt et al., 2021](https://arxiv.org/abs/2103.14749)
