@@ -53,7 +53,7 @@ robust models are expected to handle varying amounts of label noise.
 ## How to train a robust classifier?
 
 We can improve the robustness of deep neural networks (DNNs) with a few tips and tricks presented in the recent
-literature on *Learning from Noisy Data*. In general, there are three approaches for boosting the model’s resistance
+literature on *Learning from Noisy Data*. In general, there are three approaches to boosting the model’s resistance
 to noisy labels ([**Figure 3**](#figure3)):
 - **Robust loss function** boosting the training dynamics in the presence of noise.
 - **Implicit regularisation** of the network aiming at decreasing the impact of noisy labels.
@@ -66,7 +66,7 @@ to noisy labels ([**Figure 3**](#figure3)):
 robustness: utilisation of a robust loss function and implicit regularisation. </figcaption>
 </figure>
 
-In the scope of this blog post, we present 7 different methods that are strong baselines for improving
+In the scope of this blog post, we present seven different methods that are strong baselines for improving
 the generalisation of classifiers in the presence of label noise.
 
 ### Robust loss function
@@ -82,7 +82,7 @@ SPL proposes to exclude some predefined ratio of examples from the batch dependi
 <figure>
     <a id="figure4"></a>
     <img alt="PRL makes everything equal." src="/img/articles/2023-02-16-learning-from-noisy-data/figure4-loss-filtration.png" style="display:block;float:none;margin-left:auto;margin-right:auto;width:100%;margin-bottom:10px">
-    <figcaption> <b> Figure 4. Comparison of loss filtration methods (SPL, PRL and CCE). </b> While SPL and PRL exclude samples from loss calculation, CCE decreases the impact of potentially corrupted labels by clipping the per-sample loss values. Orange colour indicates candidate noisy samples. </figcaption>
+    <figcaption> <b> Figure 4. Comparison of loss filtration methods (SPL, PRL and CCE (see below)). </b> While SPL and PRL exclude samples from loss calculation, CCE decreases the impact of potentially corrupted labels by clipping the per-sample loss values. Orange colour indicates candidate noisy samples. </figcaption>
 </figure>
 
 #### Provably Robust Learning (PRL)
@@ -112,7 +112,7 @@ $$
 $$
 
 - *Explicit regularisation*: an extra term is added to the default cross-entropy loss $\mathcal{L}_{CE}(\Theta)$ that
-allows refinement of the early-learnt concepts, but penalises predictions that drastically contradict.
+allows refinement of the early-learnt concepts, but penalises drastically contradicting predictions.
 $$
 \mathcal{L}_{ELR}(\Theta)=\mathcal{L}_{CE}(\Theta) + \frac{\lambda}{n} \sum\text{log}(1-\langle \pmb{\text{p}}, \pmb{\text{t}} \rangle)
 $$
@@ -122,12 +122,12 @@ by temporal ensembling.
 
 #### Jensen-Shannon Divergence Loss (JSD)
 
-The authors of **Jensen-Shannon Divergence Loss** [[6]][GJSD] take a yet different approach to loss construction,
+The authors of **Jensen-Shannon Divergence Loss** [[6]][GJSD] take a yet another approach to loss construction,
 which is inspired by an empirical comparison between Cross-Entropy (CE) and Mean Absolute Error (MAE) loss. CE is known
 for its fast convergence and brilliant training dynamics, while MAE provides spectacular robustness at the price
 of slow convergence.
 
-Englesson et al. came up with an idea to use Jensen-Shannon Divergence, which is a proven generalisation of CE
+Englesson et al. came up with the idea to use Jensen-Shannon Divergence, which is a proven generalisation of CE
 and MAE loss ([**Figure 5**](#figure5)). JSD uses Kullback-Leibler Divergence $\text{D}_{\text{KL}}$ between the target
 labels $\pmb{y}$ and predictions of the model $f(\pmb{x})$ vs. their averaged distribution $\pmb{m}$. Summing up, one
 can think of JSD as a CE with a robustness boost, or MAE with improved convergence.
@@ -189,7 +189,7 @@ no severe computational overhead.
 
 ## Cleaning up Allegro
 
-Every offer has its right place at Allegro, belonging to one out of over 23,000 categories. The category structure
+Every offer has its right place at [Allegro](https://allegro.tech), belonging to one out of over 23,000 categories. The category structure
 is a tree consisting of:
 - the root (Allegro),
 - up to 7 levels of intermediate nodes (departments, metacategories, *etc.*) — over 2,600 nodes in total,
@@ -200,10 +200,9 @@ to correct category leaves. To this end, our Machine Learning Research team has 
 for Allegro offers.
 
 The model in question is a large language model pre-trained on the Allegro catalogue (see more
-in [<i>Do you speak Allegro?</i>](https://www.youtube.com/watch?v=6T-R4kgIbBs&list=PLzveSKBX_3N7yPb4ErB5HJ83eB6XvH37C&index=20)) and fine-tuned for offer classification. Specifically, the downstream task here is extreme text classification: each offer is represented with
-text (title) and is classified into over 23,000 categories — hence the word <i>extreme</i>.
+in [<i>Do you speak Allegro?</i>](https://www.youtube.com/watch?v=6T-R4kgIbBs&list=PLzveSKBX_3N7yPb4ErB5HJ83eB6XvH37C&index=20)) and fine-tuned for offer classification. Specifically, the downstream task here is extreme text classification: each offer is represented by text (title) and is classified into over 23,000 categories — hence the word <i>extreme</i>.
 
-Classification is particularly challenging for offers listed in ambiguous categories like *Other, Accessories, etc.*
+Classification is particularly challenging for offers listed in ambiguous categories such as *Other, Accessories, etc.*
 These categories are broad and hard to navigate, as they contain a wide variety of products. Most of those products
 actually belong to some well-defined categories, but the merchant couldn’t find the right place for those offers
 at the time of their listing, because of the very rich taxonomy of the category tree. Consequently, we decided
@@ -240,7 +239,7 @@ likely be reproduced at prediction time. Our goal is to train a robust classifie
 and ignore the mislabelled training instances.
 
 The training methods described in the previous section were developed and evaluated on computer vision tasks,
-*e. g.* image classification into a relatively small number of categories. Here, we face the problem of extreme text
+*e.g.* image classification, into a relatively small number of categories. Here, we face the problem of extreme text
 classification. Thus, we need to adapt those methods for textual input and find out which concepts transfer well between
 the two domains.
 
@@ -281,7 +280,7 @@ and compared them to the baseline: classification with cross-entropy loss.
 **How does the presence of noise impact the baseline model?**
 
 The validation curves for non-corrupted samples clearly show the severe impact of noisy labels on the model’s
-performance ([**Figure 11**](#figure11)). In the early stage of the training, the performance of the model trained
+performance ([**Figure 11**](#figure11)). In the early stage of training, the performance of the model trained
 on noisy data is on par with the metrics of the model trained on clean data. Yet, starting from the 4th epoch,
 the wrong labels in the noisy dataset appear to prevent the model from discovering the true patterns in the training
 data, resulting in a 5 p.p. drop in accuracy at the end of the training. We attribute this drop to the *memorisation*
