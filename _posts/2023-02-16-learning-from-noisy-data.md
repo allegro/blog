@@ -42,7 +42,7 @@ How can this problem be mitigated? One approach is to simply put more effort int
 multiple annotators label each data point and then evaluate the cross-annotator agreement. With enough time and effort,
 we hope to obtain a dataset free of label noise. However, in practice this approach is rarely feasible due to large
 volumes of training data and the need for efficient turnaround of machine learning projects. Consequently, we need
-a different approach for handling corrupted training data, i.e. ML models robust to label noise.
+a different approach for handling corrupted training data, *i.e.* ML models robust to label noise.
 
 In the context of this blog post, we define robustness as the model’s ability to efficiently learn in the presence
 of corrupted training data. In other words, a robust model can recover the correct training signal and ignore
@@ -233,7 +233,7 @@ The training set (offers in well-defined categories) is not 100% correct, for se
     <figcaption> <b> Figure 9. Examples of mislabelled offers. </b> With over 23,000 categories at Allegro, listing each offer in its best-matching category can be challenging for merchants. Hence, label noise is an inherent feature of our training dataset. </figcaption>
 </figure>
 
-The ML model is prone to memorisation of the wrong labels in the training set, *i. e.* overfitting. These errors will
+The ML model is prone to memorisation of the wrong labels in the training set, *i.e.* overfitting. These errors will
 likely be reproduced at prediction time. Our goal is to train a robust classifier that will learn the true patterns
 and ignore the mislabelled training instances.
 
