@@ -8,13 +8,13 @@ tags: [tech,mlr,robustness,research,ml,machine-learning,ai]
 - Label noise is ever-present in machine learning practice.
 - Allegro datasets are no exception.
 - We compared 7 methods for training classifiers robust to label noise.
-- All of them improved the model's performance on noisy datasets.
-- Some of the methods decreased the model's performance in the absence of label noise.
+- All of them improved the model’s performance on noisy datasets.
+- Some of the methods decreased the model’s performance in the absence of label noise.
 
 ## What is label noise and why does it matter?
 
 In the scope of supervised machine learning, specifically in classification tasks, the problem of label noise
-is of critical importance. It involves cases of incorrectly labelled training data. For example, let's say that
+is of critical importance. It involves cases of incorrectly labelled training data. For example, let’s say that
 we want to train a classification model to distinguish cats from dogs. For that purpose, we compose a training
 dataset with images labelled as either cat or dog. The labelling process is usually performed by human annotators,
 who almost certainly produce some labelling errors. Unfortunately, human annotators can be confused by poor image
@@ -43,7 +43,7 @@ we hope to obtain a dataset free of label noise. However, in practice this appro
 volumes of training data and the need for efficient turnaround of machine learning projects. Consequently, we need
 a different approach for handling corrupted training data, i.e. ML models robust to label noise.
 
-In the context of this blog post, we define robustness as the model's ability to efficiently learn in the presence
+In the context of this blog post, we define robustness as the model’s ability to efficiently learn in the presence
 of corrupted training data. In other words, a robust model can recover the correct training signal and ignore
 the noise, so that it does not overfit to the corrupted traning set and can generalise during prediction. A major
 challenge in this regard is the difficulty to estimate the proportion of label noise in real-world data. As such,
@@ -52,7 +52,7 @@ robust models are expected to handle varying amounts of label noise.
 ## How to train a robust classifier?
 
 We can improve the robustness of deep neural networks (DNNs) with a few tips and tricks presented in the recent
-literature on *Learning from Noisy Data*. In general, there are three approaches for boosting the model's resistance
+literature on *Learning from Noisy Data*. In general, there are three approaches for boosting the model’s resistance
 to noisy labels ([**Figure 3**](#figure3)):
 - **Robust loss function** boosting the training dynamics in the presence of noise.
 - **Implicit regularisation** of the network aiming at decreasing the impact of noisy labels.
@@ -91,8 +91,8 @@ in the optimisation space. The rest of the logic is the same as in SPL.
 
 #### Clipped Cross-Entropy (CCE)
 
-Rejection of samples might not be optimal from the training's point of view, because DNNs need vast amounts of data
-to be able to generalise properly. Therefore, **Clipped Cross-Entropy** doesn't exclude the most contributing samples
+Rejection of samples might not be optimal from the training’s point of view, because DNNs need vast amounts of data
+to be able to generalise properly. Therefore, **Clipped Cross-Entropy** doesn’t exclude the most contributing samples
 from the batch, but rather alleviates their impact by clipping the per-sample loss to a predefined value ([**Figure 4c**](#figure4)).
 
 #### Early Learning Regularisation (ELR)
@@ -102,7 +102,7 @@ phenomenon reduces the generalisation properties of the model, distracting it fr
 in the data. **Early Learning Regularisation** [[4]][ELR] mitigates memorisation with two tricks:
 
 - *Temporal ensembling* of targets: during the training step $[k]$, the original targets $\pmb{\text{t}}$ are mixed
-with the model's predictions $\pmb{\text{p}}$ from previous training steps. This prevents the gradient from diverging
+with the model’s predictions $\pmb{\text{p}}$ from previous training steps. This prevents the gradient from diverging
 hugely between subsequent steps. This trick is well-known in semi-supervised learning [[5]][SSL]:
 $$
 \pmb{\text{t}}^{[k]} = \left(\beta\ \pmb{\text{t}}^{[k-1]} + (1-\beta)\ \pmb{\text{p}}^{[k-1]}\right)
@@ -145,7 +145,7 @@ CE or MAE. Image source: [[6]][GJSD].
 In **co-teaching** [[7]][CT], we simultaneously train two independent DNNs ([**Figure 6**](#figure6)), and let them
 exchange examples during the training. The *training feed* (learning samples) provided by the peer network should
 ideally consist only of clean samples. In CT, each network predicts which samples are clean and provides them to its
-counterpart. Deciding whether a sample is clean relies on the trick known from SPL: the sample's label is probably
+counterpart. Deciding whether a sample is clean relies on the trick known from SPL: the sample’s label is probably
 clean if its per-sample loss is low.
 
 <a id="figure6"></a><img src="/uploads/upload_ceb79563dd9b5b166331289cb77caa88.png" style="display:block;float:none;margin-left:auto;margin-right:auto;width:50%;margin-bottom:10px" alt="Co-operation is key to success, especially when you want to reduce noise in your garage band."/>
@@ -198,11 +198,11 @@ text (title) and is classified into over 23,000 categories — hence the word <i
 
 Classification is particularly challenging for offers listed in ambiguous categories like *Other, Accessories, etc.*
 These categories are broad and hard to navigate, as they contain a wide variety of products. Most of those products
-actually belong to some well-defined categories, but the merchant couldn't find the right place for those offers
+actually belong to some well-defined categories, but the merchant couldn’t find the right place for those offers
 at the time of their listing, because of the very rich taxonomy of the category tree. Consequently, we decided
 to clean up the offers in ambiguous categories.
 
-Here's the setup ([**Figure 8**](#figure8)):
+Here’s the setup ([**Figure 8**](#figure8)):
 - We train the category classifier on offers in well-defined categories: the model learns what lies where at Allegro.
 - Next, we run inference on offers in ambiguous categories: the model moves the offers to their right destination.
 
@@ -239,19 +239,19 @@ the two domains.
 
 ### Synthetic label noise
 
-To evaluate the model's robustness experimentally, we need to know *a priori* which training instances were
+To evaluate the model’s robustness experimentally, we need to know *a priori* which training instances were
 mislabelled. For that, we use a generator of controllable noise. The experimental setup consists of five steps
 ([**Figure 10**](#figure10)):
 - dumping a clean dataset from a curated pool of offers that are *certainly* in the right place,
 - splitting it into training, validation and test sets,
-- application of synthetic noise to 20% of instances in the training and validation sets (changing the offer's category
+- application of synthetic noise to 20% of instances in the training and validation sets (changing the offer’s category
 to a wrong one),
 - training the model on the noisy dataset,
 - testing the model on a held-out fraction of the clean dataset.
 
 <a id="figure10"></a><img src="/uploads/upload_693bf80749545a843f63d0105a4f55fb.png" style="display:block;float:none;margin-left:auto;margin-right:auto;width:80%;margin-bottom:10px" alt="Staying clean has many benefits. Stay clean kids!" />
 
-**Figure 10. Testing the model's robustness.** The full dataset of clean instances (offers with true category labels)
+**Figure 10. Testing the model’s robustness.** The full dataset of clean instances (offers with true category labels)
 is split into training, validation and test sets. Next, label noise is introduced to the training and validation sets
 and the model is trained. The model is tested on a held-out fraction of the clean dataset.
 
@@ -269,17 +269,17 @@ Symmetric noise was applied to 20% of the training set. This means that the cate
 of offers were changed to different randomly chosen labels. We evaluated the 7 training methods outlined above
 and compared them to the baseline: classification with cross-entropy loss.
 
-### Baseline: Memorising doesn't pay off
+### Baseline: Memorising doesn’t pay off
 
 **How does the presence of noise impact the baseline model?**
 
-The validation curves for non-corrupted samples clearly show the severe impact of noisy labels on the model's
+The validation curves for non-corrupted samples clearly show the severe impact of noisy labels on the model’s
 performance ([**Figure 11**](#figure11)). In the early stage of the training, the performance of the model trained
 on noisy data is on par with the metrics of the model trained on clean data. Yet, starting from the 4th epoch,
 the wrong labels in the noisy dataset appear to prevent the model from discovering the true patterns in the training
 data, resulting in a 5 p.p. drop in accuracy at the end of the training. We attribute this drop to the *memorisation*
 of the wrong labels: instead of refining the originally learnt concepts, the network starts to overfit to the noisy
-labels. The labels memorised for particular offers don't help with classifying previously unseen offers at test time.
+labels. The labels memorised for particular offers don’t help with classifying previously unseen offers at test time.
 
 <a id="figure11"></a><img src="/uploads/upload_c1cf415b153659da9ac425f1b326ffb1.png" style="display:block;float:none;margin-left:auto;margin-right:auto;width:100%;margin-bottom:10px" alt="Absolute noise corrupts absolutely." />
 
@@ -291,7 +291,7 @@ accuracy in comparison to its clean counterpart.
 
 **Does robustness imply underfitting?**
 
-To verify if the evaluated methods have any effect on the model's performance when there is no noise in the training
+To verify if the evaluated methods have any effect on the model’s performance when there is no noise in the training
 data, we tested all of them on a clean dataset without any synthetic noise.
 
 In the absence of corrupted data, three of the tested methods (SPL, PRL and CT) are effectively reduced to the baseline
@@ -373,7 +373,7 @@ to the baseline, while light blue denotes improvement. *Notation*: (mean $\pm$ s
 
 **Robust classification results**
 
-All methods discussed in this study improved the model's performance on the noisy dataset when compared to the baseline
+All methods discussed in this study improved the model’s performance on the noisy dataset when compared to the baseline
 ([**Table 1**](#table1)). The best results were obtained with CCE (+4.2 p.p.), ELR (+3.98 p.p.) and JSD (+3.93 p.p.).
 CT, SPL, PRL performed a bit worse, but still proved to be quite robust, improving upon the baseline by 3.41 p.p.,
 3.2 p.p. and 3.0 p.p., respectively.
@@ -407,7 +407,7 @@ noise presented here is not very realistic: real-world label noise tends to be i
 i.e. it is influenced by individual sample features. As such, we plan to further evaluate the methods for increasing
 model robustness with a real-world dataset perturbed by instance-dependent noise.
 
-If you'd like to know more about label noise and model robustness, please refer to the papers listed below.
+If you’d like to know more about label noise and model robustness, please refer to the papers listed below.
 
 ## References
 
