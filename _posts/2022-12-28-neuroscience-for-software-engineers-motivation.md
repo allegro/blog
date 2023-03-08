@@ -6,24 +6,23 @@ tags: [tech, "soft skills", neuroscience, productivity]
 ---
 
 Many of us, software engineers, have experienced those days when nothing really sparks joy in coding, debugging,
-preparing spikes or refining tasks for the next sprints. We would like to have as few of such days as possible in order
-to deliver quality solutions in a timely manner, to learn new skills and to go through meetings effectively. A solution
-to this is definitely not tormenting our brains with guilt and forced labour — there are other ways, and I would like to
-invite you to explore them with me and learn a little about our nervous systems in the process. We’ll find out where the
-motivation comes from on a biological and psychological level. We’ll also take a look at the changes you can introduce
-into your day to take advantage of certain mechanisms working on a neural level and boost your motivation and
-productivity.
+preparing spikes or refining tasks for the next sprints. Obviously, we would like to have as few of such days as possible
+and go on with our work effectively. A solution to this definitely is not tormenting our brains with guilt and forced
+labour. There are other ways, and I would like to invite you to explore them with me and learn a little about our
+nervous systems in the process. We’ll find out where the motivation comes from on a biological and psychological level.
+We’ll also take a look at the changes you can introduce into your day to take advantage of certain mechanisms working
+on a neural level and boost your motivation and productivity.
 
 ## The neuroscience of motivation
 
 The key to maintaining energy to work throughout the day is simple – getting and staying motivated. Even though it seems
-like something not necessarily in our power to do, motivation can be, to an extent, consciously modulated once we know
+like something not necessarily in our power, motivation can be, to an extent, consciously modulated once we know
 the biological and psychological mechanisms behind it.
 
 ### The source
 
-On a neural level, the fuel of motivation is **dopamine**. Dopamine is a hormone (which means it’s a messenger of the
-body travelling in the bloodstream) and a neurotransmitter (which indicates its ability to affect communication between
+On a neural level, the fuel of motivation is **dopamine**. Dopamine is a hormone (meaning it’s a messenger of the
+body travelling through the bloodstream) and a neurotransmitter (which indicates its ability to affect communication between
 neurons).
 
 In general, high levels of dopamine cause high drive, motivation and willingness to live, do and experience. Low levels
@@ -39,13 +38,14 @@ which is responsible for the reward mechanism.
 Mesocorticolimbic system consists of dopaminergic and dopaminoceptive neurons — the former is a specialised kind of
 neurons that is capable of producing and emitting dopamine into our body; the latter is capable of detecting and
 reacting to the dopamine. The pathways of this system go through different areas of the brain — they extend from the
-ventral tegmental area (VTA) to the hippocampus, the nucleus accumbens and prefrontal cortex.
+ventral tegmental area (VTA) to the part of the brain responsible for memory (hippocampus), reward, pleasure and movement
+(nucleus accumbens) and reasoning (prefrontal cortex).
 
 ![Dopamine pathways in the brain](
 /img/articles/2022-12-28-neuroscience-for-software-engineers-motivation/1280px-Dopamine_pathways.svg.png
 "Dopamine pathways in the brain (Public Domain from [Wikipedia](https://en.wikipedia.org/wiki/Dopamine#/media/File:Dopamine_pathways.svg))")
 
-The complexity of this structure might be a hint for us, that there are a lot of implications of dopamine release but
+The complexity of this structure might be a hint that there are a multiple implications of dopamine release, but
 also many different ways to interact with this area.
 
 ### The process
@@ -57,7 +57,7 @@ When we talk about managing dopamine levels in healthy individuals, we actually 
 * **peak level**, which tells us how much dopamine we have at the moment or as a result of a rapid change.
 
 Baseline level and peak level are closely related to each other. Evolutionally we are prepared to go out and search for
-different resources, such as food, water or shelter, even though today we might use it to gain slightly different
+different resources, such as food, water or shelter, even though nowadays we might use it to gain slightly different
 things (like a morning coffee or a salary). The drive to do so is provided by dopamine – which is, as we already know, a
 hormonal fuel of motivation. This mechanism is pretty old and it can be observed widely across the animal kingdom.
 
@@ -74,11 +74,11 @@ it’s going to remain low.
 
 Continuous peaks in dopamine level may eventually lead to drop of the baseline level. In that situation a person’s
 brain, seeking for another reward to elevate it, will try repeating previous dopamine-increasing behaviours. A cascade
-of peaks and drops with repeated behaviours is a mechanism of addiction. This is something that may happen over
+of peaks and drops with repeated behaviours is a mechanism for addiction. This is something that may happen over
 excessive usage of certain substances but also with social media. Incoming likes, comments and notifications or
-scrollable, neverending feed of videos — all of those generate peaks of dopamine. When we spend time on social media
+scrollable, neverending feed of videos — all of these generate peaks of dopamine. When we spend time on social media
 experiencing peak after peak we may start feeling less and less satisfaction but still feel the urge to scroll further —
-because of the mechanism I have just described. That would explain why social media addiction is such a great challenge
+due to the mechanism I have just described. That would explain why social media addiction is such a great challenge
 for our society.
 
 ## How to get and stay motivated
@@ -100,9 +100,8 @@ soon you’ll know why.
 There is a significant number of substances that may increase the dopamine level above the baseline:
 
 * Chocolate might increase it up to 1,5 times, although it only lasts a few seconds.
-* Smoked nicotine or cocaine may cause a 2,5 times increase, amphetamine causes up to 10 times increase in dopamine
-  level (knowing that and how peak and baseline levels of dopamine work, explains the addictive effect those substances
-  have).
+* Smoked nicotine or cocaine may cause a 2,5 times increase, amphetamine causes up to 10-fold increase (knowing that
+  and how peak and baseline levels of dopamine work, explains the addictive effect those substances have).
 * Alcohol in low doses is also known to cause dopamine release.
 * Ingestion of herbs like saffron, rosemary or oregano may lead to elevation of dopamine levels.
 * Caffeine causes a rather modest increase of dopamine, but also increases sensitivity of some dopamine receptors as
@@ -111,7 +110,7 @@ There is a significant number of substances that may increase the dopamine level
 
 There are also several actions which we might take to induce a peak of dopamine like physical activity or thinking and
 talking about things we enjoy. The former is rather subjective and the height of the peak depends on whether the person
-enjoys the activity itself. For those who do it may cause up to 2 times increase.
+enjoys the activity itself. For those who do, it may double the dopamine level.
 
 The latter results from involvement of the prefrontal cortex in the mesocorticolimbic system. Do you remember the last
 time when you’ve been telling somebody about that new thing you’d recently learned? How passionate you’ve felt and how
@@ -122,7 +121,7 @@ happier and more motivated.
 ### Long-term strategies
 
 As previously said, the peaks of the dopamine, especially one after the other, will cause the dopamine level to drop
-below the baseline. In order to maintain high levels of dopamine (hence, high motivation) on a daily basis we should act
+below the baseline. In order to maintain high levels of dopamine (hence high motivation) on a daily basis we should act
 long-term and affect the baseline level as much as possible. There are ways to do it.
 
 #### Exposure to cold
@@ -146,16 +145,16 @@ Do you start working only with a big hot cup of coffee in your hand? Do you list
 maybe do you treat yourself with a sweet drink after a workout? Are there a lot of such rituals? You might want to
 consider not having them on a daily basis.
 
-Every one of those rituals is a dopamine-increasing factor. As you’ve already read, multiple peaks of dopamine one on
+Every one of these rituals is a dopamine-increasing factor. As you’ve already read, multiple peaks of dopamine one on
 top of the other might not be a great idea. Layering multiple dopamine-increasing factors on a regular basis might
 seriously affect our ability to release dopamine in general. Spiking the dopamine by multiple activities in a short
 period of time leads to lowering the baseline by depleting stored, ready-to-deploy dopamine. That may lead to lowering
-the baseline dopamine level, which will result in lack of motivation and feeling low in general.
+the baseline dopamine level, what will result in lack of motivation and feeling low in general.
 
-So what should we do? Are those things bad for us? Well, not really. Sometimes those spikes of dopamine from listening
-to music or sweet treats are exactly what we need to get through our day. The key is to differentiate all those “extras”
+So what should we do? Are those things bad for us? Well, not really. Sometimes these spikes of dopamine from listening
+to music or sweet treats are exactly what we need to get through the day. The key is to differentiate all these “extras”
 while we work. Listen to music while working — just not every time. Have that sweet drink — just not every day. Meet
-with friends for a workout session — but also have those individual sessions once in a while.
+with friends for a workout session — but also have these individual sessions once in a while.
 
 Some of us spend our time on meetings while trying to do our individual work at the same time. Some listen to podcasts
 while coding. We should keep in mind, though, that multitasking is another way of layering dopamine and doing that on a
@@ -177,15 +176,15 @@ expectations of other people, fame or financial compensation and intrinsic sourc
 fulfilling a personal mission.
 
 What do you like to do after work? Is it playing video games, playing music, baking, practising yoga or maybe watching
-lectures on mathematics on Youtube? (don’t judge me…) Whatever this would be, I bet no one needs to encourage you to do
+lectures on mathematics on YouTube? (don’t judge me…) Whatever this would be, I bet no one needs to encourage you to do
 this — you have an intrinsic drive to go and do your thing. You could spend hours on it, and then you’ll feel happy and
 fulfilled. This is how intrinsic motivation works — no external reward is required for you to feel motivated. Wouldn’t
 it be great if you had that in your job?
 
 Research shows that intrinsic motivation brings better results than extrinsic motivation. One could ask a question —
 what if we brought those two things together? Well, the results might surprise you. Researchers gave out to participants
-a rather enjoyable task like assembling the puzzles or drawing and measured their motivation to do so. Then, they
-introduced small rewards for finishing the puzzles. Curiously, the participants were no longer as motivated as at the
+a rather enjoyable task like assembling the jigsaw puzzle or drawing and measured their motivation to do so. Then they
+introduced small rewards for finishing the puzzle. Curiously, the participants were no longer as motivated as at the
 beginning.
 
 The conclusion is that when we add an extrinsic motivation to an existing intrinsic one, we observe an overall decrease
@@ -193,20 +192,20 @@ in willingness to do the activity!
 This is what we call an undermining effect.
 
 The effect comes from the reward being perceived as the ultimate goal of the activity. When the reward comes at the end
-of the activity, we only activate the dopamine release then, whereas it could be active during the whole time if only we
+of the activity, only then is dopamine release activated, whereas it could be active during the whole time if only we
 mindfully focused on the joyful part of the activity itself. Introducing the reward leads to perceiving the whole
 experience as less and less pleasurable over time.
 
 How to avoid the undermining effect? It’s rather simple. Don’t layer other sources of dopamine, avoid dopamine peaks
-right before and right after the activity and be mindful about your intrinsic motivation. But what about the times when
-what we do gets really hard? It is difficult to have intrinsic motivation at such times. But what is worth trying is
+right before and right after the activity and be mindful about your intrinsic motivation. But what if getting it done
+becomes really hard? It is difficult to have intrinsic motivation at such times. A good tactic to try is
 telling ourselves that overcoming those difficulties is a kind of pleasure, so we can activate our prefrontal cortex as
-a part of the dopaminergic pathway.
+a part of the dopaminergic pathway and eventually get ourselves motivated.
 
 #### Thinking positively, practising gratitude, meditation
 
-Remember that aspect of the mesocorticolimbic pathway, where thinking about something enjoyable caused a dopamine
-release? It has more to it! By repeatedly having positive or negative interactions with something we can make a
+Remember that aspect of the mesocorticolimbic pathway where thinking about something enjoyable caused a dopamine
+release? There is more to it! By repeatedly having positive or negative interactions with something we can make a
 significant impact on its rewarding or non-rewarding properties. It effectively means that focusing on positive aspects
 of our surroundings and activities will eventually lead to an increase of dopamine releases from engaging with it.
 
@@ -214,20 +213,17 @@ Having said that, I would strongly encourage you to use different forms of appre
 journaling a little at the end of the day? I dare you to think about 3 good things that happened to you at work every
 day and write it down.
 
-Research also shows that engaging in meditational practices lead to activation of reward-related areas of the brain.
-Having a long-term habit of meditation and mindfulness will lead to having sustained feelings of deep joy and peace,
-which is associated with higher dopamine levels.
+Research also shows that engaging in meditational practices leads to activation of reward-related areas of the brain.
+Having a long-term habit of meditation and mindfulness will contribute to having sustained feelings of deep joy and
+peace, which is associated with higher dopamine levels.
 
 ## Summary
 
-After reading this post you should be aware of how your dopamine mechanisms work and how to use your biological hardware
-in order to modulate your overall motivation. What I want you to remember is that the thing most important for your
-motivation is maintaining a high baseline dopamine level. You can achieve this by several means such as avoiding dopamine
-peaks, differentiating stimuli when you work, exposing yourself to cold water or meditation. It’s also important to focus
-mostly (preferably only) on your intrinsic motivation to avoid the undermining effect.
-
-I hope provided information is going to be useful for you and help you slightly improve your professional life. See you
-soon in the next post!
+You now know how your dopamine mechanisms work and how to use your biological hardware
+to modulate your overall motivation. What you should remember is that the thing most important for your
+motivation is maintaining a high baseline dopamine level. Avoid dopamine peaks, differentiate stimuli when you work,
+use other tactics such as exposing yourself to cold water or meditation. Also, keep your focus
+mostly (preferably only) on your intrinsic motivation to avoid the undermining effect. Now, go conquer the world!
 
 ## References
 
