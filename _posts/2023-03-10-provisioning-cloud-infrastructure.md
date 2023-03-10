@@ -130,7 +130,7 @@ without thinking about setup choices. _They just work_.
 At runtime the user has to go to their infrastructure project, choose which infrastructure version they would like to deploy
 and observe the changes as they are executed live, in the Cloud. This is what it looks like:
 
-![console logs](/img/articles/2023-03-09-provisioning-cloud-infrastructure/appconsole.png)
+![console logs](/img/articles/2023-03-10-provisioning-cloud-infrastructure/appconsole.png)
 
 Under the hood a K8s job is created which uses a dedicated Docker runtime that helps us control environment versions
 and the overall process. This image is also quite useful for debugging and development.
