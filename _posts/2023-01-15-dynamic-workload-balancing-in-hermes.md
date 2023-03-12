@@ -24,9 +24,9 @@ As we can see, Hermes is composed of two main modules:
 * **Hermes Frontend** acts as a gateway, receiving messages from publishers via its REST interface, applying necessary
     preprocessing, and eventually storing them in [Apache Kafka](https://kafka.apache.org/).
 
-* **Hermes Consumers** constitutes the delivery part of the system. Its role is to fetch messages from Kafka and push
-    them to predefined subscribers while providing reliability mechanisms such as retries, backpressure, and rate
-    limiting. For the sake of brevity, in the latter parts of the article, we’ll refer to a single instance of this
+* **Hermes Consumers** is a component that constitutes the delivery part of the system. Its role is to fetch messages
+    from Kafka and push them to predefined subscribers while providing reliability mechanisms such as retries, backpressure,
+    and rate limiting. For the sake of brevity, in the latter parts of the article, we’ll refer to a single instance of this
     module as a _consumer_.
 
 Since the rest of this post discusses topics that mainly pertain to the delivery side of the system, let’s turn our
@@ -34,9 +34,9 @@ attention to that now.
 
 Apache Kafka organizes messages, also known as events, into topics. To facilitate parallelism, a topic usually has
 multiple partitions. Each event is stored in only one partition. When someone wants to receive messages from a given
-topic, they create a new subscription with the defined HTTP endpoint to which messages will be delivered. Under the
+topic via Hermes, they create a new subscription with the defined HTTP endpoint to which messages will be delivered. Under the
 hood, Hermes assigns a group of _consumers_ to that subscription, with each _consumer_ handling at least one of the
-topic partitions. By default, a fixed number of _consumers_ is assigned to a subscription, but the administrator can
+topic partitions. By default, a fixed number of _consumers_ are assigned to a subscription, but the administrator can
 manually override this number on a per-subscription basis. It’s also worth noting that a single _consumer_ can handle
 multiple subscriptions. The following diagram illustrates this:
 
@@ -49,7 +49,7 @@ instances can be added, restarted, or removed at almost any time. This means tha
 seamlessly and without disrupting the flow of messages. Additionally, it is horizontally scalable, meaning that
 when there is an increase in the number of subscriptions or an increase in outgoing traffic, we can easily scale out
 the cluster by adding new _consumers_. This adaptability to changing circumstances is achieved by a mechanism called the
-“workload balancer.”  It acts as an arbiter, monitoring the state of the cluster, and if necessary, proposing
+“workload balancer.” It acts as an arbiter, monitoring the state of the cluster, and if necessary, proposing
 appropriate adjustments in the distribution of subscriptions to the rest of the nodes.
 
 ## Motivations for Improving Workload Balancer
@@ -64,7 +64,7 @@ we should not assume that they are equal.
 Usually, when we deploy our application in the cloud, we have to predefine the number of instances and the amount of
 resources (e.g. CPU, memory, etc.) that should be allocated to it. Unless we use a mechanism that adjusts these
 values on a per-instance basis, each instance will receive an equal share of the available resources. Now, let’s take
-a look at the CPU usage of each _consumer_ from one of our Hermes production clusters using the workload balancer,
+a look at the CPU usage of each _consumer_ from one of our Hermes production clusters using the workload balancer
 which does not account for the disproportions between subscriptions:
 
 [![Initial CPU usage](/img/articles/2023-01-15-dynamic-workload-balancing-in-hermes/cpu_before.png)](/img/articles/2023-01-15-dynamic-workload-balancing-in-hermes/cpu_before.png)
@@ -96,13 +96,13 @@ First, we wanted to preserve the core responsibilities of the original workload 
 
 Secondly, we decided not to change the existing rule of assigning the same number of subscriptions to each _consumer_.
 The reasoning behind this decision stemmed from the threading model implemented in Hermes Consumers, where every
-subscription assigned to a _consumer_ is handled by a separate thread. Having an unequal number  of threads between
+subscription assigned to a _consumer_ is handled by a separate thread. Having an unequal number of threads between
 _consumers_ could potentially lead to some consumers being overwhelmed with more
 [context switches](https://en.wikipedia.org/wiki/Context_switch) and a higher memory footprint.
 
 Similarly, we wanted to preserve the strategy of determining the number of _consumers_ a subscription should be
 assigned to (fixed and globally configured, but with the option of being overridden on a per-subscription basis by the
-administrator). Although it may not be optimal, for the reasons mentioned earlier, we chose to narrow the scope of the
+administrator). Although it may not be optimal, for the reasons mentioned earlier, we chose to narrow down the scope of the
 improvements, keep it as is, and potentially revisit it in the future.
 
 The last and very important factor that we had to consider while designing the new algorithm was the cost tied to
@@ -174,7 +174,7 @@ The graph below shows the results we obtained after deploying the implementation
 
 [![CPU usage after the first attempt](/img/articles/2023-01-15-dynamic-workload-balancing-in-hermes/cpu_first_attempt.png)](/img/articles/2023-01-15-dynamic-workload-balancing-in-hermes/cpu_first_attempt.png)
 
-Although the graph shows that the new algorithm got us closer to having even utilization of CPU, we were not fully
+Although the graph shows that the new algorithm got us closer to having uniform utilization of CPU, we were not fully
 satisfied with that outcome. The reason for that is depicted below, where we compare the most loaded instance with the
 least loaded one. The degree of disparity in terms of CPU usage is still significant. Therefore, we decided to at least
 determine the reason for that state of affairs and, if possible, refine the algorithm.
@@ -183,13 +183,13 @@ determine the reason for that state of affairs and, if possible, refine the algo
 
 While investigating this issue, we noticed a correlation between the class of hardware that _consumers_ run on and
 their CPU usage. This observation led us to the conclusion that, despite the fact that load is evenly distributed,
-instances running on older generations of hardware utilize more CPU than those running on newer hardware, which is
-understandable as older machines are typically less performant. In the following section, we describe how we tackled
-this issue.
+instances running on older generations of hardware utilize a higher percentage of available CPU power than those running
+on newer hardware, which is understandable as older machines are typically less performant. In the following section, we
+describe how we tackled this issue.
 
 ### Second Attempt
 
-After our investigation, it was clear to us that if we wanted to achieve even CPU usage across the entire Hermes cluster,
+After our investigation, it was clear to us that if we wanted to achieve uniform CPU usage across the entire Hermes cluster,
 aiming for processing the same number of operations per second on each instance was not the way to go. This led us to the
 question of how to determine the ideal number of operations per second that each instance can handle without being either
 overloaded or underloaded. To answer this, we had to take into account the fact that in the cloud environment, it is not
@@ -238,7 +238,7 @@ by introducing the new algorithm we reduced the amount of allocated resources by
 
 In this post, we have described the challenges we faced with balancing load in our Hermes clusters, and the steps we
 took to overcome them. By introducing our new workload balancing algorithm that dynamically adapts to varying
-subscription loads and heterogeneous hardware, we were able to achieve a more even distribution of CPU usage across
+subscription loads and heterogeneous hardware, we were able to achieve a more uniform distribution of CPU usage across
 Hermes Consumers instances.
 
 This approach has allowed us to significantly reduce the amount of allocated resources and avoid performance issues
