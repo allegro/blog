@@ -815,6 +815,11 @@ krzysztof.mikuta:
     bio: Frontend software engineer who does not run away from backend. Mostly interested in software architecture and biological modeling. Always ready to learn good patterns. Tech speaker, mentor and home barista.
     linkedin: kmikuta
 
+tomasz.tarczynski:
+    name: Tomasz Tarczyński
+    bio: Tomasz is a passionate, self-taught Software Engineer with a focus on JVM technologies, always looking to hone his engineering skills.
+    linkedin: ttarczyński
+
 lukasz.solniczek:
     name: Łukasz Solniczek
     bio: iOS Mobile Software Engineer. Works on MBox - the Server-driven UI tool.
@@ -825,3 +830,8 @@ piotr.rzysko:
     bio: Piotr is a software engineer focused on building performant and resilient distributed systems. He works on a team delivering core parts of Allegro’s technical platform.
     linkedin: piotrrzysko
     github: piotrrzysko
+
+lukasz.rokita:
+    name: Łukasz Rokita
+    bio: Software Engineer working on Cloud and Big Data. Always on the lookout for simplicity and patterns to translate into architecture. Dedicated reader of all things software engineering and JVM enthusiast. Avid skier and table tennis player.
+    linkedin: łukasz-rokita-85779413a
