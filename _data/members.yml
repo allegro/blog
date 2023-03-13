@@ -817,7 +817,6 @@ krzysztof.mikuta:
     bio: Frontend software engineer who does not run away from backend. Mostly interested in software architecture and biological modeling. Always ready to learn good patterns. Tech speaker, mentor and home barista.
     linkedin: kmikuta
 
-
 tomasz.tarczynski:
     name: Tomasz Tarczyński
     bio: Tomasz is a passionate, self-taught Software Engineer with a focus on JVM technologies, always looking to hone his engineering skills.
@@ -847,3 +846,8 @@ kalina.kobus:
     name: Kalina Kobus
     bio: Senior Research Engineer in the Machine Learning Research team, working on NLP in the e-commerce domain.
     linkedin: kalina-jasinska-kobus-65687983
+
+lukasz.rokita:
+    name: Łukasz Rokita
+    bio: Software Engineer working on Cloud and Big Data. Always on the lookout for simplicity and patterns to translate into architecture. Dedicated reader of all things software engineering and JVM enthusiast. Avid skier and table tennis player.
+    linkedin: łukasz-rokita-85779413a
