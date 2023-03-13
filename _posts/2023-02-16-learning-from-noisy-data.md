@@ -61,7 +61,7 @@ to noisy labels ([**Figure 3**](#figure3)):
 
 <figure>
     <a id="figure3"></a>
-    <img alt="Flat-topped pyramids are better than sharp-topped ones." src="" style="display:block;float:none;margin-left:auto;margin-right:auto;width:80%;margin-bottom:10px">
+    <img alt="Flat-topped pyramids are better than sharp-topped ones." src="/img/articles/2023-02-16-learning-from-noisy-data/figure3-robustness-strategies.png" style="display:block;float:none;margin-left:auto;margin-right:auto;width:80%;margin-bottom:10px">
     <figcaption> <b> Figure 3. Strategies for robustness. </b> In this blog post, we focused on two main approaches improving model robustness: utilisation of a robust loss function and implicit regularisation. </figcaption>
 </figure>
 
