@@ -35,7 +35,7 @@ that for high noise levels, it is very hard to recover the true training signal 
 <figure>
     <a id="figure2"></a>
     <img alt="Oh no, please, not the noise!" src="/img/articles/2023-02-16-learning-from-noisy-data/figure2-test-accuracy.png" style="display:block;float:none;margin-left:auto;margin-right:auto;width:70%;margin-bottom:10px">
-    <figcaption> <b> Figure 2. Test accuracy as a function of label noise percentage. </b> The X axis indicates the ratio of mislabelled to correctly labelled examples. The dataset used here was ImageNet, corrupted with synthetic label noise. Image source: [^1]. </figcaption>
+    <figcaption> <p markdown="1"><b> Figure 2. Test accuracy as a function of label noise percentage. </b> The X axis indicates the ratio of mislabelled to correctly labelled examples. The dataset used here was ImageNet, corrupted with synthetic label noise. Image source: [^1].</p></figcaption>
 </figure>
 
 How can this problem be mitigated? One approach is to simply put more effort into the labeling process — we can let
@@ -81,7 +81,7 @@ SPL proposes to exclude some predefined ratio of examples from the batch dependi
 <figure>
     <a id="figure4"></a>
     <img alt="PRL makes everything equal." src="/img/articles/2023-02-16-learning-from-noisy-data/figure4-loss-filtration.png" style="display:block;float:none;margin-left:auto;margin-right:auto;width:100%;margin-bottom:10px">
-    <figcaption> <b> Figure 4. Comparison of loss filtration methods (SPL, PRL and CCE (see below)). </b> While SPL and PRL exclude samples from loss calculation, CCE decreases the impact of potentially corrupted labels by clipping the per-sample loss values. Orange colour indicates candidate noisy samples. </figcaption>
+    <figcaption> <b> Figure 4. Comparison of loss filtration methods (SPL, PRL and CCE, see below). </b> While SPL and PRL exclude samples from loss calculation, CCE decreases the impact of potentially corrupted labels by clipping the per-sample loss values. Orange colour indicates candidate noisy samples. </figcaption>
 </figure>
 
 #### Provably Robust Learning (PRL)
@@ -140,7 +140,7 @@ $$
 <figure>
     <a id="figure5"></a>
     <img alt="Big proportion of pie makes your weight high." src="/img/articles/2023-02-16-learning-from-noisy-data/figure5-jsd.png" style="display:block;float:none;margin-left:auto;margin-right:auto;width:100%;margin-bottom:10px">
-    <figcaption> <b> Figure 5. JSD as a generalisation of CE and MAE loss. </b> Depending on the parameter $\pi_1$, JSD resembles CE or MAE. Image source: [^6]. </figcaption>
+    <figcaption> <p markdown="1"><b> Figure 5. JSD as a generalisation of CE and MAE loss. </b> Depending on the parameter \( \pi_1 \), JSD resembles CE or MAE. Image source: [^6].</p> </figcaption>
 </figure>
 
 ### Implicit regularisation
@@ -156,8 +156,8 @@ clean if its per-sample loss is low.
 <figure>
     <a id="figure6"></a>
     <img alt="Co-operation is key to success, especially when you want to reduce noise in your garage band." src="/img/articles/2023-02-16-learning-from-noisy-data/figure6-co-teaching.png" style="display:block;float:none;margin-left:auto;margin-right:auto;width:50%;margin-bottom:10px">
-    <figcaption> <b> Figure 6. Exchange of training feed in co-teaching. </b> Two peer networks exchange samples that are expected
-to be clean from noise. Image source: [^7]. </figcaption>
+    <figcaption> <p markdown="1"><b> Figure 6. Exchange of training feed in co-teaching. </b> Two peer networks exchange samples that are expected
+to be clean from noise. Image source: [^7].</p> </figcaption>
 </figure>
 
 Co-teaching is one of the most popular and universal baselines in the domain of learning from noisy data. It has
@@ -180,7 +180,7 @@ $$
 <figure>
     <a id="figure7"></a>
     <img alt="When you can’t decide between cats and dogs, why don’t have both?" src="/img/articles/2023-02-16-learning-from-noisy-data/figure7-mixup.png" style="display:block;float:none;margin-left:auto;margin-right:auto;width:100%;margin-bottom:10px">
-    <figcaption> <b> Figure 7. Augmentation through mixup. </b> Two samples $i$ and $j$ are linearly combined into a synthetic image $\pmb{x}_{aug}$ and a soft label $\pmb{y}_{aug}$. This new augmented input encourages the model to linearly interpolate the predictions between the original samples. </figcaption>
+    <figcaption> <b> Figure 7. Augmentation through mixup. </b> Two samples \(i\) and \(j\) are linearly combined into a synthetic image \(\pmb{x}_{aug}\) and a soft label \(\pmb{y}_{aug}\). This new augmented input encourages the model to linearly interpolate the predictions between the original samples. </figcaption>
 </figure>
 
 The method is a simple, universal, yet very effective approach. It yields good empirical results while adding
