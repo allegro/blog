@@ -3,7 +3,7 @@ layout: post
 title: Onion Architecture
 author: [tomasz.tarczynski]
 tags: [tech, architecture, software, engineering]
---- 
+---
 Software Architecture is an elusive thing which, if neglected, can lead to a hard-to-develop and maintain codebase, and
 in more drastic circumstances to the failure of a product. This article discusses one of the backend application
 architecture styles which proved to be successful in providing a good foundation for building and maintaining an
@@ -94,7 +94,7 @@ There are three[^3] main layers in Onion Architecture:
 - The infrastructure layer
   each of which has its responsibilities.
 
-![Onion Architecture Layers](/img/articles/2023-12-13-onion-architecture/onion-layers.png)
+![Onion Architecture Layers](/img/articles/2023-02-13-onion-architecture/onion-layers.png)
 
 #### The Domain Layer
 
@@ -169,7 +169,7 @@ abstract sealed class Book {
                 "Unsupported state transition. Cannot archive book in state [%s]".formatted(status())
         );
     }
-} 
+}
 ```
 
 Since the domain changes the most — here is the place where you put all the new features, and business requirements — it
@@ -190,7 +190,7 @@ The code describing such a use case can look like this:
 
 ```java
 class Books {
-    // other fields and methods omitted   
+    // other fields and methods omitted
     public BookSnapshot approve(BookId id) {
         return transactions.execute(() -> {
             final Book book = bookRepository.getById(id);
@@ -264,7 +264,7 @@ class NoOpTransactionsFake implements Transactions {
 There are two basic approaches to representing the layers in the code. The one that we used in our most recent
 project was to use a package naming convention.
 
-![onion packages](/img/articles/2023-12-13-onion-architecture/onion-packages.png)
+![onion packages](/img/articles/2023-02-13-onion-architecture/onion-packages.png)
 
 Every domain package has three subpackages: domain, application and infrastructure. This method is clear, easy to
 understand and navigate, and does not require changes to the build tool setup. The downside is that, except for the

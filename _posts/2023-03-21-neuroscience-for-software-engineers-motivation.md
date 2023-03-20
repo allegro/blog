@@ -42,7 +42,7 @@ ventral tegmental area (VTA) to the part of the brain responsible for memory (hi
 (nucleus accumbens) and reasoning (prefrontal cortex).
 
 ![Dopamine pathways in the brain](
-/img/articles/2022-12-28-neuroscience-for-software-engineers-motivation/1280px-Dopamine_pathways.svg.png
+/img/articles/2023-03-21-neuroscience-for-software-engineers-motivation/1280px-Dopamine_pathways.svg.png
 "Dopamine pathways in the brain (Public Domain from [Wikipedia](https://en.wikipedia.org/wiki/Dopamine#/media/File:Dopamine_pathways.svg))")
 
 The complexity of this structure might be a hint that there are a multiple implications of dopamine release, but
@@ -88,7 +88,7 @@ we are! That knowledge is going to let us dive into different strategies of mana
 modulating our motivation.
 
 ![Are we there yet...? Asked Donkey from Shrek](
-/img/articles/2022-12-28-neuroscience-for-software-engineers-motivation/54e8c52c-c40e-4197-a0ec-d17be266ed90_text.gif
+/img/articles/2023-03-21-neuroscience-for-software-engineers-motivation/54e8c52c-c40e-4197-a0ec-d17be266ed90_text.gif
 "(from [Giphy](https://y.yarn.co/54e8c52c-c40e-4197-a0ec-d17be266ed90_text.gif)")
 
 ### Short-term increase
@@ -136,7 +136,7 @@ acquired by more accessible measures. How about a quick cold shower before work 
 joining a winter swimming community?
 
 ![A man jumping into snow](
-/img/articles/2022-12-28-neuroscience-for-software-engineers-motivation/giphy-downsized-large.gif
+/img/articles/2023-03-21-neuroscience-for-software-engineers-motivation/giphy-downsized-large.gif
 "(from [Giphy](https://media.giphy.com/media/MpJJ7gWng24bjxrMiK/giphy-downsized-large.gif))")
 
 #### Avoiding layers of dopamine-increasing factors
@@ -161,7 +161,7 @@ while coding. We should keep in mind, though, that multitasking is another way o
 daily basis will have a negative effect on general motivation.
 
 ![A man multitasking at work ](
-/img/articles/2022-12-28-neuroscience-for-software-engineers-motivation/giphy.webp "(from [Giphy](
+/img/articles/2023-03-21-neuroscience-for-software-engineers-motivation/giphy.webp "(from [Giphy](
 https://media3.giphy.com/media/PvvSfSDFoAL5e/giphy.gif?cid=ecf05e47mym26elkkk7obya4xr8zj83hva1jlu12l7cvmglq&rid=giphy.gif&ct=g)
 )")
 
