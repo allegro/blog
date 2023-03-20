@@ -4,7 +4,7 @@
 
 .post-author-list li {
     padding: 0;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--m-color-border);
     padding: 1rem 0;
     list-style: none;
 }
@@ -22,11 +22,12 @@
 .post-author {
     overflow: hidden;
     font-size: 0.9em;
+    padding-bottom: 24px;
 }
 
 .post-author .content {
-    background: #fff;
-    border: 1px solid #ddd;
+    background: var(--m-color-desk);
+    border: 1px solid var(--m-color-border);
     padding: 1.5em;
     max-width: 900px;
     overflow: hidden;
@@ -39,7 +40,7 @@
 .post-author .username {
     font-size: 0.9em;
     text-decoration: none;
-    color: #222;
+    color: var(--m-color-text);
     vertical-align: top;
     &:hover {
         text-decoration: none;
@@ -55,9 +56,9 @@
     float: left;
     width: 100px;
     height: 100px;
-    background: rgba(255, 255, 255, 0.9);
-    box-shadow: 1px 1px 2px #bbb;
-    border: 5px solid #fff;
+    background: var(--m-color-card);
+    box-shadow: 1px 1px 2px var(--m-color-border);
+    border: 5px solid var(--m-color-border);
     border-radius: 50%;
     margin: 0 15px 0 0;
 }

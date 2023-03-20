@@ -169,10 +169,11 @@ Never use # (h1) as it’s reserved for the title. Don’t repeat the title in t
 Write your article in Markdown, save it to `_posts` folder.
 If this is your first post, prepare your Bio (see above for details).
 
+### Rendering on local machine
+
 If you're Mac user and you haven't installed Ruby yourself, then you could perform following steps:
 * `brew install ruby`
 * add `export PATH="/usr/local/opt/ruby/bin:$PATH"` into your `.bashrc`/`.zshrc`
-
 
 Install needed gems:
 
@@ -185,6 +186,14 @@ Launch the site using [Jekyll](https://help.github.com/articles/using-jekyll-wit
 ```bash
 make serve
 ````
+
+### Rendering using Docker
+
+Alternatively you can use Docker to render the blog. Follow these steps:
+ - `docker run -it -v "$PWD":/usr/blog -w /usr/blog -p 4000:4000 ruby:3.0 /bin/bash` - this will mount your repository in /usr/blog and map port 4000
+ - `bundle exec jekyll serve -i --host=0.0.0.0` - this line has to be changed in Makefile to force `jekyll` to bind to `0.0.0.0`
+
+ Now you are ready to host the blog using `make serve`. The changes made to local files will still be visible interactively since Docker mounts your local file system and reads the modifications.
 
 Is your article rendered correctly?
 
