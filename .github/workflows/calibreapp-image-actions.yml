@@ -13,7 +13,7 @@ jobs:
     # Do not run if branch name ends with '-no-img-opt'
     if: github.event.pull_request.head.repo.full_name == github.repository && !endsWith(github.event.pull_request.head.ref, '-no-img-opt')
     name: calibreapp/image-actions
-    runs-on: ubuntu-latest
+    runs-on: [ self-hosted, ubuntu-latest ]
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
