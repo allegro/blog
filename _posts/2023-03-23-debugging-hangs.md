@@ -7,7 +7,7 @@ tags: [java, jvm, debugging, dependency hell]
 
 As a part of a broader initiative of refreshing the Allegro's platform, we are upgrading our internal libraries to Spring Boot 3.0 and Java 17. The task is daunting and filled with challenges, however overall progresses is steady and thanks to the modular nature of our code it should end in finite time. 
 Everyone who did such an upgrade knows that you need to expect the unexpected and at the end of the day prepare for lots of debugging. No amount of migration guide would prepare you for what's coming in the field. In the words of Donald Rumsfeld there are unknown unknowns and we need to be equipped with the tools to uncover these unknowns and patch them up.
-In this blog post I'd like to walk you through a process that should show where the application hangs when there seems to be nothing wrong with it and that you don't always know what code you have - problem known as dependecy hell, place we got quite cosy in during this upgrade.  
+In this blog post I'd like to walk you through a process that should show where the application hangs, although there seems to be nothing wrong with it and that you don't always know what code you have - problem known as dependecy hell, place we got quite cosy in during this upgrade.  
 
 ## The change
 The upgrade is trivial and as git diff looks like this
