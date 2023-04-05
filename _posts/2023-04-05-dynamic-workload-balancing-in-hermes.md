@@ -17,7 +17,7 @@ lessons we learned along the way, and the results we achieved.
 Before we delve deeper into the article’s topic, let’s first briefly introduce the architecture of Hermes, depicted in
 the diagram below:
 
-![Hermes Architecture](/img/articles/2023-01-15-dynamic-workload-balancing-in-hermes/hermes_architecture.png)
+![Hermes Architecture](/img/articles/2023-04-05-dynamic-workload-balancing-in-hermes/hermes_architecture.png)
 
 As we can see, Hermes is composed of two main modules:
 
@@ -40,7 +40,7 @@ topic partitions. By default, a fixed number of _consumers_ are assigned to a su
 manually override this number on a per-subscription basis. It’s also worth noting that a single _consumer_ can handle
 multiple subscriptions. The following diagram illustrates this:
 
-![Hermes Consumers](/img/articles/2023-01-15-dynamic-workload-balancing-in-hermes/partitions.png)
+![Hermes Consumers](/img/articles/2023-04-05-dynamic-workload-balancing-in-hermes/partitions.png)
 
 ## Workload Balancer
 
@@ -67,11 +67,11 @@ values on a per-instance basis, each instance will receive an equal share of the
 a look at the CPU usage of each _consumer_ from one of our Hermes production clusters using the workload balancer
 which does not account for the disproportions between subscriptions:
 
-[![Initial CPU usage](/img/articles/2023-01-15-dynamic-workload-balancing-in-hermes/cpu_before.png)](/img/articles/2023-01-15-dynamic-workload-balancing-in-hermes/cpu_before.png)
+[![Initial CPU usage](/img/articles/2023-04-05-dynamic-workload-balancing-in-hermes/cpu_before.png)](/img/articles/2023-04-05-dynamic-workload-balancing-in-hermes/cpu_before.png)
 
 The figure below shows the difference in CPU usage between the least and most heavily loaded _consumers_:
 
-[![CPU usage of the least and most heavily loaded consumers](/img/articles/2023-01-15-dynamic-workload-balancing-in-hermes/cpu_before_least_and_most.png)](/img/articles/2023-01-15-dynamic-workload-balancing-in-hermes/cpu_before_least_and_most.png)
+[![CPU usage of the least and most heavily loaded consumers](/img/articles/2023-04-05-dynamic-workload-balancing-in-hermes/cpu_before_least_and_most.png)](/img/articles/2023-04-05-dynamic-workload-balancing-in-hermes/cpu_before_least_and_most.png)
 
 Taking into account all of the above factors, in order not to compromise system performance, we always had to determine
 the right allocation based on the most loaded instance. Consequently, less busy instances were wasting resources as
@@ -172,14 +172,14 @@ fairly simple and boils down to the leader periodically executing the following 
 
 The graph below shows the results we obtained after deploying the implementation of this algorithm to production:
 
-[![CPU usage after the first attempt](/img/articles/2023-01-15-dynamic-workload-balancing-in-hermes/cpu_first_attempt.png)](/img/articles/2023-01-15-dynamic-workload-balancing-in-hermes/cpu_first_attempt.png)
+[![CPU usage after the first attempt](/img/articles/2023-04-05-dynamic-workload-balancing-in-hermes/cpu_first_attempt.png)](/img/articles/2023-04-05-dynamic-workload-balancing-in-hermes/cpu_first_attempt.png)
 
 Although the graph shows that the new algorithm got us closer to having uniform utilization of CPU, we were not fully
 satisfied with that outcome. The reason for that is depicted below, where we compare the most loaded instance with the
 least loaded one. The degree of disparity in terms of CPU usage is still significant. Therefore, we decided to at least
 determine the reason for that state of affairs and, if possible, refine the algorithm.
 
-[![CPU usage of the least and most heavily loaded consumers after the first attempt](/img/articles/2023-01-15-dynamic-workload-balancing-in-hermes/cpu_first_attempt_least_most.png)](/img/articles/2023-01-15-dynamic-workload-balancing-in-hermes/cpu_first_attempt_least_most.png)
+[![CPU usage of the least and most heavily loaded consumers after the first attempt](/img/articles/2023-04-05-dynamic-workload-balancing-in-hermes/cpu_first_attempt_least_most.png)](/img/articles/2023-04-05-dynamic-workload-balancing-in-hermes/cpu_first_attempt_least_most.png)
 
 While investigating this issue, we noticed a correlation between the class of hardware that _consumers_ run on and
 their CPU usage. This observation led us to the conclusion that, despite the fact that load is evenly distributed,
@@ -204,7 +204,7 @@ let’s use an example. In the following picture, we see an operator who must ad
 temperature in a furnace. The operator doesn’t know upfront what the appropriate degree to which the valve should be
 open is, therefore it is necessary to use a trial-and-error method to attain the desired outcome.
 
-![Proportional Controller](/img/articles/2023-01-15-dynamic-workload-balancing-in-hermes/proportional_controler.png)
+![Proportional Controller](/img/articles/2023-04-05-dynamic-workload-balancing-in-hermes/proportional_controler.png)
 
 Now let’s take a look at how this example relates to Control Theory. Using Control Theory terms, we can say that the
 picture presents a feedback control system, also known as a closed-loop control system. In such systems, the current
@@ -228,7 +228,7 @@ should eventually reach the set point.
 After integrating a proportional controller into our algorithm and deploying it to production, we were able to achieve
 the following results:
 
-[![CPU usage after the second attempt](/img/articles/2023-01-15-dynamic-workload-balancing-in-hermes/cpu_second_attempt.png)](/img/articles/2023-01-15-dynamic-workload-balancing-in-hermes/cpu_second_attempt.png)
+[![CPU usage after the second attempt](/img/articles/2023-04-05-dynamic-workload-balancing-in-hermes/cpu_second_attempt.png)](/img/articles/2023-04-05-dynamic-workload-balancing-in-hermes/cpu_second_attempt.png)
 
 As we can see, the current CPU usage of all instances is very similar. This is exactly what we aimed for. If we
 assume that we are targeting 40% CPU utilization (to be able to handle additional traffic in case of a datacenter failover),
