@@ -87,7 +87,7 @@ SPL proposes to exclude some predefined ratio of examples from the batch dependi
 #### Provably Robust Learning (PRL)
 
 **Provably Robust Learning**[^3] derives from the ideas presented in the SPL paper, but the authors state that
-corrupted labels should be detected depending on the gradient norm, instead of per sample loss ([**Figure 4b**](#figure4)).
+corrupted labels should be detected depending on the gradient norm, instead of per-sample loss ([**Figure 4b**](#figure4)).
 The underlying intuition is that corrupted samples provoke the optimiser to make inadequately large steps
 in the optimisation space. The rest of the logic is the same as in SPL.
 
