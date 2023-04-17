@@ -38,7 +38,7 @@ that for high noise levels, it is very hard to recover the true training signal 
     <p markdown="1" style="width:70%;margin-left:auto;margin-right:auto"><b> Figure 2. Test accuracy as a function of label noise percentage. </b> The X axis indicates the ratio of mislabelled to correctly labelled examples. The dataset used here was ImageNet, corrupted with synthetic label noise. Image source: [^1].</p>
 </figure>
 
-How can this problem be mitigated? One approach is to simply put more effort into the labeling process — we can let
+How can this problem be mitigated? One approach is to simply put more effort into the labelling process — we can let
 multiple annotators label each data point and then evaluate the cross-annotator agreement. With enough time and effort,
 we hope to obtain a dataset free of label noise. However, in practice this approach is rarely feasible due to large
 volumes of training data and the need for efficient turnaround of machine learning projects. Consequently, we need
@@ -57,7 +57,7 @@ literature on *Learning from Noisy Data*. In general, there are three approaches
 to noisy labels ([**Figure 3**](#figure3)):
 - **Robust loss function** boosting the training dynamics in the presence of noise.
 - **Implicit regularisation** of the network aiming at decreasing the impact of noisy labels.
-- **Filtration of noisy data samples** during the training or in the pre-training stage.
+- **Filtration of noisy data samples** during the training or at the pre-training stage.
 
 <figure style="display:block;float:none;margin-left:auto;margin-right:auto">
     <a id="figure3"></a>
@@ -87,7 +87,7 @@ SPL proposes to exclude some predefined ratio of examples from the batch dependi
 #### Provably Robust Learning (PRL)
 
 **Provably Robust Learning**[^3] derives from the ideas presented in the SPL paper, but the authors state that
-corrupted labels should be detected depending on the gradient norm, instead of per sample loss ([**Figure 4b**](#figure4)).
+corrupted labels should be detected depending on the gradient norm, instead of per-sample loss ([**Figure 4b**](#figure4)).
 The underlying intuition is that corrupted samples provoke the optimiser to make inadequately large steps
 in the optimisation space. The rest of the logic is the same as in SPL.
 
@@ -123,7 +123,7 @@ by temporal ensembling.
 
 #### Jensen-Shannon Divergence Loss (JSD)
 
-The authors of **Jensen-Shannon Divergence Loss** [^6] take a yet another approach to loss construction,
+The authors of **Jensen-Shannon Divergence Loss** [^6] take yet another approach to loss construction,
 which is inspired by an empirical comparison between Cross-Entropy (CE) and Mean Absolute Error (MAE) loss. CE is known
 for its fast convergence and brilliant training dynamics, while MAE provides spectacular robustness at the price
 of slow convergence.
