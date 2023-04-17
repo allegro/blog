@@ -21,10 +21,10 @@ who almost certainly produce some labelling errors. Unfortunately, human annotat
 quality, ambiguous image contents, or simply click the wrong item. As such, we inevitably end up with a dataset
 where some percentage of cats are labelled as dogs and vice versa ([**Figure 1**](#figure1)). 
 
-<figure>
+<figure style="display:block;float:none;margin-left:auto;margin-right:auto">
     <a id="figure1"></a>
-    <img alt="Cats and dogs are equally nice." src="/img/articles/2023-02-16-learning-from-noisy-data/figure1-label-noise-example.png/" style="display:block;float:none;margin-left:auto;margin-right:auto;width:80%;margin-bottom:10px">
-    <figcaption> <b>Figure 1. An example of label noise in a binary classification dataset.</b> Some images in both categories were mislabelled by human annotators, which introduces noise to the training dataset. </figcaption>
+    <img alt="Cats and dogs are equally nice." src="/img/articles/2023-02-16-learning-from-noisy-data/figure1-label-noise-example.png/" style="width:80%;margin-bottom:10px">
+    <p style="width:80%;margin-left:auto;margin-right:auto"> <b>Figure 1. An example of label noise in a binary classification dataset.</b> Some images in both categories were mislabelled by human annotators, which introduces noise to the training dataset. </p>
 </figure>
 
 Consequently, the model trained with such data learns partially wrong associations, which then can lead to incorrect
@@ -32,10 +32,10 @@ predictions for new images. The more label noise we have, the more we confuse th
 measure this by evaluating the classification error on a held-out test dataset ([**Figure 2**](#figure2)). It is clear
 that for high noise levels, it is very hard to recover the true training signal from the corrupted training data.
 
-<figure>
+<figure style="display:block;float:none;margin-left:auto;margin-right:auto">
     <a id="figure2"></a>
-    <img alt="Oh no, please, not the noise!" src="/img/articles/2023-02-16-learning-from-noisy-data/figure2-test-accuracy.png" style="display:block;float:none;margin-left:auto;margin-right:auto;width:70%;margin-bottom:10px">
-    <figcaption> <p markdown="1"><b> Figure 2. Test accuracy as a function of label noise percentage. </b> The X axis indicates the ratio of mislabelled to correctly labelled examples. The dataset used here was ImageNet, corrupted with synthetic label noise. Image source: [^1].</p></figcaption>
+    <img alt="Oh no, please, not the noise!" src="/img/articles/2023-02-16-learning-from-noisy-data/figure2-test-accuracy.png" style="width:70%;margin-bottom:10px">
+    <p markdown="1" style="width:70%;margin-left:auto;margin-right:auto"><b> Figure 2. Test accuracy as a function of label noise percentage. </b> The X axis indicates the ratio of mislabelled to correctly labelled examples. The dataset used here was ImageNet, corrupted with synthetic label noise. Image source: [^1].</p>
 </figure>
 
 How can this problem be mitigated? One approach is to simply put more effort into the labeling process — we can let
@@ -59,10 +59,10 @@ to noisy labels ([**Figure 3**](#figure3)):
 - **Implicit regularisation** of the network aiming at decreasing the impact of noisy labels.
 - **Filtration of noisy data samples** during the training or in the pre-training stage.
 
-<figure>
+<figure style="display:block;float:none;margin-left:auto;margin-right:auto">
     <a id="figure3"></a>
-    <img alt="Flat-topped pyramids are better than sharp-topped ones." src="/img/articles/2023-02-16-learning-from-noisy-data/figure3-robustness-strategies.png" style="display:block;float:none;margin-left:auto;margin-right:auto;width:80%;margin-bottom:10px">
-    <figcaption> <b> Figure 3. Strategies for robustness. </b> In this blog post, we focused on two main approaches improving model robustness: utilisation of a robust loss function and implicit regularisation. </figcaption>
+    <img alt="Flat-topped pyramids are better than sharp-topped ones." src="/img/articles/2023-02-16-learning-from-noisy-data/figure3-robustness-strategies.png" style="width:80%;margin-bottom:10px">
+    <p style="width:80%;margin-left:auto;margin-right:auto"><b> Figure 3. Strategies for robustness. </b> In this blog post, we focused on two main approaches improving model robustness: utilisation of a robust loss function and implicit regularisation.</p>
 </figure>
 
 In the scope of this blog post, we present seven different methods that are strong baselines for improving
@@ -78,10 +78,10 @@ would appear as difficult, resulting in a high per-sample loss.
 SPL proposes to exclude some predefined ratio of examples from the batch depending on their per-sample loss values
 ([**Figure 4a**](#figure4)). Usually, the ratio is set as the estimated noise level in the dataset.
 
-<figure>
+<figure style="display:block;float:none;margin-left:auto;margin-right:auto">
     <a id="figure4"></a>
-    <img alt="PRL makes everything equal." src="/img/articles/2023-02-16-learning-from-noisy-data/figure4-loss-filtration.png" style="display:block;float:none;margin-left:auto;margin-right:auto;width:100%;margin-bottom:10px">
-    <figcaption> <b> Figure 4. Comparison of loss filtration methods (SPL, PRL and CCE, see below). </b> While SPL and PRL exclude samples from loss calculation, CCE decreases the impact of potentially corrupted labels by clipping the per-sample loss values. Orange colour indicates candidate noisy samples. </figcaption>
+    <img alt="PRL makes everything equal." src="/img/articles/2023-02-16-learning-from-noisy-data/figure4-loss-filtration.png" style="width:80%;margin-bottom:10px">
+    <p style="width:80%;margin-left:auto;margin-right:auto"> <b> Figure 4. Comparison of loss filtration methods (SPL, PRL and CCE, see below). </b> While SPL and PRL exclude samples from loss calculation, CCE decreases the impact of potentially corrupted labels by clipping the per-sample loss values. Orange colour indicates candidate noisy samples. </p>
 </figure>
 
 #### Provably Robust Learning (PRL)
@@ -103,19 +103,19 @@ It has been recently observed that DNNs first fit clean samples, and then start 
 phenomenon reduces the generalisation properties of the model, distracting it from learning true patterns present
 in the data. **Early Learning Regularisation**[^4] mitigates memorisation with two tricks:
 
-- *Temporal ensembling* of targets: during the training step $[k]$, the original targets $\pmb{\text{t}}$ are mixed
-with the model’s predictions $\pmb{\text{p}}$ from previous training steps. This prevents the gradient from diverging
+- *Temporal ensembling* of targets: during the training step $$[k]$$, the original targets $$\pmb{\text{t}}$$ are mixed
+with the model’s predictions $$\pmb{\text{p}}$$ from previous training steps. This prevents the gradient from diverging
 hugely between subsequent steps. This trick is well-known in semi-supervised learning[^5]:
 
 $$
 \pmb{\text{t}}^{[k]} = \left(\beta\ \pmb{\text{t}}^{[k-1]} + (1-\beta)\ \pmb{\text{p}}^{[k-1]}\right)
 $$
 
-- *Explicit regularisation*: an extra term is added to the default cross-entropy loss $\mathcal{L}\_{CE}(\Theta)$ that
+- *Explicit regularisation*: an extra term is added to the default cross-entropy loss $$\mathcal{L}_{CE}(\Theta)$$ that
 allows refinement of the early-learnt concepts, but penalises drastically contradicting predictions.
 
 $$
-\mathcal{L}\_{ELR}(\Theta)=\mathcal{L}\_{CE}(\Theta) + \frac{\lambda}{n} \sum\text{log}(1-\langle \pmb{\text{p}}, \pmb{\text{t}} \rangle)
+\mathcal{L}_{ELR}(\Theta)=\mathcal{L}_{CE}(\Theta) + \frac{\lambda}{n} \sum\text{log}(1-\langle \pmb{\text{p}}, \pmb{\text{t}} \rangle)
 $$
 
 Thus, the gradient gets a boost for the clean samples, while the impact of noisy samples is neutralised
@@ -129,18 +129,18 @@ for its fast convergence and brilliant training dynamics, while MAE provides spe
 of slow convergence.
 
 Englesson et al. came up with the idea to use Jensen-Shannon Divergence, which is a proven generalisation of CE
-and MAE loss ([**Figure 5**](#figure5)). JSD uses Kullback-Leibler Divergence $\text{D}\_{\text{KL}}$ between the target
-labels $\pmb{y}$ and predictions of the model $f(\pmb{x})$ vs. their averaged distribution $\pmb{m}$. Summing up, one
+and MAE loss ([**Figure 5**](#figure5)). JSD uses Kullback-Leibler Divergence $$\text{D}_{\text{KL}}$$ between the target
+labels $$\pmb{y}$$ and predictions of the model $$f(\pmb{x})$$ vs. their averaged distribution $$\pmb{m}$$. Summing up, one
 can think of JSD as a CE with a robustness boost, or MAE with improved convergence.
 
 $$
-\mathcal{L}\_{\text{JS}}(\pmb{x}, \pmb{y}) = \frac{1}{Z} \left( \pi_1 \text{D}\_{\text{KL}}(\pmb{y}||\pmb{m}) + (1-\pi_1) \text{D}\_{\text{KL}}(f(\pmb{x})||\pmb{m}) \right)
+\mathcal{L}_{\text{JS}}(\pmb{x}, \pmb{y}) = \frac{1}{Z} \left( \pi_1 \text{D}_{\text{KL}}(\pmb{y}||\pmb{m}) + (1-\pi_1) \text{D}_{\text{KL}}(f(\pmb{x})||\pmb{m}) \right)
 $$
 
-<figure>
+<figure style="display:block;float:none;margin-left:auto;margin-right:auto">
     <a id="figure5"></a>
-    <img alt="Big proportion of pie makes your weight high." src="/img/articles/2023-02-16-learning-from-noisy-data/figure5-jsd.png" style="display:block;float:none;margin-left:auto;margin-right:auto;width:100%;margin-bottom:10px">
-    <figcaption> <p markdown="1"><b> Figure 5. JSD as a generalisation of CE and MAE loss. </b> Depending on the parameter \( \pi_1 \), JSD resembles CE or MAE. Image source: [^6].</p> </figcaption>
+    <img alt="Big proportion of pie makes your weight high." src="/img/articles/2023-02-16-learning-from-noisy-data/figure5-jsd.png" style="width:70%;margin-bottom:10px">
+    <p markdown="1" style="width:70%;margin-left:auto;margin-right:auto"><b> Figure 5. JSD as a generalisation of CE and MAE loss. </b> Depending on the parameter $$\pi_1$$, JSD resembles CE or MAE. Image source: [^6].</p>
 </figure>
 
 ### Implicit regularisation
@@ -153,11 +153,11 @@ ideally consist only of clean samples. In CT, each network predicts which sample
 counterpart. Deciding whether a sample is clean relies on the trick known from SPL: the sample’s label is probably
 clean if its per-sample loss is low.
 
-<figure>
+<figure style="display:block;float:none;margin-left:auto;margin-right:auto">
     <a id="figure6"></a>
-    <img alt="Co-operation is key to success, especially when you want to reduce noise in your garage band." src="/img/articles/2023-02-16-learning-from-noisy-data/figure6-co-teaching.png" style="display:block;float:none;margin-left:auto;margin-right:auto;width:50%;margin-bottom:10px">
-    <figcaption> <p markdown="1"><b> Figure 6. Exchange of training feed in co-teaching. </b> Two peer networks exchange samples that are expected
-to be clean from noise. Image source: [^7].</p> </figcaption>
+    <img alt="Co-operation is key to success, especially when you want to reduce noise in your garage band." src="/img/articles/2023-02-16-learning-from-noisy-data/figure6-co-teaching.png" style="width:50%;margin-bottom:10px">
+    <p markdown="1" style="width:50%;margin-left:auto;margin-right:auto"><b> Figure 6. Exchange of training feed in co-teaching. </b> Two peer networks exchange samples that are expected
+to be clean from noise. Image source: [^7].</p>
 </figure>
 
 Co-teaching is one of the most popular and universal baselines in the domain of learning from noisy data. It has
@@ -169,18 +169,18 @@ a consensus between the two networks, causing them to produce identical training
 #### Mixup
 
 **Mixup**[^8] is a simple augmentation scheme that enforces linear behaviour of the model for in-between
-training samples ([**Figure 7**](#figure7)). It linearly combines two training samples $(\pmb{x}\_i, \pmb{y}\_i)$
-and $(\pmb{x}\_j, \pmb{y}\_j)$ with weight $\lambda$ sampled from the *Beta* distribution. It results in a new augmented sample with mixed input features $\pmb{x}\_{aug}$ and a soft label $\pmb{y}\_{aug}$:
+training samples ([**Figure 7**](#figure7)). It linearly combines two training samples $$(\pmb{x}_i, \pmb{y}_i)$$
+and $$(\pmb{x}_j, \pmb{y}_j)$$ with weight $$\lambda$$ sampled from the *Beta* distribution. It results in a new augmented sample with mixed input features $$\pmb{x}_{aug}$$ and a soft label $$\pmb{y}_{aug}$$:
 
 $$
 \pmb{x}_{aug} = \lambda \pmb{x}_i + (1 - \lambda)\pmb{x}_j \\
 \pmb{y}_{aug} = \lambda \pmb{y}_i + (1 - \lambda)\pmb{y}_j \\
 $$
 
-<figure>
+<figure style="display:block;float:none;margin-left:auto;margin-right:auto">
     <a id="figure7"></a>
-    <img alt="When you can’t decide between cats and dogs, why don’t have both?" src="/img/articles/2023-02-16-learning-from-noisy-data/figure7-mixup.png" style="display:block;float:none;margin-left:auto;margin-right:auto;width:100%;margin-bottom:10px">
-    <figcaption> <b> Figure 7. Augmentation through mixup. </b> Two samples \(i\) and \(j\) are linearly combined into a synthetic image \(\pmb{x}_{aug}\) and a soft label \(\pmb{y}_{aug}\). This new augmented input encourages the model to linearly interpolate the predictions between the original samples. </figcaption>
+    <img alt="When you can’t decide between cats and dogs, why don’t have both?" src="/img/articles/2023-02-16-learning-from-noisy-data/figure7-mixup.png" style="width:80%;margin-bottom:10px">
+    <p style="width:80%;margin-left:auto;margin-right:auto"> <b> Figure 7. Augmentation through mixup. </b> Two samples \(i\) and \(j\) are linearly combined into a synthetic image \(\pmb{x}_{aug}\) and a soft label \(\pmb{y}_{aug}\). This new augmented input encourages the model to linearly interpolate the predictions between the original samples. </p>
 </figure>
 
 The method is a simple, universal, yet very effective approach. It yields good empirical results while adding
@@ -214,10 +214,10 @@ Here’s the setup ([**Figure 8**](#figure8)):
 Note that this task is subject to domain shift: the assortment listed in these ambiguous categories may be harder
 to categorise than the regular assortment in other categories.
 
-<figure>
+<figure style="display:block;float:none;margin-left:auto;margin-right:auto">
     <a id="figure8"></a>
-    <img alt="Always trust your friendly neighbourhood language model." src="/img/articles/2023-02-16-learning-from-noisy-data/figure8-category-classifier.png" style="display:block;float:none;margin-left:auto;margin-right:auto;width:100%;margin-bottom:10px">
-    <figcaption> <b> Figure 8. Category classifier: training & inference. </b> The model is trained on offers listed in well-defined categories. Then, it is used to move offers from ambiguous categories (<i>Other, Accessories, etc.</i>) to the well-defined categories. </figcaption>
+    <img alt="Always trust your friendly neighbourhood language model." src="/img/articles/2023-02-16-learning-from-noisy-data/figure8-category-classifier.png" style="width:80%;margin-bottom:10px">
+    <p style="width:80%;margin-left:auto;margin-right:auto"> <b> Figure 8. Category classifier: training & inference. </b> The model is trained on offers listed in well-defined categories. Then, it is used to move offers from ambiguous categories (<i>Other, Accessories, etc.</i>) to the well-defined categories. </p>
 </figure>
 
 ### Real-world label noise at Allegro
@@ -227,10 +227,10 @@ The training set (offers in well-defined categories) is not 100% correct, for se
 - there is no appropriate category for a given offer,
 - the taxonomy of the Allegro category tree changes over time.
 
-<figure>
+<figure style="display:block;float:none;margin-left:auto;margin-right:auto">
     <a id="figure9"></a>
-    <img alt="AHHH, FRESH MEAT." src="/img/articles/2023-02-16-learning-from-noisy-data/figure9-mislabelled-offers.png" style="display:block;float:none;margin-left:auto;margin-right:auto;width:100%;margin-bottom:10px">
-    <figcaption> <b> Figure 9. Examples of mislabelled offers. </b> With over 23,000 categories at Allegro, listing each offer in its best-matching category can be challenging for merchants. Hence, label noise is an inherent feature of our training dataset. </figcaption>
+    <img alt="AHHH, FRESH MEAT." src="/img/articles/2023-02-16-learning-from-noisy-data/figure9-mislabelled-offers.png" style="width:80%;margin-bottom:10px">
+    <p style="width:80%;margin-left:auto;margin-right:auto"> <b> Figure 9. Examples of mislabelled offers. </b> With over 23,000 categories at Allegro, listing each offer in its best-matching category can be challenging for merchants. Hence, label noise is an inherent feature of our training dataset. </p>
 </figure>
 
 The ML model is prone to memorisation of the wrong labels in the training set, *i.e.* overfitting. These errors will
@@ -254,10 +254,10 @@ to a wrong one),
 - training the model on the noisy dataset,
 - testing the model on a held-out fraction of the clean dataset.
 
-<figure>
+<figure style="display:block;float:none;margin-left:auto;margin-right:auto">
     <a id="figure10"></a>
-    <img alt="Staying clean has many benefits. Stay clean kids!" src="/img/articles/2023-02-16-learning-from-noisy-data/figure10-datasets.png" style="display:block;float:none;margin-left:auto;margin-right:auto;width:80%;margin-bottom:10px">
-    <figcaption> <b> Figure 10. Testing the model’s robustness. </b> The full dataset of clean instances (offers with true category labels) is split into training, validation and test sets. Next, label noise is introduced to the training and validation sets and the model is trained. The model is tested on a held-out fraction of the clean dataset. </figcaption>
+    <img alt="Staying clean has many benefits. Stay clean kids!" src="/img/articles/2023-02-16-learning-from-noisy-data/figure10-datasets.png" style="width:70%;margin-bottom:10px">
+    <p style="width:70%;margin-left:auto;margin-right:auto"> <b> Figure 10. Testing the model’s robustness. </b> The full dataset of clean instances (offers with true category labels) is split into training, validation and test sets. Next, label noise is introduced to the training and validation sets and the model is trained. The model is tested on a held-out fraction of the clean dataset. </p>
 </figure>
 
 This setup lets us answer the following question:
@@ -286,10 +286,10 @@ data, resulting in a 5 p.p. drop in accuracy at the end of the training. We attr
 of the wrong labels: instead of refining the originally learnt concepts, the network starts to overfit to the noisy
 labels. The labels memorised for particular offers don’t help with classifying previously unseen offers at test time.
 
-<figure>
+<figure style="display:block;float:none;margin-left:auto;margin-right:auto">
     <a id="figure11"></a>
-    <img alt="Absolute noise corrupts absolutely." src="/img/articles/2023-02-16-learning-from-noisy-data/figure11-baseline-degradation.png" style="display:block;float:none;margin-left:auto;margin-right:auto;width:100%;margin-bottom:10px">
-    <figcaption> <b>Figure 11. Degradation of the baseline model in the presence of noise.</b> The 20% synthetic noise degrades the model throughout the training. In the end, the model trained on the corrupted dataset exhibits 5 p.p. lower accuracy in comparison to its clean counterpart </figcaption>
+    <img alt="Absolute noise corrupts absolutely." src="/img/articles/2023-02-16-learning-from-noisy-data/figure11-baseline-degradation.png" style="width:80%;margin-bottom:10px">
+    <p style="width:80%;margin-left:auto;margin-right:auto"> <b>Figure 11. Degradation of the baseline model in the presence of noise.</b> The 20% synthetic noise degrades the model throughout the training. In the end, the model trained on the corrupted dataset exhibits 5 p.p. lower accuracy in comparison to its clean counterpart </p>
 </figure>
 
 ### Towards robust classification
@@ -314,7 +314,7 @@ benchmark datasets like CIFAR-100[^9].
 
 <a id="table1"></a>**Table 1.** Test accuracy scores of the models trained on the clean and corrupted
 (20% synthetic noise) datasets for the 8 training methods. Light red highlight indicates deterioration in comparison
-to the baseline, while light blue denotes improvement. *Notation*: (mean $\pm$ std)% from 5 independently seeded runs.
+to the baseline, while light blue denotes improvement. *Notation*: (mean $$\pm$$ std)% from 5 independently seeded runs.
 <table>
     <thead>
         <tr>
@@ -390,10 +390,10 @@ are corrupted. The marginal improvement upon the baseline is evident in the vali
 ([**Figure 12**](#figure12)). Mixup starts to overfit around the 5th epoch, similarly to the baseline, and unlike all
 the other methods.
 
-<figure>
+<figure style="display:block;float:none;margin-left:auto;margin-right:auto">
     <a id="figure12"></a>
-    <img alt="Mixing it up doesn’t always work as intended." src="/img/articles/2023-02-16-learning-from-noisy-data/figure12-validation-accuracy.png" style="display:block;float:none;margin-left:auto;margin-right:auto;width:100%;margin-bottom:10px">
-    <figcaption> <b>Figure 12. Validation accuracy during training.</b> Validation accuracy for all methods was measured during training. It is evident that the best methods are CCE, ELR and JSD, with CT, PRL and SPL trailing slightly behind. Mixup behaves similarly to the baseline. </figcaption>
+    <img alt="Mixing it up doesn’t always work as intended." src="/img/articles/2023-02-16-learning-from-noisy-data/figure12-validation-accuracy.png" style="width:80%;margin-bottom:10px">
+    <p style="width:80%;margin-left:auto;margin-right:auto"> <b>Figure 12. Validation accuracy during training.</b> Validation accuracy for all methods was measured during training. It is evident that the best methods are CCE, ELR and JSD, with CT, PRL and SPL trailing slightly behind. Mixup behaves similarly to the baseline. </p>
 </figure>
 
 ## Conclusions
