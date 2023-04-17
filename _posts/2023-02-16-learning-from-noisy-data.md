@@ -57,7 +57,7 @@ literature on *Learning from Noisy Data*. In general, there are three approaches
 to noisy labels ([**Figure 3**](#figure3)):
 - **Robust loss function** boosting the training dynamics in the presence of noise.
 - **Implicit regularisation** of the network aiming at decreasing the impact of noisy labels.
-- **Filtration of noisy data samples** during the training or in the pre-training stage.
+- **Filtration of noisy data samples** during the training or at the pre-training stage.
 
 <figure>
     <a id="figure3"></a>
