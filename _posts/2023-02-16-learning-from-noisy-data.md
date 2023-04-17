@@ -38,7 +38,7 @@ that for high noise levels, it is very hard to recover the true training signal 
     <figcaption> <p markdown="1"><b> Figure 2. Test accuracy as a function of label noise percentage. </b> The X axis indicates the ratio of mislabelled to correctly labelled examples. The dataset used here was ImageNet, corrupted with synthetic label noise. Image source: [^1].</p></figcaption>
 </figure>
 
-How can this problem be mitigated? One approach is to simply put more effort into the labeling process — we can let
+How can this problem be mitigated? One approach is to simply put more effort into the labelling process — we can let
 multiple annotators label each data point and then evaluate the cross-annotator agreement. With enough time and effort,
 we hope to obtain a dataset free of label noise. However, in practice this approach is rarely feasible due to large
 volumes of training data and the need for efficient turnaround of machine learning projects. Consequently, we need
