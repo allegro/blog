@@ -123,7 +123,7 @@ by temporal ensembling.
 
 #### Jensen-Shannon Divergence Loss (JSD)
 
-The authors of **Jensen-Shannon Divergence Loss** [^6] take a yet another approach to loss construction,
+The authors of **Jensen-Shannon Divergence Loss** [^6] take yet another approach to loss construction,
 which is inspired by an empirical comparison between Cross-Entropy (CE) and Mean Absolute Error (MAE) loss. CE is known
 for its fast convergence and brilliant training dynamics, while MAE provides spectacular robustness at the price
 of slow convergence.
