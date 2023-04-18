@@ -23,7 +23,7 @@ where some percentage of cats are labelled as dogs and vice versa ([**Figure 1**
 
 <figure style="display:block;float:none;margin-left:auto;margin-right:auto">
     <a id="figure1"></a>
-    <img alt="Cats and dogs are equally nice." src="/img/articles/2023-04-18-learning-from-noisy-data/figure1-label-noise-example.png/" style="width:80%;margin-bottom:10px">
+    <img alt="Cats and dogs are equally nice." src="/img/articles/2023-04-18-learning-from-noisy-data/figure1-label-noise-example.png" style="width:80%;margin-bottom:10px">
     <p style="width:80%;margin-left:auto;margin-right:auto"> <b>Figure 1. An example of label noise in a binary classification dataset.</b> Some images in both categories were mislabelled by human annotators, which introduces noise to the training dataset. </p>
 </figure>
 
