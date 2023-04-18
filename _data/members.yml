@@ -817,6 +817,11 @@ krzysztof.mikuta:
     bio: Frontend software engineer who does not run away from backend. Mostly interested in software architecture and biological modeling. Always ready to learn good patterns. Tech speaker, mentor and home barista.
     linkedin: kmikuta
 
+paulina.szwed:
+    name: Paulina Szwed
+    bio: Software engineer at Allegro. Backend dev with strong interests in software architecture. Soft skills and cognitive sciences enthusiast.
+    linkedin: paulina-szwed-3a627713a
+
 tomasz.tarczynski:
     name: Tomasz Tarczyński
     bio: Tomasz is a passionate, self-taught Software Engineer with a focus on JVM technologies, always looking to hone his engineering skills.
@@ -846,6 +851,12 @@ kalina.kobus:
     name: Kalina Kobus
     bio: Senior Research Engineer in the Machine Learning Research team, working on NLP in the e-commerce domain.
     linkedin: kalina-jasinska-kobus-65687983
+
+piotr.rzysko:
+    name: Piotr Rżysko
+    bio: Piotr is a software engineer focused on building performant and resilient distributed systems. He works on a team delivering core parts of Allegro’s technical platform.
+    linkedin: piotrrzysko
+    github: piotrrzysko
 
 lukasz.rokita:
     name: Łukasz Rokita
