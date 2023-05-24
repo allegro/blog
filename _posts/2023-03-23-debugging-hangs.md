@@ -34,8 +34,8 @@ Now we run the tests and expect to be either elated with the sight of successful
 that help us quickly patch the issue. Nobody expects nothing and in this case this is an unknown unknown. 
 ```
 97% EXECUTING [15m 55s]
-> :andamio-client-webclient:integrationTest > 1 test completed, 1 failed
-> :andamio-client-webclient:integrationTest > Executing test pl...webclient.WebClientContextContainerInterceptorSpec
+> :platform-libraries-webclient:integrationTest > 1 test completed, 1 failed
+> :platform-libraries-webclient:integrationTest > Executing test pl.allegro....WebClientContextContainerInterceptorSpec
 ```
 After 15 minutes we expect the process to end. Quick cross check with master confirms that tests run and execute in less than a minute.
 Something is wrong and it's on us. However, no error is presented.Adding logging does not help, nothing streams to standard output.
@@ -65,13 +65,13 @@ The remote CI confirmed our suspicion since it also hung. The problem was real a
 The second thing was to scout for the offending thread. This is easy with the help of some JDK binaries:
 ```
 jps -lv | grep andamio
-38983 worker.org.gradle.process.internal.worker.GradleWorkerMain -Dorg.gradle.internal.worker.tmpdir=/Users/lukasz.rokita/Projekty/andamio-client/andamio-client-webclient/build/tmp/integrationTest/work -Dorg.gradle.native=false -Xmx512m -Dfile.encoding=UTF-8
+38983 worker.org.gradle.process.internal.worker.GradleWorkerMain -Dorg.gradle.internal.worker.tmpdir=/path/to/code/platform-libraries/platform-libraries-webclient/build/tmp/integrationTest/work -Dorg.gradle.native=false -Xmx512m -Dfile.encoding=UTF-8
 ```
 So we have the a lvmid - local JVM identifier which will help us locate the offending thread in jconsole.
 In the screen below we can see that the thread waits on `Mono.block()` which is left unbounded in a happy path scenario.
 Well we are in the worst case so first of all we add a simple timeout `Mono.block(Duration.ofSeconds(10))`.
 
-![jconsole](/img/articles/2022-12-15-debugging-hans/jconsole.png)
+![jconsole](/img/articles/2023-03-23-debugging-hangs/jconsole.png)
 
 This fails our tests and for the first time the error appears:
 ```
@@ -110,21 +110,21 @@ java.lang.NoSuchMethodError: 'reactor.core.publisher.Mono reactor.core.publisher
 	at reactor.core.publisher.Mono.subscribe(Mono.java:4485)
 	at reactor.core.publisher.Mono.block(Mono.java:1733)
 	at org.codehaus.groovy.vmplugin.v8.IndyInterface.fromCache(IndyInterface.java:321)
-	at pl.allegro.tech.common.andamio.client.webclient.WebClientContextContainerAdapterConfiguration$Trait$Helper.makeRequest(WebClientContextContainerAdapterConfiguration.groovy:22)
+	at pl.allegro....WebClientContextContainerAdapterConfiguration$Trait$Helper.makeRequest(WebClientContextContainerAdapterConfiguration.groovy:22)
 	at org.codehaus.groovy.vmplugin.v8.IndyInterface.fromCache(IndyInterface.java:321)
-	at pl.allegro.tech.common.andamio.client.webclient.WebClientContextContainerInterceptorSpec.makeRequest(WebClientContextContainerInterceptorSpec.groovy)
-	at pl.allegro.tech.common.andamio.client.webclient.WebClientContextContainerAdapterConfiguration$makeRequest.call(Unknown Source)
+	at pl.allegro....WebClientContextContainerInterceptorSpec.makeRequest(WebClientContextContainerInterceptorSpec.groovy)
+	at pl.allegro....WebClientContextContainerAdapterConfiguration$makeRequest.call(Unknown Source)
 	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:45)
 	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:125)
 	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:166)
-	at pl.allegro.tech.common.andamio.client.test.AdapterConfiguration$Trait$Helper.makeRequest(AdapterConfiguration.groovy:11)
+	at pl.allegro....AdapterConfiguration$Trait$Helper.makeRequest(AdapterConfiguration.groovy:11)
 	at org.codehaus.groovy.vmplugin.v8.IndyInterface.fromCache(IndyInterface.java:321)
-	at pl.allegro.tech.common.andamio.client.webclient.WebClientContextContainerInterceptorSpec.makeRequest(WebClientContextContainerInterceptorSpec.groovy)
+	at pl.allegro....WebClientContextContainerInterceptorSpec.makeRequest(WebClientContextContainerInterceptorSpec.groovy)
 	at pl.allegro.tech.common.andamio.client.test.SharedInterceptorSpec$makeRequest.callCurrent(Unknown Source)
 	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallCurrent(CallSiteArray.java:49)
 	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:171)
 	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:203)
-	at pl.allegro.tech.common.andamio.client.test.SharedInterceptorSpec.$spock_feature_0_0(SharedInterceptorSpec.groovy:44)
+	at pl.allegro....SharedInterceptorSpec.$spock_feature_0_0(SharedInterceptorSpec.groovy:44)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
