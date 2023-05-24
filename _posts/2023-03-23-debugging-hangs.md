@@ -19,15 +19,19 @@ place we got quite cosy in during this upgrade.
 Note that we keep versions as separate key–value pairs in `build.gradle` files and reference them in dependencies by key. 
 Updating often means a single line change. The upgrade is trivial and as git diff looks like this. 
 ```
+ext.versions = [
 -        spring         : '5.3.24',
 -        spock          : '2.3-groovy-3.0',
 -        groovy         : '3.0.14',
 -        reactorNetty   : '0.9.25.RELEASE',
+]
 
+ext.versions = [
 +        spring         : '6.0.5',
 +        spock          : '2.4-M1-groovy-4.0',
 +        groovy         : '4.0.9',
 +        reactorNetty   : '0.9.25.RELEASE',
+]
 ```
 Nothing much happens. We upgrade Spring and since there are some problems with Spock not working well with newest Spring
 we need to upgrade it as well along with Groovy. This is the easy part.
@@ -256,16 +260,19 @@ The observant reader spotted it from afar. The stack trace confirms where the er
 ```
 We need to patch reactor–netty which in this version still used deprecated code. Refering back to our diff:
 ```
+ext.versions = [
 -        spring         : '5.3.24',
 -        reactorNetty   : '0.9.25.RELEASE',
 -        spock          : '2.3-groovy-3.0',
 -        groovy         : '3.0.14',
 -        reactorNetty  : '0.9.25.RELEASE',
-
+]
+ext.versions = [
 +        spring        : '6.0.5',
 +        spock         : '2.4-M1-groovy-4.0',
 +        groovy        : '4.0.9',
 +        reactorNetty  : '1.1.3',
+]
 ```
 We escape the dependency hell and are delighted with the green letters BUILD SUCCESSFUL in 24s.   
 
