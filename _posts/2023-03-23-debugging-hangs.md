@@ -16,7 +16,8 @@ although there seems to be nothing wrong with it and that you don’t always kno
 place we got quite cosy in during this upgrade.  
 
 ## The change
-The upgrade is trivial and as git diff looks like this
+Note that we keep versions as separate key–value pairs in `build.gradle` files and reference them in dependencies by key. 
+Updating often means a single line change. The upgrade is trivial and as git diff looks like this. 
 ```
 -        spring         : '5.3.24',
 -        spock          : '2.3-groovy-3.0',
