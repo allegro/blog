@@ -2,12 +2,12 @@
 layout: post
 title: Debugging hangs - piecing together why nothing happens
 author: lukasz.rokita
-tags: [java, jvm, debugging, dependency hell]
+tags: [tech, java, jvm, debugging, dependency hell]
 ---
 
-As a part of a broader initiative of refreshing the Allegro’s platform, we are upgrading our internal libraries to Spring Boot 3.0 and Java 17.
+As a part of a broader initiative of refreshing Allegro platform, we are upgrading our internal libraries to Spring Boot 3.0 and Java 17.
 The task is daunting and filled with challenges,
-however overall progresses is steady and thanks to the modular nature of our code it should end in finite time. 
+however overall progress is steady and thanks to the modular nature of our code it should end in finite time. 
 Everyone who did such an upgrade knows that you need to expect the unexpected and at the end of the day prepare for lots of debugging.
 No amount of migration guide would prepare you for what’s coming in the field.
 In the words of Donald Rumsfeld there are unknown unknowns and we need to be equipped with the tools to uncover these unknowns and patch them up.
@@ -17,7 +17,7 @@ place we got quite cosy in during this upgrade.
 
 ## The change
 Note that we keep versions as separate key–value pairs in `build.gradle` files and reference them in dependencies by key. 
-Updating often means a single line change. The upgrade is trivial and as git diff looks like this. 
+Updating often means a single line change. The upgrade is trivial and git diff looks like this. 
 ```
 ext.versions = [
 -        spring         : '5.3.24',
@@ -33,48 +33,49 @@ ext.versions = [
 +        reactorNetty   : '0.9.25.RELEASE',
 ]
 ```
-Nothing much happens. We upgrade Spring and since there are some problems with Spock not working well with newest Spring
+Nothing much happens. We upgrade Spring and since there are some problems with Spock not working well with the newest Spring
 we need to upgrade it as well along with Groovy. This is the easy part.
-Now we run the tests and expect to be either elated with the sight of successful build or greeted with descriptive error messages
-that help us quickly patch the issue. Nobody expects nothing and in this case this is an unknown unknown. 
+Now we run the tests and expect to be either elated with the sight of a successful build or greeted with descriptive error messages
+that help us quickly patch the issue. Nobody expects anything and in this case this is an unknown unknown. 
 ```
 97% EXECUTING [15m 55s]
 > :platform-libraries-webclient:integrationTest > 1 test completed, 1 failed
 > :platform-libraries-webclient:integrationTest > Executing test pl.allegro....WebClientContextContainerInterceptorSpec
 ```
-After 15 minutes we expect the process to end. Quick cross check with master confirms that tests run and execute in less than a minute.
-Something is wrong and it’s on us. However, no error is presented.Adding logging does not help, nothing streams to standard output.
+After 15 minutes we expect the process to end. A quick cross-check with the master branch confirms that tests run and execute in less than a minute.
+Something is wrong and it’s on us. However, no error is presented. Adding logging does not help, nothing streams to standard output.
 Something hangs and refuses to budge. When that happenes there is only one way to inspect what is going on and
 that is to pop the hood up and look into JVM to see what the threads are doing or where they are slacking.
 
 ## Thread theory
 
-Lets interrupt this story with a short summary of threading in JVM. You can skip this chapter if you are familiar with the topic.
+Let's interrupt this story with a short summary of threading in JVM. You can skip this chapter if you are familiar with the topic.
 As the priceless book Java Concurrency in Practice by Brian Goetz et al. teaches us:
-"Threads may block, or pause, for several reasons: waiting for I/O completion, waiting to acquire a lock,
-waiting to wake up from Thread.sleep, or waiting for the result of a computation in another thread.
-When a thread blocks, it is usually suspended and placed in one of the blocked thread states
-(BLOCKED, WAITING, or TIMED_WAITING). (...) blocked thread must wait for an event beyond its control before it can proceed".
+> "Threads may block, or pause, for several reasons: waiting for I/O completion, waiting to acquire a lock,
+> waiting to wake up from Thread.sleep, or waiting for the result of a computation in another thread.
+> When a thread blocks, it is usually suspended and placed in one of the blocked thread states
+> (BLOCKED, WAITING, or TIMED_WAITING). (...) blocked thread must wait for an event beyond its control before it can proceed".
 
 This sounds exactly like the situation we are in. So there is hope. Let’s educate ourselves further.
 Another excerpt that would prove insightful reads as follows:
-"(...) tasks can block for exteded periods of time, even if deadlock is not a possibility. 
-(...) One technique that can mitigate the ill effects of long–running tasks is for tasks to use timed resource waits instead of 
-unbound waits." This seemed like an answer to our woes. However, two mysteries remain.
-Where to put the timeout and what is the thread waiting for. To answer those questions we need to inspect the threads in a JVM itself. 
+> "(...) tasks can block for exteded periods of time, even if deadlock is not a possibility. 
+> (...) One technique that can mitigate the ill effects of long–running tasks is for tasks to use timed resource waits instead of 
+> unbound waits."
+This seems like an answer to our woes. However, two mysteries remain.
+Where to put the timeout? What the thread is waiting for? To answer these questions we need to inspect the threads in the JVM itself. 
 
 ## The investigation
 At this point we did two things. First we pushed our code to a branch.
 After all at any moment our laptops could burst into flames and all the work would go to waste.
 The remote CI confirmed our suspicion since it also hung. The problem was real and not only confined to the local machine.
-The second thing was to scout for the offending thread. This is easy with the help of some JDK binaries:
+The second thing is to scout for the offending thread. This is easy with the help of some JDK binaries:
 ```
-jps -lv | grep andamio
+jps -lv | grep platform-libraries
 38983 worker.org.gradle.process.internal.worker.GradleWorkerMain -Dorg.gradle.internal.worker.tmpdir=/path/to/code/platform-libraries/platform-libraries-webclient/build/tmp/integrationTest/work -Dorg.gradle.native=false -Xmx512m -Dfile.encoding=UTF-8
 ```
-So we have the a lvmid – local JVM identifier which will help us locate the offending thread in jconsole.
+So we have the a lvmid – local JVM identifier, which will help us locate the offending thread in jconsole.
 In the screen below we can see that the thread waits on `Mono.block()` which is left unbounded in a happy path scenario.
-Well we are in the worst case so first of all we add a simple timeout `Mono.block(Duration.ofSeconds(10))`.
+Well, we are in the worst case so first of all we add a simple timeout `Mono.block(Duration.ofSeconds(10))`.
 
 ![jconsole](/img/articles/2023-03-23-debugging-hangs/jconsole.png)
 
@@ -125,7 +126,7 @@ java.lang.NoSuchMethodError: 'reactor.core.publisher.Mono reactor.core.publisher
 	at pl.allegro....AdapterConfiguration$Trait$Helper.makeRequest(AdapterConfiguration.groovy:11)
 	at org.codehaus.groovy.vmplugin.v8.IndyInterface.fromCache(IndyInterface.java:321)
 	at pl.allegro....WebClientContextContainerInterceptorSpec.makeRequest(WebClientContextContainerInterceptorSpec.groovy)
-	at pl.allegro.tech.common.andamio.client.test.SharedInterceptorSpec$makeRequest.callCurrent(Unknown Source)
+	at pl.allegro....SharedInterceptorSpec$makeRequest.callCurrent(Unknown Source)
 	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallCurrent(CallSiteArray.java:49)
 	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:171)
 	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:203)
@@ -241,32 +242,32 @@ java.lang.NoSuchMethodError: 'reactor.core.publisher.Mono reactor.core.publisher
 	at worker.org.gradle.process.internal.worker.GradleWorkerMain.run(GradleWorkerMain.java:69)
 	at worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:74)
 ```
-For the first time we forced the entire reactive code to finally execute itself and present us with the result,
+For the first time we force the entire reactive code to finally execute itself and present us with the result,
 even if it is an error this moves us in the right direction. 
 
 ## Result
 
 Like in any good crime story uncovering one mystery presents another.
-A quick grep shows that there are no calls to `reactor.core.publisher.Mono.subscriberContext`.
+A quick `grep` shows that there are no calls to `reactor.core.publisher.Mono.subscriberContext`.
 Where could this call be hiding, if it’s not present in our code?
 
 The answer is simple but I assure you that it took us some time to come up with it.
 If it isn’t in our code and it runs inside our JVM then this must be dependency code.
-The observant reader spotted it from afar. The stack trace confirms where the error lies:
+The observant reader is able to spot it from afar. The stack trace confirms where the error lies:
 ```    
     at reactor.netty.internal.shaded.reactor.pool.SimpleDequePool.drainLoop(SimpleDequePool.java:403)
 	at reactor.netty.internal.shaded.reactor.pool.SimpleDequePool.pendingOffer(SimpleDequePool.java:558)
 	at reactor.netty.internal.shaded.reactor.pool.SimpleDequePool.doAcquire(SimpleDequePool.java:268)
 ```
-We need to patch reactor–netty which in this version still used deprecated code. Refering back to our diff:
+We need to patch `reactor–netty` which in this version still used deprecated code. Referring back to our diff:
 ```
 ext.versions = [
 -        spring         : '5.3.24',
 -        reactorNetty   : '0.9.25.RELEASE',
 -        spock          : '2.3-groovy-3.0',
 -        groovy         : '3.0.14',
--        reactorNetty  : '0.9.25.RELEASE',
 ]
+
 ext.versions = [
 +        spring        : '6.0.5',
 +        spock         : '2.4-M1-groovy-4.0',
@@ -274,10 +275,10 @@ ext.versions = [
 +        reactorNetty  : '1.1.3',
 ]
 ```
-We escape the dependency hell and are delighted with the green letters BUILD SUCCESSFUL in 24s.   
+We escape the dependency hell and are delighted to see the green letters `BUILD SUCCESSFUL in 24s`.   
 
 ## Summary
-Well this was quite a thrilling journey one doesn’t embark often on.
+Well this was quite a thrilling journey one doesn’t embark often on. 
 The odd peculiarity of the problem combined with unusuality of the taks provided us with a great challange and satisfaction.
 Dependency hell is no joke, however, armed with the JDK tools and thinking the problem through there is no obstacle that could not be overcome.
 Next time your code hangs with no apparent reason this is a perfect opportunity to dust off the swiss army knife of JDK binaries and dig in.
