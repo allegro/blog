@@ -24,17 +24,17 @@ Ok, so what can we do to improve this workflow?
 ## Introducing typescript-strict-plugin
 
 [typescript-strict-plugin](https://github.com/allegro/typescript-strict-plugin) eliminates all the above problems by allowing you to specify exactly what files you want to be strictly
-checked. By default, the plugin will check all files with strict mode - that's step one.
+checked. By default, the plugin will check all files with strict mode — that’s step one.
 Now every member of your team will have strict errors shown to them in the editor of their choosing (yes, this plugin works with
 webstorm, vscode, vim, and more). But if you have any files that are not strict compliant
 you can simply put a single comment at the top of the file and our plugin will make typescript not check it with strict mode.
 
-If you are now thinking something like "Hmmm... does it mean that I will have to put this comment in every file is not TS strict compliant"?
-The answer is yes - but we've automated it. Plugin package does export command line tool that adds this comment to every file with strict
+If you are now thinking something like “Hmmm... does it mean that I will have to put this comment in every file is not TS strict compliant”?
+The answer is yes — but we’ve automated it. Plugin package does export command line tool that adds this comment to every file with strict
 mode errors!
 
-Thanks to this approach every new file will be strictly checked out of the box - you don't need to do anything. On the other hand
-if you want to change a file to be strict you will just remove a comment on top of the file and that's it - the file will be strictly checked.
+Thanks to this approach every new file will be strictly checked out of the box — you don’t need to do anything. On the other hand
+if you want to change a file to be strict you will just remove a comment on top of the file and that’s it — the file will be strictly checked.
 Simple as that.
 
 Unfortunately, typescript plugins do not work at compilation time, they work only in IDEs. Another nice feature that comes in the
