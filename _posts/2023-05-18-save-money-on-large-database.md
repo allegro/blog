@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "How to save money on maintaining a large database?"
+title: "From 3TB to 100GB: A Cost-Saving Journey in Database Maintenance"
 author: [mateusz.stolecki]
 tags: [tech,azure,sql,saving,cloud]
 ---
