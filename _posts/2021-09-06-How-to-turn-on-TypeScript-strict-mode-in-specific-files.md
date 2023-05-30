@@ -30,11 +30,11 @@ webstorm, vscode, vim, and more). But if you have any files that are not strict 
 you can simply put a single comment at the top of the file and our plugin will make typescript not check it with strict mode.
 
 If you are now thinking something like "Hmmm... does it mean that I will have to put this comment in every file is not TS strict compliant"?
-The answer is yes - be we've automated it. Plugin package does export command line tool that adds this comment to every file with strict
+The answer is yes - but we've automated it. Plugin package does export command line tool that adds this comment to every file with strict
 mode errors!
 
 Thanks to this approach every new file will be strictly checked out of the box - you don't need to do anything. On the other hand
-if you want to change file to be strict you will just remove a comment on top of the file and that's it - file will be strictly checked.
+if you want to change a file to be strict you will just remove a comment on top of the file and that's it - the file will be strictly checked.
 Simple as that.
 
 Unfortunately, typescript plugins do not work at compilation time, they work only in IDEs. Another nice feature that comes in the
