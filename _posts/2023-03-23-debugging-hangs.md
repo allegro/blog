@@ -8,11 +8,11 @@ tags: [tech, java, jvm, debugging, dependency hell]
 As a part of a broader initiative of refreshing Allegro platform, we are upgrading our internal libraries to Spring Boot 3.0 and Java 17.
 The task is daunting and filled with challenges,
 however overall progress is steady and thanks to the modular nature of our code it should end in finite time. 
-Everyone who did such an upgrade knows that you need to expect the unexpected and at the end of the day prepare for lots of debugging.
+Everyone who has performed such an upgrade knows that you need to expect the unexpected and at the end of the day prepare for lots of debugging.
 No amount of migration guide would prepare you for what’s coming in the field.
 In the words of Donald Rumsfeld there are unknown unknowns and we need to be equipped with the tools to uncover these unknowns and patch them up.
 In this blog post I’d like to walk you through a process that should show where the application hangs,
-although there seems to be nothing wrong with it and that you don’t always know what code you have – problem known as dependecy hell,
+although there seems to be nothing wrong with it. I will also show that you don’t always know what code you have – problem known as dependecy hell,
 place we got quite cosy in during this upgrade.  
 
 ## The change
@@ -23,18 +23,16 @@ ext.versions = [
 -        spring         : '5.3.24',
 -        spock          : '2.3-groovy-3.0',
 -        groovy         : '3.0.14',
--        reactorNetty   : '0.9.25.RELEASE',
 ]
 
 ext.versions = [
 +        spring         : '6.0.5',
 +        spock          : '2.4-M1-groovy-4.0',
 +        groovy         : '4.0.9',
-+        reactorNetty   : '0.9.25.RELEASE',
 ]
 ```
 Nothing much happens. We upgrade Spring and since there are some problems with Spock not working well with the newest Spring
-we need to upgrade it as well along with Groovy. This is the easy part.
+we need to upgrade it as well, along with Groovy. This is the easy part.
 Now we run the tests and expect to be either elated with the sight of a successful build or greeted with descriptive error messages
 that help us quickly patch the issue. Nobody expects anything and in this case this is an unknown unknown. 
 ```
@@ -45,7 +43,7 @@ that help us quickly patch the issue. Nobody expects anything and in this case t
 After 15 minutes we expect the process to end. A quick cross-check with the master branch confirms that tests run and execute in less than a minute.
 Something is wrong and it’s on us. However, no error is presented. Adding logging does not help, nothing streams to standard output.
 Something hangs and refuses to budge. When that happenes there is only one way to inspect what is going on and
-that is to pop the hood up and look into JVM to see what the threads are doing or where they are slacking.
+that is to pop the hood open and look into JVM to see what the threads are doing or where they are slacking.
 
 ## Thread theory
 
@@ -278,7 +276,7 @@ ext.versions = [
 We escape the dependency hell and are delighted to see the green letters `BUILD SUCCESSFUL in 24s`.   
 
 ## Summary
-Well this was quite a thrilling journey one doesn’t embark often on. 
-The odd peculiarity of the problem combined with unusuality of the taks provided us with a great challange and satisfaction.
-Dependency hell is no joke, however, armed with the JDK tools and thinking the problem through there is no obstacle that could not be overcome.
+Well this was quite a thrilling journey one doesn’t often embark on. 
+The odd peculiarity of the problem combined with peculiarity of the task provided us with a great challange and satisfaction.
+Dependency hell is no joke, but armed with the JDK tools and thinking the problem through, there is no obstacle that could not be overcome.
 Next time your code hangs with no apparent reason this is a perfect opportunity to dust off the swiss army knife of JDK binaries and dig in.
