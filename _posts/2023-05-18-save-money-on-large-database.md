@@ -57,15 +57,16 @@ What percentage of our data is unused and stored only for audit purposes?
 In our case, it turned out that a very large percentage of data could be safely archived, which would certainly provide
 potential savings and eliminate the problem of an overgrown database. Most of this data is actually historical.
 
-Currently, a solution has been implemented that allows for much more scalable data archiving in the form of using a data
-warehouse. However, there is still a large amount of data from before the implementation of the mentioned solution,
+Solution has been implemented that allows for much more scalable data archiving
+by asynchronously loading data into warehouse.
+However, there is still a large amount of data from before the implementation of the mentioned solution,
 that generates significant costs in terms of the need to store it.
 
 The aforementioned idea seemed simple both in concept and implementation. However, we immediately encountered several problems.
 Exporting such large amounts of data is a time-consuming process and puts a heavy load on the database,
 which can cause responsiveness issues.
 
-Dealing with a production system, we could not afford timeouts or possible unavailability of services.
+Dealing with a production system, we could not reduce reliability and availability of services.
 In addition, the export functionality offered by the Azure portal is limited to databases up to **200GB** in size,
 which meant that we had to look for another solution.
 
@@ -73,10 +74,10 @@ which meant that we had to look for another solution.
 ### Concept
 However, it turned out that there are ways to export even huge databases. After some investigation,
 we found **SQL Package** tool.
-It provides **export** option and is great for solving the aforementioned problem. It is able to produce a <em>.bacpac</em>
+It provides **export** option and is great for solving the aforementioned problem. It is able to produce a _.bacpac_
 file that contains highly compressed content of the database.
 The tool also allows you to restore data at any time using the **import** operation,
-if there is ever a need to look at it again, for example for audit purposes.
+if there is ever a need to look at it again, for example, for audit purposes.
 
 The next step is to copy the mentioned file to the container in the Storage Account using the **AzCopy** tool and ensure
 that it is stored in the **ARCHIVE** tier, which will significantly reduce the costs of maintaining it.
@@ -97,9 +98,9 @@ from the fact that it must be located in an internal network, where it is also p
 handles the database. Thanks to meeting this condition,
 it was possible to successfully connect to the database and perform the export operation.
 
-The virtual machine turned out to be not a significant cost, as all operations performed are not computationally demanding
+The virtual machine turned out to be not a significant cost, as all performed operations were not computationally demanding
 (both CPU and RAM usage were low), which allowed us to use a very resource-efficient machine. The only notable extension
-of its functionality is **accelerated networking**, as it must work with transfer data over the network
+of its functionality is **accelerated networking**, as it must work with data transfer over the network
 and we needed good performance.
 
 ## Testing
@@ -128,7 +129,7 @@ Data IO
 CPU
 ![CPU](/img/articles/2023-05-18-save-money-on-large-database/perf-test-dev-cpu.png)
 
-You can notice that the export operation is primarily taxing on IO resources.
+You can notice that the export operation primarily consumes IO resources.
 ### Data Import
 Due to the possible need to reuse archived data, we had to make sure that the data we imported was suitable for re-import.
 
@@ -288,10 +289,10 @@ By lowering the required disk space, we could also significantly reduce the comp
 which also had a huge impact on savings.
 
 Speaking of savings, before performing all of the operations,
-the monthly cost of maintaining the database with data was close to 3000 €.
-Specifically, we were able to switch from a database based on a 12 vCore and 3TB model (~3000 €) to a Standard DTU with
-100 units and 150GB (~125 €).
-As we could see, our effort paid off, as we went down to around 125 € per month,
+the monthly cost of maintaining the database with data was close to € 3000.
+Specifically, we were able to switch from a database based on a 12 vCore and 3TB model (€ ~3000) to a Standard DTU with
+100 units and 150GB (€ ~125).
+As we could see, our effort paid off, as we went down to around € 125 per month,
 which is a huge saving and a decision we believe was well worth it.
 
 ![Cost reduction](/img/articles/2023-05-18-save-money-on-large-database/montly-cost-reduction.png)
