@@ -38,9 +38,17 @@ Comparing the cost of storing large amounts of data within **Azure SQL** and **S
 by archiving old/unused data and placing it in a cost-optimized container.
 
 ### Monthly cost of storing 3TB of data
-| Azure SQL 12vCore 3TB | Storage Account Archive tier |
-|-----------------------|------------------------------|
-| $2,876.18             | $31.12                       |
+
+<table>
+  <tr>
+    <th>Azure SQL 12vCore 3TB</th>
+    <th>Storage Account Archive tier</th>
+  </tr>
+  <tr>
+    <td>$2,876.18</td>
+    <td>$31.12</td>
+  </tr>
+</table>
 
 ## Analysis
 We had to answer the question of whether it would be possible to do so. What data can we safely transfer to the blob?
@@ -131,7 +139,7 @@ We made an additional attempt to import the archive using the SQL Package tool, 
 
 Command
 
-```powershell
+```
 sqlpackage
         /Action:Import `
         /tsn:$ServerName `
@@ -157,7 +165,7 @@ and created the appropriate bacpac file. As a result of the mentioned script, we
 It should be noted here that the data in the database occupied about 3TB, so compression was very efficient.
 The whole process took several hours.
 
-```powershell
+```
 sqlpackage
     /Action:Export `
     /ssn:$ServerName `
@@ -200,7 +208,7 @@ the resource load is significant during this operation.
 ### Copying the archived database using AzCopy
 The following script was executed to copy the exported file to the Storage Account:
 
-```powershell
+```
 .\azcopy `
     copy `
     $TargetFile `
