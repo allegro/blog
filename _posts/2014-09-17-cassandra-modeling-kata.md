@@ -239,7 +239,7 @@ And that's all - you can save and query items right away. Write an integration t
 In the previous iteration we have built the Item Masterdata. The Item Masterdata can be queried only by a unique item identifier. The next step is to implement the first item Listing - **User Items**.
 
 The User Items table should be defined as a [Dynamic table](http://planetcassandra.org/blog/datastax-developer-blog-a-thrift-to-cql3-upgrade-guide/). The [compound primary key](http://www.datastax.com/documentation/cql/3.1/cql/ddl/ddl_compound_keys_c.html) of the User Items table should consists of: `user_id` as the partitioning key
-and `item_id` as the clustering key. The `item_id` should be defined as the [timeuuid](http://www.datastax.com/documentation/cql/3.1/cql/cql_reference/uuid_type_r.html) data type. A value of timeuuid data type includes the time of its generation and are sorted by timestamp. The User Items should be sorted by the `item_id` ( incl. creation timestamp) in reverse order (latest item first on row):
+and `item_id` as the clustering key. The `item_id` should be defined as the [timeuuid](http://www.datastax.com/documentation/cql/3.1/cql/cql_reference/uuid_type_r.html) data type. A value of timeuuid data type includes the time of its generation and are sorted by timestamp. The User Items should be sorted by the `item_id` (incl. creation timestamp) in reverse order (latest item first on row):
 
 ```sql
 CREATE TABLE cass_user_item (
