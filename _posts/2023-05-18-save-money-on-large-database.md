@@ -106,7 +106,7 @@ and we needed good performance.
 ## Testing
 ### Optimization
 Before we proceeded with the implementation of the operation in the production environment, we conducted a series of
-tests using the **DEV** and **UAT** environments. They mainly involved running all the steps of the process using
+tests using test environments. They mainly involved running all the steps of the process using
 data packages of approximately **50GB** and **200GB** in size.
 We spent the most time testing and optimizing the use of the SQL Package tool.
 
@@ -120,7 +120,7 @@ change at a larger scale.
 
 ### Performance testing
 We also tested the load on the databases in each environment.
-**Data IO** and **CPU** load were tested using the **DEV** environment based on infrastructure based on DTUs and using
+**Data IO** and **CPU** load were tested using the test environment based on infrastructure based on DTUs and using
 **100 DTU** units.
 
 Data IO
@@ -185,12 +185,14 @@ sqlpackage
     /df:$SqlLogs `
 ```
 
-Many parameters of this operation were evaluated during testing on DEV and UAT environments.
+Many parameters of this operation were evaluated during testing on test environments.
 The particularly important ones are:
-- ***CommandTimeout, LongRunningCommandTimeout, DatabaseLockTimeout*** - This set of parameters ensures that the connection
+- **CommandTimeout, LongRunningCommandTimeout, DatabaseLockTimeout** - This set of
+parameters ensures that the connection
 will be maintained throughout the entire duration of the export operation (assuming that it will be long-running).
-- ***CompressionOption*** - The degree of compression of data in the output file. Two variants were tested:
-Fast and Maximum. Fast allowed us to shorten the export time by about 2 hours, while showing only slightly lower
+- **CompressionOption** - The degree of data compression in the output file.
+Two variants were tested:
+**FAST** and **MAXIMUM**. Fast allowed us to shorten the export time by about 2 hours while showing only slightly lower
 data compression (in our case, the difference was around 10%).
 
 ```powershell
@@ -200,7 +202,7 @@ data compression (in our case, the difference was around 10%).
 The parameter allows us to limit the data export only to the tables selected by us, which significantly shortens
 the overall operation time. It is also worth mentioning that it is possible to set the parameter multiple times.
 
-Due to the fact that the export was launched at night, the procedure had no negative impact on users. The impact of the
+Since the export was launched at night, the procedure had no negative impact on users. The impact of the
 export operation on the database load (Data I/O percentage) is presented in the graph below. It can be observed that
 the resource load is significant during this operation.
 
@@ -226,7 +228,7 @@ The process went quickly. Copying the 100GB file took only a few minutes, thanks
 It is worth noting that the archive tier is set immediately.
 
 ### Conducting a SHRINK operation
-The SHRINK operation is unfortunately required to downscale the Azure SQL database. It took several hours to complete.
+The SHRINK operation is, unfortunately, required to downscale the Azure SQL database. It took several hours to complete.
 It is worth noting that WAIT_AT_LOW_PRIORITY was used to reduce the impact of this rather resource-intensive operation
 on the database users.
 
@@ -247,25 +249,25 @@ our actions showed significantly increased response times.
 
 ![RPS](/img/articles/2023-05-18-save-money-on-large-database/perf-xyz-rps-before-index.png)
 
-The database load chart also did not look encouraging, with frequent peaks during query execution
+The database load chart also did not look encouraging, with frequent peaks during query execution.
 
 ![IOPS](/img/articles/2023-05-18-save-money-on-large-database/perf-xyz-iops-before-index.png)
 
 Attempts to scale the machine did not bring spectacular results and only increased costs (considering that our goal was
 to lower them, it was not an optimal solution).
 
-As it turned out, the culprit was extremely high index fragmentation. The result of the SHRINK operation was an increase
+As it turned out, the culprit was extraordinarily high index fragmentation. The result of the SHRINK operation was an increase
 in the mentioned fragmentation to almost >90% for practically all existing indexes.
 This forced us to consider rebuilding all the indexes.
 
 Even Microsoft recommends rebuilding indexes in their documentation [here](https://learn.microsoft.com/en-us/sql/relational-databases/databases/shrink-a-database?view=sql-server-ver16):
 
-<em>„Data that is moved to shrink a file can be scattered to any available location in the file.
+_"Data that is moved to shrink a file can be scattered to any available location in the file.
 This causes index fragmentation and can slow the performance of queries that search a range of the index.
-To eliminate the fragmentation, consider rebuilding the indexes on the file after shrinking.” </em>
+To eliminate the fragmentation, consider rebuilding the indexes on the file after shrinking."_
 
 We decided to proceed with the above-mentioned index rebuild process. Here, we also applied possible optimizations
-to avoid negative consequences related to the availability of our services. The ONLINE option is particularly noteworthy,
+to avoid negative consequences related to the availability of our services. The **ONLINE** option is particularly noteworthy,
 as it ensures that existing indexes and tables will not be blocked, which is an important issue in the case
 of continuous operation of our services.
 
