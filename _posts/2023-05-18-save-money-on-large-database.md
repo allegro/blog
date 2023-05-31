@@ -17,7 +17,7 @@ and optimize performance problems, the problem will persist and intensify as the
 
 A similar situation arises with databases. We often store huge amounts of data (for auditing or historical purposes etc.).
 While the cost of maintaining such databases is negligible at a small scale,
-over time it can become a significant burden on our budget.
+over time it can become a notable burden on our budget.
 
 I wanted to talk about such a case and how we managed to reduce the cost of maintaining a database by nearly 30 times.
 
@@ -33,7 +33,7 @@ but also computational resources (I will mention that at this point we reached a
 at least **12 vCores**). At some point, the cost of maintaining the database amounted to several thousand euros.
 This prompted us to look for solutions.
 
-Comparing the cost of storing large amounts of data within **Azure SQL** and **Storage Account**
+Comparing the cost of storing substantial amounts of data within **Azure SQL** and **Storage Account**
 (especially blobs in the **archive** tier), we concluded that we could achieve significant cost reduction
 by archiving old/unused data and placing it in a cost-optimized container.
 
@@ -51,19 +51,17 @@ by archiving old/unused data and placing it in a cost-optimized container.
 </table>
 
 ## Analysis
-We had to answer the question of whether it would be possible to do so. What data can we safely transfer to the blob?
-What percentage of our data is unused and stored only for audit purposes?
-
-In our case, it turned out that a very large percentage of data could be safely archived, which would certainly provide
+After some investigation, It turned out that significant percentage of data could be safely archived,
+which would certainly provide
 potential savings and eliminate the problem of an overgrown database. Most of this data is actually historical.
 
 Solution has been implemented that allows for much more scalable data archiving
 by asynchronously loading data into warehouse.
-However, there is still a large amount of data from before the implementation of the mentioned solution,
+However, there is still considerable amount of data from before the implementation of the mentioned solution,
 that generates significant costs in terms of the need to store it.
 
 The aforementioned idea seemed simple both in concept and implementation. However, we immediately encountered several problems.
-Exporting such large amounts of data is a time-consuming process and puts a heavy load on the database,
+Exporting such massive amounts of data is a time-consuming process and puts a heavy load on the database,
 which can cause responsiveness issues.
 
 Dealing with a production system, we could not reduce reliability and availability of services.
@@ -74,13 +72,13 @@ which meant that we had to look for another solution.
 ### Concept
 However, it turned out that there are ways to export even huge databases. After some investigation,
 we found **SQL Package** tool.
-It provides **export** option and is great for solving the aforementioned problem. It is able to produce a _.bacpac_
+It provides **export** option and is great for solving the aforementioned problem. It is able to produce a `bacpac`
 file that contains highly compressed content of the database.
 The tool also allows you to restore data at any time using the **import** operation,
 if there is ever a need to look at it again, for example, for audit purposes.
 
 The next step is to copy the mentioned file to the container in the Storage Account using the **AzCopy** tool and ensure
-that it is stored in the **ARCHIVE** tier, which will significantly reduce the costs of maintaining it.
+that it is stored in the **ARCHIVE** tier, which will massively reduce the costs of maintaining it.
 
 The final stage is to delete unnecessary data from the database, then **SHRINK** it, which will make it possible to reduce
 database resources.
@@ -98,7 +96,7 @@ from the fact that it must be located in an internal network, where it is also p
 handles the database. Thanks to meeting this condition,
 it was possible to successfully connect to the database and perform the export operation.
 
-The virtual machine turned out to be not a significant cost, as all performed operations were not computationally demanding
+The virtual machine turned out to be not a striking cost, as all performed operations were not computationally demanding
 (both CPU and RAM usage were low), which allowed us to use a very resource-efficient machine. The only notable extension
 of its functionality is **accelerated networking**, as it must work with data transfer over the network
 and we needed good performance.
@@ -111,7 +109,7 @@ data packages of approximately **50GB** and **200GB** in size.
 We spent the most time testing and optimizing the use of the SQL Package tool.
 
 Our goal was to shorten the export time and obtain an optimal size for the resulting file,
-so it would not generate significant costs due to the need to store it. We tested several scenarios
+so it would not generate excessive costs due to the need to store it. We tested several scenarios
 (mostly by manipulating the **compression level** parameter).
 
 Compression in **FAST** mode showed an average of 10-20% faster export time than **MAXIMUM**, with the resulting file
@@ -162,8 +160,8 @@ solved the problem.
 ## Deployment
 ### Exporting the database using SQL Package tool
 The following script was executed, which successfully extracted data from the database
-and created the appropriate bacpac file. As a result of the mentioned script, we received a compressed file of around 100GB.
-It should be noted here that the data in the database occupied about 3TB, so compression was very efficient.
+and created the appropriate `bacpac` file. As a result of the mentioned script, we received a compressed file of around 100GB.
+It is worth pointing out that data in the database occupied about 3TB, so compression was very efficient.
 The whole process took several hours.
 
 ```
@@ -204,7 +202,7 @@ the overall operation time. It is also worth mentioning that it is possible to s
 
 Since the export was launched at night, the procedure had no negative impact on users. The impact of the
 export operation on the database load (Data I/O percentage) is presented in the graph below. It can be observed that
-the resource load is significant during this operation.
+the resource load increased during this operation.
 
 ![Data IO](/img/articles/2023-05-18-save-money-on-large-database/perf-xyz-export-iops.png)
 
@@ -238,14 +236,14 @@ DBCC SHRINKDATABASE ([DB_NAME]) WITH WAIT_AT_LOW_PRIORITY
 
 The performance chart (Data IO) during the above operation looked as follows:
 
-We observed a significant increase in Data IO operations during the SHRINK operation.
+We observed a unusual increase in Data IO operations during the SHRINK operation.
 ### Performance analysis and index rebuild
 This step appeared quite unexpectedly in our procedure. After performing the SHRINK operation and successfully
 lowering the parameters of the machine responsible for the database, we began to observe
 the impact of our operations on performance.
 
-To our concern, we observed a significant performance regression. Many endpoints that use the database affected by
-our actions showed significantly increased response times.
+To our concern, we observed a noticeable performance regression.
+Endpoints that use the database on which we performed **SHRINK** operation showed abnormally increased response times.
 
 ![RPS](/img/articles/2023-05-18-save-money-on-large-database/perf-xyz-rps-before-index.png)
 
@@ -299,6 +297,6 @@ which is a huge saving and a decision we believe was well worth it.
 
 ![Cost reduction](/img/articles/2023-05-18-save-money-on-large-database/montly-cost-reduction.png)
 
-The above example demonstrates how to significantly reduce infrastructure costs. Of course,
+The above example demonstrates how to greatly reduce infrastructure costs. Of course,
 the described procedure will apply to specific cases and data characteristics.
 However, if you have a similar problem, I think it is worth considering the solution described by us.
