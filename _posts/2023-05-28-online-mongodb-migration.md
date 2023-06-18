@@ -71,27 +71,27 @@ When we realised that there is no tool which meets all our requirements, we've m
 
 ## mongo-migration-stream
 
-_mongo-migration-stream_ is a tool which can be used to perform online migrations of MongoDB databases. It is composed of `mongodump`, `mongorestore` [MongoDB Command Line Database Tools](https://www.mongodb.com/docs/database-tools/), [Mongo Change Streams](https://www.mongodb.com/docs/manual/changeStreams/) and [Kotlin](https://kotlinlang.org/) application. To fully explain what _mongo-migration-stream_ is capable of and how it works, I will define glossary, present a bird's eye view of the tool, and provide implementation details.
+_mongo-migration-stream_ is a tool which can be used to perform online migrations of MongoDB databases. It utilises `mongodump` and `mongorestore` [MongoDB Command Line Database Tools](https://www.mongodb.com/docs/database-tools/), [Mongo Change Streams](https://www.mongodb.com/docs/manual/changeStreams/) and [Kotlin](https://kotlinlang.org/) application. To fully explain what _mongo-migration-stream_ is capable of and how it works, I will define glossary, present a bird's eye view of the tool, and provide implementation details.
 
 ### Glossary
 
 - _Source database_ - MongoDB database which we would like to migrate,
-- _Destination database_ - MongoDB database to which migrator will restore all the data dumped from _source database_,
-- _Transfer_ - a process of copying existing data from _sorce database_, and putting it to _destination database_,
+- _Destination database_ - MongoDB database to which we would like to migrate all the data from _source database_,
+- _Transfer_ - a process of copying dumping data from _sorce database_, and restoring it on _destination database_,
 - _Synchronization_ - a process of keeping eventual consistency between _source database_ and _destination database_,
 - _Migration_ - an end-to-end migration process formed of _transfer_ and _synchronization_ processes,
 - _Migrator_ - a tool for performing _migrations_.
 
 ### Building blocks
 
-As mentioned earlier to perform migrations _mongo-migration-stream_ utilises `mongodump`, `mongorestore`, Mongo Change Streams MongoDB utilities and Kotlin application.
+As mentioned earlier to perform migrations _mongo-migration-stream_ utilises `mongodump`, `mongorestore`, Mongo Change Streams and Kotlin application.
 
 - `mongodump` is used to dump _source database_ in form of binary file,
-- `mongorestore`is used to restore previously created dump on _destination database_,
+- `mongorestore` is used to restore previously created dump on _destination database_,
 - Mongo Change Streams allow us to keep consistency between _source database_ and _destination database_,
-- Kotlin application is orchestrating and managing all processes.
+- Kotlin application is orchestrating and managing all processes described above.
 
-`mongodump` and `mongorestore` are resposible for the _transfer_ part of migration, where Mongo Change Streams are the main mechanism of _synchronization_ proces.
+`mongodump` and `mongorestore` are resposible for the _transfer_ part of migration, where Mongo Change Streams play the main role in _synchronization_ proces mechanism.
 
 ### Bird's eye view
 
@@ -106,11 +106,86 @@ General steps required to perform _migration_:
 
 ![Migration process](/img/articles/2023-05-28-online-mongodb-migration/migration_process.png)
 
+One may ask, why we're subscribing to Mongo Change Stream before starting `mongodump` command? The answer is simple - in case where collection copes with high amount of writes we need to assure that no change from _source database_ will be lost during migration phase. Diagram below shows such kind of _write anomaly_ during migration.
+
+![Avoiding event loss](/img/articles/2023-05-28-online-mongodb-migration/avoiding_event_loss.png)
+
+This means, that **each Mongo Change Event stored in the queue is idempotent**, as migration is finished after processing all events from the queue.
+
 ### Implementation
-mongo-migration-stream is implemented...
+
+There is a ton of technicalities behind _mongo-migration-stream_, and I will try to focus on the most important ones.
+
+#### Concurrency, concurrency, concurrency
+
+From the beginning we wanted to make _mongo-migration-stream_ fast - we knew that it would needed to cope migrating databases with more than 10k writes per second. As a result _mongo-migration-stream_ paralellizes migration of one MongoDB database into migration of multiple collections. Each migration consists multiple little _migrators_ in itself - one _migrator_ per collection in the database.
+
+_Transfer_ process is performed in paralell for each separate collection. Every collection is dumped and restored individually, on separate thread pool. When it comes to _synchronization_ process, it was also implemented concurrently. At the beginning of migration, each collection on _source database_ is watched individually using [Mongo Change Streams with collection target](https://www.mongodb.com/docs/manual/changeStreams/#watch-a-collection--database--or-deployment). Each collection has its own queue, where events from Mongo Change Streams are stored. At final phase of migration, each of these queues is processed independently.
+
+![Concurrent migrations](/img/articles/2023-05-28-online-mongodb-migration/concurrent_migrations.png)
+
+#### Executing mongodump and mongorestore commands
+
+To perform transfer of the database, we're executing paralell `mongodump` and `mongorestore` commands for each collection. To achieve that, machines where _mongo-migration-stream_ is running need to have MongoDB Command Line Database Tools installed.
+
+Exporting data from collection `collectionName` in `source` database can be done with command:
+
+```shell
+mongodump \
+ --uri "mongodb://mongo_rs36_1:36301,mongo_rs36_2:36302,mongo_rs36_3:36303/?replicaSet=replicaSet36" \
+ --db source \
+ --collection collectionName \
+ --out /tmp/mongomigrationstream/dumps
+```
+
+In `mongo-migration-stream` this command (in form of list of Strings) is prepared with `prepareCommand` function:
+
+```kotlin
+override fun prepareCommand(): List<String> = listOf(
+    mongoToolsPath + "mongodump",
+    "--uri", dbProperties.uri,
+    "--db", dbCollection.dbName,
+    "--collection", dbCollection.collectionName,
+    "--out", dumpPath,
+    "--readPreference", readPreference
+) + credentialsIfNotNull(dbProperties.authenticationProperties, passwordConfigPath)
+```
+
+Previously prepared command in form of list of Strings is run using Java's `ProcessBuilder` feature.
+
+```kotlin
+fun runCommand(command: Command): CommandResult {
+    val processBuilder = ProcessBuilder().command(command.prepareCommand()) // <- Here we're calling prepareCommand
+    currentProcess = processBuilder.start()
+    
+    // ...
+    
+    val exitCode = currentProcess.waitFor()
+    stopRunningCommand()
+    return CommandResult(exitCode)
+}
+```
+
+Adequate procedure is implemented to execute `mongorestore` command.
+
+#### How queue is implemented?
+In memory implementation
+
+BigQueue queue
 
 Operations stored on the queue are idempotent.
 
+#### Let's not forget about indexes!
+
+// How indexes were migrated at the beginning.
+
+#### Application modules
+
+_mongo-migration-stream_ code was devided into two separate modules: `mongo-migration-stream-core` module which can be used as an library in JVM application and `mongo-migration-stream-cli` module which can be run as standalone JAR.
+
+// Show code example how to use mms as library
+
+// Show command how mms can be used as JAR
 
 ## Performance issues and improvements
 
