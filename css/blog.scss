@@ -26,7 +26,7 @@ figcaption {
 }
 
 @media (prefers-color-scheme: dark) {
-    .manifesto, .post-header, .blue-bg{ 
+    .manifesto, .post-header, .blue-bg{
         mix-blend-mode: difference;
     }
 }
@@ -333,6 +333,13 @@ figcaption {
     max-width: 100%;
     margin: 8px auto;
     display: block;
+}
+
+.post-content img.small-image {
+    max-width: 50%;
+    @media all and (max-width: 900px) {
+        max-width: 100%
+    }
 }
 
 .post-content blockquote {
