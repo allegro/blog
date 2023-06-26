@@ -21,7 +21,7 @@ rafal.glowinski:
 
 michal.kosmulski:
     name: Michał Kosmulski
-    bio: Michał is interested in all things high-performance, whether it be low-level stuff like analyzing how OS caches affect I/O operations or high-level like proper application design and functional programming. At Allegro, he leads one of the teams which develop our Pay-per-Click (PPC) advertising system, and is the tech blog’s editor-in-chief.
+    bio: Michał is interested in all things high-performance, whether it be low-level stuff like analyzing how OS caches affect I/O operations or high-level like proper application design and functional programming. At Allegro, he has worked both as a software engineer and as a team leader, in finance and advertising divisions.
     stackOverflow:
         id: 1224016
         name: Michał Kosmulski
@@ -831,22 +831,22 @@ lukasz.solniczek:
     name: Łukasz Solniczek
     bio: iOS Mobile Software Engineer. Works on MBox - the Server-driven UI tool.
     linkedin: lukaszsolniczek
-    
+
 aleksandra.osowska-kurczab:
     name: Aleksandra Osowska-Kurczab
-    bio: Senior Research Engineer in the Machine Learning Research team, working on large-scale recommendation systems. She's pursuing her PhD in Computer Science at Warsaw University of Technology on deep learning in medical image analysis. AI enthusiast and geek. 
+    bio: Senior Research Engineer in the Machine Learning Research team, working on large-scale recommendation systems. She's pursuing her PhD in Computer Science at Warsaw University of Technology on deep learning in medical image analysis. AI enthusiast and geek.
     linkedin: aleksandra-osowska-kurczab
-    
+
 jacek.szczerbinski:
     name: Jacek Szczerbiński
     bio: Jacek Szczerbiński obtained his PhD in Chemistry from ETH Zurich. He then fell in love with ML and became a Research Engineer at Allegro. Currently he is studying robustness of text classifiers against mislabeled training data. His superpower is explaining ML to non-technical people.
     linkedin: szcz
-    
+
 klaudia.nazarko:
     name: Klaudia Nazarko
     bio: Research Engineer in the Machine Learning Research team working on large-scale recommendation systems.
     linkedin: klaudianazarko
-    
+
 kalina.kobus:
     name: Kalina Kobus
     bio: Senior Research Engineer in the Machine Learning Research team, working on NLP in the e-commerce domain. Kalina Kobus obtained her PhD in Machine Learning from Poznan University of Technology. Her research interests include large-scale text classification, deep metric learning and the robustness of classifiers against mislabeled training data.
