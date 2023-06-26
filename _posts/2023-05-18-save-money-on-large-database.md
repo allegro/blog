@@ -5,7 +5,6 @@ author: [mateusz.stolecki]
 tags: [tech,azure,sql,saving,cloud]
 ---
 
-## Introduction
 In the era of ubiquitous cloud services and an increasingly growing PaaS and serverless-oriented approach, performance
 and resources seem to be becoming less and less important.
 After all, we can scale horizontally and vertically at any time, without worrying about potential performance challenges
@@ -19,9 +18,9 @@ A similar situation arises with databases. We often store huge amounts of data (
 While the cost of maintaining such databases is negligible at a small scale,
 over time it can become a notable burden on our budget.
 
-I wanted to talk about such a case and how we managed to reduce the cost of maintaining a database by nearly 30 times.
+I wanted to talk about such a case and how we managed to reduce the cost of maintaining a database nearly 30 times.
 
-## Problem
+## The problem
 As the amount of data grows, the need for scaling arises. In the case of **Azure** services, scaling also has its [limitations](https://learn.microsoft.com/en-us/azure/azure-sql/database/purchasing-models?view=azuresql).
 It is not always possible to infinitely increase the available disk space without scaling other resources (CPU, RAM, I/O).
 In our case, this limit became apparent when we exceeded 1TB of data. Our database was based on the vCore model,
@@ -51,7 +50,7 @@ by archiving old/unused data and placing it in a cost-optimized container.
 </table>
 
 ## Analysis
-After some investigation, It turned out that significant percentage of data could be safely archived,
+After some investigation, It turned out that significant part of data could be safely archived,
 which would certainly provide
 potential savings and eliminate the problem of an overgrown database. Most of this data is actually historical.
 
@@ -139,20 +138,18 @@ We made an additional attempt to import the archive using the SQL Package tool, 
 Command
 
 ```
-sqlpackage
-        /Action:Import `
+sqlpackage /Action:Import `
         /tsn:$ServerName `
         /tdn:$DatabaseName `
-        /tu:SqlAdminName `
+        /tu:$SqlAdminName `
         /tp:$SqlAdminPassword `
         /tec:true `
         /ttsc:false `
+        /d:true `
         /sf:$SourceFile `
         /p:CommandTimeout=999 `
         /p:LongRunningCommandTimeout=0 `
         /p:DatabaseLockTimeout=-1 `
-        /d:true `
-        /df:$SqlLogs `
 ```
 
 solved the problem.
@@ -213,7 +210,7 @@ The following script was executed to copy the exported file to the Storage Accou
 .\azcopy `
     copy `
     $TargetFile `
-"https://$StorageAccountName.blob.core.windows.net/$StorageContainerName/$StorageBlobName?$SAS" `
+"https://$StorageAccountName.blob.core.windows.net/$StorageContainerName/$StorageBlobName$SAS" `
     --recursive `
     --overwrite=true `
     --blob-type=BlockBlob `
@@ -260,9 +257,9 @@ This forced us to consider rebuilding all the indexes.
 
 Even Microsoft recommends rebuilding indexes in their documentation [here](https://learn.microsoft.com/en-us/sql/relational-databases/databases/shrink-a-database?view=sql-server-ver16):
 
-_"Data that is moved to shrink a file can be scattered to any available location in the file.
-This causes index fragmentation and can slow the performance of queries that search a range of the index.
-To eliminate the fragmentation, consider rebuilding the indexes on the file after shrinking."_
+> Data that is moved to shrink a file can be scattered to any available location in the file.
+> This causes index fragmentation and can slow the performance of queries that search a range of the index.
+> To eliminate the fragmentation, consider rebuilding the indexes on the file after shrinking.
 
 We decided to proceed with the above-mentioned index rebuild process. Here, we also applied possible optimizations
 to avoid negative consequences related to the availability of our services. The **ONLINE** option is particularly noteworthy,
@@ -284,7 +281,7 @@ The response time and resource consumption charts of the database also returned 
 
 ## Conclusion
 After performing all of the described actions, we could witness a reduction
-in the size of the database from over 3TB to nearly 100GB.
+in the size of the database from over 3TB to slightly below 100GB.
 By lowering the required disk space, we could also significantly reduce the computational resources of the database,
 which also had a huge impact on savings.
 
@@ -292,11 +289,10 @@ Speaking of savings, before performing all of the operations,
 the monthly cost of maintaining the database with data was close to € 3000.
 Specifically, we were able to switch from a database based on a 12 vCore and 3TB model (€ ~3000) to a Standard DTU with
 100 units and 150GB (€ ~125).
-As we could see, our effort paid off, as we went down to around € 125 per month,
-which is a huge saving and a decision we believe was well worth it.
+As we could see, our effort paid off.
 
 ![Cost reduction](/img/articles/2023-05-18-save-money-on-large-database/montly-cost-reduction.png)
 
 The above example demonstrates how to greatly reduce infrastructure costs. Of course,
 the described procedure will apply to specific cases and data characteristics.
-However, if you have a similar problem, I think it is worth considering the solution described by us.
+However, if you have a similar problem, I think it is worth considering this approach.
