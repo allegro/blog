@@ -31,9 +31,11 @@ To solve noisy neighbours problem a separate team implemented the solution allow
 
 ![Kubernetes CPU usage](/img/articles/2023-05-28-online-mongodb-migration/k8s_cpu.png)
 
+At this point we knew what we needed to do to solve our problems - we had to migrate all MongoDB databases from old shared clusters, to new independent clusters on Kubernetes. Now came more difficult part of _"how"_ should we do it.
+
 ## Available tools on the market
 
-At this point we knew what we needed to do to solve our problems - we had to migrate all MongoDB databases from old shared clusters, to new independent clusters on Kubernetes. Now came more difficult part of _"how"_ should we do it. To be able to answer this question, we've started with preparing list of requirements, which needed to be met by a tool to migrate databases (referred to as _"migrator"_). 
+Firstly, we've started with preparing list of requirements, which needed to be met by a tool to migrate databases (referred to as _"migrator"_). 
 
 ### Requirements
 
@@ -71,7 +73,7 @@ When we realised that there is no tool which meets all our requirements, we've m
 
 ## mongo-migration-stream
 
-_mongo-migration-stream_ is a tool which can be used to perform online migrations of MongoDB databases. It utilises `mongodump` and `mongorestore` [MongoDB Command Line Database Tools](https://www.mongodb.com/docs/database-tools/), [Mongo Change Streams](https://www.mongodb.com/docs/manual/changeStreams/) and [Kotlin](https://kotlinlang.org/) application. To fully explain what _mongo-migration-stream_ is capable of and how it works, I will define glossary, present a bird's eye view of the tool, and provide implementation details.
+_mongo-migration-stream_ is a tool which can be used to perform online migrations of MongoDB databases. It utilises `mongodump` and `mongorestore` [MongoDB Command Line Database Tools](https://www.mongodb.com/docs/database-tools/), [Mongo Change Streams](https://www.mongodb.com/docs/manual/changeStreams/) and [Kotlin](https://kotlinlang.org/) application. To fully explain what _mongo-migration-stream_ is capable of and how it works, I will define glossary, present building blocks and a bird's eye view of the tool, and provide implementation details.
 
 ### Glossary
 
@@ -89,7 +91,7 @@ As mentioned earlier to perform migrations _mongo-migration-stream_ utilises `mo
 - `mongodump` is used to dump _source database_ in form of binary file,
 - `mongorestore` is used to restore previously created dump on _destination database_,
 - Mongo Change Streams allow us to keep consistency between _source database_ and _destination database_,
-- Kotlin application is orchestrating and managing all processes described above.
+- Kotlin application is orchestrating, managing and monitoring all above processes.
 
 `mongodump` and `mongorestore` are resposible for the _transfer_ part of migration, where Mongo Change Streams play the main role in _synchronization_ proces mechanism.
 
@@ -110,13 +112,13 @@ One may ask, why we're subscribing to Mongo Change Stream before starting `mongo
 
 ![Avoiding event loss](/img/articles/2023-05-28-online-mongodb-migration/avoiding_event_loss.png)
 
-This means, that **each Mongo Change Event stored in the queue is idempotent**, as migration is finished after processing all events from the queue.
+This means, that each Mongo Change Event stored in the queue is idempotent, as migration is finished after processing all events from the queue.
 
 ### Implementation
 
 There is a ton of technicalities behind _mongo-migration-stream_, and I will try to focus on the most important ones.
 
-#### Concurrency, concurrency, concurrency
+#### Concurrency
 
 From the beginning we wanted to make _mongo-migration-stream_ fast - we knew that it would needed to cope migrating databases with more than 10k writes per second. As a result _mongo-migration-stream_ paralellizes migration of one MongoDB database into migration of multiple collections. Each migration consists multiple little _migrators_ in itself - one _migrator_ per collection in the database.
 
@@ -124,9 +126,9 @@ _Transfer_ process is performed in paralell for each separate collection. Every 
 
 ![Concurrent migrations](/img/articles/2023-05-28-online-mongodb-migration/concurrent_migrations.png)
 
-#### Executing mongodump and mongorestore commands
+#### Initial data transfer
 
-To perform transfer of the database, we're executing paralell `mongodump` and `mongorestore` commands for each collection. To achieve that, machines where _mongo-migration-stream_ is running need to have MongoDB Command Line Database Tools installed.
+To perform transfer of the database, we're executing `mongodump` and `mongorestore` commands for each collection. To achieve that, machines where _mongo-migration-stream_ is running need to have MongoDB Command Line Database Tools installed.
 
 Exporting data from collection `collectionName` in `source` database can be done with command:
 
@@ -168,24 +170,111 @@ fun runCommand(command: Command): CommandResult {
 
 Adequate procedure is implemented to execute `mongorestore` command.
 
-#### How queue is implemented?
-In memory implementation
+#### Event queue
 
-BigQueue queue
+During process of migration _source database_ is constantly receiving write requests, which _mongo-migration-stream_ is watching by using Mongo Change Streams. Events from the stream are saved in the queue, to be send later to the _destination database_. Currently _mongo-migration-stream_ provides two implementations of the queue - one is in memory and the other is persistent.
 
-Operations stored on the queue are idempotent.
+In memory implementation can be used for databases with low traffic, or on machines with huge amount of RAM (as events are stored as objects on JVM heap), or for testing purposes.
 
-#### Let's not forget about indexes!
+```kotlin
+// In memory queue implementation
+internal class InMemoryEventQueue<E> : EventQueue<E> {
+    private val queue = ConcurrentLinkedQueue<E>()
 
-// How indexes were migrated at the beginning.
+    override fun offer(element: E): Boolean = queue.offer(element)
+    override fun poll(): E = queue.poll()
+    override fun peek(): E = queue.peek()
+    override fun size(): Int = queue.size
+    override fun removeAll() {
+        queue.removeAll { true }
+    }
+}
+```
+
+In our production setup we're using persistent event queue, which is implemented using [BigQueue project](https://github.com/bulldog2011/bigqueue). As BigQueue only allows enqueuing and dequeuing byte arrays, we had to properly serialize and deserialize data from the events.
+
+```kotlin
+// Persistent queue implementation
+internal class BigQueueEventQueue<E : Serializable>(path: String, queueName: String) : EventQueue<E> {
+    private val queue = BigQueueImpl(path, queueName)
+
+    override fun offer(element: E): Boolean = queue.enqueue(element.toByteArray()).let { true }
+    override fun poll(): E = queue.dequeue().toE()
+    override fun peek(): E = queue.peek().toE()
+    override fun size(): Int = queue.size().toInt()
+    override fun removeAll() {
+        queue.removeAll()
+        queue.gc()
+    }
+
+    private fun E.toByteArray(): ByteArray = SerializationUtils.serialize(this)
+    private fun ByteArray.toE(): E = SerializationUtils.deserialize(this)
+}
+```
+
+#### Migrating indexes
+
+To migrate indexes without blocking migration process, we've came up with a solution which for each migrated collection, fetches all indexes for that collection, and then rebuilds them on destination database. For older versions of MongoDB we are specifying `{ background: true }` option, [which does not block all operations on given database](https://www.mongodb.com/docs/v3.6/core/index-creation/).
+
+```kotlin
+private fun getRawSourceIndexes(sourceToDestination: SourceToDestination): List<Document> =
+    sourceDb.getCollection(sourceToDestination.source.collectionName).listIndexes()
+        .toList()
+        .filterNot { it.get("key", Document::class.java) == Document().append("_id", 1) }
+        .map {
+            it.remove("ns")
+            it.remove("v")
+            it["background"] = true
+            it
+        }
+```
+
+If the _destination database_ is newer or equal than MongoDB 4.2, `{ background: true }` option is ignored as [optimized index build is used](https://www.mongodb.com/docs/manual/core/index-creation/#comparison-to-foreground-and-background-builds). In both cases index rebuild does not block synchronization process. 
 
 #### Application modules
 
-_mongo-migration-stream_ code was devided into two separate modules: `mongo-migration-stream-core` module which can be used as an library in JVM application and `mongo-migration-stream-cli` module which can be run as standalone JAR.
+_mongo-migration-stream_ code was divided into two separate modules: `mongo-migration-stream-core` module which can be used as an library in JVM application and `mongo-migration-stream-cli` module which can be run as standalone JAR. In Allegro production setup, we are using _mongo-migration-stream_ as a library, but migrator can be easily runned as a standalone JAR with proper configuration provided.
 
-// Show code example how to use mms as library
+This is API of provided by the `mongo-migration-stream-core`:
 
-// Show command how mms can be used as JAR
+```kotlin
+class MongoMigrationStream(
+    properties: ApplicationProperties,
+    meterRegistry: MeterRegistry
+) {
+    val stateInfo = StateInfo(properties.stateConfig.stateEventHandler)
+    private val migrationController = MigrationController(properties, stateInfo, meterRegistry)
+
+    fun start() {
+        migrationController.startMigration()
+    }
+
+    fun stop() {
+        migrationController.stopMigration()
+    }
+
+    fun pause() {
+        migrationController.pauseMigration()
+    }
+
+    fun resume() {
+        migrationController.resumeMigration()
+    }
+}
+```
+
+And here you can find how _mongo-migration-stream_ can be run using standalone JAR:
+
+```shell
+java -jar mongo-migration-stream-cli.jar --config /Users/szymon.a.marcinkiewicz/Projects/allegro/mongo-migration-stream/config/local/application.properties
+```
+
+#### Verification of migration state
+
+- Scheduled verification after all migrators get into queue processing state
+- Events on each change
+- Micrometer metrics
+- Logs
 
 ## Performance issues and improvements
 
