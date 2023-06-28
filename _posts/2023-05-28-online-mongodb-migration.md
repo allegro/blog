@@ -266,27 +266,57 @@ class MongoMigrationStream(
 And here you can find how _mongo-migration-stream_ can be run using standalone JAR:
 
 ```shell
-java -jar mongo-migration-stream-cli.jar --config /Users/szymon.a.marcinkiewicz/Projects/allegro/mongo-migration-stream/config/local/application.properties
+java -jar mongo-migration-stream-cli.jar --config application.properties
 ```
 
 #### Verification of migration state
+Our intention throught the project was making database migrations as easy as possible. To achieve this, _mongo-migration-stream_ users need reliable data about the state of running migration. Migrator provides the data in multiple different ways.
 
-- Scheduled verification after all migrators get into queue processing state
-- Events on each change
-- Micrometer metrics
-- Logs
+_mongo-migration-stream_ logs all required information about migration, so users can verify what's happening with the migration by analyzing log file. 
+
+Besides logs, when all migrated collections are in _synchronization_ process, _mongo-migration-stream_ for each collection starts a periodical check verifying: 
+- Size of the events queue,
+- Difference between size of destination collection and source collection,
+- MD5 hashes for collections.
+
+Size verifying checks are also available in form of metrics exposed with [Micrometer](https://micrometer.io/).
+
+On top of all, each migrator state change emits an event to in-memory event bus. There are multiple types of events which _mongo-migration-stream_ produces:
+
+| ------------------------------|----------------------------|
+| Event name:                   | When the event is emitted: |
+| ------------------------------|----------------------------|
+| StartEvent                    | Start of the migration |
+| SourceToLocalStartEvent       | Start watching for a collection specific Mongo Change Stream |
+| DumpStartEvent                | Start mongodump for a collection |
+| DumpUpdateEvent               | Each mongodump print to stdout |
+| DumpFinishEvent               | Finish mongodump for a collection |
+| RestoreStartEvent             | Start mongorestore for a collection |
+| RestoreUpdateEvent            | Each mongorestore print to stdout |
+| RestoreFinishEvent            | Finish mongorestore for a collection |
+| IndexRebuildStartEvent        | Start rebuilding indexes for a collection |
+| IndexRebuildFinishEvent       | Finish rebuilding indexes for a collection |
+| LocalToDestinationStartEvent  | Start sending events from queue to destination collection |
+| StopEvent                     | Stop of the migration |
+| PauseEvent                    | Pause of the migration |
+| ResumeEvent                   | Resume of paused migration |
+| FailedEvent                   | Fail of collection migration |
+| ------------------------------|----------------------------|
 
 ## Performance issues and improvements
 
-After implementing mongo-migration-stream and testing it locally on small constantly-populated databases, it was time to verify its performance on real-world databases.
+After implementing _mongo-migration-stream_ and testing it locally on small constantly-populated databases, it was time to verify its performance on real-world databases. Quickly we've run into multiple problems negatively influencing overall migrator performance.
 
 ### Reactive MongoDB source client
 
+In first _mongo-migration-stream_ version we were using [synchronous MongoDB client](https://www.mongodb.com/docs/drivers/java/sync/current/) for watching events on _source database_ and for sending batches of events to _destination database_. After running multiple test migrations on production databases it ocurred that _migrator_ wasn't able to process events quickly enough, which after time resulted with  
 Describe how it was working at the beginning (synchronous MongoDB client with event loop 1s) vs new approach with Reactive MongoDB Client.
 
 ### Rebuilding indexes in the background
 
-We've changed process of rebuilding indexes from using mongorestore to custom solution (Kotlin code)
+In first _mongo-migration-stream_ version we were copying indexes using `mongodump` and `mongorestore` mechanisms. Unfortunatelly it quickly occurred that waiting for full index recreation on _destination collection_ after _transfer_ phase (before starting synchronization process) results with growing queue of events to synchronize, ending up with overall longer migration times. We've came with a conclusion, that we must rebuild indexes, while at the same time send events from queue to _destination database_.
+
+Because of that, we've changed process of rebuilding indexes from using `mongodump` and `mongorestore` to solution described in _"Migrating indexes"_ subchapter. This change had significant impact on migration time of large collections - previously used mechanism could take hours for each collection (blocking synchronization process), while new mechanism rebuilds indexes in the background marginally affecting synchronization performance.
 
 ### Admin user for destination database
 
