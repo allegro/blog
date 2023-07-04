@@ -5,8 +5,7 @@ author: michal.kosmulski
 tags: [tech, coding, management, developer, team leader, career path]
 ---
 After six years as a Team Leader, I went back to hands-on engineering work, and I’m very happy about taking
-this step. While it may appear surprising at first, it was a well-thought-out decision, and actually the second time
-already I’ve performed such a maneuver.
+this step. While it may appear surprising at first, it was a well-thought-out decision, and actually I’ve already performed such a maneuver once before.
 
 ## Background
 
