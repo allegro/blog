@@ -14,11 +14,11 @@ However, there is also another side to the coin – rising costs. While it can b
 cheaper to add another instance of the service than to engage a developer who will work tirelessly to diagnose
 and optimize performance problems, the problem will persist and intensify as the business and its requirements grow.
 
-A similar situation arises with databases. We often store huge amounts of data (for auditing or historical purposes etc.).
+A similar situation arises with databases. We often store huge amounts of data for auditing or historical purposes.
 While the cost of maintaining such databases is negligible at a small scale,
 over time it can become a notable burden on our budget.
 
-I wanted to talk about such a case and how we managed to reduce the cost of maintaining a database nearly 30 times.
+I wanted to talk about such a case and how we managed to reduce the cost of maintaining a database nearly 30-fold.
 
 ## The problem
 As the amount of data grows, the need for scaling arises. In the case of **Azure** services, scaling also has its [limitations](https://learn.microsoft.com/en-us/azure/azure-sql/database/purchasing-models?view=azuresql).
@@ -52,35 +52,33 @@ by archiving old/unused data and placing it in a cost-optimized container.
 ## Analysis
 After some investigation, It turned out that significant part of data could be safely archived,
 which would certainly provide
-potential savings and eliminate the problem of an overgrown database. Most of this data is actually historical.
+potential savings and eliminate the problem of an overgrown database. Most of this data was actually historical.
 
-Solution has been implemented that allows for much more scalable data archiving
-by asynchronously loading data into warehouse.
-However, there is still considerable amount of data from before the implementation of the mentioned solution,
-that generates significant costs in terms of the need to store it.
+We implemented a solution that allows for much more scalable data archiving
+by asynchronously loading data into the warehouse.
+However, data from before the implementation of aforementioned solution were still generating considerable storage costs.
 
-The aforementioned idea seemed simple both in concept and implementation. However, we immediately encountered several problems.
-Exporting such massive amounts of data is a time-consuming process and puts a heavy load on the database,
-which can cause responsiveness issues.
+The idea seemed simple both in concept and execution. However, we immediately encountered several problems.
+Exporting such massive amounts of data is a time-consuming process and puts a heavy load on the database
+causing responsiveness issues.
 
-Dealing with a production system, we could not reduce reliability and availability of services.
+Dealing with a production system, we could not reduce the reliability and availability of services.
 In addition, the export functionality offered by the Azure portal is limited to databases up to **200GB** in size,
 which meant that we had to look for another solution.
 
 ## Action plan
 ### Concept
-However, it turned out that there are ways to export even huge databases. After some investigation,
-we found **SQL Package** tool.
-It provides **export** option and is great for solving the aforementioned problem. It is able to produce a `bacpac`
+As it turned out, there are ways to export even huge databases. After some investigation,
+we found the **SQL Package** tool.
+It provides **export** option and is great for solving aforementioned problem. It is able to produce a `bacpac`
 file that contains highly compressed content of the database.
 The tool also allows you to restore data at any time using the **import** operation,
-if there is ever a need to look at it again, for example, for audit purposes.
+if there is ever a need to review it, for example for audit purposes.
 
-The next step is to copy the mentioned file to the container in the Storage Account using the **AzCopy** tool and ensure
-that it is stored in the **ARCHIVE** tier, which will massively reduce the costs of maintaining it.
+The next step is to copy the file to the container in the Storage Account using the **AzCopy** tool and ensure
+that it is stored in the **ARCHIVE** tier, what will massively reduce the costs of maintaining it.
 
-The final stage is to delete unnecessary data from the database, then **SHRINK** it, which will make it possible to reduce
-database resources.
+The final stage is to delete unnecessary data from the database, then **SHRINK** it, what will reduce database resources.
 ### Script and tools
 To export and archive the database, we used two tools provided by Microsoft: [SQL Package](https://learn.microsoft.com/en-us/sql/tools/sqlpackage/sqlpackage?view=sql-server-ver16)
 and [AzCopy](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-v10).
@@ -89,36 +87,35 @@ After analyzing their documentation, we prepared the appropriate procedure takin
 into account performance and operation duration.
 ### Infrastructure
 Due to the fact that the export and upload process to the Storage Account container with this amount of data may take
-a long time, we decided to set up a temporary **VM** with the accelerated networking option, which will serve us
+a long time, we decided to set up a temporary **VM** with the accelerated networking option, which served us
 to execute all required scripts. It should be mentioned that the need to set up a dedicated virtual machine also arises
 from the fact that it must be located in an internal network, where it is also possible to connect to the machine that
 handles the database. Thanks to meeting this condition,
 it was possible to successfully connect to the database and perform the export operation.
 
-The virtual machine turned out to be not a striking cost, as all performed operations were not computationally demanding
-(both CPU and RAM usage were low), which allowed us to use a very resource-efficient machine. The only notable extension
+The virtual machine turned out to be moderately priced, as all performed operations were not computationally demanding
+(both CPU and RAM usage were low), what allowed us to use a very resource-efficient machine. The only notable extension
 of its functionality is **accelerated networking**, as it must work with data transfer over the network
 and we needed good performance.
 
 ## Testing
 ### Optimization
-Before we proceeded with the implementation of the operation in the production environment, we conducted a series of
+Before we proceeded with the implementation in the production environment, we conducted a series of
 tests using test environments. They mainly involved running all the steps of the process using
 data packages of approximately **50GB** and **200GB** in size.
-We spent the most time testing and optimizing the use of the SQL Package tool.
+We spent the majority of time testing and optimizing the use of the SQL Package tool.
 
 Our goal was to shorten the export time and obtain an optimal size for the resulting file,
 so it would not generate excessive costs due to the need to store it. We tested several scenarios
 (mostly by manipulating the **compression level** parameter).
 
 Compression in **FAST** mode showed an average of 10-20% faster export time than **MAXIMUM**, with the resulting file
-size varying within <10%. The tests were performed on a data sample of < 200GB, so we assumed that the results might
-change at a larger scale.
+size varying within <10%.
 
 ### Performance testing
 We also tested the load on the databases in each environment.
-**Data IO** and **CPU** load were tested using the test environment based on infrastructure based on DTUs and using
-**100 DTU** units.
+**Data IO** and **CPU** load were tested using the test environment relying on DTU-based infrastructure utilising **100 DTU**
+units.
 
 Data IO
 ![Data IO](/img/articles/2023-05-18-save-money-on-large-database/perf-test-dev-iops.png)
@@ -126,14 +123,14 @@ Data IO
 CPU
 ![CPU](/img/articles/2023-05-18-save-money-on-large-database/perf-test-dev-cpu.png)
 
-You can notice that the export operation primarily consumes IO resources.
+Notice, that the export operation primarily consumes IO resources.
 ### Data Import
 Due to the possible need to reuse archived data, we had to make sure that the data we imported was suitable for re-import.
 
 Initially, we attempted to import the data using the **SQL Server Management Studio** tool provided by Microsoft.
 Unfortunately, this attempt failed due to errors related to file reading during the import operation.
 We made an additional attempt to import the archive using the SQL Package tool, which, in addition to the export option,
- also provides import options.
+also provides import options.
 
 Command
 
@@ -156,8 +153,8 @@ solved the problem.
 
 ## Deployment
 ### Exporting the database using SQL Package tool
-The following script was executed, which successfully extracted data from the database
-and created the appropriate `bacpac` file. As a result of the mentioned script, we received a compressed file of around 100GB.
+The following script was executed, successfully extracting data from the database and creating the appropriate `bacpac` file.
+As a result, we received a compressed file of around 100GB.
 It is worth pointing out that data in the database occupied about 3TB, so compression was very efficient.
 The whole process took several hours.
 
@@ -180,21 +177,22 @@ sqlpackage
     /df:$SqlLogs `
 ```
 
-Many parameters of this operation were evaluated during testing on test environments.
+Many parameters of this operation were evaluated during trials on test environments.
 The particularly important ones are:
 - **CommandTimeout, LongRunningCommandTimeout, DatabaseLockTimeout** - This set of
 parameters ensures that the connection
-will be maintained throughout the entire duration of the export operation (assuming that it will be long-running).
+is maintained throughout the entire duration of the export operation (assuming that it will be long-running).
 - **CompressionOption** - The degree of data compression in the output file.
 Two variants were tested:
-**FAST** and **MAXIMUM**. Fast allowed us to shorten the export time by about 2 hours while showing only slightly lower
+**FAST** and **MAXIMUM**.
+**FAST** allowed us to shorten the export time by about 2 hours while showing only slightly lower
 data compression (in our case, the difference was around 10%).
 
 ```powershell
 /p:TableData="dbo.TestTable"
 ```
 
-The parameter allows us to limit the data export only to the tables selected by us, which significantly shortens
+The parameter allows us to limit the data export only to the tables selected by us, what significantly shortens
 the overall operation time. It is also worth mentioning that it is possible to set the parameter multiple times.
 
 Since the export was launched at night, the procedure had no negative impact on users. The impact of the
@@ -224,7 +222,7 @@ It is worth noting that the archive tier is set immediately.
 
 ### Conducting a SHRINK operation
 The SHRINK operation is, unfortunately, required to downscale the Azure SQL database. It took several hours to complete.
-It is worth noting that WAIT_AT_LOW_PRIORITY was used to reduce the impact of this rather resource-intensive operation
+**WAIT_AT_LOW_PRIORITY** was used to reduce the impact of this rather resource-intensive operation
 on the database users.
 
 ``` sql
@@ -253,7 +251,7 @@ to lower them, it was not an optimal solution).
 
 As it turned out, the culprit was extraordinarily high index fragmentation. The result of the SHRINK operation was an increase
 in the mentioned fragmentation to almost >90% for practically all existing indexes.
-This forced us to consider rebuilding all the indexes.
+This forced us to consider rebuilding all of them.
 
 Even Microsoft recommends rebuilding indexes in their documentation [here](https://learn.microsoft.com/en-us/sql/relational-databases/databases/shrink-a-database?view=sql-server-ver16):
 
@@ -263,7 +261,7 @@ Even Microsoft recommends rebuilding indexes in their documentation [here](https
 
 We decided to proceed with the above-mentioned index rebuild process. Here, we also applied possible optimizations
 to avoid negative consequences related to the availability of our services. The **ONLINE** option is particularly noteworthy,
-as it ensures that existing indexes and tables will not be blocked, which is an important issue in the case
+as it ensures that existing indexes and tables will not be blocked, what is an important issue in the case
 of continuous operation of our services.
 
 ``` sql
@@ -280,16 +278,16 @@ The response time and resource consumption charts of the database also returned 
 ![IOPS](/img/articles/2023-05-18-save-money-on-large-database/perf-xyz-iops-after-index.png)
 
 ## Conclusion
-After performing all of the described actions, we could witness a reduction
+After performing all of the described actions, we achieved a reduction
 in the size of the database from over 3TB to slightly below 100GB.
 By lowering the required disk space, we could also significantly reduce the computational resources of the database,
-which also had a huge impact on savings.
+generating further serious savings.
 
-Speaking of savings, before performing all of the operations,
-the monthly cost of maintaining the database with data was close to € 3000.
-Specifically, we were able to switch from a database based on a 12 vCore and 3TB model (€ ~3000) to a Standard DTU with
-100 units and 150GB (€ ~125).
-As we could see, our effort paid off.
+Before performing all the operations,
+the monthly cost of maintaining the database was close to €3000.
+By switching from a database based on a 12 vCore and 3TB model to a Standard DTU with 100 units and 150GB
+we managed to cut our monthly spendings to mere €125.
+After all, our effort paid off.
 
 ![Cost reduction](/img/articles/2023-05-18-save-money-on-large-database/montly-cost-reduction.png)
 
