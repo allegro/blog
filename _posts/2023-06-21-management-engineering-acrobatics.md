@@ -11,7 +11,7 @@ this step. While it may appear surprising at first, it was a well-thought-out de
 
 A few years ago I stumbled upon [The Engineer/Manager Pendulum](https://charity.wtf/2017/05/11/the-engineer-manager-pendulum/)
 by Charity Majors, and the follow-up post [Engineering Management: The Pendulum Or The Ladder](https://charity.wtf/2019/01/04/engineering-management-the-pendulum-or-the-ladder/).
-I found both pieces very interesting, and quite in line with my own experiences: in my previous job some time earlier I
+I found both pieces interesting, and quite in line with my own experiences: in my previous job some time earlier I
 had been a team leader, but consciously joined [Allegro](https://allegro.tech) as a software engineer. After a while, I
 became a team leader again, and recently, another few years down the line, I went back to engineering yet again.
 
@@ -45,7 +45,7 @@ me. Hence, the decision to make technology an important part of my job again.
 
 ## How
 
-An important factor to take into account when planning such a change is that it will take time. If you take your
+A crucial factor to take into account when planning such a change is that it will take time. If you take your
 team seriously, you can’t just disappear overnight. You need to think ahead. Do not ask yourself “have I already
 lost my tech skills beyond repair?”. Ask yourself “how will my tech skills be a year from now?”.
 
@@ -60,7 +60,7 @@ When I started thinking about making the switch, once I had a rough idea of what
 This was an important step: it allowed him to plan ahead, and also to look for opportunities for making the
 reorganization easier. Some elements of the process would depend only on our actions, but some, such as finding a good
 replacement team leader, would also depend on a number of factors outside our control. Knowing that my boss understood
-my need, and supported it, was important, and made the wait and preparations easier.
+my need, and supported it, mattered a lot, and made the wait and preparations easier.
 
 Chance favors the prepared mind, as Louis Pasteur is supposed to have said. There happened to be a team leader in
 another part of the company who was thinking about moving on to a different area. Thanks to being aware of my plan,
@@ -69,7 +69,7 @@ and the project, and he found them interesting. We planned a transition period, 
 for me to transfer to him a reasonable part of my knowledge about the team and its work.
 
 Now that we had a specific plan, we could tell the team. It was important to let everyone know as soon as possible, but
-not before we had a specific plan. Without it, all this information would have done would be stirring uncertainty. Apart
+not before we had a specific plan. Without it, this information would only stir uncertainty. Apart
 from telling the team as a whole, I also talked to each person individually, in order to resolve any questions or doubts
 and to try to reduce any problems resulting from the transition as much as possible.
 
@@ -88,7 +88,7 @@ team’s functioning.
 It’s been several months since the switch now. Me changing back to a technical role has certainly required extra work,
 for me, my boss, and the new team leader. Despite our best efforts, it probably put a little extra strain on the team as
 well. Nonetheless, I think it was a win-win, even more so thanks to us being able to spot and exploit a happy
-coincidence. I am happy to be closer to technology again, and the new leader also got to try something new, just as he
+coincidence. I am glad to be closer to technology again, and the new leader also got to try something new, just as he
 wanted.
 
 There is one more subtle advantage to the whole process. When people leave the team, some knowledge inevitably gets
@@ -101,7 +101,8 @@ and increases the [bus factor](https://en.wikipedia.org/wiki/Bus_factor).
 
 When I first started thinking about going back to hands-on technical work for the second time, I had some doubts about
 how much my technical skills had already deteriorated and how difficult it would be to go back. It seems I made it, but
-not by much. Had I delayed by one more year, I might really struggle. It’s not a matter of knowledge: theory, especially
+not by much. Had I delayed by one more year, I might have really struggled. It’s not a matter of knowledge: theory,
+especially
 generic things that do not change that fast with technology, is not lost so quickly, and while a team leader, I tried
 to stay in touch with technology by taking part in task refinement, architecture discussions, on-call rotation, etc.
 
@@ -139,7 +140,7 @@ for their project, but that’s just one of many inputs.
 
 Third, since there are few PSEs compared to other positions, for each person the role is a little different. On one
 hand, this means you can’t fully know what to expect when you start in this role. On the other, this is because to a
-large degree you can shape the role yourself, and personally I’m very happy about this flexibility.
+large degree you can shape the role yourself, and personally I enjoy this flexibility.
 
 ## Summary
 
@@ -147,6 +148,6 @@ I think the idea of swinging back and forth between engineering and management d
 [The Engineer/Manager Pendulum](https://charity.wtf/2017/05/11/the-engineer-manager-pendulum/),
 is valid, and my own experience backs it up fully. One element which I want to additionally stress, however, is that
 the switch is more like a flying trapeze than a pendulum: timing is crucial, and missing the right moment can have
-serious consequences. Becoming a Principal Software Engineer was a very interesting experience, both on a technical
+serious consequences. Becoming a Principal Software Engineer was a unique experience, both on a technical
 level and as my de facto last task as a team leader. Who knows what the future holds? Perhaps some time from now I’ll
 take another swing on the flying trapeze and go back to management?
