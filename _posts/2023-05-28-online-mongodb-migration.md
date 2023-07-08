@@ -50,10 +50,9 @@ to new independent clusters on Kubernetes. Now came more difficult part of _"how
 
 ## Available options
 
-One may ask _"Why can't you just connect new nodes to existing replicasets, and wait for data synchronization?"_
-This solution would be the easiest one (as it wouldn't require any additional software), but was impossible
-to implement in Allegro due to no network connection between old shared clusters and new Kubernetes clusters.
-Because of that, we needed to find some other way to perform migrations.
+One may ask _"Why can't you just connect new nodes to existing replicasets, and wait for data synchronization?"_  This solution would be the easiest one 
+(as it wouldn't require any additional software), but was impossible to implement in Allegro due to no network connection between old shared clusters
+and new Kubernetes clusters. Because of that, we needed to find some other way to perform migrations.
 
 Firstly, we've started with preparing list of requirements,
 which needed to be met by a tool to migrate databases (referred to as _"migrator"_).
