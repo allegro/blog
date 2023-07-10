@@ -118,10 +118,10 @@ We also tested the load on the databases in each environment.
 units.
 
 Data IO
-![Data IO](/img/articles/2023-05-18-save-money-on-large-database/perf-test-dev-iops.png)
+![Data IO](/img/articles/2023-07-10-save-money-on-large-database/perf-test-dev-iops.png)
 
 CPU
-![CPU](/img/articles/2023-05-18-save-money-on-large-database/perf-test-dev-cpu.png)
+![CPU](/img/articles/2023-07-10-save-money-on-large-database/perf-test-dev-cpu.png)
 
 Notice, that the export operation primarily consumes IO resources.
 ### Data Import
@@ -199,7 +199,7 @@ Since the export was launched at night, the procedure had no negative impact on 
 export operation on the database load (Data I/O percentage) is presented in the graph below. It can be observed that
 the resource load increased during this operation.
 
-![Data IO](/img/articles/2023-05-18-save-money-on-large-database/perf-xyz-export-iops.png)
+![Data IO](/img/articles/2023-07-10-save-money-on-large-database/perf-xyz-export-iops.png)
 
 ### Copying the archived database using AzCopy
 The following script was executed to copy the exported file to the Storage Account:
@@ -240,11 +240,11 @@ the impact of our operations on performance.
 To our concern, we observed a noticeable performance regression.
 Endpoints that use the database on which we performed **SHRINK** operation showed abnormally increased response times.
 
-![RPS](/img/articles/2023-05-18-save-money-on-large-database/perf-xyz-rps-before-index.png)
+![RPS](/img/articles/2023-07-10-save-money-on-large-database/perf-xyz-rps-before-index.png)
 
 The database load chart also did not look encouraging, with frequent peaks during query execution.
 
-![IOPS](/img/articles/2023-05-18-save-money-on-large-database/perf-xyz-iops-before-index.png)
+![IOPS](/img/articles/2023-07-10-save-money-on-large-database/perf-xyz-iops-before-index.png)
 
 Attempts to scale the machine did not bring spectacular results and only increased costs (considering that our goal was
 to lower them, it was not an optimal solution).
@@ -273,9 +273,9 @@ It should also be noted that this can be a time-consuming operation, but as a re
 the indexes returned to the required consistency level, reaching a level of fragmentation close to 0%.
 The response time and resource consumption charts of the database also returned to the values closer to the initial ones.
 
-![RPS](/img/articles/2023-05-18-save-money-on-large-database/perf-xyz-rps-after-rebuild.png)
+![RPS](/img/articles/2023-07-10-save-money-on-large-database/perf-xyz-rps-after-rebuild.png)
 
-![IOPS](/img/articles/2023-05-18-save-money-on-large-database/perf-xyz-iops-after-index.png)
+![IOPS](/img/articles/2023-07-10-save-money-on-large-database/perf-xyz-iops-after-index.png)
 
 ## Conclusion
 After performing all of the described actions, we achieved a reduction
@@ -289,7 +289,7 @@ By switching from a database based on a 12 vCore and 3TB model to a Standard DTU
 we managed to cut our monthly spendings to mere €125.
 After all, our effort paid off.
 
-![Cost reduction](/img/articles/2023-05-18-save-money-on-large-database/montly-cost-reduction.png)
+![Cost reduction](/img/articles/2023-07-10-save-money-on-large-database/montly-cost-reduction.png)
 
 The above example demonstrates how to greatly reduce infrastructure costs. Of course,
 the described procedure will apply to specific cases and data characteristics.
