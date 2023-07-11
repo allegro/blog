@@ -222,8 +222,7 @@ It is worth noting that the archive tier is set immediately.
 
 ### Conducting a SHRINK operation
 The SHRINK operation is, unfortunately, required to downscale the Azure SQL database. It took several hours to complete.
-**WAIT_AT_LOW_PRIORITY** was used to reduce the impact of this rather resource-intensive operation
-on the database users.
+**WAIT_AT_LOW_PRIORITY** was used to reduce the impact of this operation on the database users.
 
 ``` sql
 DBCC SHRINKDATABASE ([DB_NAME]) WITH WAIT_AT_LOW_PRIORITY
@@ -231,7 +230,9 @@ DBCC SHRINKDATABASE ([DB_NAME]) WITH WAIT_AT_LOW_PRIORITY
 
 The performance chart (Data IO) during the above operation looked as follows:
 
-We observed a unusual increase in Data IO operations during the SHRINK operation.
+![Data IO](/img/articles/2023-07-10-save-money-on-large-database/perf-xyz-shrink.png)
+
+We observed a slight increase in Data IO operations during the SHRINK operation.
 ### Performance analysis and index rebuild
 This step appeared quite unexpectedly in our procedure. After performing the SHRINK operation and successfully
 lowering the parameters of the machine responsible for the database, we began to observe
