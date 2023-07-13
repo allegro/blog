@@ -151,23 +151,18 @@ Diagram below presents how this _write anomaly_ could happen if we would start d
 
 ![Avoiding event loss](/img/articles/2023-05-28-online-mongodb-migration/avoiding_event_loss.png)
 
-### Implementation
-
-There is a ton of technicalities behind _mongo-migration-stream_, and I will try to focus on the most important ones.
+### Implementation details
 
 #### Concurrency
 
-From the beginning we wanted to make _mongo-migration-stream_ fast - we knew that it would needed to cope migrating
-databases with more than 10k writes per second. As a result _mongo-migration-stream_ paralellizes migration
-of one MongoDB database into migration of multiple collections.
-Each migration consists multiple little _migrators_ in itself - one _migrator_ per collection in the database.
+From the beginning we wanted to make _mongo-migration-stream_ fast - we knew that it would needed to cope with databases having more than 10k writes per second.
+As a result _mongo-migration-stream_ paralellizes migration of one MongoDB database into migration of multiple collections.
+Each database migration consists multiple little _migrators_ in itself - one _migrator_ per collection in the database.
 
-_Transfer_ process is performed in paralell for each separate collection.
-Every collection is dumped and restored individually, on separate thread pool.
-When it comes to _synchronization_ process, it was also implemented concurrently.
-At the beginning of migration, each collection on _source database_ is watched individually
+_Transfer_ process is performed in paralell for each collection in separate `mongodump` and `mongorestore` processes.
+_Synchronization_ process was also implemented concurrently - at the beginning of migration, each collection on _source database_ is watched individually
 using [Mongo Change Streams with collection target](https://www.mongodb.com/docs/manual/changeStreams/#watch-a-collection--database--or-deployment).
-Each collection has its own queue, where events from Mongo Change Streams are stored.
+Each collection has its own queue on which Mongo Change Events are stored.
 At final phase of migration, each of these queues is processed independently.
 
 ![Concurrent migrations](/img/articles/2023-05-28-online-mongodb-migration/concurrent_migrations.png)
@@ -175,19 +170,25 @@ At final phase of migration, each of these queues is processed independently.
 #### Initial data transfer
 
 To perform transfer of the database, we're executing `mongodump` and `mongorestore` commands for each collection.
-To achieve that, machines where _mongo-migration-stream_ is running need to have MongoDB Command Line Database Tools installed.
+For that reason, machines on which _mongo-migration-stream_ is running are required to have MongoDB Command Line Database Tools installed.
 
-Exporting data from collection `collectionName` in `source` database can be done with command:
+Dumping data from collection `collectionName` in `source` database can be achieved by running a command:
 
 ```shell
 mongodump \
  --uri "mongodb://mongo_rs36_1:36301,mongo_rs36_2:36302,mongo_rs36_3:36303/?replicaSet=replicaSet36" \
  --db source \
  --collection collectionName \
- --out /tmp/mongomigrationstream/dumps
+ --out /home/user/mongomigrationstream/dumps \
+ --readPreference secondary
+ --username username \
+ --config /home/user/mongomigrationstream/password_config/dump.config \
+ --authenticationDatabase admin
 ```
 
-In `mongo-migration-stream` this command (in form of list of Strings) is prepared with `prepareCommand` function:
+Starting a `mongodump` process from Kotlin code is achieved by utilising Java's `ProcessBuilder` feature.
+`ProcessBuilder` requires us to provide process program and arguments in form of list of Strings.
+We're constructing this list using `prepareCommand` function:
 
 ```kotlin
 override fun prepareCommand(): List<String> = listOf(
@@ -200,22 +201,21 @@ override fun prepareCommand(): List<String> = listOf(
 ) + credentialsIfNotNull(dbProperties.authenticationProperties, passwordConfigPath)
 ```
 
-Previously prepared command in form of list of Strings is run using Java's `ProcessBuilder` feature.
+Having `ProcessBuilder` with properly configured list of process program and arguments, we're ready to start a new process
+using `start()` function.
 
 ```kotlin
 fun runCommand(command: Command): CommandResult {
-    val processBuilder = ProcessBuilder().command(command.prepareCommand()) // <- Here we're calling prepareCommand
-    currentProcess = processBuilder.start()
-    
+    val processBuilder = ProcessBuilder().command(command.prepareCommand()) // Configure ProcessBuilder with mongodump command in form of List<String>
+    currentProcess = processBuilder.start() // Start a new process
     // ...
-    
     val exitCode = currentProcess.waitFor()
     stopRunningCommand()
     return CommandResult(exitCode)
 }
 ```
 
-Adequate procedure is implemented to execute `mongorestore` command.
+Adequate approach is implemented in _mongo-migration-stream_ to execute `mongorestore` command.
 
 #### Event queue
 
