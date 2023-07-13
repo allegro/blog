@@ -266,10 +266,20 @@ internal class BigQueueEventQueue<E : Serializable>(path: String, queueName: Str
 
 #### Migrating indexes
 
-To migrate indexes without blocking migration process, we've came up with a solution which for each migrated collection,
-fetches all indexes for that collection, and then rebuilds them on destination database.
-For older versions of MongoDB we are specifying `{ background: true }` option,
-[which does not block all operations on given database](https://www.mongodb.com/docs/v3.6/core/index-creation/).
+In early versions of _mongo-migration-stream_ to copy indexes from source collection to destination collection we were using
+an [index rebuilding feature](https://www.mongodb.com/docs/database-tools/mongorestore/#rebuild-indexes) from `mongodump` and `mongorestore` tools.
+This feature works on the principle that result of `mongodump` consists both documents stored in the collection and indexes definitions.
+`mongorestore` can use those definitions to rebuild indexes on destination collection.
+
+Unfortunatelly it occurred that rebuilding indexes on _destination collection_ after _transfer_ phase (before starting _synchronization_ process)
+with `mongorestore` tool lengthed entire `mongorestore` process, preventing us from emptying the queue in the meantime.
+It resulted with growing queue of events to synchronize, ending up with overall longer migration times and higher resources utilisation.
+We've came with a conclusion, that we must rebuild indexes, while at the same time, keep sending events from queue to _destination database_.
+
+To migrate indexes without blocking migration process, we've implemented a solution which for each collection,
+fetches all its indexes, and rebuilds them on destination database.
+Looking from the application perspective, we're using `getRawSourceIndexes` function, to fetch a list of Documents
+(representing indexes definitions), and then recreate them on destination collection using `createIndexOnDestinationCollection`.
 
 ```kotlin
 private fun getRawSourceIndexes(sourceToDestination: SourceToDestination): List<Document> =
@@ -282,11 +292,24 @@ private fun getRawSourceIndexes(sourceToDestination: SourceToDestination): List<
             it["background"] = true
             it
         }
+
+private fun createIndexOnDestinationCollection(
+    sourceToDestination: SourceToDestination,
+    indexDefinition: Document
+) {
+    destinationDb.runCommand(
+        Document().append("createIndexes", sourceToDestination.destination.collectionName)
+            .append("indexes", listOf(indexDefinition))
+    )
+}
 ```
 
-If the _destination database_ is newer or equal than MongoDB 4.2, `{ background: true }` option is ignored as
+Our solution can rebuild indexes in both older and newer versions of MongoDB.
+To support older MongoDB versions we are specifying `{ background: true }` option,
+[which does not block all operations on given database during index creation](https://www.mongodb.com/docs/v3.6/core/index-creation/).
+In case where _destination database_ is newer or equal than MongoDB 4.2, the `{ background: true }` option is ignored, and
 [optimized index build is used](https://www.mongodb.com/docs/manual/core/index-creation/#comparison-to-foreground-and-background-builds).
-In both cases index rebuild does not block synchronization process.
+In both scenarios index rebuild does not block synchronization process, improving overall migration times.
 
 #### Application modules
 
@@ -378,18 +401,6 @@ After running multiple test migrations on production databases it ocurred that _
 events quickly enough, which after time resulted with full queue or missing events in oplog.
 
 // Describe how it was working at the beginning (synchronous MongoDB client with event loop 1s) vs new approach with Reactive MongoDB Client.
-
-### Rebuilding indexes in the background
-
-In first _mongo-migration-stream_ version we were copying indexes using `mongodump` and `mongorestore` mechanisms.
-Unfortunatelly it quickly occurred that waiting for full index recreation on _destination collection_ after _transfer_ phase
-(before starting synchronization process) results with growing queue of events to synchronize, ending up with overall longer migration times.
-We've came with a conclusion, that we must rebuild indexes, while at the same time send events from queue to _destination database_.
-
-Because of that, we've changed process of rebuilding indexes from using `mongodump` and `mongorestore`
-to solution described in _"Migrating indexes"_ subchapter. This change had significant impact on migration time
-of large collections- previously used mechanism could take hours for each collection (blocking synchronization process),
-while new mechanism rebuilds indexes in the background marginally affecting synchronization performance.
 
 ### Admin user for destination database
 
