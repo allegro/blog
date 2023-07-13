@@ -219,12 +219,13 @@ Adequate approach is implemented in _mongo-migration-stream_ to execute `mongore
 
 #### Event queue
 
-During process of migration _source database_ is constantly receiving write requests, which _mongo-migration-stream_
-is watching by using Mongo Change Streams. Events from the stream are saved in the queue, to be send later to the _destination database_.
-Currently _mongo-migration-stream_ provides two implementations of the queue - one is in memory and the other is persistent.
+During process of migration _source database_ can constantly receive writes, which _mongo-migration-stream_ is listening to with Mongo Change Streams.
+Events from the stream are saved in the queue, for later sending to the _destination database_.
+Currently _mongo-migration-stream_ provides two implementations of the queue,
+where one implementation stores data in RAM, while second one persists data on the disk.
 
-In memory implementation can be used for databases with low traffic,
-or on machines with huge amount of RAM (as events are stored as objects on JVM heap), or for testing purposes.
+In memory implementation can be used for databases with low traffic, or for testing purposes,
+or on machines with sufficient amount of RAM (because events are stored as objects on JVM heap).
 
 ```kotlin
 // In memory queue implementation
@@ -242,7 +243,7 @@ internal class InMemoryEventQueue<E> : EventQueue<E> {
 ```
 
 In our production setup we're using persistent event queue, which is implemented using [BigQueue project](https://github.com/bulldog2011/bigqueue).
-As BigQueue only allows enqueuing and dequeuing byte arrays, we had to properly serialize and deserialize data from the events.
+As BigQueue only allows enqueuing and dequeuing byte arrays, we had to implement serialization and deserialization of the data from the events.
 
 ```kotlin
 // Persistent queue implementation
