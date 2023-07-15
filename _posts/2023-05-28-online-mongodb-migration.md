@@ -15,38 +15,38 @@ That's how _mongo-migration-stream_ project was born.
 
 At Allegro we are managing tens of MongoDB clusters, with hundereds of MongoDB databases running on them.
 This kind of approach, where one MongoDB cluster runs multiple MongoDB databases allowed us to utilize resources
-more effectively at the same time easing maintenance of clusters.
+more effectively, while at the same time easing maintenance of clusters.
 
 ![Old approach](/img/articles/2023-05-28-online-mongodb-migration/one_cluster_multiple_databases.png)
 
-We've been living with this approach for years, but unfortunatelly with more and more databases
-created on same clusters we've started facing noisy neighbour problem.
+We've been living with this approach for years, but over time, more and more databases were
+created on shared clusters, increasing frequency of noisy neighbour problem.
 
 ### Noisy neighbour problem
 
-Generally speaking, noisy neighbour situation happens when one application consumes so much resources (like CPU, RAM or Storage),
-that it causes starvation of other applications running on the same infrastructure.
+Generally speaking, noisy neighbour situation appears while multiple applications run on shared infrastructure,
+and one of those applications starts to consume so many resources (like CPU, RAM or Storage),
+that it causes starvation of other applications.
 
 In Allegro this problem started to be visible because over the years we've created more and more new MongoDB databases
 which were hosted on fixed amount of clusters.
 
 The most often cause of noisy neighbour problem in Allegro infrastructure was long time high CPU usage caused by one of MongoDB databases on a given cluster.
-On various occasions it occured that non-optimal query performed on humongous collection was consuming too much CPU time,
-negativelly affecting all the other databases on that cluster by making them slower or completely unresponsive.
+On various occasions it occured that non-optimal query performed on large collection was consuming too much CPU,
+negativelly affecting all the other databases on that cluster, making them slower or completely unresponsive.
 
 ![Cluster CPU usage](/img/articles/2023-05-28-online-mongodb-migration/cluster_cpu.png)
 
-### MongoDB on Kubernetes as a solution for noisy neighbours problem
+### MongoDB on Kubernetes as a solution for noisy neighbour problem
 
-To solve the noisy neighbours problem a separate team implemented a solution allowing Allegro developers to create independent MongoDB clusters on Kubernetes.
-From now, every new MongoDB cluster serves only one MongoDB database.
-Each cluster is formed from multiple replicasets and arbiter spread among datacenters.
-Running each database on separate cluster with isolated resources managed by Kubernetes was a solution for our noisy neighbour problem.
+To solve the noisy neighbour problem a separate team implemented a solution allowing Allegro developers to create independent MongoDB clusters on Kubernetes.
+From now, each MongoDB cluster is formed of multiple replicasets and arbiter spread among datacenters, serving only single MongoDB database.
+Running each database on separate cluster with isolated resources managed by Kubernetes was our solution for noisy neighbour problem.
 
 ![Kubernetes CPU usage](/img/articles/2023-05-28-online-mongodb-migration/k8s_cpu.png)
 
 At this point we knew what we needed to do to solve our problems - we had to migrate all MongoDB databases from old shared clusters,
-to new independent clusters on Kubernetes. Now came the difficult part of _"how"_ should we approach it.
+to new independent clusters on Kubernetes. Now came the difficult part of _"how"_ should we do it.
 
 ## Available options
 
@@ -80,8 +80,8 @@ Referring to documentation _py-mongo-sync_ is:
 > "Oplog-based data sync tool that synchronizes data from a replica set to another deployment,
 > e.g.: standalone, replica set, and sharded cluster."
 
-After configuring _py-mongo-sync_ we realized that this tool doesn't suit our needs from end to end.
-_py-mongo-sync_ focuses mainly on synchronization of the data (it doesn't transfer existing data from source to destination database).
+As you can see, _py-mongo-sync_ is not a tool that would suit our needs from end to end.
+_py-mongo-sync_ focuses on synchronization of the data (it doesn't transfer existing data from _source_ to _destination database_).
 What's more, at the time _py-mongo-sync_ supported MongoDB versions between 2.4 to 3.4, which were older than ones used in Allegro.
 
 #### [MongoDB Cluster-to-Cluster Sync](https://www.mongodb.com/docs/cluster-to-cluster-sync/current/)
@@ -95,7 +95,7 @@ As described in _mongosync_ documentation:
 This description sounded like a perfect fit for us! Unfortunatelly after initial excitement
 (and hours spend on reading [_mongosync_ documentation](https://www.mongodb.com/docs/cluster-to-cluster-sync/current/reference/mongosync/))
 we realized, that we cannot use _mongosync_ as it was able to perform migration and synchronization process only if source database and destination database
-were both in the exact same version. It meant, that there was no option to migrate databases from MongoDB 3.6 to MongoDB 6.0, which was a no-go for us.
+were both in the exact same version. It meant, that there was no option to migrate databases from older MongoDB version to newest one, which was a no-go for us.
 
 When we realised that there is no tool which meets all our requirements, we've made a tough decision to implement our own online MongoDB migration tool
 named _mongo-migration-stream_.
@@ -115,7 +115,7 @@ providing details about its low-level implementation.
 - _Destination database_ - MongoDB database which is a target for the data from _source database_,
 - _Transfer_ - a process of dumping data from _sorce database_, and restoring it on _destination database_,
 - _Synchronization_ - a process of keeping eventual consistency between _source database_ and _destination database_,
-- _Migration_ - an end-to-end migration process formed of both _transfer_ and _synchronization_ processes,
+- _Migration_ - an end-to-end migration process combining both _transfer_ and _synchronization_ processes,
 - _Migrator_ - a tool for performing _migrations_.
 
 ### Building blocks
@@ -136,18 +136,18 @@ while Mongo Change Streams play the main role in _synchronization_ process.
 To implement a _migrator_, we needed a robust procedure for _migrations_ which ensures that no data is lost during a _migration_.
 We have formulated a procedure consisting of six consecutive steps:
 
-1. Start listening for Mongo Change Events on _source database_ and save all events in the queue,
+1. Start listening for Mongo Change Events on _source database_ and save them in the queue,
 2. Dump all the data from _source database_ using `mongodump`,
 3. Restore all the data on _destination database_ using `mongorestore`,
 4. Copy indexes definitions from _source database_ and start creating them on _destination database_,
-5. Start to push all the events stored on the queue (changes on _source database_) to the _destination database_,
+5. Start to push all the events stored in the queue (changes on _source database_) to the _destination database_,
 6. Wait for the queue to empty to establish eventual consistency.
 
 ![Migration process](/img/articles/2023-05-28-online-mongodb-migration/migration_process.png)
 
 Our migration procedure works flawlessly because we rely on Mongo Change Events idempotency, when they're processed sequentially.
 Without this characteristic, we would be forced to change order of steps 1 and 2 in the procedure, creating possibility of loosing data during migration.
-Diagram below presents how this _write anomaly_ could happen if we would start dumping data before listening for Mongo Change Events.
+Diagram below presents how such kind of _write anomaly_ could happen if we would start dumping data before listening for Mongo Change Events.
 
 ![Avoiding event loss](/img/articles/2023-05-28-online-mongodb-migration/avoiding_event_loss.png)
 
@@ -156,13 +156,13 @@ Diagram below presents how this _write anomaly_ could happen if we would start d
 #### Concurrency
 
 From the beginning we wanted to make _mongo-migration-stream_ fast - we knew that it would needed to cope with databases having more than 10k writes per second.
-As a result _mongo-migration-stream_ paralellizes migration of one MongoDB database into migration of multiple collections.
+As a result _mongo-migration-stream_ paralellizes migration of one MongoDB database into independent migrations of collections.
 Each database migration consists multiple little _migrators_ in itself - one _migrator_ per collection in the database.
 
 _Transfer_ process is performed in paralell for each collection in separate `mongodump` and `mongorestore` processes.
 _Synchronization_ process was also implemented concurrently - at the beginning of migration, each collection on _source database_ is watched individually
 using [Mongo Change Streams with collection target](https://www.mongodb.com/docs/manual/changeStreams/#watch-a-collection--database--or-deployment).
-Each collection has its own queue on which Mongo Change Events are stored.
+All collections have their separate own queues on which Mongo Change Events are stored.
 At final phase of migration, each of these queues is processed independently.
 
 ![Concurrent migrations](/img/articles/2023-05-28-online-mongodb-migration/concurrent_migrations.png)
@@ -186,7 +186,7 @@ mongodump \
  --authenticationDatabase admin
 ```
 
-Starting a `mongodump` process from Kotlin code is achieved by utilising Java's `ProcessBuilder` feature.
+Starting a `mongodump` process from Kotlin code is done with Java's `ProcessBuilder` feature.
 `ProcessBuilder` requires us to provide process program and arguments in form of list of Strings.
 We're constructing this list using `prepareCommand` function:
 
@@ -219,13 +219,13 @@ Adequate approach is implemented in _mongo-migration-stream_ to execute `mongore
 
 #### Event queue
 
-During process of migration _source database_ can constantly receive writes, which _mongo-migration-stream_ is listening to with Mongo Change Streams.
+During process of migration _source database_ can constantly receive changes, which _mongo-migration-stream_ is listening to with Mongo Change Streams.
 Events from the stream are saved in the queue, for later sending to the _destination database_.
 Currently _mongo-migration-stream_ provides two implementations of the queue,
-where one implementation stores data in RAM, while second one persists data on the disk.
+where one implementation stores the data in RAM, while second one persists the data on a disk.
 
 In memory implementation can be used for databases with low traffic, or for testing purposes,
-or on machines with sufficient amount of RAM (because events are stored as objects on JVM heap).
+or on machines with sufficient amount of RAM (as events are stored in forms of objects on JVM heap).
 
 ```kotlin
 // In memory queue implementation
@@ -266,20 +266,21 @@ internal class BigQueueEventQueue<E : Serializable>(path: String, queueName: Str
 
 #### Migrating indexes
 
-In early versions of _mongo-migration-stream_ to copy indexes from source collection to destination collection we were using
+In early versions of _mongo-migration-stream_ to copy indexes from _source collection_ to _destination collection_ we were using
 an [index rebuilding feature](https://www.mongodb.com/docs/database-tools/mongorestore/#rebuild-indexes) from `mongodump` and `mongorestore` tools.
-This feature works on the principle that result of `mongodump` consists both documents stored in the collection and indexes definitions.
-`mongorestore` can use those definitions to rebuild indexes on destination collection.
+This feature works on the principle that result of `mongodump` consists both documents from the collection and definitions of indexes.
+`mongorestore` can use those definitions to rebuild indexes on _destination collection_.
 
 Unfortunatelly it occurred that rebuilding indexes on _destination collection_ after _transfer_ phase (before starting _synchronization_ process)
 with `mongorestore` tool lengthed entire `mongorestore` process, preventing us from emptying the queue in the meantime.
 It resulted with growing queue of events to synchronize, ending up with overall longer migration times and higher resources utilisation.
-We've came with a conclusion, that we must rebuild indexes, while at the same time, keep sending events from queue to _destination database_.
+We've came to a conclusion, that we must rebuild indexes, while at the same time, keep sending events from queue to _destination collection_.
 
-To migrate indexes without blocking migration process, we've implemented a solution which for each collection,
-fetches all its indexes, and rebuilds them on destination database.
-Looking from the application perspective, we're using `getRawSourceIndexes` function, to fetch a list of Documents
-(representing indexes definitions), and then recreate them on destination collection using `createIndexOnDestinationCollection`.
+To migrate indexes without blocking _migration_ process, we've implemented a solution which for each collection,
+fetches all its indexes, and rebuilds them on _destination collection_.
+Looking from the application perspective, we're using `getRawSourceIndexes` function to fetch a list of Documents
+(representing indexes definitions) from _source collection_,
+and then recreate them on _destination collection_ using `createIndexOnDestinationCollection`.
 
 ```kotlin
 private fun getRawSourceIndexes(sourceToDestination: SourceToDestination): List<Document> =
@@ -309,7 +310,7 @@ To support older MongoDB versions we are specifying `{ background: true }` optio
 [which does not block all operations on given database during index creation](https://www.mongodb.com/docs/v3.6/core/index-creation/).
 In case where _destination database_ is newer or equal than MongoDB 4.2, the `{ background: true }` option is ignored, and
 [optimized index build is used](https://www.mongodb.com/docs/manual/core/index-creation/#comparison-to-foreground-and-background-builds).
-In both scenarios index rebuild does not block synchronization process, improving overall migration times.
+In both scenarios rebuilding indexes does not block _synchronization_ process, improving overall _migration_ times.
 
 #### Application modules
 
