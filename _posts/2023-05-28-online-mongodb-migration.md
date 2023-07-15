@@ -314,40 +314,12 @@ In both scenarios rebuilding indexes does not block _synchronization_ process, i
 
 #### Application modules
 
-_mongo-migration-stream_ code was divided into two separate modules: `mongo-migration-stream-core` module which can be used
-as an library in JVM application and `mongo-migration-stream-cli` module which can be run as standalone JAR.
-In Allegro production setup, we are using _mongo-migration-stream_ as a library,
-but migrator can be easily runned as a standalone JAR with proper configuration provided.
+_mongo-migration-stream_ code was split into two separate modules: `mongo-migration-stream-core` module which can be used
+as an library in JVM application, and `mongo-migration-stream-cli` module which can be run as a standalone JAR.
 
-This is API of provided by the `mongo-migration-stream-core`:
+In Allegro we're using _mongo-migration-stream_ as a library in application with REST API and web UI, allowing developers to interact with the tool without a fuss.
 
-```kotlin
-class MongoMigrationStream(
-    properties: ApplicationProperties,
-    meterRegistry: MeterRegistry
-) {
-    val stateInfo = StateInfo(properties.stateConfig.stateEventHandler)
-    private val migrationController = MigrationController(properties, stateInfo, meterRegistry)
-
-    fun start() {
-        migrationController.startMigration()
-    }
-
-    fun stop() {
-        migrationController.stopMigration()
-    }
-
-    fun pause() {
-        migrationController.pauseMigration()
-    }
-
-    fun resume() {
-        migrationController.resumeMigration()
-    }
-}
-```
-
-And here you can find how _mongo-migration-stream_ can be run using standalone JAR:
+Alternatively, if one would like to run _mongo-migration-stream_ without wrapping it in JVM application, we've made that possible by running `mongo-migration-stream-cli` as standalone JAR with properly configured properties file:
 
 ```shell
 java -jar mongo-migration-stream-cli.jar --config application.properties
