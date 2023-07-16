@@ -39,7 +39,7 @@ negativelly affecting all the other databases on that cluster, making them slowe
 
 ### MongoDB on Kubernetes as a solution for noisy neighbour problem
 
-To solve the noisy neighbour problem a separate team implemented a solution allowing Allegro developers to create independent MongoDB clusters on Kubernetes.
+To solve the noisy neighbour problem a separate team implemented a solution allowing Allegro engineers to create independent MongoDB clusters on Kubernetes.
 From now, each MongoDB cluster is formed of multiple replicasets and arbiter spread among datacenters, serving only single MongoDB database.
 Running each database on separate cluster with isolated resources managed by Kubernetes was our solution for noisy neighbour problem.
 
@@ -312,37 +312,21 @@ In case where _destination database_ is newer or equal than MongoDB 4.2, the `{ 
 [optimized index build is used](https://www.mongodb.com/docs/manual/core/index-creation/#comparison-to-foreground-and-background-builds).
 In both scenarios rebuilding indexes does not block _synchronization_ process, improving overall _migration_ times.
 
-#### Application modules
-
-_mongo-migration-stream_ code was split into two separate modules: `mongo-migration-stream-core` module which can be used
-as an library in JVM application, and `mongo-migration-stream-cli` module which can be run as a standalone JAR.
-
-In Allegro we're using _mongo-migration-stream_ as a library in application with REST API and web UI, allowing developers to interact with the tool without a fuss.
-
-Alternatively, if one would like to run _mongo-migration-stream_ without wrapping it in JVM application, we've made that possible by running `mongo-migration-stream-cli` as standalone JAR with properly configured properties file:
-
-```shell
-java -jar mongo-migration-stream-cli.jar --config application.properties
-```
-
 #### Verification of migration state
-Our intention throught the project was making database migrations as easy as possible.
-To achieve this, _mongo-migration-stream_ users need reliable data about the state of running migration.
-Migrator provides the data in multiple different ways.
 
-_mongo-migration-stream_ logs all required information about migration, so users can verify what's happening with the migration by analyzing log file.
+Throught _mongo-migration-stream_ implementation we've kept in our minds that _migrator_ user should be aware what's happening within his/her migration.
+For that reason _mongo-migration-stream_ exposes data about migration in multiple different ways:
 
-Besides logs, when all migrated collections are in _synchronization_ process, _mongo-migration-stream_ for each collection starts a periodical check verifying:
-- Size of the events queue,
-- Difference between size of destination collection and source collection,
-- MD5 hashes for collections.
+- Logs - _migrator_ logs all important information, so user can verify what's happening with the migration by analyzing log file,
 
-Size verifying checks are also available in form of metrics exposed with [Micrometer](https://micrometer.io/).
+- Periodical checks - when all migrated collections are in _synchronization_ process, _migrator_ starts a periodical check for each collection verifying, if all the data has been migrated, making collection on _destination database_ ready to use,
 
-On top of all, each migrator state change emits an event to in-memory event bus. There are multiple types of events which _mongo-migration-stream_ produces:
+- Metrics - various metrics about migration state are exposed through [Micrometer](https://micrometer.io/).
+
+On top of all, each migrator internal state change emits an event to in-memory event bus. There are multiple types of events which _mongo-migration-stream_ produces:
 
 | ------------------------------|---------------------------|
-| Event name                    | When the event is emitted |
+| Event type                    | When the event is emitted |
 | ------------------------------|---------------------------|
 | StartEvent                    | Start of the migration |
 | SourceToLocalStartEvent       | Start watching for a collection specific Mongo Change Stream |
@@ -361,36 +345,21 @@ On top of all, each migrator state change emits an event to in-memory event bus.
 | FailedEvent                   | Fail of collection migration |
 | ------------------------------|---------------------------|
 
-## Performance issues and improvements
+#### Application modules
 
-After implementing _mongo-migration-stream_ and testing it locally on small constantly-populated databases,
-it was time to verify its performance on real-world databases. Quickly we've run into multiple problems negatively influencing overall migrator performance.
-
-### Reactive MongoDB source client
-
-In first _mongo-migration-stream_ version we were using [synchronous MongoDB client](https://www.mongodb.com/docs/drivers/java/sync/current/)
-for watching events on _source database_ and for sending batches of events to _destination database_.
-After running multiple test migrations on production databases it ocurred that _migrator_ wasn't able to process
-events quickly enough, which after time resulted with full queue or missing events in oplog.
-
-// Describe how it was working at the beginning (synchronous MongoDB client with event loop 1s) vs new approach with Reactive MongoDB Client.
-
-### Admin user for destination database
-
-Next phase of testing mongo-migration-stream showed that there is a problem with long batch processing on destiation databases:
-
-```
-2023-06-10 12:00:00.000 Sending batch of size: [1000] to destination mongo took: [29175 ms]
-```
-
-We've fixed that by connecting with admin user to destination database (instead of regular user with RW access).
+_mongo-migration-stream_ code was split into two separate modules: 
+- `mongo-migration-stream-core` module which can be used as a library in JVM application,
+-  `mongo-migration-stream-cli` module which can be run as a standalone JAR.
 
 ## mongo-migration-stream on production in Allegro
 
-Since internal launch in January 2023, we were able to migrate more than XXX databases using _mongo-migration-stream_.
-Largest migrated database had more than XXXX GB of size.
-At its peak moments migrator synchronized collection with about XXX Mongo Change Events per second.
+Since internal launch in January 2023, we have migrated more than X production databases using _mongo-migration-stream_.
+The largest migrated database stored more than Y GB of data.
+At its peak moments, _migrator_ was synchronizing collection which emitted Z Mongo Change Events per second.
+During one of our migrations, one of the collection queues grew up to A stored events. All of those events were later successfully synchronized into _destination database_.
 
-- How many DBs we were able to migrate?
-- What was largest DB that we've migrated?
-- How many wps mongo-migration-stream handled?
+In Allegro we're using _mongo-migration-stream_ as a library in a Web application with graphical user interface.
+This approach allows Allegro engineers to manage database migrations on their own, without involving database team members.
+On the screenshot below you can see our Web application GUI during a migration.
+
+![mongo-migration-stream Web Application in Allegro](/img/articles/2023-05-28-online-mongodb-migration/mongo_migration_stream_ui.png)
