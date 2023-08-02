@@ -8,7 +8,7 @@ tags: [tech, mongodb, nosql, kotlin, open source, mongo change streams]
 MongoDB is the most popular database used in Allegro. We have hundreds of MongoDB databases running on our on-premise servers.
 Last year we've decided that we need to migrate all our MongoDB databases
 from existing shared clusters to new MongoDB clusters hosted on Kubernetes pods with seperated resources.
-To perform the migration of all databases we needed a tool for transfering all the data and providing consistency between databases.
+To perform the migration of all databases we needed a tool for transfering all the data and keeping consistency between old and new databases.
 That's how _mongo-migration-stream_ project was born.
 
 ## Why we needed to migrate MongoDB databases at all?
@@ -46,7 +46,7 @@ Running each database on separate cluster with isolated resources managed by Kub
 ![Kubernetes CPU usage](/img/articles/2023-05-28-online-mongodb-migration/k8s_cpu.png)
 
 At this point we knew what we needed to do to solve our problems - we had to migrate all MongoDB databases from old shared clusters,
-to new independent clusters on Kubernetes. Now came the difficult part of _"how"_ should we do it.
+to new independent clusters on Kubernetes. Now came time to answer the question: _"How"_ should we do it?
 
 ## Available options
 
@@ -95,14 +95,15 @@ As described in _mongosync_ documentation:
 This description sounded like a perfect fit for us! Unfortunatelly after initial excitement
 (and hours spend on reading [_mongosync_ documentation](https://www.mongodb.com/docs/cluster-to-cluster-sync/current/reference/mongosync/))
 we realized, that we cannot use _mongosync_ as it was able to perform migration and synchronization process only if source database and destination database
-were both in the exact same version. It meant, that there was no option to migrate databases from older MongoDB version to newest one, which was a no-go for us.
+were both in the exact same version.
+It meant, that there was no option to migrate databases from older MongoDB versions to the newest one, which was a no-go for us.
 
 When we realised that there is no tool which meets all our requirements, we've made a tough decision to implement our own online MongoDB migration tool
 named _mongo-migration-stream_.
 
 ## mongo-migration-stream
 
-_mongo-migration-stream_ is a tool which can be used to perform online migrations of MongoDB databases.
+[_mongo-migration-stream_](https://github.com/allegro/mongo-migration-stream) is an open source tool from Allegro, that performs online migrations of MongoDB databases.
 It's a [Kotlin](https://kotlinlang.org/) application utilising
 `mongodump` and `mongorestore` [MongoDB Command Line Database Tools](https://www.mongodb.com/docs/database-tools/)
 along with [Mongo Change Streams](https://www.mongodb.com/docs/manual/changeStreams/) mechanism.
@@ -353,10 +354,11 @@ _mongo-migration-stream_ code was split into two separate modules:
 
 ## mongo-migration-stream on production in Allegro
 
-Since internal launch in January 2023, we have migrated more than X production databases using _mongo-migration-stream_.
-The largest migrated database stored more than Y GB of data.
-At its peak moments, _migrator_ was synchronizing collection which emitted Z Mongo Change Events per second.
-During one of our migrations, one of the collection queues grew up to A stored events. All of those events were later successfully synchronized into _destination database_.
+Since internal launch in January 2023, we have migrated more than a hundered production databases using _mongo-migration-stream_.
+The largest migrated collection stored more than one and a half billion documents.
+At its peak moments, _migrator_ was synchronizing collection which emitted about 4 thousand Mongo Change Events per second.
+During one of our migrations, one collection queue size reached almost one hundered million events.
+All of those events were later successfully synchronized into _destination collection_.
 
 In Allegro we're using _mongo-migration-stream_ as a library in a Web application with graphical user interface.
 This approach allows Allegro engineers to manage database migrations on their own, without involving database team members.
