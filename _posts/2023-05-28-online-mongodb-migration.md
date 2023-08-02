@@ -13,7 +13,7 @@ That's how _mongo-migration-stream_ project was born.
 
 ## Why we needed to migrate MongoDB databases at all?
 
-At Allegro we are managing tens of MongoDB clusters, with hundereds of MongoDB databases running on them.
+At Allegro we are managing tens of MongoDB clusters, with hundreds of MongoDB databases running on them.
 This kind of approach, where one MongoDB cluster runs multiple MongoDB databases allowed us to utilize resources
 more effectively, while at the same time easing maintenance of clusters.
 
@@ -32,7 +32,7 @@ In Allegro this problem started to be visible because over the years we've creat
 which were hosted on fixed amount of clusters.
 
 The most often cause of noisy neighbour problem in Allegro infrastructure was long time high CPU usage caused by one of MongoDB databases on a given cluster.
-On various occasions it occured that non-optimal query performed on large collection was consuming too much CPU,
+On various occasions it occured that a non-optimal query performed on large collection was consuming too much CPU,
 negativelly affecting all the other databases on that cluster, making them slower or completely unresponsive.
 
 ![Cluster CPU usage](/img/articles/2023-05-28-online-mongodb-migration/cluster_cpu.png)
@@ -40,7 +40,7 @@ negativelly affecting all the other databases on that cluster, making them slowe
 ### MongoDB on Kubernetes as a solution for noisy neighbour problem
 
 To solve the noisy neighbour problem a separate team implemented a solution allowing Allegro engineers to create independent MongoDB clusters on Kubernetes.
-From now, each MongoDB cluster is formed of multiple replicasets and arbiter spread among datacenters, serving only single MongoDB database.
+From now, each MongoDB cluster is formed of multiple replicasets and arbiter spread among datacenters, serving only a single MongoDB database.
 Running each database on separate cluster with isolated resources managed by Kubernetes was our solution for noisy neighbour problem.
 
 ![Kubernetes CPU usage](/img/articles/2023-05-28-online-mongodb-migration/k8s_cpu.png)
@@ -273,7 +273,7 @@ This feature works on the principle that result of `mongodump` consists both doc
 `mongorestore` can use those definitions to rebuild indexes on _destination collection_.
 
 Unfortunatelly it occurred that rebuilding indexes on _destination collection_ after _transfer_ phase (before starting _synchronization_ process)
-with `mongorestore` tool lengthed entire `mongorestore` process, preventing us from emptying the queue in the meantime.
+with `mongorestore` tool lengthened entire `mongorestore` process, preventing us from emptying the queue in the meantime.
 It resulted with growing queue of events to synchronize, ending up with overall longer migration times and higher resources utilisation.
 We've came to a conclusion, that we must rebuild indexes, while at the same time, keep sending events from queue to _destination collection_.
 
