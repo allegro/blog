@@ -24,9 +24,18 @@ Ok, so what can we do to improve this workflow?
 ## Introducing typescript-strict-plugin
 
 [typescript-strict-plugin](https://github.com/allegro/typescript-strict-plugin) eliminates all the above problems by allowing you to specify exactly what files you want to be strictly
-checked. You can do that by simply putting a single comment at the top of the file and typescript will strictly check it. Now
-every member of your team will have strict errors shown to them in the editor of their choosing (yes, this plugin works with
-webstorm, vscode, vim, and more).
+checked. By default, the plugin will check all files with strict mode — that’s step one.
+Now every member of your team will have strict errors shown to them in the editor of their choosing (yes, this plugin works with
+webstorm, vscode, vim, and more). But if you have any files that are not strict compliant
+you can simply put a single comment at the top of the file and our plugin will make typescript not check it with strict mode.
+
+If you are now thinking something like “Hmmm... does it mean that I will have to put this comment in every file that is not TS strict compliant”?
+The answer is yes — but we’ve automated it. Plugin package does export command line tool that adds this comment to every file with strict
+mode errors!
+
+Thanks to this approach every new file will be strictly checked out of the box — you don’t need to do anything. On the other hand
+if you want to change a file to be strict you will just remove a comment at the top of the file and that’s it — the file will be strictly checked.
+Simple as that.
 
 Unfortunately, typescript plugins do not work at compilation time, they work only in IDEs. Another nice feature that comes in the
 package is a compile-time tool that allows you to connect the strict plugin to your CI pipeline, or a pre-commit hook. It checks
@@ -65,21 +74,30 @@ yarn add -D typescript-strict-plugin
 }
 ```
 
-### Mark strict files with `//@ts-strict` comment
+### Run script from the command line to update all files with comment
 
-Before:
+Before (now every file is strictly checked):
 
 ```typescript
-const name: string = null; // no error here
+const name: string = null; // TS2322: Type ‘null’ is not assignable to type ‘string’.
 ```
+
+Run (this script will add a comment to every file that has TS strict errors):
+
+```bash
+npx update-strict-comments
+```
+
 
 After:
 
 ```typescript
-// @ts-strict
+// @ts-strict-ignore
 ...
-const name: string = null; // TS2322: Type ‘null’ is not assignable to type ‘string’.
+const name: string = null; // no error here
 ```
+
+Now files that were already strict do not have this comment at the top and those that need some work do.
 
 You can also directly specify directories you want to be strict. In the following example, every file in `src` and `test`
 directories will be strictly checked.
