@@ -55,7 +55,7 @@ successful migrations.
 
 ### Requirements
 
-- Migrator must be able to migrate databases from older versions of MongoDB to newer ones,
+- Migrator must be able to migrate databases from older MongoDB versions to newer ones,
 - Migrator must be able to migrate replicasets and sharded clusters,
 - Migrator must copy indexes from source database to destination database,
 - Migrator must be able to handle more than 10k writes per second,
