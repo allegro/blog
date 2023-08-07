@@ -5,8 +5,8 @@ author: szymon.marcinkiewicz
 tags: [tech, mongodb, nosql, kotlin, open source, mongo change streams]
 ---
 
-MongoDB is the most popular database used in Allegro. We have hundreds of MongoDB databases running on our on-premise servers.
-Last year we've decided that we need to migrate all our MongoDB databases
+MongoDB is the most popular database used at Allegro. We have hundreds of MongoDB databases running on our on-premise servers.
+In 2022 we've decided that we need to migrate all our MongoDB databases
 from existing shared clusters to new MongoDB clusters hosted on Kubernetes pods with seperated resources.
 To perform the migration of all databases we needed a tool for transfering all the data and keeping consistency between old and new databases.
 That's how _mongo-migration-stream_ project was born.
@@ -28,7 +28,7 @@ Generally speaking, noisy neighbour situation appears while multiple application
 and one of those applications starts to consume so many resources (like CPU, RAM or Storage),
 that it causes starvation of other applications.
 
-In Allegro this problem started to be visible because over the years we've created more and more new MongoDB databases
+At Allegro this problem started to be visible because over the years we've created more and more new MongoDB databases
 which were hosted on fixed amount of clusters.
 
 The most often cause of noisy neighbour problem in Allegro infrastructure was long time high CPU usage caused by one of MongoDB databases on a given cluster.
@@ -40,7 +40,7 @@ negativelly affecting all the other databases on that cluster, making them slowe
 ### MongoDB on Kubernetes as a solution for noisy neighbour problem
 
 To solve the noisy neighbour problem a separate team implemented a solution allowing Allegro engineers to create independent MongoDB clusters on Kubernetes.
-From now, each MongoDB cluster is formed of multiple replicasets and arbiter spread among datacenters, serving only a single MongoDB database.
+From now, each MongoDB cluster is formed of multiple replicas and an arbiter spread among datacenters, serving only a single MongoDB database.
 Running each database on separate cluster with isolated resources managed by Kubernetes was our solution for noisy neighbour problem.
 
 ![Kubernetes CPU usage](/img/articles/2023-05-28-online-mongodb-migration/k8s_cpu.png)
@@ -50,18 +50,12 @@ to new independent clusters on Kubernetes. Now came time to answer the question:
 
 ## Available options
 
-One may ask _"Why can't you just connect new MongoDB replicas on Kubernetes to existing replicasets, and wait for data synchronization?"_ 
-This solution would be the easiest one (as it wouldn't require any additional software), but was impossible to implement in Allegro infrastructure
-due to no network connection between old shared clusters and new Kubernetes clusters.
-Because of that issue, we needed to find some other way to perform migrations.
-
 Firstly, we've prepared a list of requirements which a tool for migrating databases (referred to as _"migrator"_) had to meet in order to perform
 successful migrations.
 
 ### Requirements
 
-- Migrator needs to support MongoDB versions from 3.6 to the newest one (at the time it was Mongo 6.0),
-- Migrator must be able to migrate databases from older versions of MongoDB to newer ones (e.g. from 3.6 to 6.0),
+- Migrator must be able to migrate databases from older versions of MongoDB to newer ones,
 - Migrator must be able to migrate replicasets and sharded clusters,
 - Migrator must copy indexes from source database to destination database,
 - Migrator must be able to handle more than 10k writes per second,
@@ -82,7 +76,7 @@ Referring to documentation _py-mongo-sync_ is:
 
 As you can see, _py-mongo-sync_ is not a tool that would suit our needs from end to end.
 _py-mongo-sync_ focuses on synchronization of the data (it doesn't transfer existing data from _source_ to _destination database_).
-What's more, at the time _py-mongo-sync_ supported MongoDB versions between 2.4 to 3.4, which were older than ones used in Allegro.
+What's more, at the time _py-mongo-sync_ supported MongoDB versions between 2.4 to 3.4, which were older than ones used at Allegro.
 
 #### [MongoDB Cluster-to-Cluster Sync](https://www.mongodb.com/docs/cluster-to-cluster-sync/current/)
 
@@ -307,8 +301,7 @@ private fun createIndexOnDestinationCollection(
 ```
 
 Our solution can rebuild indexes in both older and newer versions of MongoDB.
-To support older MongoDB versions we are specifying `{ background: true }` option,
-[which does not block all operations on given database during index creation](https://www.mongodb.com/docs/v3.6/core/index-creation/).
+To support older MongoDB versions we are specifying `{ background: true }` option, which does not block all operations on given database during index creation.
 In case where _destination database_ is newer or equal than MongoDB 4.2, the `{ background: true }` option is ignored, and
 [optimized index build is used](https://www.mongodb.com/docs/manual/core/index-creation/#comparison-to-foreground-and-background-builds).
 In both scenarios rebuilding indexes does not block _synchronization_ process, improving overall _migration_ times.
@@ -352,7 +345,7 @@ _mongo-migration-stream_ code was split into two separate modules:
 - `mongo-migration-stream-core` module which can be used as a library in JVM application,
 -  `mongo-migration-stream-cli` module which can be run as a standalone JAR.
 
-## mongo-migration-stream on production in Allegro
+## mongo-migration-stream on production at Allegro
 
 Since internal launch in January 2023, we have migrated more than a hundered production databases using _mongo-migration-stream_.
 The largest migrated collection stored more than one and a half billion documents.
@@ -360,8 +353,8 @@ At its peak moments, _migrator_ was synchronizing collection which emitted about
 During one of our migrations, one collection queue size reached almost one hundered million events.
 All of those events were later successfully synchronized into _destination collection_.
 
-In Allegro we're using _mongo-migration-stream_ as a library in a Web application with graphical user interface.
+At Allegro we're using _mongo-migration-stream_ as a library in a Web application with graphical user interface.
 This approach allows Allegro engineers to manage database migrations on their own, without involving database team members.
 On the screenshot below you can see our Web application GUI during a migration.
 
-![mongo-migration-stream Web Application in Allegro](/img/articles/2023-05-28-online-mongodb-migration/mongo_migration_stream_ui.png)
+![mongo-migration-stream Web Application at Allegro](/img/articles/2023-05-28-online-mongodb-migration/mongo_migration_stream_ui.png)
