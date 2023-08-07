@@ -5,7 +5,7 @@ author: szymon.marcinkiewicz
 tags: [tech, mongodb, nosql, kotlin, open source, mongo change streams]
 ---
 
-MongoDB is the most popular database used at Allegro. We have hundreds of MongoDB databases running on our on-premise servers.
+MongoDB is the most popular database used at Allegro. We have hundreds of MongoDB databases running on our on—premise servers.
 In 2022 we've decided that we need to migrate all our MongoDB databases
 from existing shared clusters to new MongoDB clusters hosted on Kubernetes pods with seperated resources.
 To perform the migration of all databases we needed a tool for transfering all the data and keeping consistency between old and new databases.
@@ -32,7 +32,7 @@ At Allegro this problem started to be visible because over the years we've creat
 which were hosted on fixed amount of clusters.
 
 The most often cause of noisy neighbour problem in Allegro infrastructure was long time high CPU usage caused by one of MongoDB databases on a given cluster.
-On various occasions it occured that a non-optimal query performed on large collection was consuming too much CPU,
+On various occasions it occured that a non—optimal query performed on large collection was consuming too much CPU,
 negativelly affecting all the other databases on that cluster, making them slower or completely unresponsive.
 
 ![Cluster CPU usage](/img/articles/2023-05-28-online-mongodb-migration/cluster_cpu.png)
@@ -45,12 +45,12 @@ Running each database on separate cluster with isolated resources managed by Kub
 
 ![Kubernetes CPU usage](/img/articles/2023-05-28-online-mongodb-migration/k8s_cpu.png)
 
-At this point we knew what we needed to do to solve our problems - we had to migrate all MongoDB databases from old shared clusters,
-to new independent clusters on Kubernetes. Now came time to answer the question: _"How"_ should we do it?
+At this point we knew what we needed to do to solve our problems — we had to migrate all MongoDB databases from old shared clusters,
+to new independent clusters on Kubernetes. Now came time to answer the question: _“How”_ should we do it?
 
 ## Available options
 
-Firstly, we've prepared a list of requirements which a tool for migrating databases (referred to as _"migrator"_) had to meet in order to perform
+Firstly, we've prepared a list of requirements which a tool for migrating databases (referred to as _“migrator”_) had to meet in order to perform
 successful migrations.
 
 ### Requirements
@@ -71,8 +71,8 @@ Having defined a list of requirements, we've checked what tools were available o
 
 Referring to documentation _py-mongo-sync_ is:
 
-> "Oplog-based data sync tool that synchronizes data from a replica set to another deployment,
-> e.g.: standalone, replica set, and sharded cluster."
+> “Oplog—based data sync tool that synchronizes data from a replica set to another deployment,
+> e.g.: standalone, replica set, and sharded cluster.”
 
 As you can see, _py-mongo-sync_ is not a tool that would suit our needs from end to end.
 _py-mongo-sync_ focuses on synchronization of the data (it doesn't transfer existing data from _source_ to _destination database_).
@@ -80,17 +80,17 @@ What's more, at the time _py-mongo-sync_ supported MongoDB versions between 2.4 
 
 #### [MongoDB Cluster-to-Cluster Sync](https://www.mongodb.com/docs/cluster-to-cluster-sync/current/)
 
-On July 22, 2022 MongoDB released _mongosync_ v1.0 - a tool for migrating and synchronizing data between MongoDB clusters.
+On July 22, 2022 MongoDB released _mongosync_ v1.0 — a tool for migrating and synchronizing data between MongoDB clusters.
 As described in _mongosync_ documentation:
 
-> "The mongosync binary is the primary process used in Cluster-to-Cluster Sync. mongosync migrates data from one cluster
-> to another and can keep the clusters in continuous sync."
+> “The mongosync binary is the primary process used in Cluster—to—Cluster Sync. mongosync migrates data from one cluster
+> to another and can keep the clusters in continuous sync.”
 
 This description sounded like a perfect fit for us! Unfortunatelly after initial excitement
 (and hours spend on reading [_mongosync_ documentation](https://www.mongodb.com/docs/cluster-to-cluster-sync/current/reference/mongosync/))
 we realized, that we cannot use _mongosync_ as it was able to perform migration and synchronization process only if source database and destination database
 were both in the exact same version.
-It meant, that there was no option to migrate databases from older MongoDB versions to the newest one, which was a no-go for us.
+It meant, that there was no option to migrate databases from older MongoDB versions to the newest one, which was a no—go for us.
 
 When we realised that there is no tool which meets all our requirements, we've made a tough decision to implement our own online MongoDB migration tool
 named _mongo-migration-stream_.
@@ -101,8 +101,8 @@ named _mongo-migration-stream_.
 It's a [Kotlin](https://kotlinlang.org/) application utilising
 `mongodump` and `mongorestore` [MongoDB Command Line Database Tools](https://www.mongodb.com/docs/database-tools/)
 along with [Mongo Change Streams](https://www.mongodb.com/docs/manual/changeStreams/) mechanism.
-In this section I will explain how _mongo-migration-stream_ works under the hood, by covering its functionalities from a high-level overview and 
-providing details about its low-level implementation.
+In this section I will explain how _mongo-migration-stream_ works under the hood, by covering its functionalities from a high—level overview and 
+providing details about its low—level implementation.
 
 ### mongo-migration-stream terminology
 
@@ -110,7 +110,7 @@ providing details about its low-level implementation.
 - _Destination database_ - MongoDB database which is a target for the data from _source database_,
 - _Transfer_ - a process of dumping data from _sorce database_, and restoring it on _destination database_,
 - _Synchronization_ - a process of keeping eventual consistency between _source database_ and _destination database_,
-- _Migration_ - an end-to-end migration process combining both _transfer_ and _synchronization_ processes,
+- _Migration_ - an end—to—end migration process combining both _transfer_ and _synchronization_ processes,
 - _Migrator_ - a tool for performing _migrations_.
 
 ### Building blocks
@@ -150,12 +150,12 @@ Diagram below presents how such kind of _write anomaly_ could happen if we would
 
 #### Concurrency
 
-From the beginning we wanted to make _mongo-migration-stream_ fast - we knew that it would needed to cope with databases having more than 10k writes per second.
+From the beginning we wanted to make _mongo-migration-stream_ fast — we knew that it would needed to cope with databases having more than 10k writes per second.
 As a result _mongo-migration-stream_ paralellizes migration of one MongoDB database into independent migrations of collections.
-Each database migration consists multiple little _migrators_ in itself - one _migrator_ per collection in the database.
+Each database migration consists multiple little _migrators_ in itself — one _migrator_ per collection in the database.
 
 _Transfer_ process is performed in paralell for each collection in separate `mongodump` and `mongorestore` processes.
-_Synchronization_ process was also implemented concurrently - at the beginning of migration, each collection on _source database_ is watched individually
+_Synchronization_ process was also implemented concurrently — at the beginning of migration, each collection on _source database_ is watched individually
 using [Mongo Change Streams with collection target](https://www.mongodb.com/docs/manual/changeStreams/#watch-a-collection--database--or-deployment).
 All collections have their separate own queues on which Mongo Change Events are stored.
 At final phase of migration, each of these queues is processed independently.
@@ -311,13 +311,13 @@ In both scenarios rebuilding indexes does not block _synchronization_ process, i
 Throught _mongo-migration-stream_ implementation we've kept in our minds that _migrator_ user should be aware what's happening within his/her migration.
 For that reason _mongo-migration-stream_ exposes data about migration in multiple different ways:
 
-- Logs - _migrator_ logs all important information, so user can verify what's happening with the migration by analyzing log file,
+- Logs — _migrator_ logs all important information, so user can verify what's happening with the migration by analyzing log file,
 
-- Periodical checks - when all migrated collections are in _synchronization_ process, _migrator_ starts a periodical check for each collection verifying, if all the data has been migrated, making collection on _destination database_ ready to use,
+- Periodical checks — when all migrated collections are in _synchronization_ process, _migrator_ starts a periodical check for each collection verifying, if all the data has been migrated, making collection on _destination database_ ready to use,
 
-- Metrics - various metrics about migration state are exposed through [Micrometer](https://micrometer.io/).
+- Metrics — various metrics about migration state are exposed through [Micrometer](https://micrometer.io/).
 
-On top of all, each migrator internal state change emits an event to in-memory event bus. There are multiple types of events which _mongo-migration-stream_ produces:
+On top of all, each migrator internal state change emits an event to in—memory event bus. There are multiple types of events which _mongo-migration-stream_ produces:
 
 | ------------------------------|---------------------------|
 | Event type                    | When the event is emitted |
