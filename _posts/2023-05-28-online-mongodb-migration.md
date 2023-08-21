@@ -152,12 +152,12 @@ The diagram below presents how such a kind of _write anomaly_ could happen if we
 
 From the beginning we wanted to make _mongo-migration-stream_ fast — we knew that it would need to cope with databases having more than 10k writes per second.
 As a result _mongo-migration-stream_ parallelizes migration of one MongoDB database into independent migrations of collections.
-Each database migration consists multiple little _migrators_ in itself — one _migrator_ per collection in the database.
+Each database migration consists of multiple little _migrators_ — one _migrator_ per collection in the database.
 
-_Transfer_ process is performed in paralell for each collection in separate `mongodump` and `mongorestore` processes.
+The _transfer_ process is performed in parallel for each collection, in separate `mongodump` and `mongorestore` processes.
 _Synchronization_ process was also implemented concurrently — at the beginning of migration, each collection on _source database_ is watched individually
 using [Mongo Change Streams with collection target](https://www.mongodb.com/docs/manual/changeStreams/#watch-a-collection--database--or-deployment).
-All collections have their separate own queues on which Mongo Change Events are stored.
+All collections have their own separate queues in which Mongo Change Events are stored.
 At the final phase of migration, each of these queues is processed independently.
 
 ![Concurrent migrations](/img/articles/2023-05-28-online-mongodb-migration/concurrent_migrations.png)
@@ -210,17 +210,17 @@ fun runCommand(command: Command): CommandResult {
 }
 ```
 
-Adequate approach is implemented in _mongo-migration-stream_ to execute `mongorestore` command.
+An analogous approach is implemented in _mongo-migration-stream_ to execute the `mongorestore` command.
 
 #### Event queue
 
 During the process of migration _source database_ can constantly receive changes, which _mongo-migration-stream_ is listening to with Mongo Change Streams.
 Events from the stream are saved in the queue for sending to the _destination database_ at a later time.
 Currently _mongo-migration-stream_ provides two implementations of the queue,
-where one implementation stores the data in RAM, while second one persists the data on a disk.
+where one implementation stores the data in RAM, while the other one persists the data to disk.
 
 In-memory implementation can be used for databases with low traffic, or for testing purposes,
-or on machines with sufficient amount of RAM (as events are stored in forms of objects on JVM heap).
+or on machines with a sufficient amount of RAM (as events are stored as objects on the JVM heap).
 
 ```kotlin
 // In-memory queue implementation
@@ -261,9 +261,9 @@ internal class BigQueueEventQueue<E : Serializable>(path: String, queueName: Str
 
 #### Migrating indexes
 
-In early versions of _mongo-migration-stream_ to copy indexes from _source collection_ to _destination collection_ we used
+In early versions of _mongo-migration-stream_, to copy indexes from _source collection_ to _destination collection_, we used
 an [index rebuilding feature](https://www.mongodb.com/docs/database-tools/mongorestore/#rebuild-indexes) from `mongodump` and `mongorestore` tools.
-This feature works on the principle that result of `mongodump` consists both documents from the collection and definitions of indexes.
+This feature works on the principle that the result of `mongodump` consists of both documents from the collection and definitions of indexes.
 `mongorestore` can use those definitions to rebuild indexes on _destination collection_.
 
 Unfortunately it occurred that rebuilding indexes on _destination collection_ after _transfer_ phase (before starting _synchronization_ process)
