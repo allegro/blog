@@ -29,19 +29,19 @@ and one of those applications starts to consume so many resources (like CPU, RAM
 that it causes starvation of other applications.
 
 At Allegro this problem started to be visible because over the years we’ve created more and more new MongoDB databases
-which were hosted on a fixed amount of clusters.
+which were hosted on a fixed number of clusters.
 
-The most often cause of the noisy neighbour problem in the Allegro infrastructure was long time high CPU usage caused by one of MongoDB databases on a given cluster.
+The most common cause of the noisy neighbour problem in the Allegro infrastructure was long time high CPU usage caused by one of MongoDB databases on a given cluster.
 On various occasions it occurred that a non-optimal query performed on a large collection was consuming too much CPU,
 negatively affecting all the other databases on that cluster, making them slower or completely unresponsive.
 
 ![Cluster CPU usage](/img/articles/2023-05-28-online-mongodb-migration/cluster_cpu.png)
 
-### MongoDB on Kubernetes as a solution for the noisy neighbour problem
+### MongoDB on Kubernetes as a solution to the noisy neighbour problem
 
 To solve the noisy neighbour problem a separate team implemented a solution allowing Allegro engineers to create independent MongoDB clusters on Kubernetes.
 From now on, each MongoDB cluster is formed of multiple replicas and an arbiter spread among datacenters, serving only a single MongoDB database.
-Running each database on a separate cluster with isolated resources managed by Kubernetes was our solution for the noisy neighbour problem.
+Running each database on a separate cluster with isolated resources managed by Kubernetes was our solution to the noisy neighbour problem.
 
 ![Kubernetes CPU usage](/img/articles/2023-05-28-online-mongodb-migration/k8s_cpu.png)
 
@@ -86,9 +86,9 @@ As described in the _mongosync_ documentation:
 > “The mongosync binary is the primary process used in Cluster—to—Cluster Sync. mongosync migrates data from one cluster
 > to another and can keep the clusters in continuous sync.”
 
-This description sounded like a perfect fit for us! Unfortunately after initial excitement
+This description sounded like a perfect fit for us! Unfortunately, after initial excitement
 (and hours spent on reading [_mongosync_ documentation](https://www.mongodb.com/docs/cluster-to-cluster-sync/current/reference/mongosync/))
-we realized, that we could not use _mongosync_ as it was able to perform migration and synchronization process only if source database and destination database
+we realized we couldn’t use _mongosync_ as it was able to perform migration and synchronization process only if source database and destination database
 were both in the exact same version.
 It meant that there was no option to migrate databases from older MongoDB versions to the newest one, which was a no-go for us.
 
