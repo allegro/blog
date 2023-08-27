@@ -48,6 +48,27 @@ The following example visualize searching for 14. We need "3 hops" for such acti
 alt="Searching for single node within Binary Search Tree with 7 nodes"
 class="small-image"/>
 
+## Hardware
+
+In theory, everything looks fine and fast. But! In the end, this data structure needs to work on actual hardware. There are
+3 places where we may store the data:
+
+- CPU caches
+- RAM (memory)
+- Disk (storage)
+
+The cache is clearly not suitable. It is managed by CPU and relatively small, usually a fwa megabytes.
+
+On the other hand, the memory is vastly used by databases. It assures fast random access and its size may be pretty big.
+AWS RDS cloud service [provides instances](https://aws.amazon.com/rds/instance-types/) with a few terabytes of memory available.
+Cons? It is not persistent - you lose the data when power is off. Moreover, the cost may be relatively high.
+
+The cons of a memory are the pros of a disk storage. It's cheap and data will remain there even if we lose the power supply.
+However, no free lunches! When using the disk, we need to be careful about random and sequential access.
+
+TODO:
+- what is sequential and random accesss
+
 ## Pages
 
 TODO:
