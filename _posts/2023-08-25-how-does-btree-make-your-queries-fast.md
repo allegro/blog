@@ -28,32 +28,32 @@ Why is this data structure still relevant in modern systems? Is it going to be r
 > "the more you think about what the B in B-trees means, the better you understand B-trees." ~ Edward M. McCreight
 > according to [wikipedia.org](https://en.wikipedia.org/wiki/B-tree)
 
-B-tree inventor can't be wrong. B-tree is sometimes confused with Binary Search Tree. The fact that nobody knows what
-"B" means doesn't help. So, let's look at the difference based on the example below.
+B-tree inventor can't be wrong. B-tree is sometimes confused with Binary Search Tree (BST). The fact that nobody knows what
+"B" means doesn't help. Anyway, BST is a great start point in order to reinvent B-tree. Let's start with a simple example of BST:
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/bst-basic.webp"
 alt="Binary Search Tree with 3 nodes"
 class="small-image"/>
 
-The same numbers represented on B-tree:
+The greater number goes to the right, the lower to the left. It may become more clear, if we add more numbers:
 
-<img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/btree-basic.webp"
-alt="B-tree with 2 nodes"
+<img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/bst-bigger.webp"
+alt="Binary Search Tree with 7 nodes"
 class="small-image"/>
 
-Confusing, huh? In order to understand that we need to define the first feature of B-tree: pages.
+This tree already does its job. It contains 7 numbers, but we need to visit at most 3 nodes, to find any number.
+The following example visualize searching for 14. We need "3 hops" for such action.
 
-## Page
-
-You can treat B-tree page like a page in a book. Every page can contain the same amount of data (letters in this example).
-A page may be only half full or empty (if you need to open another chapter).
-
-For B-tree page it work exactly the same way. I assumed that my page size is 2. I cannot fit all 3 numbers on single page,
-so I needed to open another one on the right.
-
-<img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/btree-page.webp"
-alt="B-tree with 2 pages"
+<img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/bst-bigger-searching.webp"
+alt="Searching for single node within Binary Search Tree with 7 nodes"
 class="small-image"/>
+
+## Pages
+
+TODO:
+- disk - random access vs sequential
+- keeping multiple values in single place on disk is more optimal
+- fixed size pages
 
 ## Summary
 
