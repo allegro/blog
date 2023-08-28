@@ -140,8 +140,15 @@ We have formulated a procedure consisting of six consecutive steps:
 
 ![Migration process](/img/articles/2023-05-28-online-mongodb-migration/migration_process.png)
 
-Our migration procedure works flawlessly because we rely on Mongo Change Events idempotency, when they’re processed sequentially.
-Without this characteristic, we would be forced to change the order of steps 1 and 2 in the procedure, creating a possibility of losing data during migration.
+Our migration procedure works flawlessly because processing Mongo Change Events in a sequence guarantees migration idempotency.
+Without this characteristic, we would have to change the order of steps 1 and 2 in the procedure, creating a possibility of losing data during migration.
+
+To explain this problem in more detail, let’s assume that the _source database_ deals with a continuous high volume of writes.
+If we had started the migration by performing dump in the first place and then started to listen for events,
+we would have lost the events stored on the _source database_ in the meantime.
+However, as we start the migration by listening for events on the _source database_, and then proceeding with the dump,
+we do not lose any of the events stored on the _source database_ during that time.
+
 The diagram below presents how such a kind of _write anomaly_ could happen if we started dumping data before listening for Mongo Change Events.
 
 ![Avoiding event loss](/img/articles/2023-05-28-online-mongodb-migration/avoiding_event_loss.png)
@@ -237,7 +244,7 @@ internal class InMemoryEventQueue<E> : EventQueue<E> {
 }
 ```
 
-In our production setup we’re using a persistent event queue, which is implemented using [BigQueue project](https://github.com/bulldog2011/bigqueue).
+In our production setup we decided to use a persistent event queue, which is implemented on top of [BigQueue project](https://github.com/bulldog2011/bigqueue).
 As BigQueue only allows enqueuing and dequeuing byte arrays, we had to implement serialization and deserialization of the data from the events.
 
 ```kotlin
