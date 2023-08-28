@@ -75,7 +75,8 @@ According to documentation _py-mongo-sync_ is:
 > e.g.: standalone, replica set, and sharded cluster.”
 
 As you can see, _py-mongo-sync_ is not a tool that would suit our needs from end to end.
-_py-mongo-sync_ focuses on synchronization of the data (it doesn’t transfer existing data from _source_ to _destination database_).
+_py-mongo-sync_ focuses on the synchronization of the data stored on the _source database_ after starting the tool.
+It doesn’t copy already existing data from the _source_ to the _destination database_.
 What’s more, at the time _py-mongo-sync_ supported MongoDB versions between 2.4 to 3.4, which were older than those used at Allegro.
 
 #### [MongoDB Cluster-to-Cluster Sync](https://www.mongodb.com/docs/cluster-to-cluster-sync/current/)
