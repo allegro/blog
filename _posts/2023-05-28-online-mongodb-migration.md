@@ -92,7 +92,7 @@ we realized we couldn’t use _mongosync_ as it was able to perform migration an
 were both in the exact same version.
 It meant that there was no option to migrate databases from older MongoDB versions to the newest one, which was a no-go for us.
 
-When we realised that there wasn‘t a tool which met all our requirements, we’ve made a tough decision to implement our own online MongoDB migration tool
+When we realised that there wasn’t a tool which met all our requirements, we made a tough decision to implement our own online MongoDB migration tool
 named _mongo-migration-stream_.
 
 ## mongo-migration-stream
@@ -308,17 +308,17 @@ private fun createIndexOnDestinationCollection(
 ```
 
 Our solution can rebuild indexes in both older and newer versions of MongoDB.
-To support older MongoDB versions we are specifying `{ background: true }` option, which does not block all operations on a given database during index creation.
+To support older MongoDB versions we specify `{ background: true }` option, which does not block all operations on a given database during index creation.
 In case where _destination database_ is newer than or equal to MongoDB 4.2, the `{ background: true }` option is ignored, and
 [optimized index build is used](https://www.mongodb.com/docs/manual/core/index-creation/#comparison-to-foreground-and-background-builds).
 In both scenarios rebuilding indexes does not block _synchronization_ process, improving overall _migration_ times.
 
 #### Verification of migration state
 
-Throught _mongo-migration-stream_ implementation we’ve kept in our minds that _migrator_ user should be aware what’s happening within his/her migration.
+Throught _mongo-migration-stream_ implementation we kept in mind that _migrator_ user should be aware what’s happening within his/her migration.
 For that purpose _mongo-migration-stream_ exposes data about migration in multiple different ways:
 
-- Logs — _migrator_ logs all important information, so user can verify what’s happening with the migration by analyzing the log file,
+- Logs — _migrator_ logs all important information, so user can verify what’s going on,
 
 - Periodical checks — when all migrated collections are in _synchronization_ process, _migrator_ starts a periodical check for each collection, verifying if all the data has been migrated, making collection on _destination database_ ready to use,
 
