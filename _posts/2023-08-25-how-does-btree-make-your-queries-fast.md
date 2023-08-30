@@ -168,6 +168,13 @@ This solution works better and better, as our database grows. If you store more 
 - Binary Search Tree has 20 levels
 - 3-values node Tree has 10 levels
 
+If you go with a tree that has 9 values in a single node, 6 levels are enough to handle 1 million of values.
+
+Postgres page size is 8kB. Let's assume that 20% is for metadata, so it's 6kB left. Half of the page is needed to store
+pointers to node's children, so it gives us 3kB for values. BIGINT size is 8 bytes, thus we may store ~375 values in a
+single node. It may store **1 billion** values with a tree that has only 4 levels. Binary Search Tree would require 30
+levels for such amount of data.
+
 ## Summary
 
 The end
