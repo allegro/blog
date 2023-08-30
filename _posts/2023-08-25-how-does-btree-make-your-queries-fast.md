@@ -115,6 +115,59 @@ class="small-image"/>
 
 The key takeaway is to prefer sequential access wherever we can. Let's think of how to apply it to our index structure.
 
+## Optimizing tree for sequential access
+
+Binary Search Tree may be represented in memory in the same way
+as [the heap](https://en.wikipedia.org/wiki/Binary_heap):
+
+- parent node position is $$ i $$
+- left node position is $$ 2i $$
+- right node position is $$ 2i+1 $$
+
+<img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/bst-searching-with-memory.webp"
+alt="Searching in Binary Search Tree with memory visualization"
+class="small-image"/>
+
+When performing the exactly same query as before, memory addresses 0, 2 and 5 need to be visited.
+Visiting three nodes is not a problem, but as we store more data, the tree gets higher. Storing more than 1 million
+values requires a tree of height at least 20.
+
+### Pages
+
+While tree grows in height, random access is causing more and more delay. The solution for reducing this problem is
+simple - grow the tree in width.
+
+<img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/tree-with-3-values-in-node.webp"
+alt="A tree with 3 values in single node"
+class="small-image"/>
+
+It brings us following benefits:
+
+- tree is shallower (2 levels instead of 3)
+- it still has a lot of space for new values without growing further
+
+The query performed on such index looks like that:
+
+<img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/tree-with-3-values-query.webp"
+alt="A query performed on a tree with 3 values in single node"
+class="small-image"/>
+
+Please note that every time we visit some node, we need to load all its values. In this example we need to load 4
+values (or 6 if the tree was filled) in order to reach the one we are looking for. Below you may find a visualization of
+this tree in a memory:
+
+<img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/tree-with-3-values-memory.webp"
+alt="A tree with 3 values in single node represented in a memory"
+class="small-image"/>
+
+Compared to [the previous example](#optimizing-tree-for-sequential-access), this search should be faster. We need random
+access only twice (jump to cell 0 and 9) and read sequentially the rest of values.
+
+This solution works better and better, as our database grows. If you store more than 1 million values:
+
+- Binary Search Tree has 20 levels
+- 3-values node Tree has 10 levels
+
 ## Summary
 
 The end
