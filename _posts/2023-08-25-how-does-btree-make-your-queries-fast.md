@@ -11,11 +11,13 @@ from https://upload.wikimedia.org/wikipedia/commons/6/68/Original_1976_Apple_1_C
 class="small-image"/>
 
 On the picture above, you see an Apple first commercial computer. This picture's size is 331kB, so it would barely fit
-on its storage, which had 456KB. I'm writing this post on a MacBook with 512GB of storage, which would manage to store
+on its storage, which had 456KB. I'm writing this post using a MacBook with 512GB of storage, which would manage to
+store
 over
-1,5 millions copies of this picture.
+1,5 millions copies of this picture. Apple I was revealed in 1976.
 
-Apple I was revealed in 1976. 6 years after **B-tree** was invented (1970).
+6 years before Apple I computer was released, Rudolf Bayer and Edward M. McCreight came up with an idea of **B-tree**.
+And it completely revolutionized the way databases works.
 
 While no one use Apple I on daily basis, B-tree is still employed by majority of modern databases. Although average disk
 size
@@ -39,16 +41,15 @@ example of BST:
 alt="Binary Search Tree with 3 nodes"
 class="small-image"/>
 
-The greater number goes to the right, the lower to the left. It may become more clear, if we add more numbers:
+The greater number is always on the right, the lower on the left. It may become more clear, if we add more numbers:
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/bst-bigger.webp"
 alt="Binary Search Tree with 7 nodes"
 class="small-image"/>
 
 This tree contains 7 numbers, but we need to visit at most 3 nodes, to find any number.
-The following example visualize searching for 14. We need "3 hops" for such action. I used SQL to define the query,
-let's
-trat this tree as our actual database index.
+The following example visualize searching for 14. We need "3 hops" for such action. I used SQL to define the query, in
+order to think about this tree as if it was actual database index.
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/bst-bigger-searching.webp"
 alt="Searching for single node within Binary Search Tree with 7 nodes"
@@ -56,10 +57,9 @@ class="small-image"/>
 
 ## Hardware
 
-In theory, using Binary Search Tree for running our queries looks fine. However, in practice, this data structure needs
-to
-work on actual hardware. An index needs to be stored somewhere in the computer. In general, there are 3 places where we
-may store the data:
+In theory, using Binary Search Tree for running our queries looks fine. Its time complexity (when searching) is $$ O(log
+n) $$, same as B-tree. However, in practice, this data structure needs to work on actual hardware. An index needs to be
+stored somewhere in the computer. In general, there are 3 places where we may store the data:
 
 - CPU caches
 - RAM (memory)
@@ -130,12 +130,14 @@ class="small-image"/>
 
 When performing the exactly same query as before, memory addresses 0, 2 and 5 need to be visited.
 Visiting three nodes is not a problem, but as we store more data, the tree gets higher. Storing more than 1 million
-values requires a tree of height at least 20.
+values requires a tree of height at least 20. It means that 20 values from different places in memory must be read. It
+gives us completely random access!
 
 ### Pages
 
 While tree grows in height, random access is causing more and more delay. The solution for reducing this problem is
-simple - grow the tree in width.
+simple - grow the tree in width rather than in height. It may be achieved with packing more than one value in a single
+node. For our
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/tree-with-3-values-in-node.webp"
 alt="A tree with 3 values in single node"
@@ -153,7 +155,7 @@ alt="A query performed on a tree with 3 values in single node"
 class="small-image"/>
 
 Please note that every time we visit some node, we need to load all its values. In this example we need to load 4
-values (or 6 if the tree was filled) in order to reach the one we are looking for. Below you may find a visualization of
+values (or 6 if the tree was full) in order to reach the one we are looking for. Below you may find a visualization of
 this tree in a memory:
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/tree-with-3-values-memory.webp"
@@ -174,6 +176,8 @@ Postgres page size is 8kB. Let's assume that 20% is for metadata, so it's 6kB le
 pointers to node's children, so it gives us 3kB for values. BIGINT size is 8 bytes, thus we may store ~375 values in a
 single node. It may store **1 billion** values with a tree that has only 4 levels. Binary Search Tree would require 30
 levels for such amount of data.
+
+To sum up, placing multiple values in a single node of the three helped us to reduce its height, thus using benefits of sequential access.
 
 ## Summary
 
