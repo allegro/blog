@@ -177,7 +177,32 @@ pointers to node's children, so it gives us 3kB for values. BIGINT size is 8 byt
 single node. It may store **1 billion** values with a tree that has only 4 levels. Binary Search Tree would require 30
 levels for such amount of data.
 
-To sum up, placing multiple values in a single node of the three helped us to reduce its height, thus using benefits of sequential access.
+To sum up, placing multiple values in a single node of the three helped us to reduce its height, thus using benefits of
+sequential access.
+
+## Balancing
+
+In databases, we may distinguish two types of operations: writing and reading. In the previous section, we addressed the
+problems with reading the data from the B-tree. Nonetheless, writing is also crucial part. When writing the data to
+database, b-tree needs to be constantly updated with new values.
+
+The tree shape depends on the order of values added to the tree. It's easily visible on a binary tree. We may obtain
+trees
+with different depths if the values are added in incorrect order.
+
+<img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/bst-imbalance.webp"
+alt="Two Binary Trees with shapes depending on the order of inserted values."
+class="small-image"/>
+
+When the tree has different depths on different nodes it is called an unbalanced tree. There are basically two ways of
+returning such tree to balanced state:
+
+1. Rebuilding it from the very beginning. Just by adding the values in correct order.
+2. Keeping it balanced all the time.
+
+The second option is one used in b-tree. A feature that the tree is balanced all the time is called self-balancing.
+
+# Self-balancing algorithm
 
 ## Summary
 
