@@ -183,7 +183,7 @@ sequential access.
 ## Balancing
 
 In databases, we may distinguish two types of operations: writing and reading. In the previous section, we addressed the
-problems with reading the data from the B-tree. Nonetheless, writing is also crucial part. When writing the data to
+problems with reading the data from the B-tree. Nonetheless, writing is also a crucial part. When writing the data to
 database, b-tree needs to be constantly updated with new values.
 
 The tree shape depends on the order of values added to the tree. It's easily visible on a binary tree. We may obtain
@@ -198,9 +198,9 @@ When the tree has different depths on different nodes it is called an unbalanced
 returning such tree to balanced state:
 
 1. Rebuilding it from the very beginning. Just by adding the values in correct order.
-2. Keeping it balanced all the time.
+2. Keeping it balanced all the time, as the new values are added.
 
-The second option is one used in b-tree. A feature that the tree is balanced all the time is called self-balancing.
+B-tree implement the second option. A feature, which makes the tree balanced all the time is called self-balancing.
 
 # Self-balancing algorithm
 
