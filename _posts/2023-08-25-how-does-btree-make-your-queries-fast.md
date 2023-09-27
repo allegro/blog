@@ -202,7 +202,53 @@ returning such tree to balanced state:
 
 B-tree implement the second option. A feature, which makes the tree balanced all the time is called self-balancing.
 
-# Self-balancing algorithm
+### Self-balancing algorithm
+
+We start with adding new values until there is a free space in existing nodes. We start with one node.
+
+<img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/self-balancing-step-1.webp"
+alt="Self-balancing, step 1, Add new values until there is a free space in existing nodes."
+class="small-image"/>
+
+If there is no space in the corresponding page, split it into two pages. Generate a new root page and move the value
+from the middle there.
+
+<img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/self-balancing-step-2.webp"
+alt="Self-balancing, step 2, Splitting the page and generating a new root page."
+class="small-image"/>
+
+Then again, add the values until there is a free space for them. If we try to add the value to the page, which has no
+free space, we make a split. The middle value goes to the upper page.
+
+<img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/self-balancing-step-3.webp"
+alt="Self-balancing, step 3, Splitting the page and moving the middle value to the upper page."
+class="small-image"/>
+
+Following this algorithm, we add new values until there is no space in root page!
+
+<img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/self-balancing-step-4.webp"
+alt="Self-balancing, step 4, Adding next values until there is no space in root."
+class="small-image"/>
+
+In this situation, there is no space in the root. But the only thing we need to do is to repeat Step 2 - generating a
+new root!
+
+<img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/self-balancing-step-5.webp"
+alt="Self-balancing, step 5, Generating a new tree level."
+class="small-image"/>
+
+> **_NOTE:_**  On this point you may have a valid concern that there is a lot of free space that has no chance to be
+> filled. For example the page with 14. 15 and 16 are in different pages, so this page will remain with only one value
+> and
+> two free spaces forever.
+>
+> It was caused because of the split location choice. We split the page always in the middle. But every time we do a
+> split, we may choose any split location we want.
+>
+> Postgres has the algorithm, which is run every time a split is performed! Its implementation may be
+> found
+> in [_bt_findsplitloc() function in Postgres source code](https://github.com/postgres/postgres/blob/54ccfd65868c013a8c6906bc894bc5ea3640740a/src/backend/access/nbtree/nbtsplitloc.c#L87).
+> Its goal it to leave as little free space as possible.
 
 ## Summary
 
