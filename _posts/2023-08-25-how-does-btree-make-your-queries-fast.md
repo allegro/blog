@@ -5,27 +5,11 @@ author: mateusz.kuzmik
 tags: [ tech ]
 ---
 
-<img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/apple-i.webp"
-alt="Original 1976 Apple I computer in a briefcase, Public Domain image
-from https://upload.wikimedia.org/wikipedia/commons/6/68/Original_1976_Apple_1_Computer_In_A_Briefcase.JPG"
-class="small-image"/>
+**B-tree** is a structure that helps to search through a great amounts of data. It was invented over 40 years ago and
+yet, it is still employed by majority of modern databases. Although there are newer index structures, like LSM trees,
+**B-tree** is unbeaten when handling most of the database queries.
 
-On the picture above, you see an Apple first commercial computer. This picture's size is 331kB, so it would barely fit
-on its storage, which had 456KB. I'm writing this post using a MacBook with 512GB of storage, which would manage to
-store
-over
-1,5 millions copies of this picture. Apple I was revealed in 1976.
-
-6 years before Apple I computer was released, Rudolf Bayer and Edward M. McCreight came up with an idea of **B-tree**.
-And it completely revolutionized the way databases works.
-
-While no one use Apple I on daily basis, B-tree is still employed by majority of modern databases. Although average disk
-size
-is millions of times grater than in 1970, **B-tree** suits any disk size. Because of their great flexibility, **B-trees
-**
-works consistently good on old Apple I as well as modern MacBook Pro.
-
-Why is this data structure still relevant in modern systems? Is it going to be replaced at some point? Let's find out!
+After reading this post, you will know how **B-tree** organizes the data and how it performs search queries.
 
 ## Origins
 
@@ -247,7 +231,8 @@ class="small-image"/>
 >
 > Postgres has the algorithm, which is run every time a split is performed! Its implementation may be
 > found
-> in [_bt_findsplitloc() function in Postgres source code](https://github.com/postgres/postgres/blob/54ccfd65868c013a8c6906bc894bc5ea3640740a/src/backend/access/nbtree/nbtsplitloc.c#L87).
+>
+in [_bt_findsplitloc() function in Postgres source code](https://github.com/postgres/postgres/blob/54ccfd65868c013a8c6906bc894bc5ea3640740a/src/backend/access/nbtree/nbtsplitloc.c#L87).
 > Its goal it to leave as little free space as possible.
 
 ## Summary
