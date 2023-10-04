@@ -77,26 +77,36 @@ I'll try to explain them simply.
 
 ### Random and sequential access
 
-<img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/random-sequential-access.webp"
-alt="Random and sequential access visualized on a small chunk of a memory"
+Memory may be visualized as a line of containers for values, where every container is numbered.
+
+<img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/memory.webp"
+alt="Simple memory visualization"
 class="small-image"/>
 
-Memory may be visualized as a line of containers for values, every container is numbered. There are two task to perform:
+Now let's assume we want to read data from containers 1, 4 and 6. It requires random access:
 
-1. Read the values from container 3, 4 and 5.
-2. Read the values from container 1, 4 and 6.
+<img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/memory-random-access.webp"
+alt="Random access visualized on a small chunk of a memory"
+class="small-image"/>
 
-Hard Disk Drive consists of the head and the disk. When performing task no. 1, you only need to move the head to
-container 3 and spin the disk in order to read 3 consecutive values.
-This is called sequential access, reading a bunch of values located next to each other.
-Task no. 2 is more challenging for an HDD. The head needs to be moved three times to different locations. This is random
-access!
-When reading megabytes of data, the difference between these two types of access is enormous.
+And then let's compare it with reading containers 3, 4, 5. It may be done sequentially:
+
+<img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/memory-sequential-access.webp"
+alt="Sequential access visualized on a small chunk of a memory"
+class="small-image"/>
+
+A difference between "random jump" and "sequential read" may be explained based on Hard Disk Drive.
+It consists of the head and the disk.
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/hdd-disk.webp"
 alt="Hard Disk Drive with cover removed, Public Domain image
 from https://en.wikipedia.org/wiki/Hard_disk_drive#/media/File:Laptop-hard-drive-exposed.jpg"
 class="small-image"/>
+
+"Random jump" requires moving the head to the given place on the disk.
+"Sequential read" is simply spinning the disk, which allows the head to read consecutive values.
+When reading megabytes of data, the difference between these two types of access is enormous.
+Using "sequential reads" lowers the time needed to fetch the data significantly.
 
 Differences in speed between random and sequential access were researched in the article "The Pathologies of Big Data"
 by Adam Jacobs, [published in Acm Queue](https://queue.acm.org/detail.cfm?id=1563874).
@@ -105,16 +115,19 @@ It revealed a few mind-blowing facts:
 - Sequential access on HDD may be hundreds of a thousand times faster than random access. 🤯
 - It may be faster to read sequentially from the disk than randomly from the memory.
 
-This research also shows that reading fully sequentially from HDD may be faster than SSD.
-However, please note that the article is from 2009 and SSD developed significantly through the last decade.
-These results are probably outdated.
+Who even uses HDD nowadays?
+What about SDD?
+This research shows that reading fully sequentially from HDD may be faster than SSD.
+However, please note that the article is from 2009 and SSD developed significantly through the last decade,
+thus these results are probably outdated.
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/random-vs-sequential-benchmark.webp"
 alt="A graph visualizing difference between random and sequential access in memory, SDD and HDD, Benchmark
 from https://queue.acm.org/detail.cfm?id=1563874"
 class="small-image"/>
 
-The key takeaway is to prefer sequential access wherever we can. Let's think of how to apply it to our index structure.
+The key takeaway is **to prefer sequential access wherever we can**.
+In the next paragraph, I will explain how to apply it to our index structure.
 
 ## Optimizing tree for sequential access
 
