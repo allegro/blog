@@ -13,30 +13,37 @@ After reading this post, you will know how **B-tree** organizes the data and how
 
 ## Origins
 
-> "the more you think about what the B in B-trees means, the better you understand B-trees." ~ Edward M. McCreight
-> according to [wikipedia.org](https://en.wikipedia.org/wiki/B-tree)
+In order to understand **B-tree** lets focus on **Binary Search Tree (BST)** first.
 
-B-tree is sometimes confused with **Binary Search Tree (BST)**. The truth is that even its inventors don't know what B
-is supposed
-to mean. Anyway, BST is a great start point in order to reinvent B-tree. Let's start with a simple
-example of BST:
+Wait, it's not the same?
+
+What does "B" mean then?
+
+According to [wikipedia.org](https://en.wikipedia.org/wiki/B-tree), Edward M. McCreight, the inventor of B-tree once
+said:
+
+> "the more you think about what the B in B-trees means, the better you understand B-trees."
+
+Confusing **B-tree** with **BST** is really common misconception.
+Anyway, in my opinion, BST is a great start point in order to reinvent B-tree.
+Let's start with a simple example of BST:
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/bst-basic.webp"
-alt="Binary Search Tree with 3 nodes"
+alt="Binary Search Tree with three nodes"
 class="small-image"/>
 
-The greater number is always on the right, the lower on the left. It may become more clear, if we add more numbers:
+The greater number is always on the right, the lower on the left. It may become clearer if we add more numbers:
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/bst-bigger.webp"
-alt="Binary Search Tree with 7 nodes"
+alt="Binary Search Tree with seven nodes"
 class="small-image"/>
 
-This tree contains 7 numbers, but we need to visit at most 3 nodes, to find any number.
-The following example visualize searching for 14. We need "3 hops" for such action. I used SQL to define the query, in
-order to think about this tree as if it was actual database index.
+This tree contains seven numbers, but we need to visit at most three nodes to find any number.
+The following example visualizes searching for 14. We need "3 hops" for such action.
+I used SQL to define the query, in order to think about this tree as if it was an actual database index.
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/bst-bigger-searching.webp"
-alt="Searching for single node within Binary Search Tree with 7 nodes"
+alt="Searching for single node within Binary Search Tree with seven nodes"
 class="small-image"/>
 
 ## Hardware
