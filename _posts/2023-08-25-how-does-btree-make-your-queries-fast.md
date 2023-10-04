@@ -50,7 +50,9 @@ class="small-image"/>
 
 In theory, using Binary Search Tree for running our queries looks fine. Its time complexity (when searching) is $$ O(log
 n) $$, same as B-tree. However, in practice, this data structure needs to work on actual hardware. An index needs to be
-stored somewhere in the computer. In general, there are 3 places where we may store the data:
+stored somewhere in the computer.
+
+The Computer has three places where the data may be stored:
 
 - CPU caches
 - RAM (memory)
@@ -58,14 +60,20 @@ stored somewhere in the computer. In general, there are 3 places where we may st
 
 The cache is managed fully by CPUs. Moreover, it is relatively small, usually has a few megabytes.
 
-The memory/RAM is vastly used by databases. It assures fast random access and its size may be pretty big.
-AWS RDS cloud service [provides instances](https://aws.amazon.com/rds/instance-types/) with a few terabytes of memory
-available.
-Cons? It is not persistent - you lose the data when power is off. Moreover, the cost may be relatively high.
+The memory/RAM is vastly used by databases. It has several great advantages:
 
-The cons of a memory are the pros of a disk storage. It's cheap and data will remain there even if we lose the power.
-However, there are no free lunches! The catch is that we need to be careful about random and sequential access.
-Reading from the disk is fast, but only under certain conditions! I'll try to explain them simply.
+- assures fast random access (you will read more about that in the next paragraph)
+- its size may be pretty big (AWS RDS cloud service [provides instances](https://aws.amazon.com/rds/instance-types/)
+  with a few terabytes of memory available).
+
+Cons? You lose the data when the power supply is off. Moreover, it is pretty expensive (compared to the disk).
+
+Finally, the cons of a memory are the pros of a disk storage.
+It's cheap and data will remain there even if we lose the power.
+However, there are no free lunches!
+The catch is that we need to be careful about random and sequential access.
+Reading from the disk is fast, but only under certain conditions!
+I'll try to explain them simply.
 
 ### Random and sequential access
 
