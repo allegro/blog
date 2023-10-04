@@ -87,10 +87,12 @@ Differences in speed between random and sequential access were researched in the
 by Adam Jacobs, [published in Acm Queue](https://queue.acm.org/detail.cfm?id=1563874).
 It revealed a few mind-blowing facts:
 
-- Sequential access on HDD may is hundreds of thousands times faster than random access 🤯
-- When reading fully sequentially, HDD may be faster than SSD (however, please note that the article is from 2009 and
-  SSD developed significantly through last decade)
-- It may be faster to read sequentially from disk than randomly from the memory
+- Sequential access on HDD may be hundreds of a thousand times faster than random access. 🤯
+- It may be faster to read sequentially from the disk than randomly from the memory.
+
+This research also shows that reading fully sequentially from HDD may be faster than SSD.
+However, please note that the article is from 2009 and SSD developed significantly through the last decade.
+These results are probably outdated.
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/random-vs-sequential-benchmark.webp"
 alt="A graph visualizing difference between random and sequential access in memory, SDD and HDD, Benchmark
