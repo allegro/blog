@@ -138,14 +138,18 @@ as [the heap](https://en.wikipedia.org/wiki/Binary_heap):
 - left node position is $$ 2i $$
 - right node position is $$ 2i+1 $$
 
-<img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/bst-searching-with-memory.webp"
-alt="Searching in Binary Search Tree with memory visualization"
+<img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/tree-representation-in-memory.webp"
+alt="Binary tree representation in the memory"
 class="small-image"/>
 
 When performing the exactly same query as before, memory addresses 0, 2 and 5 need to be visited.
 Visiting three nodes is not a problem, but as we store more data, the tree gets higher. Storing more than 1 million
 values requires a tree of height at least 20. It means that 20 values from different places in memory must be read. It
 gives us completely random access!
+
+<img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/bst-searching-with-memory.webp"
+alt="Searching in Binary Search Tree with memory visualization"
+class="small-image"/>
 
 ### Pages
 
