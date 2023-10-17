@@ -129,7 +129,7 @@ class="small-image"/>
 The key takeaway is **to prefer sequential access wherever we can**.
 In the next paragraph, I will explain how to apply it to our index structure.
 
-## Optimizing tree for sequential access
+## Optimizing a tree for sequential access
 
 Binary Search Tree may be represented in memory in the same way
 as [the heap](https://en.wikipedia.org/wiki/Binary_heap):
@@ -138,18 +138,35 @@ as [the heap](https://en.wikipedia.org/wiki/Binary_heap):
 - left node position is $$ 2i $$
 - right node position is $$ 2i+1 $$
 
-<img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/tree-representation-in-memory.webp"
-alt="Binary tree representation in the memory"
+That's how these positions are calculated based on the example (the parent node starts at 1):
+
+<img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/tree-representation-in-memory-1.webp"
+alt="Binary tree representation in the memory—part 1/2"
 class="small-image"/>
 
-When performing the exactly same query as before, memory addresses 0, 2 and 5 need to be visited.
-Visiting three nodes is not a problem, but as we store more data, the tree gets higher. Storing more than 1 million
-values requires a tree of height at least 20. It means that 20 values from different places in memory must be read. It
-gives us completely random access!
+According to the calculated positions, nodes are aligned into the memory:
 
-<img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/bst-searching-with-memory.webp"
-alt="Searching in Binary Search Tree with memory visualization"
+<img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/tree-representation-in-memory-2.webp"
+alt="Binary tree representation in the memory—part 2/2"
 class="small-image"/>
+
+Do you remember the query visualized a few chapters ago?
+
+<img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/bst-bigger-searching.webp"
+alt="Searching for single node within Binary Search Tree with seven nodes"
+class="small-image"/>
+
+That's what it looks like on the memory level:
+
+<img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/tree-representation-in-memory-query.webp"
+alt="Binary tree representation in the memory - querying"
+class="small-image"/>
+
+When performing the query, memory addresses 1, 3 and 5 need to be visited.
+Visiting three nodes is not a problem, however, as we store more data, the tree gets higher.
+Storing more than one million values requires a tree of height at least 20. It means
+that 20 values from different places in memory must be read.
+It causes completely random access!
 
 ### Pages
 
@@ -180,7 +197,7 @@ this tree in a memory:
 alt="A tree with 3 values in single node represented in a memory"
 class="small-image"/>
 
-Compared to [the previous example](#optimizing-tree-for-sequential-access), this search should be faster. We need random
+Compared to [the previous example](#optimizing-a-tree-for-sequential-access), this search should be faster. We need random
 access only twice (jump to cell 0 and 9) and read sequentially the rest of values.
 
 This solution works better and better, as our database grows. If you store more than 1 million values:
