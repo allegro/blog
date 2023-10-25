@@ -224,8 +224,8 @@ if we create a tree, which may handle 375 values in a single node,
 it may store **1 billion** values with a tree that has only **four** levels.
 Binary Search Tree would require 30 levels for such amount of data.
 
-To sum up, placing multiple values in a single node of the three helped us to reduce its height, thus using the benefits of
-sequential access.
+To sum up, placing multiple values in a single node of the three helped us to reduce its height,
+thus using the benefits of sequential access.
 
 ## Balancing
 
