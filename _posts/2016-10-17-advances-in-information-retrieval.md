@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Advances in Information Retrieval and Allegro use case at SIGIR 2016
-author: [anna.wroblewska, lukasz.raczkowski]
+author: [anna.wroblewska, alicja.raczkowska]
 tags: [information retrieval, visual recommendation, image-based data, metrics, conference]
 ---
 
@@ -112,7 +112,7 @@ industry and many students from all over the world. It was great to visit Pisa, 
 Italian region of Tuscany.
 
 Ania Wróblewska<br>
-Łukasz Rączkowski
+Alicja Rączkowska
 
 ![SIGIR2016 talk photo](/img/articles/2016-10-17-advances-in-information-retrieval/27835837403_6158e920c2_k.jpg)
 ![Arno river in Pisa](/img/articles/2016-10-17-advances-in-information-retrieval/fgowGkN.jpg)

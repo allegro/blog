@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Trust no one, not even your training data! Machine learning from noisy data"
-author: [lukasz.raczkowski,aleksandra.osowska-kurczab,jacek.szczerbinski,klaudia.nazarko,kalina.kobus]
+author: [alicja.raczkowska,aleksandra.osowska-kurczab,jacek.szczerbinski,klaudia.nazarko,kalina.kobus]
 tags: [tech,mlr,robustness,research,ml,machine-learning,ai]
 ---
 

@@ -148,7 +148,7 @@ blog.insertOne({
         "title": "Transactions in MongoDB",
         "author": "Piotr Kisielewicz",
         "date": ISODate("2022-11-30"),
-        "url": "https://blog.allegro.tech/2022/11/transactions-in-mongodb.html"
+        "url": "https://blog.allegro.tech/2022/12/transactions-in-mongodb.html"
     })
 ```
 ```
