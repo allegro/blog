@@ -285,8 +285,8 @@ Following this algorithm, we may constantly add new values to the b-tree, and it
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/self-balancing-step-final.webp"
 alt="Self-balancing, Final state of the b-tree, after adding multiple values."/>
 
-> **_NOTE:_**  On this point you may have a valid concern that there is a lot of free space that has no chance to be
-> filled. For example the page with 14. 15 and 16 are in different pages, so this page will remain with only one value
+> **_NOTE:_** On this point you may have a valid concern that there is a lot of free space that has no chance to be
+> filled. For example, the page with 14. 15 and 16 are in different pages, so this page will remain with only one value
 > and
 > two free spaces forever.
 >
@@ -297,8 +297,11 @@ alt="Self-balancing, Final state of the b-tree, after adding multiple values."/>
 > found
 >
 in [_bt_findsplitloc() function in Postgres source code](https://github.com/postgres/postgres/blob/54ccfd65868c013a8c6906bc894bc5ea3640740a/src/backend/access/nbtree/nbtsplitloc.c#L87).
-> Its goal it to leave as little free space as possible.
+> Its goal is to leave as little free space as possible.
 
 ## Summary
 
-The end
+In this article, you learned how the b-tree works, which is a crucial data structure for most of the modern databases.
+All in all, it may be simply described as a Binary Search Tree with two changes:
+- every node may contain more than one value
+- inserting a new value follows self-balancing algorithm
