@@ -170,23 +170,23 @@ It causes completely random access!
 
 ### Pages
 
-While tree grows in height, random access is causing more and more delay. The solution for reducing this problem is
-simple - grow the tree in width rather than in height. It may be achieved with packing more than one value in a single
-node. For our
+While a tree grows in height, random access is causing more and more delay.
+The solution to reducing this problem is simple—grow the tree in width rather than in height.
+It may be achieved with packing more than one value in a single node.
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/tree-with-3-values-in-node.webp"
-alt="A tree with 3 values in single node"
+alt="A tree with three values in single node"
 class="small-image"/>
 
-It brings us following benefits:
+It brings us the following benefits:
 
-- tree is shallower (2 levels instead of 3)
+- the tree is shallower (two levels instead of three)
 - it still has a lot of space for new values without growing further
 
 The query performed on such index looks like that:
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/tree-with-3-values-query.webp"
-alt="A query performed on a tree with 3 values in single node"
+alt="A query performed on a tree with three values in single node"
 class="small-image"/>
 
 Please note that every time we visit some node, we need to load all its values. In this example we need to load 4
@@ -194,25 +194,37 @@ values (or 6 if the tree was full) in order to reach the one we are looking for.
 this tree in a memory:
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/tree-with-3-values-memory.webp"
-alt="A tree with 3 values in single node represented in a memory"
+alt="A tree with three values in a single node represented in a memory"
 class="small-image"/>
 
-Compared to [the previous example](#optimizing-a-tree-for-sequential-access), this search should be faster. We need random
-access only twice (jump to cell 0 and 9) and read sequentially the rest of values.
+Compared to [the previous example](#optimizing-a-tree-for-sequential-access) (where the tree grows in height),
+this search should be faster.
+We need random access only twice (jump to cell 0 and 9) and then sequentially read the rest of values.
 
-This solution works better and better, as our database grows. If you store more than 1 million values:
+This solution works better and better, as our database grows. If you want to store one million values, then you need:
 
-- Binary Search Tree has 20 levels
-- 3-values node Tree has 10 levels
+- Binary Search Tree, which has **20** levels
 
-If you go with a tree that has 9 values in a single node, 6 levels are enough to handle 1 million of values.
+OR
 
-Postgres page size is 8kB. Let's assume that 20% is for metadata, so it's 6kB left. Half of the page is needed to store
-pointers to node's children, so it gives us 3kB for values. BIGINT size is 8 bytes, thus we may store ~375 values in a
-single node. It may store **1 billion** values with a tree that has only 4 levels. Binary Search Tree would require 30
-levels for such amount of data.
+- 3-values node Tree, which has **10** levels
 
-To sum up, placing multiple values in a single node of the three helped us to reduce its height, thus using benefits of
+And how it refers to the reality?
+[Postgres page size is 8kB](https://www.postgresql.org/docs/current/storage-toast.html#:~:text=PostgreSQL%20uses%20a%20fixed%20page,tuples%20to%20span%20multiple%20pages.).
+Let's assume that 20% is for metadata, so it's 6kB left.
+Half of the page is needed to store
+pointers to node's children, so it gives us 3kB for values.
+BIGINT size is 8 bytes, thus we may store ~375 values in a
+single page.
+
+Assuming that some pretty big table in a database has one billion rows,
+how many levels in Postgres B-tree do we need to store them?
+According to the calculations above,
+if we create a tree, which may handle 375 values in a single node,
+it may store **1 billion** values with a tree that has only **four** levels.
+Binary Search Tree would require 30 levels for such amount of data.
+
+To sum up, placing multiple values in a single node of the three helped us to reduce its height, thus using the benefits of
 sequential access.
 
 ## Balancing
