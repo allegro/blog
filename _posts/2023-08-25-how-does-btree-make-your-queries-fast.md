@@ -164,7 +164,7 @@ That's what it looks like on the memory level:
 alt="Binary tree representation in the memory - querying"
 class="small-image"/>
 
-When performing the query, memory addresses 1, 3 and 5 need to be visited.
+When performing the query, memory addresses 1, 3 and 6 need to be visited.
 Visiting three nodes is not a problem, however, as we store more data, the tree gets higher.
 Storing more than one million values requires a tree of height at least 20. It means
 that 20 values from different places in memory must be read.
