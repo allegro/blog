@@ -117,18 +117,18 @@ It revealed a few mind-blowing facts:
 - Sequential access on HDD may be hundreds of a thousand times faster than random access. 🤯
 - It may be faster to read sequentially from the disk than randomly from the memory.
 
+<img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/random-vs-sequential-benchmark.webp"
+alt="A graph visualizing difference between random and sequential access in memory, SDD and HDD, Benchmark
+from https://queue.acm.org/detail.cfm?id=1563874"
+class="small-image"/>
+
 Who even uses HDD nowadays?
 What about SSD?
 This research shows that reading fully sequentially from HDD may be faster than SSD.
 However, please note that the article is from 2009 and SSD developed significantly through the last decade,
 thus these results are probably outdated.
 
-<img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/random-vs-sequential-benchmark.webp"
-alt="A graph visualizing difference between random and sequential access in memory, SDD and HDD, Benchmark
-from https://queue.acm.org/detail.cfm?id=1563874"
-class="small-image"/>
-
-The key takeaway is **to prefer sequential access wherever we can**.
+To sum up, the key takeaway is **to prefer sequential access wherever we can**.
 In the next paragraph, I will explain how to apply it to our index structure.
 
 ## Optimizing a tree for sequential access
