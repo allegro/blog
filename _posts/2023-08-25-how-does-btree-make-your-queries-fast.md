@@ -9,6 +9,8 @@ tags: [ tech ]
 yet, it is still employed by majority of modern databases. Although there are newer index structures, like LSM trees,
 **B-tree** is unbeaten when handling most of the database queries.
 
+[//]: # (attach some database names, echich uses btree as a main data structure)
+
 After reading this post, you will know how **B-tree** organizes the data and how it performs search queries.
 
 ## Origins
@@ -49,7 +51,7 @@ class="small-image"/>
 ## Hardware
 
 In theory, using Binary Search Tree for running our queries looks fine. Its time complexity (when searching) is $$ O(log
-n) $$, same as B-tree. However, in practice, this data structure needs to work on actual hardware. An index needs to be
+n) $$, [same as B-tree](https://en.wikipedia.org/wiki/B-tree). However, in practice, this data structure needs to work on actual hardware. An index needs to be
 stored somewhere in the computer.
 
 The Computer has three places where the data may be stored:
@@ -63,10 +65,10 @@ The cache is managed fully by CPUs. Moreover, it is relatively small, usually ha
 The memory/RAM is vastly used by databases. It has several great advantages:
 
 - assures fast random access (you will read more about that in the next paragraph)
-- its size may be pretty big (AWS RDS cloud service [provides instances](https://aws.amazon.com/rds/instance-types/)
+- its size may be pretty big (e.g. AWS RDS cloud service [provides instances](https://aws.amazon.com/rds/instance-types/)
   with a few terabytes of memory available).
 
-Cons? You lose the data when the power supply is off. Moreover, it is pretty expensive (compared to the disk).
+Cons? You lose the data when the power supply is off. Moreover, when compared to the disk, it is pretty expensive.
 
 Finally, the cons of a memory are the pros of a disk storage.
 It's cheap and data will remain there even if we lose the power.
@@ -116,7 +118,7 @@ It revealed a few mind-blowing facts:
 - It may be faster to read sequentially from the disk than randomly from the memory.
 
 Who even uses HDD nowadays?
-What about SDD?
+What about SSD?
 This research shows that reading fully sequentially from HDD may be faster than SSD.
 However, please note that the article is from 2009 and SSD developed significantly through the last decade,
 thus these results are probably outdated.
@@ -171,8 +173,8 @@ It causes completely random access!
 ### Pages
 
 While a tree grows in height, random access is causing more and more delay.
-The solution to reducing this problem is simple—grow the tree in width rather than in height.
-It may be achieved with packing more than one value in a single node.
+The solution, which reduces this problem, is simple: grow the tree in width rather than height.
+It may be achieved with packing more than one value into a single node.
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/tree-with-3-values-in-node.webp"
 alt="A tree with three values in single node"
@@ -247,7 +249,7 @@ There are basically two ways of returning such tree to a balanced state:
 1. Rebuilding it from the very beginning. Just by adding the values in correct order.
 2. Keeping it balanced all the time, as the new values are added.
 
-B-tree implements the second option. A feature, which makes the tree balanced all the time is called self-balancing.
+B-tree implements the second option. A feature which makes the tree balanced all the time is called self-balancing.
 
 ### Self-balancing algorithm by example
 
@@ -268,7 +270,7 @@ alt="Self-balancing, step 2a, Splitting the page."
 class="small-image"/>
 
 Now, it gets us to an interesting point, where there is no upper page.
-In such case, a new one needs to be generated (ant it will be the new root page!).
+In such case, a new one needs to be generated (and it becomes the new root page!).
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/self-balancing-step-2b.webp"
 alt="Self-balancing, step 2b, Generating a new root page."
@@ -286,22 +288,24 @@ Following this algorithm, we may constantly add new values to the b-tree, and it
 alt="Self-balancing, Final state of the b-tree, after adding multiple values."/>
 
 > **_NOTE:_** On this point you may have a valid concern that there is a lot of free space that has no chance to be
-> filled. For example, the page with 14. 15 and 16 are in different pages, so this page will remain with only one value
-> and
-> two free spaces forever.
+> filled.
+> For example 14, 15 and 16, are in different pages, so these pages will remain with only one value and two free spaces forever.
 >
 > It was caused because of the split location choice. We split the page always in the middle. But every time we do a
 > split, we may choose any split location we want.
 >
 > Postgres has the algorithm, which is run every time a split is performed! Its implementation may be
-> found
->
-in [_bt_findsplitloc() function in Postgres source code](https://github.com/postgres/postgres/blob/54ccfd65868c013a8c6906bc894bc5ea3640740a/src/backend/access/nbtree/nbtsplitloc.c#L87).
+> found in [_bt_findsplitloc() function in Postgres source code](https://github.com/postgres/postgres/blob/54ccfd65868c013a8c6906bc894bc5ea3640740a/src/backend/access/nbtree/nbtsplitloc.c#L87).
 > Its goal is to leave as little free space as possible.
 
 ## Summary
 
-In this article, you learned how the b-tree works, which is a crucial data structure for most of the modern databases.
+In this article, you learned how B-tree works.
 All in all, it may be simply described as a Binary Search Tree with two changes:
 - every node may contain more than one value
-- inserting a new value follows self-balancing algorithm
+- inserting a new value follows self-balancing algorithm,
+
+Although the structures used by modern databases are usually some variants of a B-tree (like B+tree),
+they are still based on the original conception.
+In my opinion, one great strength of a b-tree is the fact that it was designed directly to handle large amounts of data on actual hardware.
+It may be the reason why the B-tree remains with us for such a long time.
