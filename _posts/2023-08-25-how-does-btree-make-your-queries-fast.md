@@ -49,7 +49,7 @@ class="small-image"/>
 ## Hardware
 
 In theory, using Binary Search Tree for running our queries looks fine. Its time complexity (when searching) is $$ O(log
-n) $$, [same as B-tree](https://en.wikipedia.org/wiki/B-tree). However, in practice, this data structure needs to work on actual hardware. An index needs to be
+n) $$, [same as B-tree](https://en.wikipedia.org/wiki/B-tree). However, in practice, this data structure needs to work on actual hardware. An index must be
 stored somewhere on the computer.
 
 The Computer has three places where the data may be stored:
@@ -59,6 +59,7 @@ The Computer has three places where the data may be stored:
 - Disk (storage)
 
 The cache is managed fully by CPUs. Moreover, it is relatively small, usually a few megabytes.
+Index may contain gigabytes of data, so it won't fit there.
 
 Databases vastly use Memory (RAM). It has several great advantages:
 
@@ -175,8 +176,7 @@ The solution, which reduces this problem, is simple: grow the tree in width rath
 It may be achieved by packing more than one value into a single node.
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/tree-with-3-values-in-node.webp"
-alt="A tree with three values in single node"
-class="small-image"/>
+alt="A tree with three values in single node"/>
 
 It brings us the following benefits:
 
@@ -186,16 +186,14 @@ It brings us the following benefits:
 The query performed on such index looks like that:
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/tree-with-3-values-query.webp"
-alt="A query performed on a tree with three values in a single node"
-class="small-image"/>
+alt="A query performed on a tree with three values in a single node"/>
 
 Please note that every time we visit some node, we need to load all its values.
 In this example, we need to load 4 values (or 6 if the tree is full) in order to reach the one we are looking for.
 Below, you may find a visualization of this tree in a memory:
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/tree-with-3-values-memory.webp"
-alt="A tree with three values in a single node represented in a memory"
-class="small-image"/>
+alt="A tree with three values in a single node represented in a memory"/>
 
 Compared to [the previous example](#optimizing-a-tree-for-sequential-access) (where the tree grows in height),
 this search should be faster.
@@ -231,7 +229,7 @@ Moreover, B-tree may grow not only in height, but also into width (by using larg
 
 In databases, we may distinguish two types of operations: writing and reading. In the previous section, we addressed the
 problems with reading the data from the B-tree. Nonetheless, writing is also a crucial part. When writing the data to
-a database, b-tree needs to be constantly updated with new values.
+a database, B-tree needs to be constantly updated with new values.
 
 The tree shape depends on the order of values added to the tree.
 It's easily visible in a binary tree.
