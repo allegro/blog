@@ -39,7 +39,7 @@ alt="Binary Search Tree with seven nodes"
 class="small-image"/>
 
 This tree contains seven numbers, but we need to visit at most three nodes to find any number.
-The following example visualizes searching for 14. We need "3 hops" for such action.
+The following example visualizes searching for 14.
 I used SQL to define the query in order to think about this tree as if it were an actual database index.
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/bst-bigger-searching.webp"
