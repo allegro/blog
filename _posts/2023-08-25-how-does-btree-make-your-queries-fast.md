@@ -223,11 +223,11 @@ it may store **1 billion** values with a tree that has only **four** levels.
 Binary Search Tree would require 30 levels for such amount of data.
 
 To sum up, placing multiple values in a single node of the tree helped us to reduce its height, thus using the benefits of sequential access.
-Moreover, B-tree may grow not only in height, but also into width (by using larger pages).
+Moreover, a B-tree may grow not only in height, but also in width (by using larger pages).
 
 ## Balancing
 
-In databases, we may distinguish two types of operations: writing and reading. In the previous section, we addressed the
+In databases we may distinguish two types of operations: writing and reading. In the previous section, we addressed the
 problems with reading the data from the B-tree. Nonetheless, writing is also a crucial part. When writing the data to
 a database, B-tree needs to be constantly updated with new values.
 
@@ -249,7 +249,7 @@ B-tree implements the second option. A feature that makes the tree balanced all 
 
 ### Self-balancing algorithm by example
 
-Building a b-tree may be started simply by creating a single node
+Building a B-tree may be started simply by creating a single node
 and adding new values until there is no free space in it.
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/self-balancing-step-1.webp"
@@ -259,7 +259,7 @@ class="small-image"/>
 If there is no space on the corresponding page, it needs to be split.
 To perform a split, a „split point” is chosen.
 In that case, it will be 12, because it is in the middle.
-„Split point” is a value that will be moved to the upper page.
+The „Split point” is a value that will be moved to the upper page.
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/self-balancing-step-2a.webp"
 alt="Self-balancing, step 2a, Splitting the page."
@@ -272,16 +272,16 @@ In such a case, a new one needs to be generated (and it becomes the new root pag
 alt="Self-balancing, step 2b, Generating a new root page."
 class="small-image"/>
 
-And finally, there is some free space in the three, so the value „14” may be added!
+And finally, there is some free space in the three, so value 14 may be added.
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/self-balancing-step-2c.webp"
-alt="Self-balancing, step 2c, Adding the 14 to b-tree."
+alt="Self-balancing, step 2c, Adding the 14 to B-tree."
 class="small-image"/>
 
-Following this algorithm, we may constantly add new values to the b-tree, and it will remain balanced all the time!
+Following this algorithm, we may constantly add new values to the B-tree, and it will remain balanced all the time!
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/self-balancing-step-final.webp"
-alt="Self-balancing, Final state of the b-tree, after adding multiple values."/>
+alt="Self-balancing, Final state of the B-tree, after adding multiple values."/>
 
 > **_NOTE:_** At this point, you may have a valid concern that there is a lot of free space that has no chance to be
 > filled.
@@ -297,11 +297,11 @@ alt="Self-balancing, Final state of the b-tree, after adding multiple values."/>
 
 ## Summary
 
-In this article, you learned how B-tree works.
+In this article, you learned how a B-tree works.
 All in all, it may be simply described as a Binary Search Tree with two changes:
 - every node may contain more than one value
-- inserting a new value follows a self-balancing algorithm.
+- inserting a new value is followed by a self-balancing algorithm.
 
 Although the structures used by modern databases are usually some variants of a B-tree (like B+tree), they are still based on the original conception.
-In my opinion, one great strength of a b-tree is the fact that it was designed directly to handle large amounts of data on actual hardware.
+In my opinion, one great strength of a B-tree is the fact that it was designed directly to handle large amounts of data on actual hardware.
 It may be the reason why the B-tree has remained with us for such a long time.
