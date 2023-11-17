@@ -207,6 +207,11 @@ OR
 
 - 3-value node Tree, which has **10** levels
 
+Values from a single node make a page.
+In the example above, each page consists of three values.
+A page is a set of values placed on a disk next to each other,
+so the database may reach the whole page at once with one sequential read.
+
 And how does it refer to the reality?
 [Postgres page size is 8kB](https://www.postgresql.org/docs/current/storage-toast.html#:~:text=PostgreSQL%20uses%20a%20fixed%20page,tuples%20to%20span%20multiple%20pages.).
 Let’s assume that 20% is for metadata, so it’s 6kB left.
@@ -215,8 +220,8 @@ pointers to node’s children, so it gives us 3kB for values.
 BIGINT size is 8 bytes, thus we may store ~375 values in a
 single page.
 
-Assuming that some pretty big table in a database has one billion rows,
-how many levels in Postgres B-tree do we need to store them?
+Assuming that some pretty big tables in a database have one billion rows,
+how many levels in the Postgres tree do we need to store them?
 According to the calculations above,
 if we create a tree that can handle 375 values in a single node,
 it may store **1 billion** values with a tree that has only **four** levels.
