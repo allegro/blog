@@ -288,17 +288,17 @@ Following this algorithm, we may constantly add new values to the B-tree, and it
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/self-balancing-step-final.webp"
 alt="Self-balancing, Final state of the B-tree, after adding multiple values."/>
 
-> **_NOTE:_** At this point, you may have a valid concern that there is a lot of free space that has no chance to be
-> filled.
-> For example, values 14, 15, and 16, are on different pages, so these pages will remain with only one value and two free spaces forever.
->
-> It was caused by the split location choice.
-> We always split the page in the middle.
-> But every time we do a split, we may choose any split location we want.
->
-> Postgres has an algorithm that is run every time a split is performed!
-> Its implementation may be found in the [_bt_findsplitloc() function in Postgres source code](https://github.com/postgres/postgres/blob/54ccfd65868c013a8c6906bc894bc5ea3640740a/src/backend/access/nbtree/nbtsplitloc.c#L87).
-> Its goal is to leave as little free space as possible.
+_At this point, you may have a valid concern that there is a lot of free space that has no chance to be
+filled.
+For example, values 14, 15, and 16, are on different pages, so these pages will remain with only one value and two free spaces forever._
+
+_It was caused by the split location choice.
+We always split the page in the middle.
+But every time we do a split, we may choose any split location we want._
+
+_Postgres has an algorithm that is run every time a split is performed!
+Its implementation may be found in the [_bt_findsplitloc() function in Postgres source code](https://github.com/postgres/postgres/blob/54ccfd65868c013a8c6906bc894bc5ea3640740a/src/backend/access/nbtree/nbtsplitloc.c#L87).
+Its goal is to leave as little free space as possible._
 
 ## Summary
 
