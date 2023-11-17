@@ -96,7 +96,7 @@ And then let’s compare it with reading containers 3, 4, and 5. It may be done 
 alt="Sequential access visualized on a small chunk of a memory"
 class="small-image"/>
 
-A difference between "random jump" and "sequential read" may be explained based on Hard Disk Drive.
+The difference between a "random jump" and a "sequential read" may be explained based on Hard Disk Drive.
 It consists of the head and the disk.
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/hdd-disk.webp"
@@ -183,7 +183,7 @@ It brings us the following benefits:
 - the tree is shallower (two levels instead of three)
 - it still has a lot of space for new values without growing further
 
-The query performed on such index looks like that:
+The query performed on such index looks as follows:
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/tree-with-3-values-query.webp"
 alt="A query performed on a tree with three values in a single node"/>
@@ -222,7 +222,7 @@ if we create a tree that can handle 375 values in a single node,
 it may store **1 billion** values with a tree that has only **four** levels.
 Binary Search Tree would require 30 levels for such amount of data.
 
-To sum up, placing multiple values in a single node of the three helped us to reduce its height, thus using the benefits of sequential access.
+To sum up, placing multiple values in a single node of the tree helped us to reduce its height, thus using the benefits of sequential access.
 Moreover, B-tree may grow not only in height, but also into width (by using larger pages).
 
 ## Balancing
