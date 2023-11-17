@@ -14,9 +14,9 @@ After reading this post, you will know how **B-tree** organises the data and how
 
 ## Origins
 
-In order to understand **B-tree** let's focus on **Binary Search Tree (BST)** first.
+In order to understand **B-tree** let’s focus on **Binary Search Tree (BST)** first.
 
-Wait, it's not the same?
+Wait, it’s not the same?
 
 What does "B" mean then?
 
@@ -26,7 +26,7 @@ According to [wikipedia.org](https://en.wikipedia.org/wiki/B-tree), Edward M. M
 
 Confusing **B-tree** with **BST** is a really common misconception.
 Anyway, in my opinion, BST is a great starting point for reinventing B-tree.
-Let's start with a simple example of BST:
+Let’s start with a simple example of BST:
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/bst-basic.webp"
 alt="Binary Search Tree with three nodes"
@@ -59,7 +59,7 @@ The Computer has three places where the data may be stored:
 - Disk (storage)
 
 The cache is managed fully by CPUs. Moreover, it is relatively small, usually a few megabytes.
-Index may contain gigabytes of data, so it won't fit there.
+Index may contain gigabytes of data, so it won’t fit there.
 
 Databases vastly use Memory (RAM). It has several great advantages:
 
@@ -70,11 +70,11 @@ Databases vastly use Memory (RAM). It has several great advantages:
 Cons? You lose the data when the power supply is off. Moreover, when compared to the disk, it is pretty expensive.
 
 Finally, the cons of a memory are the pros of a disk storage.
-It's cheap, and data will remain there even if we lose the power.
+It’s cheap, and data will remain there even if we lose the power.
 However, there are no free lunches!
 The catch is that we need to be careful about random and sequential access.
 Reading from the disk is fast, but only under certain conditions!
-I'll try to explain them simply.
+I’ll try to explain them simply.
 
 ### Random and sequential access
 
@@ -84,13 +84,13 @@ Memory may be visualized as a line of containers for values, where every contain
 alt="Simple memory visualization"
 class="small-image"/>
 
-Now let's assume we want to read data from containers 1, 4, and 6. It requires random access:
+Now let’s assume we want to read data from containers 1, 4, and 6. It requires random access:
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/memory-random-access.webp"
 alt="Random access visualized on a small chunk of a memory"
 class="small-image"/>
 
-And then let's compare it with reading containers 3, 4, and 5. It may be done sequentially:
+And then let’s compare it with reading containers 3, 4, and 5. It may be done sequentially:
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/memory-sequential-access.webp"
 alt="Sequential access visualized on a small chunk of a memory"
@@ -139,7 +139,7 @@ as [the heap](https://en.wikipedia.org/wiki/Binary_heap):
 - left node position is $$ 2i $$
 - right node position is $$ 2i+1 $$
 
-That's how these positions are calculated based on the example (the parent node starts at 1):
+That’s how these positions are calculated based on the example (the parent node starts at 1):
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/tree-representation-in-memory-1.webp"
 alt="Binary tree representation in the memory—part 1/2"
@@ -157,7 +157,7 @@ Do you remember the query visualized a few chapters ago?
 alt="Searching for single node within Binary Search Tree with seven nodes"
 class="small-image"/>
 
-That's what it looks like on the memory level:
+That’s what it looks like on the memory level:
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/tree-representation-in-memory-query.webp"
 alt="Binary tree representation in the memory - querying"
@@ -209,9 +209,9 @@ OR
 
 And how does it refer to the reality?
 [Postgres page size is 8kB](https://www.postgresql.org/docs/current/storage-toast.html#:~:text=PostgreSQL%20uses%20a%20fixed%20page,tuples%20to%20span%20multiple%20pages.).
-Let's assume that 20% is for metadata, so it's 6kB left.
+Let’s assume that 20% is for metadata, so it’s 6kB left.
 Half of the page is needed to store
-pointers to node's children, so it gives us 3kB for values.
+pointers to node’s children, so it gives us 3kB for values.
 BIGINT size is 8 bytes, thus we may store ~375 values in a
 single page.
 
@@ -232,7 +232,7 @@ problems with reading the data from the B-tree. Nonetheless, writing is also a c
 a database, B-tree needs to be constantly updated with new values.
 
 The tree shape depends on the order of values added to the tree.
-It's easily visible in a binary tree.
+It’s easily visible in a binary tree.
 We may obtain trees with different depths if the values are added in an incorrect order.
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/bst-imbalance.webp"
