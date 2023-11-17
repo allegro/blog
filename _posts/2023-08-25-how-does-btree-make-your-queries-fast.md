@@ -257,9 +257,9 @@ alt="Self-balancing, step 1, Add new values until there is a free space in exist
 class="small-image"/>
 
 If there is no space on the corresponding page, it needs to be split.
-To perform a split, a "split point" is chosen.
+To perform a split, a „split point” is chosen.
 In that case, it will be 12, because it is in the middle.
-"Split point" is a value that will be moved to the upper page.
+„Split point” is a value that will be moved to the upper page.
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/self-balancing-step-2a.webp"
 alt="Self-balancing, step 2a, Splitting the page."
@@ -272,7 +272,7 @@ In such a case, a new one needs to be generated (and it becomes the new root pag
 alt="Self-balancing, step 2b, Generating a new root page."
 class="small-image"/>
 
-And finally, there is some free space in the three, so the value "14" may be added!
+And finally, there is some free space in the three, so the value „14” may be added!
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/self-balancing-step-2c.webp"
 alt="Self-balancing, step 2c, Adding the 14 to b-tree."
