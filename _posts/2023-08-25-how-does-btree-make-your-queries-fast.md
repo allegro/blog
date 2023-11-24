@@ -16,9 +16,9 @@ After reading this post, you will know how **B-tree** organises the data and how
 
 In order to understand **B-tree** let’s focus on **Binary Search Tree (BST)** first.
 
-Wait, it’s not the same?
+Wait, isn't it the same?
 
-What does "B" mean then?
+What does "B" stand for then?
 
 According to [wikipedia.org](https://en.wikipedia.org/wiki/B-tree), Edward M. McCreight, the inventor of B-tree, once said:
 
@@ -32,13 +32,13 @@ Let’s start with a simple example of BST:
 alt="Binary Search Tree with three nodes"
 class="small-image"/>
 
-The greater number is always on the right, the lower on the left. It may become clearer if we add more numbers.
+The greater number is always on the right, the lower on the left. It may become clearer when we add more numbers.
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/bst-bigger.webp"
 alt="Binary Search Tree with seven nodes"
 class="small-image"/>
 
-This tree contains seven numbers, but we need to visit at most three nodes to find any number.
+This tree contains seven numbers, but we need to visit at most three nodes to locate any number.
 The following example visualizes searching for 14.
 I used SQL to define the query in order to think about this tree as if it were an actual database index.
 
