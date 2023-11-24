@@ -167,7 +167,7 @@ It causes completely random access!
 ### Pages
 
 While a tree grows in height, random access is causing more and more delay.
-The solution, which reduces this problem, is simple: grow the tree in width rather than height.
+The solution to reduce this problem is simple: grow the tree in width rather than in height.
 It may be achieved by packing more than one value into a single node.
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/tree-with-3-values-in-node.webp"
@@ -176,16 +176,16 @@ alt="A tree with three values in single node"/>
 It brings us the following benefits:
 
 - the tree is shallower (two levels instead of three)
-- it still has a lot of space for new values without growing further
+- it still has a lot of space for new values without the need for growing further
 
 The query performed on such index looks as follows:
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/tree-with-3-values-query.webp"
 alt="A query performed on a tree with three values in a single node"/>
 
-Please note that every time we visit some node, we need to load all its values.
+Please note that every time we visit a node, we need to load all its values.
 In this example, we need to load 4 values (or 6 if the tree is full) in order to reach the one we are looking for.
-Below, you may find a visualization of this tree in a memory:
+Below, you will find a visualization of this tree in a memory:
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/tree-with-3-values-memory.webp"
 alt="A tree with three values in a single node represented in a memory"/>
@@ -194,13 +194,13 @@ Compared to [the previous example](#optimizing-a-tree-for-sequential-access) (wh
 this search should be faster.
 We need random access only twice (jump to cells 0 and 9) and then sequentially read the rest of values.
 
-This solution works better and better, as our database grows. If you want to store one million values, then you need:
+This solution works better and better as our database grows. If you want to store one million values, then you need:
 
-- Binary Search Tree, which has **20** levels
+- Binary Search Tree which has **20** levels
 
 OR
 
-- 3-value node Tree, which has **10** levels
+- 3-value node Tree which has **10** levels
 
 Values from a single node make a page.
 In the example above, each page consists of three values.
@@ -227,9 +227,10 @@ Moreover, a B-tree may grow not only in height, but also in width (by using larg
 
 ## Balancing
 
-In databases we may distinguish two types of operations: writing and reading. In the previous section, we addressed the
-problems with reading the data from the B-tree. Nonetheless, writing is also a crucial part. When writing the data to
-a database, B-tree needs to be constantly updated with new values.
+There are two types of operations in databases: writing and reading.
+In the previous section, we addressed the problems with reading the data from the B-tree.
+Nonetheless, writing is also a crucial part.
+When writing the data to a database, B-tree needs to be constantly updated with new values.
 
 The tree shape depends on the order of values added to the tree.
 It’s easily visible in a binary tree.
@@ -249,7 +250,7 @@ B-tree implements the second option. A feature that makes the tree balanced all 
 
 ### Self-balancing algorithm by example
 
-Building a B-tree may be started simply by creating a single node
+Building a B-tree can be started simply by creating a single node
 and adding new values until there is no free space in it.
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/self-balancing-step-1.webp"
