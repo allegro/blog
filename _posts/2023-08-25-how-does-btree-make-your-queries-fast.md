@@ -50,9 +50,9 @@ class="small-image"/>
 
 In theory, using Binary Search Tree for running our queries looks fine. Its time complexity (when searching) is $$ O(log
 n) $$, [same as B-tree](https://en.wikipedia.org/wiki/B-tree). However, in practice, this data structure needs to work on actual hardware. An index must be
-stored somewhere on the computer.
+stored somewhere on your machine.
 
-The Computer has three places where the data may be stored:
+The computer has three places where the data can be stored:
 
 - CPU caches
 - RAM (memory)
@@ -61,13 +61,13 @@ The Computer has three places where the data may be stored:
 The cache is managed fully by CPUs. Moreover, it is relatively small, usually a few megabytes.
 Index may contain gigabytes of data, so it won’t fit there.
 
-Databases vastly use Memory (RAM). It has several great advantages:
+Databases vastly use Memory (RAM). It has some great advantages:
 
-- assures fast random access (you will read more about that in the next paragraph)
+- assures fast random access (more on that in the next paragraph)
 - its size may be pretty big (e.g. AWS RDS cloud service [provides instances](https://aws.amazon.com/rds/instance-types/)
   with a few terabytes of memory available).
 
-Cons? You lose the data when the power supply is off. Moreover, when compared to the disk, it is pretty expensive.
+Cons? You lose the data when the power supply goes off. Moreover, when compared to the disk, it is pretty expensive.
 
 Finally, the cons of a memory are the pros of a disk storage.
 It’s cheap, and data will remain there even if we lose the power.
@@ -96,7 +96,7 @@ And then let’s compare it with reading containers 3, 4, and 5. It may be done 
 alt="Sequential access visualized on a small chunk of a memory"
 class="small-image"/>
 
-The difference between a "random jump" and a "sequential read" may be explained based on Hard Disk Drive.
+The difference between a "random jump" and a "sequential read" can be explained based on Hard Disk Drive.
 It consists of the head and the disk.
 
 <img src="/img/articles/2023-08-25-how-does-btree-make-your-queries-fast/hdd-disk.webp"
@@ -105,7 +105,7 @@ from https://en.wikipedia.org/wiki/Hard_disk_drive#/media/File:Laptop-hard-drive
 class="small-image"/>
 
 "Random jump" requires moving the head to the given place on the disk.
-"Sequential read" is simply spinning the disk, which allows the head to read consecutive values.
+"Sequential read" is simply spinning the disk, allowing the head to read consecutive values.
 When reading megabytes of data, the difference between these two types of access is enormous.
 Using "sequential reads" lowers the time needed to fetch the data significantly.
 
@@ -113,7 +113,7 @@ Differences in speed between random and sequential access were researched in the
 by Adam Jacobs, [published in Acm Queue](https://queue.acm.org/detail.cfm?id=1563874).
 It revealed a few mind-blowing facts:
 
-- Sequential access on HDD may be hundreds of a thousand times faster than random access. 🤯
+- Sequential access on HDD may be hundreds of thousands of times faster than random access. 🤯
 - It may be faster to read sequentially from the disk than randomly from the memory.
 
 Who even uses HDD nowadays?
