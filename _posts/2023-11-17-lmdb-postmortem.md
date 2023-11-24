@@ -6,15 +6,15 @@ tags: [tech, postmortem, nginx, libmodsecurity, LMDB, performance bottleneck, op
 ---
 
 This article is a form of a public postmortem, in which we would like to share our bumpy way of revealing the cause of a mysterious performance problem.
-Besides unveiling part of our technical stack based on open source solutions, we also showed how some false assumptions made such a bug triage process much
+Besides unveiling part of our technical stack based on open source solutions, we also show how some false assumptions made such a bug triage process much
 harder.
 Besides all NOT TO DOs, you can find some interesting information about performance hunting and reproducing performance issues on a small scale.
-As a perk, we prepared a [repository](https://github.com/ziollek/lmdb-modsecurity-perf-issue) where you can reproduce the problem and make familiar with tools
+As a perk, we prepared a [repository](https://github.com/ziollek/lmdb-modsecurity-perf-issue) where you can reproduce the problem and make yourself familiar with tools
 that allowed us to confirm the cause.
 The last part (lessons learned) can be considered the most valuable if you prefer to learn from the mistakes of others.
 
 Before you start reading I must warn you that it will be quite a long story and following it without technical knowledge will be challenging.
-However, I tried my best to simplify the technicalities as much as possible. If despite all discourages you are interested in solving technical mysteries,
+However, I tried my best to simplify the technicalities as much as possible. If, despite all discourages you are interested in solving technical mysteries,
 take a sip of coffee and enjoy the story!
 
 
@@ -25,7 +25,7 @@ We needed a solution that is able to inspect metadata and user data against any 
 We have chosen [nginx](https://nginx.org/en/docs/) in concert with [ModSecurity](https://github.com/SpiderLabs/ModSecurity) as a foundation for a more complex
 ecosystem.
 
-During increasing usage of such a stack, new demands emerge. One of the most crucial was providing the ability to store some contextual information connected
+During increasing usage of such a stack, new demands emerged. One of the most crucial was providing the ability to store some contextual information connected
 with session activity in order to be able to better recognize malicious patterns.
 By default, _ModSecurity_ allows storing contextual information in memory. Such an approach is not very useful in connection with HTTP servers that utilize
 multiprocessing as _nginx_ does.
@@ -33,16 +33,16 @@ multiprocessing as _nginx_ does.
 ![In-memory approach](/img/articles/2023-11-17-lmdb-postmortem/nginx-in-memory.png)
 
 However, we have learned that _ModSecurity_ can use [LMDB](http://www.lmdb.tech/doc/) as an internal fast storage for contextual information that could be
-shared between requests that come from for example the same ip address. LMDB approach ensures that contextual information stored by one nginx worker process
+shared between requests that come, for example, from the same ip address. LMDB approach ensures that contextual information stored by one nginx worker process
 is accessible by other ones.
 
 ![LMDB approach](/img/articles/2023-11-17-lmdb-postmortem/nginx-with-lmdb.png)
 
-On the first glimpse it looks great however in our case we could not rely on information that is stored directly by _ModSecurity_.
+On first glimpse it looks great, however in our case we could not rely on information that is stored directly by _ModSecurity_.
 As you can imagine our setup is based on more than one server, so we have to be able to pass to each of them the same contextual information.
 Moreover, our algorithms that compute such information are quite complex and reach for more data than those available to ModSecurity.
 
-Nevertheless, LMDB has one great advantage: it allows connecting to it from outside the _nginx_ process and altering the contextual data that are available for
+Nevertheless, LMDB has one great advantage: it allows connecting to it from outside the _nginx_ process and altering the contextual data that is available for
 _ModSecurity_.
 We built a simple bridge that on the one side fetches contextual information and on the other alters related contextual information in LMDB.
 Simplified view of architecture that allows computing and synchronizing contextual information is depicted below (dotted lines represent asynchronous flow):
