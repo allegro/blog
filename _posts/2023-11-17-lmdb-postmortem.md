@@ -112,7 +112,7 @@ Let’s say that even if you are keen on paranormal mystery odds that's the mome
 It definitely looks like something deterministic, not random. In production realm it was even more interesting, some burst where connected with each other
 in some strange arithmetic way - for example:
 
-Let’s define busts as:
+Let’s define bursts as:
 > B1, B2, B3 - bursts
 >
 > B1.TS - timestamp of the burst
