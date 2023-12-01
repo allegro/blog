@@ -157,7 +157,7 @@ collections in order to share a state of collections between nginx workers.
 The documentation and source code of this relatively small project were scrutinized many times as well as integration between ModSecurity and LMDB, but there
 was no suspicion of what could be wrong.
 
-Finally, it turned out that the version of _ModSecurity_ that we scrutinized was a master. Moreover, the master contained an improvement related to misusing
+Finally, it turned out that the version of _ModSecurity_ that we scrutinized was from the master branch. Moreover, the master branch contained an improvement related to misusing
 _LMDB_ exclusive transactions while reading the data. Given that we had a justified belief that issues came from exclusive transactions. It means that
 nginx workers probably hang on acquiring locks.
 
