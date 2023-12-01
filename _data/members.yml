@@ -883,3 +883,9 @@ tomasz.ziolkowski:
     bio: Engineering manager with emphasis on the first part. At Allegro I take care of a wide sort of reverse proxies that take off mundane work (like caching, or detecting malicious traffic) from our core services. I like to simplify things to such an extent that in many github projects, I am a leader when it comes to the number of deleted lines of code. Besides, making source code more concise I like hunting ... for performance bottlenecks.
     linkedin: tomasz-ziółkowski-6634a54a
     github: ziollek
+
+mateusz.kuzmik:
+    name: Mateusz Kuźmik
+    bio: I just like to know how things work. On a daily basis, I spend a lot of time with JVM Tech.
+    linkedin: matkuzm
+    github: mkuzmik
