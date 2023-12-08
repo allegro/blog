@@ -203,7 +203,7 @@ When we analyzed the time spent on such a function, we realized that was the exa
 
 <pre>
 trace-bpfcc -t  'p:/usr/local/modsecurity/lib/libmodsecurity.so.3.0.6:msc_process_request_headers "start"' \
-  ‘r:/usr/local/modsecurity/lib/libmodsecurity.so.3.0.6:msc_process_request_headers “stop”’ \
+  ‘r:/usr/local/modsecurity/lib/libmodsecurity.so.3.0.6:msc_process_request_headers "stop"' \
   'r:/usr/local/modsecurity/lib/libmodsecurity.so.3.0.6:msc_process_logging "stop"' 2>/dev/null
 
 TIME     PID     TID     COMM            FUNC             -
