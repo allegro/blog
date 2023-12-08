@@ -244,8 +244,8 @@ However, I prepared a command that allows us to aggregate all time consumed whil
 
 ```
 # trace-bpfcc -t 'p:/usr/lib/x86_64-linux-gnu/liblmdb.so.0.0.0:mdb_txn_begin "start"' \
-  ‘r:/usr/lib/x86_64-linux-gnu/liblmdb.so.0.0.0:mdb_txn_begin "stop"’ 2>/dev/null | tee /tmp/benchmark.log
-# cat /tmp/benchmark.log  | sort -n | awk '{if ($6 == "start") { data[$2] = $1} else { summary += 1000 * ($1 - data[$2]); print $1, $2, 1000 * ($1 - data[$2]) }} END {print "Total time spent on locking: ", summary, "ms,  number of calls: ", calls}'
+  ‘r:/usr/lib/x86_64-linux-gnu/liblmdb.so.0.0.0:mdb_txn_begin “stop”’ 2>/dev/null | tee /tmp/benchmark.log
+# cat /tmp/benchmark.log  | sort -n | awk ‘{if ($6 == “start”) { data[$2] = $1} else { summary += 1000 * ($1 - data[$2]); print $1, $2, 1000 * ($1 - data[$2]) }} END {print “Total time spent on locking: “, summary, “ms,  number of calls: “, calls}’
 ...
 Total time spent on locking: 105891ms number of calls:  4064
 ```
@@ -253,7 +253,7 @@ Total time spent on locking: 105891ms number of calls:  4064
 As a comparison, we can execute the same profiling on version with a fix. Such a version is also available in a prepared environment.
 
 ```
-cat /tmp/benchmark.log  | sort -n | awk '{if ($6 == "start") { data[$2] = $1} else { calls++; summary += 1000 * ($1 - data[$2]); print $1, $2, 1000 * ($1 - data[$2]) }} END {print “Total time spent on locking: ", summary, "ms,  number of calls: ", calls}'
+cat /tmp/benchmark.log  | sort -n | awk ‘{if ($6 == “start”) { data[$2] = $1} else { calls++; summary += 1000 * ($1 - data[$2]); print $1, $2, 1000 * ($1 - data[$2]) }} END {print “Total time spent on locking: “, summary, “ms,  number of calls: “, calls}’
 ...
 Total time spent on locking: 1811.19ms  number of calls:  4064
 ```
