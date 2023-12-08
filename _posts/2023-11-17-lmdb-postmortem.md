@@ -244,8 +244,8 @@ However, I prepared a command that allows us to aggregate all time consumed whil
 
 ```
 # trace-bpfcc -t 'p:/usr/lib/x86_64-linux-gnu/liblmdb.so.0.0.0:mdb_txn_begin "start"' \
-  ‘r:/usr/lib/x86_64-linux-gnu/liblmdb.so.0.0.0:mdb_txn_begin “stop”’ 2>/dev/null | tee /tmp/benchmark.log
-# cat /tmp/benchmark.log  | sort -n | awk ‘{if ($6 == “start”) { data[$2] = $1} else { summary += 1000 * ($1 - data[$2]); print $1, $2, 1000 * ($1 - data[$2]) }} END {print “Total time spent on locking: “, summary, “ms,  number of calls: “, calls}’
+  ‘r:/usr/lib/x86_64-linux-gnu/liblmdb.so.0.0.0:mdb_txn_begin "stop"’ 2>/dev/null | tee /tmp/benchmark.log
+# cat /tmp/benchmark.log  | sort -n | awk '{if ($6 == "start") { data[$2] = $1} else { summary += 1000 * ($1 - data[$2]); print $1, $2, 1000 * ($1 - data[$2]) }} END {print "Total time spent on locking: ", summary, "ms,  number of calls: ", calls}'
 ...
 Total time spent on locking: 105891ms number of calls:  4064
 ```
@@ -253,7 +253,7 @@ Total time spent on locking: 105891ms number of calls:  4064
 As a comparison, we can execute the same profiling on version with a fix. Such a version is also available in a prepared environment.
 
 ```
-cat /tmp/benchmark.log  | sort -n | awk ‘{if ($6 == “start”) { data[$2] = $1} else { calls++; summary += 1000 * ($1 - data[$2]); print $1, $2, 1000 * ($1 - data[$2]) }} END {print “Total time spent on locking: “, summary, “ms,  number of calls: “, calls}’
+cat /tmp/benchmark.log  | sort -n | awk '{if ($6 == "start") { data[$2] = $1} else { calls++; summary += 1000 * ($1 - data[$2]); print $1, $2, 1000 * ($1 - data[$2]) }} END {print “Total time spent on locking: ", summary, "ms,  number of calls: ", calls}'
 ...
 Total time spent on locking: 1811.19ms  number of calls:  4064
 ```
@@ -313,9 +313,9 @@ SecRule &REQUEST_HEADERS:x-set-sample "@eq 1" "phase:1,setvar:global.sample%{REQ
 If we call above rule with x-set-sample header with subsequent values _1, 2, 3_. We can do that by making HTTP requests as below:
 ```
 workstation # docker-compose exec nginx-before-fix bash
-nginx-with-lmdb # curl -I -H’x-set-sample: 1’ localhost
-nginx-with-lmdb # curl -I -H’x-set-sample: 2’ localhost
-nginx-with-lmdb # curl -I -H’x-set-sample: 3’ localhost
+nginx-with-lmdb # curl -I -H'x-set-sample: 1' localhost
+nginx-with-lmdb # curl -I -H'x-set-sample: 2' localhost
+nginx-with-lmdb # curl -I -H'x-set-sample: 3' localhost
 ```
 
 Then, we can expect that there will be stored three key-value pairs:
@@ -345,7 +345,7 @@ Let’s look what happens when we try to make a request with value 1 and -1.
 As I described earlier, our intention was to check if **global[sample] == 1**.
 
 ```
-nginx-with-lmdb  # curl -I “http://localhost/users/200/random?arg=1”
+nginx-with-lmdb  # curl -I "http://localhost/users/200/random?arg=1"
 HTTP/1.1 403 Forbidden
 Server: nginx/1.22.0 (Ubuntu)
 Date: Fri, 17 Nov 2023 10:58:39 GMT
@@ -354,7 +354,7 @@ Content-Length: 162
 Connection: keep-alive
 nginx-with-lmdb
 
-nginx-with-lmdb  # curl -I “http://localhost/users/200/random?arg=-1”
+nginx-with-lmdb  # curl -I "http://localhost/users/200/random?arg=-1"
 HTTP/1.1 200
 Server: nginx/1.22.0 (Ubuntu)
 Date: Fri, 17 Nov 2023 10:58:42 GMT
