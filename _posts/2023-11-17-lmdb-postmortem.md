@@ -349,7 +349,7 @@ nginx-with-lmdb  # curl -I “http://localhost/users/200/random?arg=1”
 HTTP/1.1 403 Forbidden
 Server: nginx/1.22.0 (Ubuntu)
 Date: Fri, 17 Nov 2023 10:58:39 GMT
-Content-Type: text/HTML
+Content-Type: text/html
 Content-Length: 162
 Connection: keep-alive
 nginx-with-lmdb
@@ -369,7 +369,7 @@ Quite interesting? It turns out that the match is fulfilled for value “1”, a
 ```
 nginx-with-lmdb  # tail -5 /var/log/nginx/modsec_audit.log
 ---TL9qTmAS---H--
-ModSecurity: Access denied with code 403 (phase 1). Matched “Operator `StrEq’ with parameter” against variable `GLOBAL:sample::::sample1’ (Value: `1’) [file “/etc/nginx/rules/rules.conf”] [line “32”] [id “1001”] [rev””] [msg “value of param 1 is blocked”] [data””] [severity “0”] [ver””] [maturity “0”] [accuracy “0”] [hostname “127.0.0.1”] [uri “/users/200/random”] [unique_id “1700218719”] [ref “o0,1v27,1”]
+ModSecurity: Access denied with code 403 (phase 1). Matched "Operator `StrEq' with parameter `' against variable `GLOBAL:sample::::sample1' (Value: `1' ) [file "/etc/nginx/rules/rules.conf"] [line "32"] [id "1001"] [rev ""] [msg "value of param 1 is blocked"] [data ""] [severity "0"] [ver ""] [maturity "0"] [accuracy "0"] [hostname "127.0.0.1"] [uri "/users/200/random"] [unique_id "1700218719"] [ref "o0,1v27,1"]
 
 ---TL9qTmAS---Z--
 ```
