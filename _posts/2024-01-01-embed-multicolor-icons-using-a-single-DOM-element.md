@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Web icons 2024"
+title: "Embed multicolor icons using a single DOM element"
 author: [pawel.lesiecki, maciej.suszko]
 tags: [tech, web, svg, css, html]
 ---
