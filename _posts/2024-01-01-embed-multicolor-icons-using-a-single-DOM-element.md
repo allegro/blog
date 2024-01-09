@@ -15,7 +15,7 @@ Though there are many possibilities, [some of which are considered harmful](http
 Various inline SVG techniques have become more popular over time. Possibly due to the lack of suitable alternatives, although not using the cache is a huge trade-off.
 Thankfully, [there are some voices of reason](https://twitter.com/getifyX/status/1720810762409566459) in the community.
 
-At Allegro, we’ve used SVG and CSS filters for quite some time.
+At [Allegro](https://allegro.tech/), we’ve been using SVG and CSS filters for quite some time.
 However, they have their limits and could be better suited for the challenges of the themeable design system.
 
 Let’s pause for a moment and rethink the approach to icons.
@@ -24,7 +24,7 @@ It has to meet several requirements:
 - cacheable, 
 - easily embeddable.
 
-## Can we do better than we did so far?
+## Can we do better than we’ve been doing so far?
 
 Could the Web platform be so vast that it has some uncharted territories?
 At least, that was the case until recently. 
@@ -32,7 +32,7 @@ The platform is capable of dealing with icons more efficiently.
 
 **Let us introduce the SVG+CSS technique. It lets you have a 3-color icon using just one DOM element and one external SVG.**
 
-We haven’t found anything similar, neither online nor with ChatGPT. We want to share this idea with you even more.
+We have found nothing similar, whether online or with ChatGPT, which makes us want to share this idea with you even more.
 
 Consider the proposed technique if you care about performance.
 
@@ -158,11 +158,11 @@ The last CSS class is for our specific icon.
 The critical part is that we picked the whole icon, not any fragment, as the parent’s mask, so we have the entire icon visible. 
 That’s because the parent layer masks its children.
 
-We selected an orange color of an `a` for the parent layer.
-Then, we put the two remaining layers on it.
+We selected the orange color of the `a` for the parent layer.
+Then, we put the two remaining layers on top of it.
 The second and third layers are for shadow and border parts, respectively.
 
-**We can describe this as a cutout of the whole icon in one color covered by one or more shapes in different colors.**
+**We can describe this as the whole icon in single color covered by one or more shapes in different colors.**
 
 When an icon has intersecting parts, there’s one thing to keep in mind. 
 Backgrounds render on top of each other in a particular order:
