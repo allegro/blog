@@ -26,6 +26,8 @@ It has to meet several requirements:
 
 ## Can we do better than we’ve been doing so far?
 
+![Multilayer icon](/img/articles/2024-01-01-embed-multicolor-icons-using-a-single-DOM-element/icon.webp "Multilayer icon")
+
 All the tools needed to perform the trick have been available in major browsers for at least few years.
 Is it possible everyone just failed to connect the dots?
 It turns out that the platform is capable of dealing with icons more efficiently.
