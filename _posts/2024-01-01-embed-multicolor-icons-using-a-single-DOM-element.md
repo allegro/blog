@@ -26,9 +26,9 @@ It has to meet several requirements:
 
 ## Can we do better than we’ve been doing so far?
 
-Could the Web platform be so vast that it has some uncharted territories?
-At least, that was the case until recently. 
-The platform is capable of dealing with icons more efficiently.
+All the tools needed to perform the trick have been available in major browsers for at least few years.
+Is it possible everyone just failed to connect the dots?
+It turns out that the platform is capable of dealing with icons more efficiently.
 
 **Let us introduce the SVG+CSS technique. It lets you have a 3-color icon using just one DOM element and one external SVG.**
 
@@ -128,6 +128,7 @@ The base class `.icon` stacks three layers on top of each other, ready for a mas
   width: 32px;
   height: 32px;
   mask-repeat: no-repeat;
+  background-color: currentColor;
 }
 .icon::before,
 .icon::after {
@@ -135,6 +136,7 @@ The base class `.icon` stacks three layers on top of each other, ready for a mas
   position: absolute;
   width: inherit;
   height: inherit;
+  background-color: inherit;
 }
 ```
 
@@ -143,15 +145,15 @@ The last CSS class is for our specific icon.
 ```css
 .icon--a {
   mask-image: url('./a.svg#icon'); /* full icon’s shape */
-  background-color: #FF7B33;
+  color: #FF7B33;
 }
 .icon--a::before {
   mask-image: url('./a.svg#shadow'); /* shadow’s shape */
-  background-color: #D9DFE4;
+  color: #D9DFE4;
 }
 .icon--a::after {
   mask-image: url('./a.svg#border'); /* border’s shape */
-  background-color: #B0B8BC;
+  color: #B0B8BC;
 }
 ```
 
