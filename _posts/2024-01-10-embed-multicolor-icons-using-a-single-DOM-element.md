@@ -3,6 +3,8 @@ layout: post
 title: "Embed multicolor icons using a single DOM element"
 author: [pawel.lesiecki, maciej.suszko]
 tags: [tech, web, svg, css, html]
+excerpt: >
+    Icons are an integral part of most modern UIs. What is the best way to embed icons nowadays?
 ---
 Hello, fellow Web developers!
 
