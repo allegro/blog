@@ -194,7 +194,7 @@ Now, the single element gives us control over up to three parts of our icon.
 Moreover, we can change colors independently and dynamically.
 
 ## The demo
-Feel free to check the [demo](https://296812d5-57f1-41f3-9dd5-d2ebcc899925-00-ae7l47igr57q.kirk.replit.dev/).
+Feel free to check the [demo](https://mpsuszko.github.io/three-colors-one-element-icon/).
 
 Pretty neat.
 
