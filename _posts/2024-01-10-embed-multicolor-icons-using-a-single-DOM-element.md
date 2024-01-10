@@ -68,7 +68,7 @@ As a case study let’s pick one of our icons —
 
 With the following source:
 
-```svg
+```html
 <svg viewBox="0 0 32 32" fill="none" height="32" width="32" xmlns="http://www.w3.org/2000/svg">
   <path d="..." fill="#B0B8BC"></path>
   <path clip-rule="evenodd" d="..." fill-rule="evenodd" fill="#FF7B33"></path>
