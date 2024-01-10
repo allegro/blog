@@ -342,6 +342,12 @@ figcaption {
     }
 }
 
+.post-content img.inline-image {
+    display: inline;
+    vertical-align: middle;
+    margin: auto;
+}
+
 .post-content blockquote {
     border-left: 4px solid #e8e8e8;
     padding-left: 20px;
