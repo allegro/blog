@@ -8,7 +8,7 @@ Hello, fellow Web developers!
 
 Icons are an integral part of most modern UIs.
 What is the best way to embed icons nowadays?
-This area is full of pitfalls. 
+This area is full of pitfalls.
 You better proceed with caution when trying to answer that question.
 
 Though there are many possibilities, [some of which are considered harmful](https://twitter.com/_developit/status/1382838799420514317).
@@ -21,12 +21,12 @@ However, they have their limits and could be better suited for the challenges of
 Let’s pause for a moment and rethink the approach to icons.
 It has to meet several requirements:
 - themeable,
-- cacheable, 
+- cacheable,
 - easily embeddable.
 
 ## Can we do better than we’ve been doing so far?
 
-![Multilayer icon](/img/articles/2024-01-01-embed-multicolor-icons-using-a-single-DOM-element/icon.webp "Multilayer icon")
+![Multilayer icon](/img/articles/2024-01-10-embed-multicolor-icons-using-a-single-DOM-element/icon.webp "Multilayer icon")
 
 All the tools needed to perform the trick have been available in major browsers for at least few years.
 Is it possible everyone just failed to connect the dots?
@@ -61,7 +61,8 @@ The proposed technique is a combination of two platform capabilities.
 About five years ago, we considered using CSS masks, but we still supported IE back then.
 At that time, we had not yet thought of combining it with fragments.
 
-As a case study let’s pick one of our icons — ![a-icon](https://a.allegroimg.com/original/34bbe1/2be1acde4b8aa1b2a255d958fd59/illustration-allego-in-circle-big-db0c91e439).
+As a case study let’s pick one of our icons —
+<img class="inline-image" alt="a-icon" src ="https://a.allegroimg.com/original/34412f/ae71613e49d986c5c838698e2e86/illustration-allegro-in-circle-big-db0c91e439"/>.
 
 With the following source:
 
@@ -108,13 +109,13 @@ As a result, the SVG is supposed to look like this:
 
 It produces 4 fragments, one for each of the three paths and the last for the whole icon. Each of them can now be rendered as a separate image:
 
-1. [`#a`](https://a.allegroimg.com/original/34901c/db3b33c5488eb13bc5244e215953/illustration-allego-in-circle-big-ab3336c0b3#a) — ![`#a`](https://a.allegroimg.com/original/34901c/db3b33c5488eb13bc5244e215953/illustration-allego-in-circle-big-ab3336c0b3#a)
-2. [`#border`](https://a.allegroimg.com/original/34901c/db3b33c5488eb13bc5244e215953/illustration-allego-in-circle-big-ab3336c0b3#border) — ![`#border`](https://a.allegroimg.com/original/34901c/db3b33c5488eb13bc5244e215953/illustration-allego-in-circle-big-ab3336c0b3#border)
-3. [`#shadow`](https://a.allegroimg.com/original/34901c/db3b33c5488eb13bc5244e215953/illustration-allego-in-circle-big-ab3336c0b3#shadow) — ![`#shadow`](https://a.allegroimg.com/original/34901c/db3b33c5488eb13bc5244e215953/illustration-allego-in-circle-big-ab3336c0b3#shadow)
-4. [`#icon`](https://a.allegroimg.com/original/34901c/db3b33c5488eb13bc5244e215953/illustration-allego-in-circle-big-ab3336c0b3#icon) — ![`#icon`](https://a.allegroimg.com/original/34901c/db3b33c5488eb13bc5244e215953/illustration-allego-in-circle-big-ab3336c0b3#icon)
+1. [`#a`](https://a.allegroimg.com/original/34901c/db3b33c5488eb13bc5244e215953/illustration-allegro-in-circle-big-ab3336c0b3#a) — <img class="inline-image" alt="#a" src="https://a.allegroimg.com/original/34901c/db3b33c5488eb13bc5244e215953/illustration-allegro-in-circle-big-ab3336c0b3#a"/>
+2. [`#border`](https://a.allegroimg.com/original/34901c/db3b33c5488eb13bc5244e215953/illustration-allegro-in-circle-big-ab3336c0b3#border) — <img class="inline-image" alt="#border" src="https://a.allegroimg.com/original/34901c/db3b33c5488eb13bc5244e215953/illustration-allegro-in-circle-big-ab3336c0b3#border"/>
+3. [`#shadow`](https://a.allegroimg.com/original/34901c/db3b33c5488eb13bc5244e215953/illustration-allegro-in-circle-big-ab3336c0b3#shadow) — <img class="inline-image" alt="#shadow" src="https://a.allegroimg.com/original/34901c/db3b33c5488eb13bc5244e215953/illustration-allegro-in-circle-big-ab3336c0b3#shadow"/>
+4. [`#icon`](https://a.allegroimg.com/original/34901c/db3b33c5488eb13bc5244e215953/illustration-allegro-in-circle-big-ab3336c0b3#icon) — <img class="inline-image" alt="#icon" src="https://a.allegroimg.com/original/34901c/db3b33c5488eb13bc5244e215953/illustration-allegro-in-circle-big-ab3336c0b3#icon"/>
 
 Now, the regular fragment-less URL will display a blank image.
-Thus, for the full icon, we’re going to add a [`#icon`](https://a.allegroimg.com/original/34901c/db3b33c5488eb13bc5244e215953/illustration-allego-in-circle-big-ab3336c0b3#icon) fragment to the URL.
+Thus, for the full icon, we’re going to add a [`#icon`](https://a.allegroimg.com/original/34c91a/651290b94002acbe836ae520e8ff/illustration-allegro-in-circle-big-ab3336c0b3#icon) fragment to the URL.
 
 We won’t use the `#a` fragment, but let’s keep its identifier.
 
@@ -159,7 +160,7 @@ The last CSS class is for our specific icon.
 }
 ```
 
-The critical part is that we picked the whole icon, not any fragment, as the parent’s mask, so we have the entire icon visible. 
+The critical part is that we picked the whole icon, not any fragment, as the parent’s mask, so we have the entire icon visible.
 That’s because the parent layer masks its children.
 
 We selected the orange color of the `a` for the parent layer.
@@ -168,7 +169,7 @@ The second and third layers are for shadow and border parts, respectively.
 
 **We can describe this as the whole icon in single color covered by one or more shapes in different colors.**
 
-When an icon has intersecting parts, there’s one thing to keep in mind. 
+When an icon has intersecting parts, there’s one thing to keep in mind.
 Backgrounds render on top of each other in a particular order:
 1. the parent’s background,
 2. the `::before` pseudo-element’s background,
@@ -184,7 +185,8 @@ Let’s also consider accessibility.
 Usually, icons are [purely decorative content](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-hidden#description).
 That’s why we remove them from the accessibility tree by `aria-hidden="true"`.
 
-The result is supposed to look like the original icon from the start —![the original icon from the beginning](https://a.allegroimg.com/original/34bbe1/2be1acde4b8aa1b2a255d958fd59/illustration-allego-in-circle-big-db0c91e439).
+The result is supposed to look like the original icon from the start —
+<img class="inline-image" alt="the original icon from the beginning" src="https://a.allegroimg.com/original/34412f/ae71613e49d986c5c838698e2e86/illustration-allegro-in-circle-big-db0c91e439"/>.
 
 Now, the single element gives us control over up to three parts of our icon.
 Moreover, we can change colors independently and dynamically.
@@ -197,7 +199,7 @@ Pretty neat.
 We found this technique practical, and we’re keen to use it in the future.
 
 ## More colors
-If you need more than 3 colors, switch from pseudo-elements to regular elements. Then, you can stack as many layers as you want. 
+If you need more than 3 colors, switch from pseudo-elements to regular elements. Then, you can stack as many layers as you want.
 Another option is to combine `background-image` with gradients instead of `background-color`.
 
 Enjoy & use the platform ❤️

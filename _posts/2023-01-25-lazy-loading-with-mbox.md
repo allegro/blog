@@ -34,7 +34,7 @@ And the second part would load when the user scrolls to the end of the first par
 This technique is called lazy loading.
 It is not something new, it is used web-wide in many places, but in our case, we had to think about it differently because …
 
-... we built the Allego homepage in applications using **MBox**, the server-driven UI solution created at Allegro, which means that the content and screen logic is defined entirely on the server side.
+... we built the Allegro homepage in applications using **MBox**, the server-driven UI solution created at Allegro, which means that the content and screen logic is defined entirely on the server side.
 Implementation of lazy loading for the Allegro homepage also had to be done on the server side.
 
 > What is **MBox**? It is our **Server-Driven UI (SDUI)** solution, which we use at Allegro to create and release mobile screens faster on both platforms (iOS and Android). It is a collection of building blocks that let us develop views and actions that link MBox screens with other parts of the application or introduce some interaction on a screen.
