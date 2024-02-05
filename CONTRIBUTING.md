@@ -6,7 +6,7 @@ Please also have a look at [README.md](README.md) for a general introduction to 
 # Before you begin
 
 * If in doubt whether your idea for a post is right for the blog, [get in touch with the editors on Slack](README.md#where-to-get-help)
-* All texts should be in English. Editors will be happy to help with grammar and spelling. In special cases, we can arrange for our company professional
+* All texts should be in English. Editors will be happy to help with grammar and spelling. In special cases, we can arrange for our company's professional
   translators to help with translating the whole text.
 * Read a few recent posts in order to get familiar with subjects and style.
 * The post should be comprehensible for:
@@ -138,7 +138,7 @@ Text lines should not be longer than **160 characters**, for the same reason as 
 
 ## Code formatting
 
-Inlined code fragments such as `user_id` should be wrapped  with backtick quotes (`).
+Inlined code fragments such as `user_id` should be wrapped with backtick quotes (`).
 
 Code blocks should be formatted with syntax highlighting,
 using GitHub style syntax -  <code>```language</code>
@@ -171,7 +171,7 @@ If this is your first post, prepare your Bio (see above for details).
 
 ### Rendering on local machine
 
-If you're Mac user and you haven't installed Ruby yourself, then you could perform following steps:
+If you're Mac user and you haven't installed Ruby yourself, then you could perform the following steps:
 * `brew install ruby`
 * add `export PATH="/usr/local/opt/ruby/bin:$PATH"` into your `.bashrc`/`.zshrc`
 

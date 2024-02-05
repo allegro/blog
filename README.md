@@ -7,7 +7,7 @@ We write for smart people who are good at telling genuinely interesting and usef
 The blog is hosted at [blog.allegro.tech](https://blog.allegro.tech/). We also cooperate with Allegro tech hub page [allegro.tech](https://allegro.tech/).
 
 Goals:
-* Creating a technical blog valuable for the community. We focus on development and devops.
+* Creating a technical blog valuable for the community. We focus on development and DevOps.
 * Letting the community know about events we organize or take part in.
 * Maintaining the image of Allegro as a technical leader and a place where great engineers work.
 * Highlighting our achievements but also describing our failures, for example by publishing outage postmortems.
@@ -16,7 +16,7 @@ Rules:
 * We strive for high-quality posts (in both content and style).
 * We publish in English.
 * Posts must go through a review process.
-* Blog’s editors decide on the order posts are published. They can also reject posts deemed not fit for the blog due to subject not matching the blog’s goals,
+* Blog’s editors decide on the order posts are published. They can also reject posts deemed not fit for the blog due to subjects not matching the blog’s goals,
   low quality, inappropriate content, not following company policies, etc. In practice, this happens only very rarely.
 
 # Where to get help
