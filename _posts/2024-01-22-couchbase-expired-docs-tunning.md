@@ -5,11 +5,11 @@ author: tomasz.ziolkowski
 tags: [tech, couchbase, replication, performance bottleneck, open source, ttl, metrics]
 ---
 
-This story show how we strive to fix issues reported by our customers regarding inconsistent listing views on our e-commerce platform.
+This story shows how we strive to fix issues reported by our customers regarding inconsistent listing views on our e-commerce platform.
 We will use a top-down manner to guide you through our story. At the beginning, we highlight the challenges faced by our customers, followed by presenting
 basic information on how views are personalized on our web application. We then delve deeper into our internal architecture, aiming to clarify how
 it supports High Availability (HA) by using two data centers. Finally, we advertise a little _[Couchbase](https://www.couchbase.com/)_,
-distributed NoSQL database, and explain why it is an excellent storage solution for such architecture.
+distributed NoSQL database, and explain why it is an excellent storage solution for such an architecture.
 
 Later, we explain how the absence of adequate tools hindered us from uncovering the root cause of the problem and detail the adjustments we made in Couchbase
 to overcome these challenges. What can you glean from our experience? Firstly, you might be inspired to consider Couchbase as a storage solution in
@@ -41,7 +41,7 @@ the personalized preference is updated, and the current view is refreshed accord
 
 However, our journey took an unexpected turn when we began receiving reports that customers, despite changing their preference, continued to see the same view.
 For instance, if a customer switched from the offer listing to the product listing, they would still receive the offer listing. The frustration escalated
-as this improper view persisted, even after manual page refreshes, lasting several times before finally aligning with the customer's preference after a delay,
+as this invalid view persisted, even after manual page refreshes, lasting several times before finally aligning with the customer's preference after a delay,
 sometimes up to a minute. This discrepancy became the starting point of our investigation.
 
 ## Remedy for rendering views in SOA - Opbox
@@ -101,7 +101,7 @@ a replication mechanism that applies changes made in one data center to the othe
 
 However, a critical challenge arises when the replication mechanism lags behind the Round-Trip Time (RTT) of client requests, as illustrated in
 the diagram below. The red rectangle in the diagram symbolizes the replication process of a single write operation. If this process takes longer than
-the back-and-forth exchange of HTTP response and request, the client may receive an improper view. It's crucial to note that the second request is directed
+the back-and-forth exchange of HTTP response and request, the client may receive an invalid view. It's crucial to note that the second request is directed
 straight to data center B and is not proxied by _DATA CENTER A_.
 
 Mitigating this issue, short of radical architectural changes, becomes a significant concern. The intricacies of replication timing are central to ensuring
