@@ -20,10 +20,10 @@ Lastly, you'll be able to decipher the mysterious title of our story and underst
 
 ## What you ask is NOT what you get
 
-Recalling a persistent challenge on the Allegro platform, the focal point was the product catalog. Originating from a C2C platform where offers lacked
-references to pre-existing products, our shift towards the B2C model brought forth the need to amalgamate offers representing the same product.
-This was essential for enhancing the selection experience for our buyers. The journey to construct such a catalog involved various approaches,
-and after numerous iterations, it now functions seamlessly.
+An ongoing challenge in the development of the [Allegro platform](https://allegro.tech/) has been the product catalog.
+Originating from a C2C platform where offers lacked references to pre-existing products, our shift towards the B2C model brought forth the need to merge
+offers representing the same product. This was essential for enhancing the selection experience for our buyers. The journey to construct such a catalog involved
+various approaches, and after numerous iterations, it now functions seamlessly.
 For the context of this article, a crucial detail is that our platform must support at least two ways of selecting offers:
 
 1. Offer listing: Each presented entity is a unique offer listed by a particular merchant.
@@ -35,7 +35,7 @@ For the context of this article, a crucial detail is that our platform must supp
 ![products-listing](/img/articles/2024-01-22-couchbase-expired-docs-tunning/products-view.png)
 
 Given the diverse factors influencing whether a customer prefers selecting offers or products, we've deliberately avoided limiting the selection experience.
-Customers are free to choose either method, and their preferred choice is remembered to ensure a consistent and personalized experience.
+In many cases, customers are free to choose either method, and their preferred choice is remembered to ensure a consistent and personalized experience.
 Both offer and product listing views feature a switch that allows users to change their personal preference. With each click,
 the personalized preference is updated, and the current view is refreshed accordingly.
 
@@ -44,30 +44,30 @@ For instance, if a customer switched from the offer listing to the product listi
 as this improper view persisted, even after manual page refreshes, lasting several times before finally aligning with the customer's preference after a delay,
 sometimes up to a minute. This discrepancy became the starting point of our investigation.
 
-## Remedy for rendering views in SOA - OPBOX
+## Remedy for rendering views in SOA - Opbox
 
 Dedicated readers of this blog may already be aware that the Allegro platform embraces a microservices architecture, a powerful strategy for
 dividing domains and responsibilities. However, this approach presents challenges when it comes to offering a unified graphical user interface (GUI) for
-our customers. To bridge this gap, we successfully implemented our internal Content Management System (CMS) platform named _OPBOX_.
-While delving into the intricate details of _OPBOX_ is beyond the scope of this narrative, those interested in our frontend management can explore
+our customers. To bridge this gap, we successfully implemented our internal Content Management System (CMS) platform named Opbox.
+While delving into the intricate details of Opbox is beyond the scope of this narrative, those interested in our frontend management can explore
 our [blogpost](https://blog.allegro.tech/2016/03/Managing-Frontend-in-the-microservices-architecture.html) or,
 if inclined, listen to our podcast in Polish [here](https://podcast.allegro.tech/od_inzyniera_do_lidera_w_allegro/).
 
-For our story, what's crucial to note is that _OPBOX_ plays a pivotal role in fetching information from microservices, particularly about customer preferences.
+For our story, what's crucial to note is that Opbox plays a pivotal role in fetching information from microservices, particularly about customer preferences.
 It collaborates with the microservice responsible for storing such data, ensuring the preparation of a personalized view for each user.
 
-No detective skills were needed to deduce that the observed issues stemmed from serving outdated information from this microservice.
+No detective skills were needed to deduce that the observed issues originated from the microservice responsible for storing customer preferences,
+which was serving outdated information.
 The real question at hand was how to mitigate this challenge.
 
 Completing our narrative puzzle involves highlighting the interface familiar to our web application customers,
 which operates across two domains with distinct responsibilities:
 
-* _allegro.pl_: This domain is responsible for providing the GUI (HTML views), rendered via _OPBOX_.
+* _allegro.pl_: This domain is responsible for providing the GUI (HTML views), rendered via Opbox.
 * _edge.allegro.pl_: This domain takes charge of direct interactions via _AJAX_ (Asynchronous JavaScript) with specific microservices.
 
 In simpler terms, the listing view is rendered through the _allegro.pl_ domain, while the task of switching personal preferences is handled via the
-_edge.allegro.pl_ domain. This delineation clarifies the distinct roles played by these domains in our architecture, contributing to a seamless and
-efficient user experience.
+_edge.allegro.pl_ domain.
 
 ## You can’t HAndle this
 
@@ -138,7 +138,7 @@ the challenges faced by our customers.
 
 ### Measuring Replication Performance: The Birth of cb-tracker
 
-Due to a lack of readily available tools or our inability to find suitable options, we took matters into our own hands and developed our open-source
+Due to the lack of readily available tools and our inability to find suitable options, we took matters into our own hands and developed our open-source
 command-line tool, _[cb-tracker](https://github.com/ziollek/couchbase-replication-ping)_. This tool serves the purpose of continuously measuring
 replication lag. Its functionality revolves around connecting to two Couchbase clusters, designated as A and B, connected via _XDCR_ replication.
 
