@@ -1,20 +1,20 @@
 ---
 layout: post
-title: "Don’t bother it is only a little expired"
+title: "Don’t bother: it is only a little expired"
 author: tomasz.ziolkowski
 tags: [tech, couchbase, replication, performance bottleneck, open source, ttl, metrics]
 ---
 
-This story revolves around our efforts to address issues reported by our customers regarding inconsistent listing views on our web application platform.
-We approach this narrative in a top-down manner. Initially, we highlight the challenges faced by our customers, followed by presenting essential information on
-how views are personalized on our web application. We then delve into our internal architecture, showcasing its support for High Availability (HA) through
-the utilization of two data centers. Subsequently, you'll gain insight into why distributed NoSQL database _[Couchbase](https://www.couchbase.com/)_ is
-an excellent storage solution for such architecture.
+This story show how we strive to fix issues reported by our customers regarding inconsistent listing views on our e-commerce platform.
+We will use a top-down manner to guide you through our story. At the beginning, we highlight the challenges faced by our customers, followed by presenting
+basic information on how views are personalized on our web application. We then delve deeper into our internal architecture, aiming to clarify how
+it supports High Availability (HA) by using two data centers. Finally, we advertise a little _[Couchbase](https://www.couchbase.com/)_,
+distributed NoSQL database, and explain why it is an excellent storage solution for such architecture.
 
-Later, we explain how the absence of adequate tools hindered us from uncovering the root cause of the problem and detail the adjustments we made in _Couchbase_
-to overcome these challenges. What can you glean from our experience? Firstly, you might be inspired to consider _Couchbase_ as a storage solution in
-a multi-regional, active-active architecture. Secondly, you'll discover a tool that aids in monitoring _Couchbase_ behavior in a multi-region setting.
-Thirdly, we share some tips on manipulating settings in _Couchbase_.
+Later, we explain how the absence of adequate tools hindered us from uncovering the root cause of the problem and detail the adjustments we made in Couchbase
+to overcome these challenges. What can you glean from our experience? Firstly, you might be inspired to consider Couchbase as a storage solution in
+a multi-regional, active-active architecture. Secondly, you'll discover a tool that aids in monitoring Couchbase behavior in a multi-region setting.
+Thirdly, we share some tips on manipulating settings in Couchbase.
 Lastly, you'll be able to decipher the mysterious title of our story and understand a few technological abbreviations.
 
 
@@ -91,7 +91,7 @@ However, it's crucial to note that the locality principle faces limitations, esp
 most Relational Database Management Systems (RDBMS) and MongoDB databases only allow writes through a specific node. This means that even if the traffic
 is handled by an instance in _DATA CENTER A_, it may still be necessary to query a database node in _DATA CENTER B_ to write some data.
 The challenge lies in finding storage solutions that permit simultaneous writing to nodes in the same location. One such example is
-_Couchbase_ clusters with cross-data center replication, offering a solution to the intricacies of our multi-region, active-active architecture.
+Couchbase clusters with cross-data center replication, offering a solution to the intricacies of our multi-region, active-active architecture.
 
 ### Inconsistency roots
 
@@ -124,7 +124,7 @@ we use a bidirectional configuration to replicate changes, irrespective of the l
 
 ## Deeper Analysis: Unraveling the Replication Enigma
 
-_Couchbase_ offers an abundance of highly detailed metrics regarding the internal state of the cluster. However, without a deep understanding,
+Couchbase offers an abundance of highly detailed metrics regarding the internal state of the cluster. However, without a deep understanding,
 it becomes challenging to decipher whether irregularities or spikes in these metrics may indicate potential problems for customers. This challenge is
 particularly pronounced when dealing with cross-cluster replication, where overseeing the state of two clusters simultaneously is a complex task.
 
@@ -140,7 +140,7 @@ the challenges faced by our customers.
 
 Due to a lack of readily available tools or our inability to find suitable options, we took matters into our own hands and developed our open-source
 command-line tool, _[cb-tracker](https://github.com/ziollek/couchbase-replication-ping)_. This tool serves the purpose of continuously measuring
-replication lag. Its functionality revolves around connecting to two _Couchbase_ clusters, designated as A and B, connected via _XDCR_ replication.
+replication lag. Its functionality revolves around connecting to two Couchbase clusters, designated as A and B, connected via _XDCR_ replication.
 
 The primary objective of our tool is to measure the Replication Round-Trip Time (RTT). In simpler terms, it gauges how quickly a document written to cluster A
 becomes accessible on cluster B, and vice versa. The logic behind this measurement is inspired by the widely used network diagnostic tool _ping_.
@@ -148,27 +148,27 @@ To provide a clearer understanding of how this tool performs measurements, refer
 
 ![cb-tracker-flow](/img/articles/2024-01-22-couchbase-expired-docs-tunning/cb-tracker.png)
 
-With the deployment of such a tool, we initiated continuous replication monitoring in the _Couchbase_ bucket used by the microservice responsible for managing
+With the deployment of such a tool, we initiated continuous replication monitoring in the Couchbase bucket used by the microservice responsible for managing
 customer preferences. This monitoring effort provided us with valuable insights into the cyclic spikes in replication time. As depicted in the diagram below,
-we observed two recurring spikes every hour, mutually shifted by approximately 20 minutes. This observation prompted us to investigate potential periodic tasks
-within _Couchbase_ that might be contributing to this cyclic behavior.
+we observed two spikes recurring every hour, about 20 minutes apart. This observation prompted us to investigate potential periodic tasks
+within Couchbase that might be contributing to this cyclic behavior.
 
 ![replication-spikes](/img/articles/2024-01-22-couchbase-expired-docs-tunning/replication-spikes.png)
 
 ### There are my knobs: Unraveling Couchbase Quirks
 
-While we've extolled the virtues of _Couchbase_, every solution has its nuances, and as the saying goes, the devil is in the details... and defaults :).
+While we've extolled the virtues of Couchbase, every solution has its quirks, and as the saying goes, the devil is in the details... and defaults :).
 In our case, the intricacy arose from the documents stored in the scrutinized bucket, each having a set Time-To-Live (TTL).
-The implementation of _TTL_ on the _Couchbase_ side is quite intriguing—expired documents are not deleted immediately; instead, they are skipped by
+The implementation of _TTL_ on the Couchbase side is quite intriguing — expired documents are not deleted immediately; instead, they are skipped by
 the fetching logic. This situation could potentially last indefinitely, leading to storage consumption concerns.
 
-To handle expired documents, _Couchbase_ triggers a dedicated process every 60 minutes; the interval is controlled by [exp_pager_stime parameter](https://docs.couchbase.com/server/current/cli/cbepctl/set-flush_param.html#options).
+To handle expired documents, Couchbase triggers a dedicated process every 60 minutes; the interval is controlled by [exp_pager_stime parameter](https://docs.couchbase.com/server/current/cli/cbepctl/set-flush_param.html#options).
 Each run flushes out these expired documents from storage. However, an additional default setting — specifically,
-a flag _[filterExpiration](https://docs.couchbase.com/server/current/rest-api/rest-xdcr-adv-settings.html#get-settings-for-all-replications)_ indicating that
+the flag _[filterExpiration](https://docs.couchbase.com/server/current/rest-api/rest-xdcr-adv-settings.html#get-settings-for-all-replications)_ indicating that
 each flush should be replicated via _XDCR_ — created an unintended consequence. This default behavior caused a significant influx of events every hour,
 overwhelming _XDCR_. Consequently, other events, such as changes made by the microservice, had to be queued.
 
-Understanding that this mechanism operates on each cluster and that every expired document will eventually be deleted,
+Understanding that this mechanism operates on each cluster and that every expired document would eventually be deleted,
 we recognized the need to address this overload of the replication mechanism. To rectify this, we adjusted the mentioned flag and increased the frequency
 of cleaning expired documents. Following this optimization, we observed a notable improvement, with no further instances of replication spikes.
 
@@ -179,9 +179,9 @@ problem was crucial. I hope that the tool we've introduced can also assist you i
 
 Couchbase offers a comprehensive set of configuration parameters with default settings that might not be optimal for handling high-volume traffic.
 As demonstrated, there are subtle threats that can undermine the experience of an otherwise speedy replication mechanism like _XDCR_.
-It's worth noting that our narrative is based on the community edition of _Couchbase_ (v6), and it's unfortunate that _XDCR_ is
+It's worth noting that our narrative is based on the community edition of Couchbase (v6), and it's unfortunate that _XDCR_ is
 [withdrawn](https://www.couchbase.com/blog/couchbase-modifies-license-free-community-edition-package/) from the open-source
-version of _Couchbase_ in the next release. I trust that our story can offer insights to help fine-tune your configuration and navigate potential challenges.
+version of Couchbase in the next release. I trust that our story can offer insights to help fine-tune your configuration and navigate potential challenges.
 
 ### Links
 
