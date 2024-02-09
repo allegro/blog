@@ -56,7 +56,7 @@ With that extra knowledge in hand, we were ready to dig deeper.
 Thanks to network traffic analysis, we had arrival time, end time and metadata for each request. We then wanted to trace components of each request.
 Since produce requests are mostly concerned with saving data, we decided to instrument writes to the underlying storage.
 
-On Linux, Kafka uses regular file system files for storing data. Writes are done using ordinary write system calls — data is first stored in the page cache
+On Linux, Kafka uses regular files for storing data. Writes are done using ordinary write system calls — data is first stored in the page cache
 and then asynchronously flushed to disk. How can we trace individual file writes without modifying the source code? We can make use of _dynamic tracing_.
 
 What is _dynamic tracing_? In Brendan Gregg's _System Performance_, he uses the following analogy that we really like:
@@ -121,8 +121,7 @@ ARRIVAL TIME  END TIME      LATENCY  MESSAGE_ID  TOPIC   PARTITION
 15:37:00.653  15:37:00.786  132 ms   190735697   topicF  19
 ```
 
-To gain extra confidence, we wrote a tool that parses a Kafka log file, reads the records written to it (using file offset and number of bytes written), p
-arses them, and returns their _message IDs_. With that, we were able to perfectly correlate incoming requests with their respective writes:
+To gain extra confidence, we wrote a tool that parses a Kafka log file, reads the records written to it (using file offset and number of bytes written), parses them, and returns their _message IDs_. With that, we were able to perfectly correlate incoming requests with their respective writes:
 ```
 START TIME    END TIME      LATENCY  MESSAGE_ID  FILE                                TOPIC   PARTITION  BYTES  OFF_KB
 15:37:00.627  15:37:00.785  158 ms   839584818   topicA-0/00000000002938697123.log   topicA  0          2009   88847331
