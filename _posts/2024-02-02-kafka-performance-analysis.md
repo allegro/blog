@@ -331,7 +331,7 @@ significant differences.
 ### Changing the Journaling Mode from data=ordered to data=writeback
 ext4 offers three journaling modes: _journal_, _ordered_ and _writeback_. The default mode is _ordered_ and compared to the most performant mode, _writeback_,
 it guarantees that the data is written to the main file system prior to the metadata being committed to the journal. As mentioned in
-[docs](https://kafka.apache.org/documentation/#ext4), Kafka does not rely on this property, and switching the mode to _writeback_ should reduce latency.
+[docs](https://kafka.apache.org/documentation/#ext4), Kafka does not rely on this property, so switching the mode to _writeback_ should reduce latency.
 
 **We switched the journaling mode on one of the brokers, and indeed, we observed latency improvements:**
 
@@ -348,13 +348,13 @@ it guarantees that the data is written to the main file system prior to the meta
 </figure>
 
 ### Enabling Fast Commit
-When reading ext4 journaling we stumbled upon an [article](https://lwn.net/Articles/842385/) describing a new feature introduced in Linux 5.10 called
+When reading about ext4 journaling, we stumbled upon an [article](https://lwn.net/Articles/842385/) describing a new feature introduced in Linux 5.10 called
 _fast commits_. As explained in the article, _fast commit_ is a lighter-weight journaling method that could result in performance boost for certain workloads.
 
 We enabled _fast commit_ on one of the brokers. **We noticed that max write latency decreased significantly.** Diving deeper we found out that on a broker with
 _fast commit_ enabled:
 * The latency of _jdb2_journal_commit_transaction_ decreased by an order of magnitude. This meant that periodic journal commits were indeed much faster
-thanks to enabling fast commits.
+thanks to enabling _fast commits_.
 * Slow ext4 writes occurred at the same time when there was a spike in latency of _jbd2_fc_begin_commit_. This method is part of the _fast commit_ flow. It
 became the new source of latency but its maximum latency was lower than that of _jdb2_journal_commit_transaction_ without fast commits.
 
@@ -383,9 +383,9 @@ Lower file system write latency, in turn, resulted in reduced produce latency:
 </figure>
 
 ### Summary
-To summarize, we've tested following ext4 optimizations:
-* Decreasing commit interval
-* Changing journaling mode to `data=writeback`
+To summarize, we've tested the following ext4 optimizations:
+* Decreasing the commit interval
+* Changing the journaling mode to `data=writeback`
 * Enabling `fast commit`
 
 We observed that both `data=writeback` and `fast commit` significantly reduced latency, with `fast commit` having slightly lower latency. The results were
