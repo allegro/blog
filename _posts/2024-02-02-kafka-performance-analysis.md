@@ -4,6 +4,22 @@ title: "Unlocking Kafka's Potential: Tackling Tail Latency with eBPF"
 author: [maciej.moscicki, piotr.rzysko]
 tags: [tech, kafka, ebpf, bcc, linux, kernel, ext4, xfs, performance, tuning, file system]
 ---
+<style>
+  .post-content table, .post-content td, .post-content th {
+    border: none;
+    background-color: transparent;
+}
+
+.post-content th {
+    display: none;
+}
+
+.post-content td {
+    padding: 0;
+}
+
+</style>
+
 
 At [Allegro](https://allegro.tech), we use [Kafka](https://kafka.apache.org/) as a backbone for asynchronous communication between microservices. With up to
 300k messages published and 1M messages consumed every second, it is a key part of our infrastructure. A few months ago, in our main Kafka cluster, we noticed
@@ -24,15 +40,12 @@ to the cluster. However, this would be very time-consuming and invasive. We deci
 
 The first thing we did was finding _arrival_ and _end_ times for every Kafka produce request.
 
-<figure>
-<a href="/img/articles/2024-02-02-kafka-performance-analysis/request_timeline1.png">
-<img alt="Timeline of Kafka produce request" src="/img/articles/2024-02-02-kafka-performance-analysis/request_timeline1.png" />
-</a>
-<figcaption style="text-align: center;">
-<i>Timeline of a produce request. Arrival and end times define the boundaries of the request. The components of Kafka involved in handling the request and their
-latencies are unknown.</i>
-</figcaption>
-</figure>
+
+|                                                                                                                                                                                        |
+|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+|                                    ![Timeline of Kafka produce request](/img/articles/2024-02-02-kafka-performance-analysis/request_timeline1.png)                                     |
+| *Timeline of a produce request. Arrival and end times define the boundaries of the request. The components of Kafka involved in handling the request and their latencies are unknown.* |
+
 
 Kafka uses a binary protocol over TCP to send requests from producers (and consumers) to brokers. We started by capturing the network traffic on a selected
 broker using [tcpdump](https://www.tcpdump.org/). Then we wrote a tool for analyzing the captured packets, which enabled us to list all the request and response
@@ -197,27 +210,19 @@ this thread was _data-plane-kafka-request-handler-24_.
 
 We searched for this thread's activity in the async-profiler output:
 
-<figure>
-<a href="/img/articles/2024-02-02-kafka-performance-analysis/locks.png">
-<img alt="Async profiler output visualized in Java Mission Control" src="/img/articles/2024-02-02-kafka-performance-analysis/locks.png" />
-</a>
-<figcaption style="text-align: center;">
-<i>Async profiler output visualized in Java Mission Control. Thread with TID 4484 is blocked on a monitor.</i>
-</figcaption>
-</figure>
+|                                                                                                                            |
+|:--------------------------------------------------------------------------------------------------------------------------:|
+| ![Async profiler output visualized in Java Mission Control](/img/articles/2024-02-02-kafka-performance-analysis/locks.png) |
+|         *Async profiler output visualized in Java Mission Control. Thread with TID 4484 is blocked on a monitor.*          |
 
 In the output, we saw what we suspected — a thread was waiting on a lock for approximately the same duration as the slow write occurring on another thread.
 This confirmed our initial hypothesis.
 
-<figure>
-<a href="/img/articles/2024-02-02-kafka-performance-analysis/timeline_lock.png">
-<img alt="For a slow request with fast file system writes, waiting to obtain a lock turned out to be the source of latency"
-src="/img/articles/2024-02-02-kafka-performance-analysis/timeline_lock.png" />
-</a>
-<figcaption style="text-align: center;">
-<i>For a slow request with fast file system writes, waiting to acquire a lock turned out to be the source of latency.</i>
-</figcaption>
-</figure>
+|                                                                                                                                                                                            |
+|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+| ![For a slow request with fast file system writes, waiting to obtain a lock turned out to be the source of latency](/img/articles/2024-02-02-kafka-performance-analysis/timeline_lock.png) |
+|                                    *For a slow request with fast file system writes, waiting to acquire a lock turned out to be the source of latency.*                                    |
+
 
 Applying this technique, we analyzed numerous cases, and the results were consistent: **for a slow produce request there was either a matching slow write or a
 thread was waiting to acquire a lock guarding access to a log file**. We confirmed that file system writes were the root cause of slow produce requests.
@@ -230,24 +235,17 @@ and [off-CPU](https://www.brendangregg.com/offcpuanalysis.html) profiles of _ext
 [profile](https://github.com/iovisor/bcc/blob/master/tools/profile.py) and [offcputime](https://github.com/iovisor/bcc/blob/master/tools/offcputime.py),
 respectively. Our goal was to identify the activated paths in the kernel and then measure the latency of functions associated with them.
 
-<figure>
-<a href="/img/articles/2024-02-02-kafka-performance-analysis/on_cpu.png">
-<img alt="on-CPU profile of ext4_file_write_iter" src="/img/articles/2024-02-02-kafka-performance-analysis/on_cpu.png" />
-</a>
-<figcaption style="text-align: center;">
-<i>on-CPU profile of ext4_file_write_iter</i>
-</figcaption>
-</figure>
 
-<figure>
-<a href="/img/articles/2024-02-02-kafka-performance-analysis/off_cpu.png">
-<img alt="off-CPU profile of ext4_file_write_iter" src="/img/articles/2024-02-02-kafka-performance-analysis/off_cpu.png" />
-</a>
-<figcaption style="text-align: center;">
-<i>off-CPU profile of ext4_file_write_iter</i>
-</figcaption>
-</figure>
+|                                                                                                           |
+|:---------------------------------------------------------------------------------------------------------:|
+| ![on-CPU profile of ext4_file_write_iter](/img/articles/2024-02-02-kafka-performance-analysis/on_cpu.png) |
+|                                 *on-CPU profile of ext4_file_write_iter*                                  |
 
+
+|                                                                                                             |
+|:-----------------------------------------------------------------------------------------------------------:|
+| ![off-CPU profile of ext4_file_write_iter](/img/articles/2024-02-02-kafka-performance-analysis/off_cpu.png) |
+|                                  *off-CPU profile of ext4_file_write_iter*                                  |
 
 We noticed that the function [ext4\_dirty\_inode](https://elixir.bootlin.com/linux/v5.15.91/source/fs/ext4/inode.c#L5971) [1] was present in both flamegraphs.
 In the Linux kernel, the _ext4_dirty_inode_ function is responsible for marking an inode (file or directory data structure) as being in a dirty state. A _dirty_
@@ -336,17 +334,11 @@ it guarantees that the data is written to the main file system prior to the meta
 
 **We switched the journaling mode on one of the brokers, and indeed, we observed latency improvements:**
 
-<figure>
-<a href="/img/articles/2024-02-02-kafka-performance-analysis/base_p999_2.png">
-<img alt="Base Produce Latency" src="/img/articles/2024-02-02-kafka-performance-analysis/base_p999_2.png" />
-</a>
-<a href="/img/articles/2024-02-02-kafka-performance-analysis/writeback_p999_2.png">
-<img alt="Writeback Produce Latency" src="/img/articles/2024-02-02-kafka-performance-analysis/writeback_p999_2.png" />
-</a>
-<figcaption style="text-align: center;">
-<i>With data=writeback, p999 decreased from 3 seconds to 800 milliseconds.</i>
-</figcaption>
-</figure>
+|                                                                                                        |
+|:------------------------------------------------------------------------------------------------------:|
+|      ![Base Produce Latency](/img/articles/2024-02-02-kafka-performance-analysis/base_p999_2.png)      |
+| ![Writeback Produce Latency](/img/articles/2024-02-02-kafka-performance-analysis/writeback_p999_2.png) |
+|               *With data=writeback, p999 decreased from 3 seconds to 800 milliseconds.*                |
 
 ### Enabling Fast Commit
 When reading about ext4 journaling, we stumbled upon an [article](https://lwn.net/Articles/842385/) describing a new feature introduced in Linux 5.10 called
@@ -359,29 +351,22 @@ thanks to enabling _fast commits_.
 * Slow ext4 writes occurred at the same time when there was a spike in latency of _jbd2_fc_begin_commit_. This method is part of the _fast commit_ flow. It
 became the new source of latency but its maximum latency was lower than that of _jdb2_journal_commit_transaction_ without fast commits.
 
-<figure>
-<a href="/img/articles/2024-02-02-kafka-performance-analysis/write_iter_heatmap.png">
-<img alt="Comparison of maximum latency [s] of ext4 writes for brokers without and with fast commit."
-src="/img/articles/2024-02-02-kafka-performance-analysis/write_iter_heatmap.png" />
-</a>
-<figcaption style="text-align: center;">
-<i>Comparison of maximum latency [s] of ext4 writes for brokers without and with fast commit.</i>
-</figcaption>
-</figure>
+
+
+|                                                                                                                                                                           |
+|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+| ![Comparison of maximum latency [s] of ext4 writes for brokers without and with fast commit.](/img/articles/2024-02-02-kafka-performance-analysis/write_iter_heatmap.png) |
+|                                       *Comparison of maximum latency [s] of ext4 writes for brokers without and with fast commit.*                                        |
+
 
 Lower file system write latency, in turn, resulted in reduced produce latency:
 
-<figure>
-<a href="/img/articles/2024-02-02-kafka-performance-analysis/base_p999_2.png">
-<img alt="Base Produce Latency" src="/img/articles/2024-02-02-kafka-performance-analysis/base_p999_2.png" />
-</a>
-<a href="/img/articles/2024-02-02-kafka-performance-analysis/fc_p999_2.png">
-<img alt="Fast Commit Produce Latency" src="/img/articles/2024-02-02-kafka-performance-analysis/fc_p999_2.png" />
-</a>
-<figcaption style="text-align: center;">
-<i>With fast commit enabled, produce P999 latency went down from 3 seconds to 500 milliseconds</i>
-</figcaption>
-</figure>
+
+|                                                                                                   |
+|:-------------------------------------------------------------------------------------------------:|
+|   ![Base Produce Latency](/img/articles/2024-02-02-kafka-performance-analysis/base_p999_2.png)    |
+| ![Fast Commit Produce Latency](/img/articles/2024-02-02-kafka-performance-analysis/fc_p999_2.png) |
+|   *With fast commit enabled, produce P999 latency went down from 3 seconds to 500 milliseconds*   |
 
 ### Summary
 To summarize, we've tested the following ext4 optimizations:
