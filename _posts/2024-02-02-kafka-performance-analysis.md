@@ -12,7 +12,7 @@ p99 latency was up to 1 second, and the p999 latency was up to 3 seconds. This w
 decided to look into this issue. In this blog post, we would like to describe our journey — how we used Kafka protocol sniffing and eBPF to identify and remove
 the performance bottleneck.
 
-[![Kafka Produce Latency](/img/articles/2024-02-02-kafka-performance-analysis/base_p999_2.png)](/img/articles/2024-02-02-kafka-performance-analysis/base_p999_2.png)
+[![Kafka Produce Latency](/img/articles/2024-02-02-kafka-performance-analysis/kafka-performance-analysis.png)](/img/articles/2024-02-02-kafka-performance-analysis/kafka-performance-analysis.png)
 
 ## The Need for Tracing
 Kafka brokers [expose various metrics](https://docs.confluent.io/platform/current/kafka/monitoring.html#localtimems). From them, we were able to tell that
