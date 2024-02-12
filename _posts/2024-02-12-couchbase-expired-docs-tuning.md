@@ -27,12 +27,9 @@ various approaches, and after numerous iterations, it now functions seamlessly.
 For the context of this article, a crucial detail is that our platform must support at least two ways of selecting offers:
 
 1. Offer listing: Each presented entity is a unique offer listed by a particular merchant.
-
-![offers-listing](/img/articles/2024-01-22-couchbase-expired-docs-tunning/offers-view.png)
-
+  ![offers-listing](/img/articles/2024-02-12-couchbase-expired-docs-tuning/offers-view.png)
 1. Product listing: Each presented entity represents a unique product connected to a set of offers where you can make a purchase.
-
-![products-listing](/img/articles/2024-01-22-couchbase-expired-docs-tunning/products-view.png)
+  ![products-listing](/img/articles/2024-02-12-couchbase-expired-docs-tuning/products-view.png)
 
 Given the diverse factors influencing whether a customer prefers selecting offers or products, we've deliberately avoided limiting the selection experience.
 In many cases, customers are free to choose either method, and their preferred choice is remembered to ensure a consistent and personalized experience.
@@ -50,7 +47,7 @@ Dedicated readers of this blog may already be aware that the Allegro platform em
 dividing domains and responsibilities. However, this approach presents challenges when it comes to offering a unified graphical user interface (GUI) for
 our customers. To bridge this gap, we successfully implemented our internal Content Management System (CMS) platform named Opbox.
 While delving into the intricate details of Opbox is beyond the scope of this narrative, those interested in our frontend management can explore
-our [blogpost](https://blog.allegro.tech/2016/03/Managing-Frontend-in-the-microservices-architecture.html) or,
+our [blogpost]({% post_url 2016-03-12-Managing-Frontend-in-the-microservices-architecture %}) or,
 if inclined, listen to our podcast in Polish [here](https://podcast.allegro.tech/od_inzyniera_do_lidera_w_allegro/).
 
 For our story, what's crucial to note is that Opbox plays a pivotal role in fetching information from microservices, particularly about customer preferences.
@@ -81,7 +78,7 @@ handling traffic simultaneously. While this approach ensures that everything rem
 Balancing the benefits of simultaneous activity with the complexities it brings is a constant consideration in our pursuit of a resilient
 and fault-tolerant system.
 
-### Navigating the Multi-Region Challenges
+### Navigating the multi-region challenges
 
 Handling traffic in such a manner can undoubtedly impact performance. Each HTTP request from our customers typically involves a set of microservices.
 To mitigate the challenges of cross-datacenter traffic between these services, we introduced the principle of locality. In simple terms, if an instance of
@@ -93,7 +90,7 @@ is handled by an instance in _DATA CENTER A_, it may still be necessary to query
 The challenge lies in finding storage solutions that permit simultaneous writing to nodes in the same location. One such example is
 Couchbase clusters with cross-data center replication, offering a solution to the intricacies of our multi-region, active-active architecture.
 
-### Inconsistency roots
+### Roots of inconsistency
 
 As mentioned earlier, we employ two domains to provide an interface for our customers. In the context of High Availability (HA), this setup implies that
 rendering can be handled by _DATA CENTER A_, while _AJAX_ communication simultaneously takes place in _DATA CENTER B_. This dual-domain approach necessitates
@@ -107,7 +104,7 @@ straight to data center B and is not proxied by _DATA CENTER A_.
 Mitigating this issue, short of radical architectural changes, becomes a significant concern. The intricacies of replication timing are central to ensuring
 a seamless and accurate user experience in our multi-data center, active-active architecture.
 
-![replication-lag](/img/articles/2024-01-22-couchbase-expired-docs-tunning/replication.png)
+![replication-lag](/img/articles/2024-02-12-couchbase-expired-docs-tuning/replication.png)
 
 The replication lag can be influenced by various factors depending on the storage solutions in use. One undeniable factor is that it cannot be faster than
 the light distance between data centers. Fortunately, in our case, this distance is minimal, and for the purpose of this story, it can be considered negligible.
@@ -122,7 +119,7 @@ In fact, the changes are applied on a cluster in the second data center faster t
 It's noteworthy that _XDCR_ can be configured in either a unidirectional or bidirectional manner. In our case, given active-active writes in all locations,
 we use a bidirectional configuration to replicate changes, irrespective of the location in which they were applied.
 
-## Deeper Analysis: Unraveling the Replication Enigma
+## Deeper analysis: unraveling the replication enigma
 
 Couchbase offers an abundance of highly detailed metrics regarding the internal state of the cluster. However, without a deep understanding,
 it becomes challenging to decipher whether irregularities or spikes in these metrics may indicate potential problems for customers. This challenge is
@@ -136,7 +133,7 @@ To gain a deeper understanding of the situation, our approach was clear—gather
 emphasis on targeted data collection allowed us to delve into the intricacies of the replication process and uncover the underlying factors contributing to
 the challenges faced by our customers.
 
-### Measuring Replication Performance: The Birth of cb-tracker
+### Measuring replication performance: the birth of cb-tracker
 
 Due to the lack of readily available tools and our inability to find suitable options, we took matters into our own hands and developed our open-source
 command-line tool, _[cb-tracker](https://github.com/ziollek/couchbase-replication-ping)_. This tool serves the purpose of continuously measuring
@@ -146,16 +143,16 @@ The primary objective of our tool is to measure the Replication Round-Trip Time 
 becomes accessible on cluster B, and vice versa. The logic behind this measurement is inspired by the widely used network diagnostic tool _ping_.
 To provide a clearer understanding of how this tool performs measurements, refer to the diagram below.
 
-![cb-tracker-flow](/img/articles/2024-01-22-couchbase-expired-docs-tunning/cb-tracker.png)
+![cb-tracker-flow](/img/articles/2024-02-12-couchbase-expired-docs-tuning/cb-tracker.png)
 
 With the deployment of such a tool, we initiated continuous replication monitoring in the Couchbase bucket used by the microservice responsible for managing
 customer preferences. This monitoring effort provided us with valuable insights into the cyclic spikes in replication time. As depicted in the diagram below,
 we observed two spikes recurring every hour, about 20 minutes apart. This observation prompted us to investigate potential periodic tasks
 within Couchbase that might be contributing to this cyclic behavior.
 
-![replication-spikes](/img/articles/2024-01-22-couchbase-expired-docs-tunning/replication-spikes.png)
+![replication-spikes](/img/articles/2024-02-12-couchbase-expired-docs-tuning/replication-spikes.png)
 
-### There are my knobs: Unraveling Couchbase Quirks
+### There are my knobs: unraveling couchbase quirks
 
 While we've extolled the virtues of Couchbase, every solution has its quirks, and as the saying goes, the devil is in the details... and defaults :).
 In our case, the intricacy arose from the documents stored in the scrutinized bucket, each having a set Time-To-Live (TTL).
