@@ -12,4 +12,8 @@
     <link rel="stylesheet" href="{{ '/css/style.css' }}">
     <link rel="stylesheet" href="{{ '/css/blog.css' }}">
     <script defer data-domain="blog.allegro.tech" src="https://plausible.io/js/script.js"></script>
+    <script type="text/javascript">
+        // just to clean up old google cookies, remove this in few months
+        document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+    </script>
 </head>
