@@ -70,7 +70,7 @@ Thanks to network traffic analysis we had arrival time, end time and metadata fo
 which Kafka components were the source of latency. Since produce requests are mostly concerned with saving data,
 we decided to instrument writes to the underlying storage.
 
-On Linux, Kafka uses regular files for storing data. Writes are done using ordinary write system calls — data is first stored in the page cache
+On Linux, Kafka uses regular files for storing data. Writes are done using ordinary [write system calls](https://man7.org/linux/man-pages/man2/write.2.html) — data is first stored in the page cache
 and then asynchronously flushed to disk. How can we trace individual file writes without modifying the source code? We can make use of _dynamic tracing_.
 
 What is _dynamic tracing_? In Brendan Gregg's _System Performance_, he uses the following analogy that we really like:
@@ -160,7 +160,7 @@ There were however requests that didn't have corresponding slow writes.
 ## Kafka Lock Contention
 Slow produce requests without corresponding slow writes were always occurring around the time of some other slow write. We started wondering whether those
 requests were perhaps queuing and waiting for something to finish. By analyzing Kafka source code, we identified a couple of places that use _synchronized_
-blocks, including guarding log file writes.
+blocks, including those guarding log file writes.
 
 We set out to measure how much time Kafka’s threads, processing produce requests, spend on the aforementioned locks. Our goal was to correlate periods when
 they were waiting on locks with writes to the file system. We considered two approaches to do that.
