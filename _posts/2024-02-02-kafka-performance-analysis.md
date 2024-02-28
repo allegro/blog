@@ -375,7 +375,7 @@ To summarize, we've tested the following ext4 optimizations:
 * Enabling `fast commit`
 
 We observed that both `data=writeback` and `fast commit` significantly reduced latency, with `fast commit` having slightly lower latency. The results were
-promising, but we had higher hopes. Thankfully, we had one idea left.
+promising, but we had higher hopes. Thankfully, we had one more idea left.
 
 ## XFS
 While researching the topic of journaling in ext4, we stumbled upon a few sources suggesting that the XFS file system, with its more advanced journaling,
@@ -383,7 +383,7 @@ is well-suited for handling large files and high-throughput workloads, often out
 has a lot of tuning already in place and should be a better fit than the default ext4.
 
 We migrated one of the brokers to the XFS file system. The results were impressive. The thing that was very distinctive compared to the aforementioned ext4
-optimizations was the consistency of XFS performance. While other broker configurations experienced p999 latency spikes throughout the day, XFS had only a
+optimizations was the consistency of XFS performance. While other broker configurations experienced p999 latency spikes throughout the day, XFS – with its default configuration – had only a
 few hiccups.
 
 [![Base Produce Latency](/img/articles/2024-02-02-kafka-performance-analysis/base_p999_2.png)](/img/articles/2024-02-02-kafka-performance-analysis/base_p999_2.png)
@@ -408,4 +408,4 @@ easily modify them for our custom use cases.
 * p99 and p999 analysis is sometimes not enough. In our case, the p999 latency of file system writes was less than 1ms. It turned out that a single slow write
 could cause lock contention and a cascade of slow requests. Without tracing individual requests, the root cause would have been very hard to catch.
 
-We hope that you learned something useful from this blog post, and we wish you good luck in your future performance analysis endeavors!
+We hope that you found this blog post, and we wish you good luck in your future performance analysis endeavors!
