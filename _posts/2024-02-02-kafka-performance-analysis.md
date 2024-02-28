@@ -4,22 +4,6 @@ title: "Unlocking Kafka's Potential: Tackling Tail Latency with eBPF"
 author: [maciej.moscicki, piotr.rzysko]
 tags: [tech, kafka, ebpf, bcc, linux, kernel, ext4, xfs, performance, tuning, file system]
 ---
-<style>
-  .post-content table, .post-content td, .post-content th {
-    border: none;
-    background-color: transparent;
-}
-
-.post-content th {
-    display: none;
-}
-
-.post-content td {
-    padding: 0;
-}
-
-</style>
-
 
 At [Allegro](https://allegro.tech), we use [Kafka](https://kafka.apache.org/) as a backbone for asynchronous communication between microservices. With up to
 300k messages published and 1M messages consumed every second, it is a key part of our infrastructure. A few months ago, in our main Kafka cluster, we noticed
@@ -410,3 +394,19 @@ easily modify them for our custom use cases.
 could cause lock contention and a cascade of slow requests. Without tracing individual requests, the root cause would have been very hard to catch.
 
 We hope that you found this blog post useful, and we wish you good luck in your future performance analysis endeavors!
+
+<style>
+  .post-content table, .post-content td, .post-content th {
+    border: none;
+    background-color: transparent;
+}
+
+.post-content th {
+    display: none;
+}
+
+.post-content td {
+    padding: 0;
+}
+
+</style>
