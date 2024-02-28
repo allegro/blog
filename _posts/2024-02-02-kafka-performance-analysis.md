@@ -23,12 +23,13 @@ tags: [tech, kafka, ebpf, bcc, linux, kernel, ext4, xfs, performance, tuning, fi
 
 At [Allegro](https://allegro.tech), we use [Kafka](https://kafka.apache.org/) as a backbone for asynchronous communication between microservices. With up to
 300k messages published and 1M messages consumed every second, it is a key part of our infrastructure. A few months ago, in our main Kafka cluster, we noticed
-the following discrepancy: while median response times for produce requests were in single-digit milliseconds, the tail latency was much worse. Namely, the
+the following discrepancy: while median response times for [produce requests](https://developer.confluent.io/courses/architecture/broker/#inside-the-apache-kafka-broker:~:text=Client%20requests%20fall%20into%20two%20categories%3A%20produce%20requests%20and%20fetch%20requests.%20A%20produce%20request%20is%20requesting%20that%20a%20batch%20of%20data%20be%20written%20to%20a%20specified%20topic.%20A%20fetch%20request%20is%20requesting%20data%20from%20Kafka%20topics.)
+were in single-digit milliseconds, the tail latency was much worse. Namely, the
 p99 latency was up to 1 second, and the p999 latency was up to 3 seconds. This was unacceptable for a new project that we were about to start, so we
 decided to look into this issue. In this blog post, we would like to describe our journey — how we used Kafka protocol sniffing and eBPF to identify and remove
 the performance bottleneck.
 
-[![Kafka Produce Latency](/img/articles/2024-02-02-kafka-performance-analysis/kafka-performance-analysis.png)](/img/articles/2024-02-02-kafka-performance-analysis/kafka-performance-analysis.png)
+![Kafka Produce Latency](/img/articles/2024-02-02-kafka-performance-analysis/kafka-performance-analysis.png)
 
 ## The Need for Tracing
 Kafka brokers [expose various metrics](https://docs.confluent.io/platform/current/kafka/monitoring.html#localtimems). From them, we were able to tell that
@@ -96,7 +97,7 @@ In Kafka, every partition has its own directory, named according to the pattern:
 files where messages are stored. In the figure below, we can see an example of this structure. In this scenario, the broker hosts two partitions (0 and 7)
 for _topicA_ and one partition (1) for _topicB_.
 
-[![Kafka Partition Directories](/img/articles/2024-02-02-kafka-performance-analysis/kafka_directories.png)](/img/articles/2024-02-02-kafka-performance-analysis/kafka_directories.png)
+![Kafka Partition Directories](/img/articles/2024-02-02-kafka-performance-analysis/kafka_directories.png)
 
 By slightly altering the ext4slower program to include parent directories, we were able to trace Kafka file system writes. For every write with a duration
 exceeding a specified threshold, we observed the following:
@@ -151,11 +152,11 @@ START TIME    END TIME      LATENCY  MESSAGE_ID  FILE                           
 From the analysis, we were able to tell that **there were many slow produce requests that spent all of their time waiting for the file system write to
 complete.**
 
-[![Request Timeline with Slow Write](/img/articles/2024-02-02-kafka-performance-analysis/timeline_slow_write.png)](/img/articles/2024-02-02-kafka-performance-analysis/timeline_slow_write.png)
+![Request Timeline with Slow Write](/img/articles/2024-02-02-kafka-performance-analysis/timeline_slow_write.png)
 
 There were however requests that didn't have corresponding slow writes.
 
-[![Request Timeline with Fast Write](/img/articles/2024-02-02-kafka-performance-analysis/timeline_fast_write.png)](/img/articles/2024-02-02-kafka-performance-analysis/timeline_fast_write.png)
+![Request Timeline with Fast Write](/img/articles/2024-02-02-kafka-performance-analysis/timeline_fast_write.png)
 
 ## Kafka Lock Contention
 Slow produce requests without corresponding slow writes were always occurring around the time of some other slow write. We started wondering whether those
@@ -300,7 +301,7 @@ to be able to observe the impact of our optimizations over longer periods.
 To report traced functions latency over long periods, we used [ebpf_exporter](https://github.com/cloudflare/ebpf_exporter), a tool that exposes eBPF-based
 metrics in Prometheus format. We were then able to visualize traces in Grafana. For example, maximum ext4 write latency for a given broker:
 
-[![Base ext4 Latency](/img/articles/2024-02-02-kafka-performance-analysis/base_max_write_iter.png)](/img/articles/2024-02-02-kafka-performance-analysis/base_max_write_iter.png)
+![Base ext4 Latency](/img/articles/2024-02-02-kafka-performance-analysis/base_max_write_iter.png)
 
 With that, we were able to run brokers with different configurations and observe their write latency over time.
 
@@ -386,8 +387,8 @@ We migrated one of the brokers to the XFS file system. The results were impressi
 optimizations was the consistency of XFS performance. While other broker configurations experienced p999 latency spikes throughout the day, XFS – with its default configuration – had only a
 few hiccups.
 
-[![Base Produce Latency](/img/articles/2024-02-02-kafka-performance-analysis/base_p999_2.png)](/img/articles/2024-02-02-kafka-performance-analysis/base_p999_2.png)
-[![Produce Latency XFS](/img/articles/2024-02-02-kafka-performance-analysis/xfs_p999_2.png)](/img/articles/2024-02-02-kafka-performance-analysis/xfs_p999_2.png)
+![Base Produce Latency](/img/articles/2024-02-02-kafka-performance-analysis/base_p999_2.png)
+![Produce Latency XFS](/img/articles/2024-02-02-kafka-performance-analysis/xfs_p999_2.png)
 
 After a couple of weeks of testing, we were confident that XFS was the best choice. Consequently, we migrated all our brokers from ext4 to XFS.
 
@@ -396,7 +397,7 @@ Using a combination of packet sniffing, eBPF, and async-profiler we managed to i
 then tested a couple of solutions to the problem: `data=writeback` journaling mode, `fast commits`, and changing the file system to XFS. The results of these
 optimizations are visualized in the heatmap below:
 
-[![Produce Latency Heatmap](/img/articles/2024-02-02-kafka-performance-analysis/heatmap_p999.png)](/img/articles/2024-02-02-kafka-performance-analysis/heatmap_p999.png)
+![Produce Latency Heatmap](/img/articles/2024-02-02-kafka-performance-analysis/heatmap_p999.png)
 
 Ultimately, we found XFS to be the most performant and rolled it out to all of our brokers. **With XFS, the number of produce requests exceeding 65ms (our SLO)
 was lowered by 82%.**
