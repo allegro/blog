@@ -408,4 +408,4 @@ easily modify them for our custom use cases.
 * p99 and p999 analysis is sometimes not enough. In our case, the p999 latency of file system writes was less than 1ms. It turned out that a single slow write
 could cause lock contention and a cascade of slow requests. Without tracing individual requests, the root cause would have been very hard to catch.
 
-We hope that you found this blog post, and we wish you good luck in your future performance analysis endeavors!
+We hope that you found this blog post useful, and we wish you good luck in your future performance analysis endeavors!
