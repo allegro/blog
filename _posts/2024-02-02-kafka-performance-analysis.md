@@ -205,7 +205,7 @@ START TIME    END TIME      LATENCY  TID   BYTES  OFF_KB     FILE
 ```
 
 We knew that one of the fast writes was performed from a thread with ID 4484. From a thread dump, we extracted thread names and Native IDs (NIDs).
-Knowing that NIDs translate directly to Linux TIDs (thread IDs), we found a thread with NID 0x1184 — a hexadecimal form of 4484. We determined that the name of
+Knowing that NIDs translate directly to Linux TIDs (thread IDs), we found a thread with NID 0x1184 (decimal: 4484). We determined that the name of
 this thread was _data-plane-kafka-request-handler-24_.
 
 We searched for this thread's activity in the async-profiler output:
@@ -319,7 +319,7 @@ If journaling is the source of high latency, why not disable it completely? Well
 would risk long recovery in case of a crash. Thus, we quickly ruled out this solution.
 
 ### Decreasing the Commit Interval
-ext4 has a mount parameter _commit_ which tells how often to perform commits. It has the default value of 5 seconds. According to the ext4 documentation:
+ext4 has the _commit_ mount parameter which tells how often to perform commits. It has the default value of 5 seconds. According to the ext4 documentation:
 
 > This default value (or any low value) will hurt performance, but it's good for data-safety. [...] Setting it to very large values will improve performance.
 
