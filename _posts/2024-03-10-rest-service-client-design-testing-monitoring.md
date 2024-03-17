@@ -6,7 +6,7 @@ tags: [kotlin, testing, integration tests, rest, wiremock]
 ---
 
 The purpose of this article is to present how to design, test, and monitor a REST service client.
-The article includes a repository with clients written using various technologies such as [WebClient](https://docs.spring.io/spring-framework/reference/integration/rest-clients.html#rest-webclient),
+The article includes a repository with clients written in Kotlin using various technologies such as [WebClient](https://docs.spring.io/spring-framework/reference/integration/rest-clients.html#rest-webclient),
 [RestClient](https://docs.spring.io/spring-framework/reference/integration/rest-clients.html#rest-restclient),
 [Ktor Client](https://ktor.io/docs/getting-started-ktor-client.html),
 [Retrofit](https://square.github.io/retrofit/).
@@ -138,8 +138,6 @@ Additionally, based on these exceptions, visualizations can be created to show t
 
 When writing client code, we aim to highlight maximally how we send/retrieve data and hide the “noise“ that comes from error handling.
 The error handling is quite extensive but generic enough that the resulting code can be written once and reused when creating subsequent clients.
-In the case of service client using WebClient, error handling is located in the methods:```handleHttpResponseAsList```, ```handleHttpResponseAsEntity```, ```handleHttpResponse```.
-
 It's important to carefully consider all the cases we want to address and test them.
 A detailed description of the considered errors can be found in the **testing** section.
 In essence, the more cases we evaluate and handle, the simpler the analysis of potential errors will be.
@@ -157,34 +155,28 @@ To achieve this, for each service for which we are writing a service client, we 
 The ```StubBuilder``` allows hiding the details of stubbing and verifying the called endpoints behind a readable API.
 
 ```kotlin
+orderManagementServiceStub.willReturnOrdersFor(clientId, response = ordersPlacedByPolishCustomer())
+```
+
+StubBuilders for services that return data come in two flavors - internal and external.
+
+<img alt="StubBuilder packages" src="/img/articles/2024-03-10-rest-service-client-design-testing-monitoring/packages.png"/>
+
+When testing the REST service client, we want to have great flexibility in simulating responses.
+Therefore, StubBuilders from the internal package will model response objects as a string. This allows us to simulate any scenario.
+In the case of other tests where there is a need to stub a particular service, such flexibility is not necessary, in fact, it is not even recommended.
+Therefore, StubBuilders from the external package model responses using an object that is used to deserialize the real response.
+All StubBuilders from the external packages are declared in the class ```ExternalServiceStubs```, to which a reference is located in the base class for
+all integration tests, ```BaseIntegrationTest```. This allows us to have very easy access to any stub at the test level.
+
+
+```kotlin
 stubs.orderManagementService().willReturnOrdersFor(clientId, response = ordersPlacedByPolishCustomer())
 ```
 
 Reading the above code, we immediately know **which** service is being interacted with (Order Management Service) and what will be returned from it (Orders).
-The technical details of the stubbed endpoint, for example, how it is done, have been abstracted into the StubBuilder object.
+The technical details of the stubbed endpoint have been abstracted into the StubBuilder object.
 Tests should emphasize "what" and encapsulate "how." This way, they can serve as documentation.
-The details of the stubbed endpoint are hidden behind the method ```willReturnOrdersFor```.
-
-```kotlin
-fun willReturnOrdersFor(
-    clientId: ClientId,
-    response: List<Order>,
-) {
-    WireMock.stubFor(
-        getOrdersFor(clientId).willReturn(
-            WireMock.aResponse()
-                .withFixedDelay(responseTime)
-                .withStatus(HttpStatus.OK.value())
-                .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .withBody(objectMapper.writeValueAsString(response))
-        )
-    )
-}
-
-private fun getOrdersFor(clientId: ClientId): MappingBuilder =
-    WireMock.get("/${clientId.clientId}/order")
-        .withHeader(HttpHeaders.ACCEPT, WireMock.equalTo(MediaType.APPLICATION_JSON_VALUE))
-```
 
 #### Test Data
 
@@ -196,19 +188,38 @@ The data returned by our stubs can be prepared in three ways:
 Which option to choose?
 To answer this question, one should analyze the advantages and disadvantages of each.
 
-##### A. Read response from a file/string.
-Creating responses is very fast and simple.
+Option A — read response from a file/string. Creating responses is very fast and simple.
 It allows **verifying the contract** between the client and the supplier (at least at the time of writing the test).
 Imagine that during refactoring, one of the fields in the response object accidentally changes.
 In such a case, client tests will detect the defect before the code reaches production.
 
-On the other hand.
-Keeping data in files/strings is unfortunately difficult to maintain and reuse.
+```kotlin
+    @Test
+    fun `should return orders for a given clientId`(): Unit = runBlocking {
+        // given
+        val clientId = anyClientId()
+        orderManagementServiceStub.willReturnOrdersFor(clientId, response = ordersPlacedByPolishCustomer())
+
+        // when
+        val response = orderManagementServiceClient.getOrdersFor(clientId)
+
+        // then
+        response.size shouldBe 1
+        response[0].orderId shouldBe "7952a9ab-503c-4483-beca-32d081cc2446"
+        response[0].categoryId shouldBe "327456"
+        response[0].countryCode shouldBe "PL"
+        response[0].clientId shouldBe "1a575762-0903-4b7a-9da3-d132f487c5ae"
+        response[0].price.amount shouldBe "1500"
+        response[0].price.currency shouldBe "PLN"
+    }
+```
+
+On the other hand. Keeping data in files/strings is unfortunately difficult to maintain and reuse.
 Programmers often copy entire files for new tests, introducing minimal changes.
 There is a problem with naming these files and refactoring them when the called service introduces an incompatible change.
 
 
-##### B. Use existing response objects
+Option B — Use existing response objects.
 It allows writing one-liner, readable assertions and maximally reusing already created data, especially using [test data builders](https://www.natpryce.com/articles/000714.html).
 
 ```kotlin
@@ -217,7 +228,7 @@ It allows writing one-liner, readable assertions and maximally reusing already c
         // given
         val clientId = anyClientId()
         val clientOrders = OrderManagementServiceFixture.ordersPlacedByPolishCustomer(clientId = clientId.toString())
-        stubs.orderManagementService().willReturnOrdersFor(clientId, response = clientOrders)
+        orderManagementServiceStub.willReturnOrdersFor(clientId, response = ordersPlacedByPolishCustomer())
 
         // when
         val response = orderManagementServiceClient.getOrdersFor(clientId)
@@ -225,14 +236,13 @@ It allows writing one-liner, readable assertions and maximally reusing already c
         // then
         response shouldBe clientOrders
     }
-
 ```
 However, a defect in the form of a **contract violation** between the client and supplier won't be caught.
 As a result, we might have perfectly tested communication in integration tests that will not work in production.
 
-##### C. Create separate response objects
-It has all the advantages of options A and B, including maintainability, reusability, and verification of the contract between the client and the supplier.
-Unfortunately, maintaining a separate model for testing purposes comes with some overhead and requires discipline on the developers' side, which can be challenging to maintain.
+Option C — create a set of separate response objects. It has all the advantages of options A and B, including maintainability, reusability, and
+verification of the contract between the client and the supplier. Unfortunately, maintaining a separate model for testing purposes comes with some overhead
+and requires discipline on the developers' side, which can be challenging to maintain.
 
 Which option to choose? Personally, I prefer a hybrid of options A and B.
 For the purpose of testing the “happy path“ in client tests, I return a response that is entirely stored as a string (alternatively, it can be read from a file).
@@ -253,7 +263,7 @@ Fetching a resource — verification whether the client can retrieve data from t
 fun `should return orders for a given clientId`(): Unit = runBlocking {
         // given
         val clientId = anyClientId()
-        stubs.orderManagementService().willReturnOrdersFor(clientId, response = ordersPlacedByPolishCustomer())
+        orderManagementServiceStub.willReturnOrdersFor(clientId, response = ordersPlacedByPolishCustomer())
 
         // when
         val response = orderManagementServiceClient.getOrdersFor(clientId)
@@ -353,7 +363,7 @@ For 4xx type errors, we want to verify the following cases:
     ): Unit = runBlocking {
         // given
         val clientId = anyClientId()
-        stubs.orderManagementService().willReturnResponseFor(clientId, status = statusCode, response = responseBody)
+        orderManagementServiceStub.willReturnOrdersFor(clientId, status = statusCode, response = responseBody)
 
         // when
         val exception = shouldThrowAny {
@@ -399,10 +409,10 @@ using the ```withFixedDelay``` method from wiremock.
         // given
         val clientId = anyClientId()
 
-        stubs.orderManagementService()
+        orderManagementServiceStub
             .withDelay(properties.readTimeout.toInt())
             .willReturnOrdersFor(
-                clientId,
+                clientId = clientId,
                 response = ordersPlacedByPolishCustomer(clientId = clientId.toString())
             )
 
