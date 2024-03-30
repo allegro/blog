@@ -14,9 +14,9 @@ It demonstrates how to send and retrieve data from an external service, add a ca
 
 ## Motivation
 Why do we need objects in the project that encapsulate the HTTP clients we use?
-To begin, we want to separate the domain from technical details.
+To begin with, we want to separate the domain from technical details.
 The way we retrieve/send data and handle errors, which can be quite complex in the case of HTTP clients, should not clutter business logic.
-Next, testability. Even if we do not use [hexagonal architecture](https://blog.allegro.tech/2020/05/hexagonal-architecture-by-example.html) in our applications,
+Next, testability. Even if we do not use [hexagonal architecture]({% post_url 2020-05-21-hexagonal-architecture-by-example %}) in our applications,
 it's beneficial to separate the infrastructure layer from the service layer, as it improves testability.
 Verifying an HTTP service client is not simple and requires consideration of many cases — mainly at the integration level.
 Having a separate “building block“ that encapsulates communication with the outside world makes testing much easier.
@@ -24,78 +24,74 @@ Finally, reusability. A service client that has been written once can be success
 
 ## Client Design
 As a case study, I will use an example implementation that utilizes [WebClient](https://docs.spring.io/spring-framework/reference/integration/rest-clients.html#rest-webclient) for retrieving data from the Order Management Service.
-Full working example can be found [here](https://github.com/Klimiec/webclients/tree/main/httpclient-webclientinterface).
+The heart of our client is the ```executeHttpRequest``` method, which is responsible for executing the provided HTTP request, logging, and error handling.
+It is not part of the WebClient library.
 
 ```kotlin
 class OrderManagementServiceClient(
     private val orderManagementServiceApi: OrderManagementServiceApi,
-    private val clientName: String,
+    private val clientName: String
 ) {
-    suspend fun getOrdersFor(clientId: ClientId): List<Order> {
-        logger.info { "[$clientName] Get orders for a clientId= ${clientId.clientId}" }
-        return handleHttpResponseAsList(
+    suspend fun getOrdersFor(clientId: ClientId): OrdersDto {
+        return executeHttpRequest(
+            initialLog = "[$clientName] Get orders for a clientId= $clientId",
             request = { orderManagementServiceApi.getOrdersFor(clientId.clientId.toString()) },
-            failureMessage = "[$clientName] Failed to get orders for clientId=${clientId.clientId}"
-        ).also {
-            logger.info { "[$clientName] Returned orders for a clientId= ${clientId.clientId} $it" }
-        }
+            successLog = "[$clientName] Returned orders for a clientId= $clientId",
+            failureMessage = "[$clientName] Failed to get orders for clientId= $clientId"
+        )
     }
 }
+
 ```
 
+Full working example can be found [here](https://github.com/Klimiec/webclients/tree/main/httpclient-webclientinterface).
+
 ### Client name
-The class name for integration with the Order Management Service will be ```OrderManagementServiceClient``` — following the general
-pattern of *ExternalService**Client***.
+Personally, I like to name clients using the convention: name of the service we integrate with, plus the suffix **Client**.
+In the case of integration with the Order Management Service, such a class will be named ```OrderManagementServiceClient```.
 
 If the technology we use employs an interface to describe the called REST API (RestClient, WebClient, Retrofit),
-we will name such an interface ```OrderManagementServiceApi``` — following the general pattern of *ExternalService**Api***.
+we can name such an interface ```OrderManagementServiceApi``` — following the general pattern of the service name with the suffix Api.
 
 These names may seem intuitive and obvious, but without an established naming convention, we might end up with a project where
 different integrations have the following suffixes: HttpClient, Facade, WebClient, Adapter, Service.
-It's essential to have a consistent convention and adhere to it throughout the entire project.
+It's important to have a consistent convention and adhere to it throughout the entire project.
 
-### Logging
-```kotlin
-class OrderManagementServiceClient(
-    private val orderManagementServiceApi: OrderManagementServiceApi,
-    private val clientName: String,
-) {
-    suspend fun getOrdersFor(clientId: ClientId): List<Order> {
-        (1) logger.info { "[$clientName] Get orders for a clientId= ${clientId.clientId}" }
-        return handleHttpResponseAsList(
-            request = { orderManagementServiceApi.getOrdersFor(clientId.clientId.toString()) },
-            (2.1) failureMessage = "[$clientName] Failed to get orders for clientId=${clientId.clientId}"
-        ).also {
-            (2.2) logger.info { "[$clientName] Returned orders for a clientId= ${clientId.clientId} $it" }
-        }
-    }
-}
+### API
+Methods of our clients that retrieve resources should have names that reflect the communicative intention behind them.
+To capture this intention, it is necessary to use a verb in the method’s name.
+Typically, the correct name will have a structure of verb + resource name, for example, ```getOrders```.
+If we want to narrow down the number of returned resources using filters or return a particular resource, I recommend adding the suffix "For" before the list of parameters.
+Technically, these parameters will be part of the query or pat parameters.
+
+```
+fun getOrdersFor(clientId: ClientId): OrdersDto
 ```
 
-When retrieving data from an external service, we log the beginning of the interaction,
-indicating our intention to fetch a resource (1), as well as its outcome (2). The outcome can be either be a success (2.2), meaning receiving
-a response with a 2xx status code, or a failure (2.1).
+For methods responsible for creating resources, simply using the verb in the method name is enough,
+as the resource being passed as a parameter effectively conveys the intention of the method.
+
+```
+fun publish(event: InvoiceCreatedEventDto)
+```
+
+### Logging
+When communicating with external service we'd like to log the beginning of the interaction, indicating our intention to fetch or send a resource,
+as well as its outcome. The outcome can be either a success, meaning receiving a response with a 2xx status code, or a failure.
 
 Failure can be signaled by status codes (3xx, 4xx, 5xx), result from the inability to deserialize the received response into an object,
-exceeding the response time, etc. Generally, [many things can go wrong](https://blog.allegro.tech/2015/07/testing-server-faults-with-Wiremock.html).
+exceeding the response time, etc. Generally, [many things can go wrong]({% post_url 2015-07-09-testing-server-faults-with-Wiremock %}).
 Depending on the cause of failure, we may want to log the interaction result at different levels (warn/error).
 There are critical errors that are worth distinguishing (error), and those that will occasionally occur (warn) and don't require urgent intervention.
 
-Logs should contain information about which resource we want to fetch, for what parameters, and what data we received as a result of the request.
-Technical details can be limited to information about the called URL, the HTTP method used, and the response code.
-All logs are preceded by the name of the service we are communicating with.
-
-
-To prevent redundancy in logging code across multiple clients, we can centralize it and reuse it.
-Error logging is managed within the ```handleHttpResponseAsList``` method.
-The only thing the developer needs to do is provide a business-oriented description of the failure using the ```failureMessage``` parameter.
-For logging technical aspects of our communication, such as the HTTP method used, the called URL, headers, and response code,
-interceptors are responsible and plugged in at the client configuration level in the ```createExternalServiceApi``` method.
+In order to filter logs related to a specific service while browsing through them, I like to include the client's name within curly braces at the beginning of the logs.
+For logging technical aspects of the communication, such as the called URL, used HTTP method, and response code,
+we use filters (logRequestInfo, logResponseInfo) that are plugged in at the client configuration level in the ```createExternalServiceApi``` method.
 
 ```kotlin
 inline fun <reified T> createExternalServiceApi(
     webClientBuilder: WebClient.Builder,
-    properties: ConnectionProperties,
+    properties: ConnectionProperties
 ): T =
     webClientBuilder
         .clientConnector(httpClient(properties))
@@ -108,10 +104,9 @@ inline fun <reified T> createExternalServiceApi(
         .let { HttpServiceProxyFactory.builderFor(it).build() }
         .createClient(T::class.java)
 
-
 fun logRequestInfo(clientName: String) = ExchangeFilterFunction.ofRequestProcessor { request ->
     logger.info {
-        "[$clientName] method=[${request.method().name()}] url=${request.url()} headers: ${request.headers()}"
+        "[$clientName] method=[${request.method().name()}] url=${request.url()}}"
     }
     Mono.just(request)
 }
@@ -122,56 +117,67 @@ fun logResponseInfo(clientName: String) = ExchangeFilterFunction.ofResponseProce
 }
 ```
 
-Here's an example of a correctly logged interaction for successfully fetching a resource.
+Here's an example of logged interaction for successfully fetching a resource.
 
 <img alt="Properly logged interaction" src="/img/articles/2024-03-10-rest-service-client-design-testing-monitoring/logs.png"/>
+
+To prevent redundancy in logging code across multiple clients, it is centralized inside ```executeHttpRequest``` method.
+The only thing the developer needs to do is to provide a business-oriented description for the beginning of the interaction and its outcome (parameters: initialLog, successLog, failureMessage).
+
+Why so emphasize on logging?
+Isn't it enough to log only errors?
+After all, we have metrics that inform us about the performance of our client.
+Metrics won't provide us with the details of the communication, but logs will.
+And these details can turn out to be crucial in the analysis of incidents, which may reveal, for example, incorrect data produced by our service.
 
 Logs are like backups.
 It's only when they are needed, either because the business requests an analysis of a particular case or when resolving an incident,
 that we find out if we have them and how valuable they are.
 
 ### Error handling
-A significant part of the client code is dedicated to error handling.
-It consists of two things: logging and throwing custom exceptions that encapsulate technical exceptions thrown by the underlying HTTP client.
-The very name of such a custom exception tells us exactly what went wrong.
-Additionally, based on these exceptions, visualizations can be created to show the state of our integration.
-
 When writing client code, we aim to highlight maximally how we send/retrieve data and hide the “noise“ that comes from error handling.
-The error handling is quite extensive but generic enough that the resulting code can be written once and reused when creating subsequent clients.
-It's important to carefully consider all the cases we want to address and test them.
-A detailed description of the considered errors can be found in the **testing** section.
-In essence, the more cases we evaluate and handle, the simpler the analysis of potential errors will be.
+In case of HTTP clients error handling is quite extensive but generic enough that the resulting code can be written once and reused when creating subsequent clients.
+In our example, error handling mechanism is hidden inside ```executeHttpRequest``` method.
+It consists of two things: logging and throwing custom exceptions that encapsulate technical exceptions thrown by the underlying HTTP client.
+
+What are the benefits of using custom exceptions? The very name of such a custom exception tells us exactly what went wrong.
+For comparison, ```ExternalServiceIncorrectResponseBodyException``` seems to be more descriptive than DecodingException.
+They also help group various technical exceptions that lead to the same cause, for example, an incorrect response object structure.
+Additionally, based on these exceptions, visualizations can be created to show the state of our integration.
+For example, we can create a table that will show how many exceptions of a given type were thrown by our clients within a specified period of time.
+Having custom exceptions, we are 100% certain that these exceptions were thrown only by our clients.
 
 ### Testing
 #### Stubs
 To verify different scenarios of our HTTP client, it is necessary to appropriately stub the called endpoints in tests.
 For this purpose, we will use the [WireMock](https://wiremock.org/) library.
 
-
 It is quite important that technical details of created stubs do not leak into the tests.
 The test should describe the behavior being tested and encapsulate technical details.
-Changing the framework for stubbing endpoints should not affect the test itself.
+For example, changing the accept/content-type header or making minor modifications to the called URL should not affect the test itself.
 To achieve this, for each service for which we are writing a service client, we create an object of type ```StubBuilder```.
-The ```StubBuilder``` allows hiding the details of stubbing and verifying the called endpoints behind a readable API.
+The ```StubBuilder``` allows hiding the details of stubbing and verification behind a readable API.
+It takes on the impact of changes to the called API, protecting our test from modification.
+It fulfills a similar role to the [Page Object Pattern](https://martinfowler.com/bliki/PageObject.html) in end-to-end tests for web apps.
+
 
 ```kotlin
-orderManagementServiceStub.willReturnOrdersFor(clientId, response = ordersPlacedByPolishCustomer())
+orderManagementServiceStub.willReturnOrdersFor(clientId, response = ordersPlacedBySomeCustomer())
 ```
 
-StubBuilders for services that return data come in two flavors - internal and external.
+StubBuilders for services that return data come in two flavors - [internal](https://github.com/Klimiec/webclients/tree/591dddd1e61ea5d922f0402534d9a96a513f59b4/httpclient-webclientinterface/src/integration/kotlin/com/dev/sandbox/httpclientwebclientinterface/order/infrastructure/ordermanagementservice/stub/internal) and [external](https://github.com/Klimiec/webclients/tree/591dddd1e61ea5d922f0402534d9a96a513f59b4/httpclient-webclientinterface/src/integration/kotlin/com/dev/sandbox/httpclientwebclientinterface/order/infrastructure/ordermanagementservice/stub/external).
 
 <img alt="StubBuilder packages" src="/img/articles/2024-03-10-rest-service-client-design-testing-monitoring/packages.png"/>
 
-When testing the REST service client, we want to have great flexibility in simulating responses.
+When testing service client, we want to have great flexibility in simulating responses.
 Therefore, StubBuilders from the internal package will model response objects as a string. This allows us to simulate any scenario.
-In the case of other tests where there is a need to stub a particular service, such flexibility is not necessary, in fact, it is not even recommended.
+In end-to-end tests, where a given service is part of the bigger process, such flexibility is not necessary; in fact, it is not even recommended.
 Therefore, StubBuilders from the external package model responses using an object that is used to deserialize the real response.
 All StubBuilders from the external packages are declared in the class ```ExternalServiceStubs```, to which a reference is located in the base class for
-all integration tests, ```BaseIntegrationTest```. This allows us to have very easy access to any stub at the test level.
-
+all integration tests, ```BaseIntegrationTest```. This allows us to have very easy access to any external service stub.
 
 ```kotlin
-stubs.orderManagementService().willReturnOrdersFor(clientId, response = ordersPlacedByPolishCustomer())
+stub.orderManagementService().willReturnOrdersFor(clientId, response = ordersPlacedBySomeCustomer())
 ```
 
 Reading the above code, we immediately know **which** service is being interacted with (Order Management Service) and what will be returned from it (Orders).
@@ -194,24 +200,18 @@ Imagine that during refactoring, one of the fields in the response object accide
 In such a case, client tests will detect the defect before the code reaches production.
 
 ```kotlin
-    @Test
-    fun `should return orders for a given clientId`(): Unit = runBlocking {
+@Test
+fun `should return orders for a given clientId`(): Unit = runBlocking {
         // given
         val clientId = anyClientId()
-        orderManagementServiceStub.willReturnOrdersFor(clientId, response = ordersPlacedByPolishCustomer())
+        orderManagementServiceStub.willReturnOrdersFor(clientId, response = ordersPlacedBySomeCustomer())
 
         // when
-        val response = orderManagementServiceClient.getOrdersFor(clientId)
+        val response: OrdersDto = orderManagementServiceClient.getOrdersFor(clientId)
 
         // then
-        response.size shouldBe 1
-        response[0].orderId shouldBe "7952a9ab-503c-4483-beca-32d081cc2446"
-        response[0].categoryId shouldBe "327456"
-        response[0].countryCode shouldBe "PL"
-        response[0].clientId shouldBe "1a575762-0903-4b7a-9da3-d132f487c5ae"
-        response[0].price.amount shouldBe "1500"
-        response[0].price.currency shouldBe "PLN"
-    }
+        response shouldBe OrdersDto(listOf(OrderDto("7952a9ab-503c-4483-beca-32d081cc2446")))
+}
 ```
 
 On the other hand. Keeping data in files/strings is unfortunately difficult to maintain and reuse.
@@ -220,18 +220,18 @@ There is a problem with naming these files and refactoring them when the called 
 
 
 Option B — Use existing response objects.
-It allows writing one-liner, readable assertions and maximally reusing already created data, especially using [test data builders](https://www.natpryce.com/articles/000714.html).
+It allows writing one-line, readable assertions and maximally reusing already created data, especially using [test data builders](https://www.natpryce.com/articles/000714.html).
 
 ```kotlin
     @Test
     fun `should return orders for a given clientId`(): Unit = runBlocking {
         // given
         val clientId = anyClientId()
-        val clientOrders = OrderManagementServiceFixture.ordersPlacedByPolishCustomer(clientId = clientId.toString())
-        orderManagementServiceStub.willReturnOrdersFor(clientId, response = ordersPlacedByPolishCustomer())
+        val clientOrders = OrderManagementServiceFixture.ordersPlacedBySomeCustomer()
+        orderManagementServiceStub.willReturnOrdersFor(clientId, response = clientOrders)
 
         // when
-        val response = orderManagementServiceClient.getOrdersFor(clientId)
+        val response: OrdersDto = orderManagementServiceClient.getOrdersFor(clientId)
 
         // then
         response shouldBe clientOrders
@@ -254,54 +254,48 @@ I create responses returned by the stubbed endpoint using the same objects to wh
 It's worthwhile to extract sample test data into a dedicated class, such as a Fixture class, for each integration (for example ```OrderManagementServiceFixture```).
 This allows for better reuse of existing code and enhances the readability of the tests themselves.
 
-#### Test Scenarios
-##### Happy Path
-Fetching a resource — verification whether the client can retrieve data from the previously stubbed endpoint and deserialize it into a response object.
+### Test Scenarios
+#### Happy Path
+**Fetching a resource** — verification whether the client can retrieve data from the previously stubbed endpoint and deserialize it into a response object.
 
 ```kotlin
 @Test
 fun `should return orders for a given clientId`(): Unit = runBlocking {
         // given
         val clientId = anyClientId()
-        orderManagementServiceStub.willReturnOrdersFor(clientId, response = ordersPlacedByPolishCustomer())
+        orderManagementServiceStub.willReturnOrdersFor(clientId, response = ordersPlacedBySomeCustomer())
 
         // when
-        val response = orderManagementServiceClient.getOrdersFor(clientId)
+        val response: OrdersDto = orderManagementServiceClient.getOrdersFor(clientId)
 
         // then
-        response.size shouldBe 1
-        response[0].orderId shouldBe "7952a9ab-503c-4483-beca-32d081cc2446"
-        response[0].categoryId shouldBe "327456"
-        response[0].countryCode shouldBe "PL"
-        response[0].clientId shouldBe "1a575762-0903-4b7a-9da3-d132f487c5ae"
-        response[0].price.amount shouldBe "1500"
-        response[0].price.currency shouldBe "PLN"
+        response shouldBe OrdersDto(listOf(OrderDto("7952a9ab-503c-4483-beca-32d081cc2446")))
 }
 ```
 
 The assertion section might seem a bit intimidating, but it's a result of the structure of the response object,
 the way test data was prepared, and what we want to verify. An essential part of the happy path test is the verification of the contract between the client
-and the supplier. The ```ordersPlacedByPolishCustomer``` method returns a sample response guaranteed by the supplier (Order Management Service).
+and the supplier. The ```ordersPlacedBySomeCustomer``` method returns a sample response guaranteed by the supplier (Order Management Service).
 On the client side of this service, its verification is performed in the test. We explicitly copy fragments of the contract
-from the ```ordersPlacedByPolishCustomer``` method into the expected places in the response object in the assertion section.
+from the ```ordersPlacedBySomeCustomer``` method into the expected places in the response object in the assertion section.
 This duplication is intentional and desired. It is precisely this duplication that allows detecting a potential defect in breaking the contract
 that may occur due to errors in the response object structure on the client side.
 
-
-Sending a resource — verification whether the client sends data to the specified URL in a format acceptable by the previously stubbed endpoint.
+**Sending a resource** — verification whether the client sends data to the specified URL in a format acceptable by the previously stubbed endpoint.
+In the following example, I test publishing an event to [Hermes](https://hermes.allegro.tech/), a message broker built on top of Kafka widely used in Allegro.
 
 ```kotlin
 @Test
 fun `should successfully publish InvoiceCreatedEvent`(): Unit = runBlocking {
-    // given
-    val invoiceCreatedEvent = HermesFixture.invoiceCreatedEvent()
-    stubs.hermes().willAcceptInvoiceCreatedEvent()
+        // given
+        val invoiceCreatedEvent = HermesFixture.invoiceCreatedEvent()
+        stub.hermes().willAcceptInvoiceCreatedEvent()
 
-    // when
-    hermesClient.publish(invoiceCreatedEvent)
+        // when
+        hermesClient.publish(invoiceCreatedEvent)
 
-    // then
-    stubs.hermes().verifyInvoiceCreatedEventPublished(event = invoiceCreatedEvent)
+        // then
+        stub.hermes().verifyInvoiceCreatedEventPublished(event = invoiceCreatedEvent)
 }
 ```
 
@@ -331,8 +325,9 @@ stubs.hermes().verifyInvoiceCreatedEventPublished(event = invoiceCreatedEvent)
 
 
 fun verifyInvoiceCreatedEventPublished(event: InvoiceCreatedEventDto) {
-    WireMock.verify(1,
-        WireMock.postRequestedFor(WireMock.urlPathEqualTo("/topics/${HermesApi.TOPIC_INVOICE_CREATED_EVENT}"))
+    WireMock.verify(
+        1,
+        WireMock.postRequestedFor(WireMock.urlPathEqualTo(INVOICE_CREATED_URL))
             .withRequestBody(WireMock.matchingJsonPath("$.invoiceId", WireMock.equalTo(event.invoiceId)))
             .withRequestBody(WireMock.matchingJsonPath("$.orderId", WireMock.equalTo(event.orderId)))
             .withRequestBody(WireMock.matchingJsonPath("$.timestamp", WireMock.equalTo(event.timestamp)))
@@ -345,7 +340,7 @@ Creating stubs in this way makes their usage less convenient since not every tes
 The vast majority of tests will stub the endpoint based on the principle:
 accept a given request as long as its structure is preserved and will verify hypotheses other than the content of the request body (mainly end-to-end tests).
 
-#####  Client-side errors
+####  Client-side errors
 
 For 4xx type errors, we want to verify the following cases:
 * The absence of the requested resource signaled by the response code 404 and a custom exception ```ExternalServiceResourceNotFoundException```
@@ -353,14 +348,13 @@ For 4xx type errors, we want to verify the following cases:
 * Any other 4xx type errors  should be cast to an ```ExternalServiceClientException```
 
 ```kotlin
-
-    @ParameterizedTest(name = "{index}) http status code: {0}")
-    @MethodSource("clientErrors")
-    fun `when receive response with 4xx status code then throw exception`(
-        exceptionClass: Class<Exception>,
-        statusCode: Int,
-        responseBody: String?,
-    ): Unit = runBlocking {
+@ParameterizedTest(name = "{index}) http status code: {0}")
+@MethodSource("clientErrors")
+fun `when receive response with 4xx status code then throw exception`(
+    exceptionClass: Class<Exception>,
+    statusCode: Int,
+    responseBody: String?
+): Unit = runBlocking {
         // given
         val clientId = anyClientId()
         orderManagementServiceStub.willReturnOrdersFor(clientId, status = statusCode, response = responseBody)
@@ -374,12 +368,12 @@ For 4xx type errors, we want to verify the following cases:
         exception.javaClass shouldBeSameInstanceAs exceptionClass
         exception.message shouldContain clientId.clientId.toString()
         exception.message shouldContain properties.clientName
-    }
+}
 ```
 
 In distributed systems, a [404](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404) response code is quite common and may result from temporary inconsistency across the entire system.
 Its occurrence is signaled by the ```ExternalServiceResourceNotFoundException``` exception and a warning-level log.
-Here, we are more interested in the scale of occurrences than analyzing individual cases.
+Here, we are more interested in the scale of occurrences, which is why we use metrics, than analyzing individual cases, hence we log such cases at the warning level.
 
 The situation looks a bit different in the case of responses with a code of [422](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/422).
 If the request is rejected due to validation errors, either our service has a defect and produces incorrect data,
@@ -390,7 +384,7 @@ errors of this type are logged at the error level and signaled by the ```Externa
 Other errors from the 4xx family occur much less frequently.
 They are all marked by the ```ExternalServiceClientException``` exception and logged at the error level.
 
-##### Server-side errors
+#### Server-side errors
 Regardless of the reason for a 5xx error, all of them are logged at the warn level because we have no control over them.
 They are signaled by the ```ExternalServiceServerException``` exception. Similar to 404 errors, we are more interested in aggregate information
 about the number of such errors rather than analyzing each case individually, hence the warn log level.
@@ -398,22 +392,22 @@ about the number of such errors rather than analyzing each case individually, he
 In tests, we consider two cases because the response from the service may or may not have a body.
 If the response has a body, we want to log it.
 
-##### Read Timeout
+#### Read Timeout
 If the configuration of our HTTP client specifies a timeout for the response time,
 it's worthwhile to write an integration test that verifies the client's configuration. Simulating the delay of the stubbed endpoint can be achieved
 using the ```withFixedDelay``` method from wiremock.
 
 ```kotlin
-    @Test
-    fun `when service returns above timeout threshold then throw exception`(): Unit = runBlocking {
+@Test
+fun `when service returns above timeout threshold then throw exception`(): Unit = runBlocking {
         // given
         val clientId = anyClientId()
 
         orderManagementServiceStub
             .withDelay(properties.readTimeout.toInt())
             .willReturnOrdersFor(
-                clientId = clientId,
-                response = ordersPlacedByPolishCustomer(clientId = clientId.toString())
+                clientId,
+                response = ordersPlacedBySomeCustomer()
             )
 
         // when
@@ -423,14 +417,14 @@ using the ```withFixedDelay``` method from wiremock.
         // then
         exception.message shouldContain clientId.clientId.toString()
         exception.message shouldContain properties.clientName
-    }
+}
 ```
 
 No, this is not testing properties in tests.
 It is a verification to ensure that the configuration derived from properties has indeed been applied to the given client.
-Ensuring a response within a specified time frame might be part of non-functional requirements and warrants testing.
+Ensuring a response within a specified time frame might be part of non-functional requirements and requires verification.
 
-##### Invalid Response Body
+#### Invalid Response Body
 Considered cases:
 * Response body does not contain required field.
 * Response body is empty.
@@ -453,21 +447,21 @@ At which percentile should we set such a metric?
 Generally, the more requests a client generates, the higher the percentile we should aim for.
 Sometimes, issues become visible only at high percentiles (P99, P99.9) for a very high volume of requests.
 
-<img alt="Response Time" src="/img/articles/2024-03-10-rest-service-client-design-testing-monitoring/response_time.png"/>
+<img alt="Response Time" src="/img/articles/2024-03-10-rest-service-client-design-testing-monitoring/response_time_2.png"/>
 
 #### Throughput
 Number of requests that our application sends to external services per second (RPS).
 An auxiliary metric for the response time metric, where response time is always considered in the context of the generated traffic.
 
-<img alt="Throughput" src="/img/articles/2024-03-10-rest-service-client-design-testing-monitoring/rps.png"/>
+<img alt="Throughput" src="/img/articles/2024-03-10-rest-service-client-design-testing-monitoring/rps4.png"/>
 
 #### Error Rate
 Counting responses with codes 4xx/5xx.
 Here, we are interested in visualizing how many such errors occurred within a specific timeframe.
 The number of errors we analyze depends on the overall traffic, therefore, both metrics should be expressed in the same units, usually requests per second.
-For high traffic and a small number of errors, we can expect that the presented values will be in the order of thousandths.
+For high traffic and a small number of errors, we can expect that the presented values will be on the order of thousandths.
 
-<img alt="Error Rate" src="/img/articles/2024-03-10-rest-service-client-design-testing-monitoring/errors.png"/>
+<img alt="Error Rate" src="/img/articles/2024-03-10-rest-service-client-design-testing-monitoring/errors_2.png"/>
 
 ## Summary
 [Microservices Architecture](https://martinfowler.com/articles/microservices.html) relies heavily on network communication.
