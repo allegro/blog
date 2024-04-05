@@ -35,7 +35,7 @@ class OrderManagementServiceClient(
     suspend fun getOrdersFor(clientId: ClientId): OrdersDto {
         return executeHttpRequest(
             initialLog = "[$clientName] Get orders for a clientId= $clientId",
-            request = { orderManagementServiceApi.getOrdersFor(clientId.clientId.toString()) },
+            request = { orderManagementServiceApi.getOrdersFor(clientId) },
             successLog = "[$clientName] Returned orders for a clientId= $clientId",
             failureMessage = "[$clientName] Failed to get orders for clientId= $clientId"
         )
@@ -51,7 +51,7 @@ Personally, I like to name clients using the convention: name of the service we 
 In the case of integration with the Order Management Service, such a class will be named ```OrderManagementServiceClient```.
 
 If the technology we use employs an interface to describe the called REST API (RestClient, WebClient, Retrofit),
-we can name such an interface ```OrderManagementServiceApi``` — following the general pattern of the service name with the suffix Api.
+we can name such an interface ```OrderManagementServiceApi``` — following the general pattern of the service name with the suffix **Api**.
 
 These names may seem intuitive and obvious, but without an established naming convention, we might end up with a project where
 different integrations have the following suffixes: HttpClient, Facade, WebClient, Adapter, Service.
@@ -62,7 +62,7 @@ Methods of our clients that retrieve resources should have names that reflect th
 To capture this intention, it is necessary to use a verb in the method’s name.
 Typically, the correct name will have a structure of verb + resource name, for example, ```getOrders```.
 If we want to narrow down the number of returned resources using filters or return a particular resource, I recommend adding the suffix "For" before the list of parameters.
-Technically, these parameters will be part of the query or pat parameters.
+Technically, these parameters will be part of the query or path parameters.
 
 ```
 fun getOrdersFor(clientId: ClientId): OrdersDto
@@ -124,7 +124,7 @@ Here's an example of logged interaction for successfully fetching a resource.
 To prevent redundancy in logging code across multiple clients, it is centralized inside ```executeHttpRequest``` method.
 The only thing the developer needs to do is to provide a business-oriented description for the beginning of the interaction and its outcome (parameters: initialLog, successLog, failureMessage).
 
-Why so emphasize on logging?
+Why do I emphasize logging so much?
 Isn't it enough to log only errors?
 After all, we have metrics that inform us about the performance of our client.
 Metrics won't provide us with the details of the communication, but logs will.
@@ -144,7 +144,7 @@ What are the benefits of using custom exceptions? The very name of such a custom
 For comparison, ```ExternalServiceIncorrectResponseBodyException``` seems to be more descriptive than DecodingException.
 They also help group various technical exceptions that lead to the same cause, for example, an incorrect response object structure.
 Additionally, based on these exceptions, visualizations can be created to show the state of our integration.
-For example, we can create a table that will show how many exceptions of a given type were thrown by our clients within a specified period of time.
+For example, we can create a table that will show how many exceptions of any given type were thrown by our clients within a specified period of time.
 Having custom exceptions, we are 100% certain that these exceptions were thrown only by our clients.
 
 ### Testing
@@ -214,7 +214,7 @@ fun `should return orders for a given clientId`(): Unit = runBlocking {
 }
 ```
 
-On the other hand. Keeping data in files/strings is unfortunately difficult to maintain and reuse.
+On the other hand, keeping data in files/strings is unfortunately difficult to maintain and reuse.
 Programmers often copy entire files for new tests, introducing minimal changes.
 There is a problem with naming these files and refactoring them when the called service introduces an incompatible change.
 
