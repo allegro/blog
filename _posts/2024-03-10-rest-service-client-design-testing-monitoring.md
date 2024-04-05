@@ -446,13 +446,13 @@ At which percentile should we set such a metric?
 Generally, the more requests a client generates, the higher the percentile we should aim for.
 Sometimes, issues become visible only at high percentiles (P99, P99.9) for a very high volume of requests.
 
-<img alt="Response Time" src="/img/articles/2024-03-10-rest-service-client-design-testing-monitoring/response_time_2.png"/>
+<img alt="Response Time" src="/img/articles/2024-03-10-rest-service-client-design-testing-monitoring/response_time.png"/>
 
 #### Throughput
 Number of requests that our application sends to external services per second (RPS).
 An auxiliary metric for the response time metric, where response time is always considered in the context of the generated traffic.
 
-<img alt="Throughput" src="/img/articles/2024-03-10-rest-service-client-design-testing-monitoring/rps4.png"/>
+<img alt="Throughput" src="/img/articles/2024-03-10-rest-service-client-design-testing-monitoring/rps.png"/>
 
 #### Error Rate
 Counting responses with codes 4xx/5xx.
@@ -460,7 +460,7 @@ Here, we are interested in visualizing how many such errors occurred within a sp
 The number of errors we analyze depends on the overall traffic, therefore, both metrics should be expressed in the same units, usually requests per second.
 For high traffic and a small number of errors, we can expect that the presented values will be on the order of thousandths.
 
-<img alt="Error Rate" src="/img/articles/2024-03-10-rest-service-client-design-testing-monitoring/errors_2.png"/>
+<img alt="Error Rate" src="/img/articles/2024-03-10-rest-service-client-design-testing-monitoring/errors.png"/>
 
 ## Summary
 [Microservices Architecture](https://martinfowler.com/articles/microservices.html) relies heavily on network communication.
