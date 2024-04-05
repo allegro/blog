@@ -393,9 +393,8 @@ In tests, we consider two cases because the response from the service may or may
 If the response has a body, we want to log it.
 
 #### Read Timeout
-If the configuration of our HTTP client specifies a timeout for the response time,
-it's worthwhile to write an integration test that verifies the client's configuration. Simulating the delay of the stubbed endpoint can be achieved
-using the ```withFixedDelay``` method from wiremock.
+Our HTTP client should have a finite response timeout configured, so it’s worthwhile to write an integration test that verifies the client's configuration.
+Simulating the delay of the stubbed endpoint can be achieved using the ```withFixedDelay``` method from wiremock.
 
 ```kotlin
 @Test
