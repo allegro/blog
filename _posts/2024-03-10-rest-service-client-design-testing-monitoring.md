@@ -6,7 +6,7 @@ tags: [kotlin, testing, integration tests, rest, wiremock]
 ---
 
 The purpose of this article is to present how to design, test, and monitor a REST service client.
-The article includes a repository with clients written in Kotlin using various technologies such as [WebClient](https://docs.spring.io/spring-framework/reference/integration/rest-clients.html#rest-webclient),
+The article includes a repository with clients written in Kotlin using various technologies such as [WebClient](https://docs.spring.io/spring-framework/reference/web/webflux-webclient.html),
 [RestClient](https://docs.spring.io/spring-framework/reference/integration/rest-clients.html#rest-restclient),
 [Ktor Client](https://ktor.io/docs/getting-started-ktor-client.html),
 [Retrofit](https://square.github.io/retrofit/).
@@ -23,7 +23,8 @@ Having a separate “building block“ that encapsulates communication with the 
 Finally, reusability. A service client that has been written once can be successfully used in other projects.
 
 ## Client Design
-As a case study, I will use an example implementation that utilizes [WebClient](https://docs.spring.io/spring-framework/reference/integration/rest-clients.html#rest-webclient) for retrieving data from the Order Management Service.
+As a case study, I will use an example implementation that utilizes WebClient for retrieving data from the Order Management Service,
+an example service that might appear in an e-commerce site such as [Allegro](https://allegro.pl/).
 The heart of our client is the ```executeHttpRequest``` method, which is responsible for executing the provided HTTP request, logging, and error handling.
 It is not part of the WebClient library.
 
@@ -131,7 +132,7 @@ Metrics won't provide us with the details of the communication, but logs will.
 And these details can turn out to be crucial in the analysis of incidents, which may reveal, for example, incorrect data produced by our service.
 
 Logs are like backups.
-It's only when they are needed, either because the business requests an analysis of a particular case or when resolving an incident,
+We find out if we have them and how valuable they are only when they are needed, either because the business requests an analysis of a particular case or when resolving an incident,
 that we find out if we have them and how valuable they are.
 
 ### Error handling
@@ -272,14 +273,13 @@ fun `should return orders for a given clientId`(): Unit = runBlocking {
         response shouldBe OrdersDto(listOf(OrderDto("7952a9ab-503c-4483-beca-32d081cc2446")))
 }
 ```
+An essential part of the test for the happy path is verification of the contract between the client and the supplier.
+The ```ordersPlacedBySomeCustomer``` method returns a sample response guaranteed by the supplier (Order Management Service).
+On the client side, in the assertion section, we check if this message has been correctly transformed into a response object.
+Instead of comparing individual fields from the response object with the expected value, I highly recommend comparing entire objects.
+It gives us confidence that all fields have been compared. In case of regression, modern IDEs such as IntelliJ indicate exactly where the problem is.
 
-The assertion section might seem a bit intimidating, but it's a result of the structure of the response object,
-the way test data was prepared, and what we want to verify. An essential part of the happy path test is the verification of the contract between the client
-and the supplier. The ```ordersPlacedBySomeCustomer``` method returns a sample response guaranteed by the supplier (Order Management Service).
-On the client side of this service, its verification is performed in the test. We explicitly copy fragments of the contract
-from the ```ordersPlacedBySomeCustomer``` method into the expected places in the response object in the assertion section.
-This duplication is intentional and desired. It is precisely this duplication that allows detecting a potential defect in breaking the contract
-that may occur due to errors in the response object structure on the client side.
+<img alt="Test regression" src="/img/articles/2024-03-10-rest-service-client-design-testing-monitoring/regression.png"/>
 
 **Sending a resource** — verification whether the client sends data to the specified URL in a format acceptable by the previously stubbed endpoint.
 In the following example, I test publishing an event to [Hermes](https://hermes.allegro.tech/), a message broker built on top of Kafka widely used in Allegro.
