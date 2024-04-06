@@ -10,17 +10,18 @@ The article includes a repository with clients written in Kotlin using various t
 [RestClient](https://docs.spring.io/spring-framework/reference/integration/rest-clients.html#rest-restclient),
 [Ktor Client](https://ktor.io/docs/getting-started-ktor-client.html),
 [Retrofit](https://square.github.io/retrofit/).
-It demonstrates how to send and retrieve data from an external service, add a cache layer, and adapter (anti-corruption layer).
+It demonstrates how to send and retrieve data from an external service, add a cache layer, and parse the received response into domain objects.
 
 ## Motivation
 Why do we need objects in the project that encapsulate the HTTP clients we use?
 To begin with, we want to separate the domain from technical details.
 The way we retrieve/send data and handle errors, which can be quite complex in the case of HTTP clients, should not clutter business logic.
 Next, testability. Even if we do not use [hexagonal architecture]({% post_url 2020-05-21-hexagonal-architecture-by-example %}) in our applications,
-it's beneficial to separate the infrastructure layer from the service layer, as it improves testability.
-Verifying an HTTP service client is not simple and requires consideration of many cases — mainly at the integration level.
+it's beneficial to separate the infrastructure from the service layer, as it improves testability.
+Verifying an HTTP service client is not a simple task and requires consideration of many cases — mainly at the integration level.
 Having a separate “building block“ that encapsulates communication with the outside world makes testing much easier.
 Finally, reusability. A service client that has been written once can be successfully used in other projects.
+In Allegro we have
 
 ## Client Design
 As a case study, I will use an example implementation that utilizes WebClient for retrieving data from the Order Management Service,
@@ -48,20 +49,20 @@ class OrderManagementServiceClient(
 Full working example can be found [here](https://github.com/Klimiec/webclients/tree/main/httpclient-webclientinterface).
 
 ### Client name
-Personally, I like to name clients using the convention: name of the service we integrate with, plus the suffix **Client**.
+I like to name clients using the convention: name of the service we integrate with, plus the suffix **Client**.
 In the case of integration with the Order Management Service, such a class will be named ```OrderManagementServiceClient```.
 
 If the technology we use employs an interface to describe the called REST API (RestClient, WebClient, Retrofit),
 we can name such an interface ```OrderManagementServiceApi``` — following the general pattern of the service name with the suffix **Api**.
 
 These names may seem intuitive and obvious, but without an established naming convention, we might end up with a project where
-different integrations have the following suffixes: HttpClient, Facade, WebClient, Adapter, Service.
-It's important to have a consistent convention and adhere to it throughout the entire project.
+different integrations have the following suffixes: HttpClient, Facade, WebClient, Adapter, and Service.
+It’s important to have a consistent convention and adhere to it throughout the project.
 
 ### API
-Methods of our clients that retrieve resources should have names that reflect the communicative intention behind them.
+Methods of our clients should have names that reflect the communicative intention behind them.
 To capture this intention, it is necessary to use a verb in the method’s name.
-Typically, the correct name will have a structure of verb + resource name, for example, ```getOrders```.
+Typically, the correct name will have a structure of verb + resource name, for example, ```getOrders```  —  for methods that retrieve resources.
 If we want to narrow down the number of returned resources using filters or return a particular resource, I recommend adding the suffix "For" before the list of parameters.
 Technically, these parameters will be part of the query or path parameters.
 
@@ -80,12 +81,12 @@ fun publish(event: InvoiceCreatedEventDto)
 When communicating with external service we'd like to log the beginning of the interaction, indicating our intention to fetch or send a resource,
 as well as its outcome. The outcome can be either a success, meaning receiving a response with a 2xx status code, or a failure.
 
-Failure can be signaled by status codes (3xx, 4xx, 5xx), result from the inability to deserialize the received response into an object,
+Failure can be signaled by status codes (3xx, 4xx, 5xx), resulting from the inability to deserialize the received response into an object,
 exceeding the response time, etc. Generally, [many things can go wrong]({% post_url 2015-07-09-testing-server-faults-with-Wiremock %}).
 Depending on the cause of failure, we may want to log the interaction result at different levels (warn/error).
 There are critical errors that are worth distinguishing (error), and those that will occasionally occur (warn) and don't require urgent intervention.
 
-In order to filter logs related to a specific service while browsing through them, I like to include the client's name within curly braces at the beginning of the logs.
+To filter logs related to a specific service while browsing through them, I like to include the client's name within curly braces at the beginning of the logs.
 For logging technical aspects of the communication, such as the called URL, used HTTP method, and response code,
 we use filters (logRequestInfo, logResponseInfo) that are plugged in at the client configuration level in the ```createExternalServiceApi``` method.
 
@@ -127,17 +128,16 @@ The only thing the developer needs to do is to provide a business-oriented descr
 
 Why do I emphasize logging so much?
 Isn't it enough to log only errors?
-After all, we have metrics that inform us about the performance of our client.
+After all, we have metrics that inform us about the performance of our clients.
 Metrics won't provide us with the details of the communication, but logs will.
-And these details can turn out to be crucial in the analysis of incidents, which may reveal, for example, incorrect data produced by our service.
+These details can turn out to be crucial in the analysis of incidents, which may reveal, for example, incorrect data produced by our service.
 
-Logs are like backups.
-We find out if we have them and how valuable they are only when they are needed, either because the business requests an analysis of a particular case or when resolving an incident,
-that we find out if we have them and how valuable they are.
+Logs are like backups. We find out if we have them and how valuable they are only when they are needed,
+either because the business requests an analysis of a particular case or when resolving an incident.
 
 ### Error handling
 When writing client code, we aim to highlight maximally how we send/retrieve data and hide the “noise“ that comes from error handling.
-In case of HTTP clients error handling is quite extensive but generic enough that the resulting code can be written once and reused when creating subsequent clients.
+In the case of HTTP clients, error handling is quite extensive but generic enough that the resulting code can be written once and reused across all clients.
 In our example, error handling mechanism is hidden inside ```executeHttpRequest``` method.
 It consists of two things: logging and throwing custom exceptions that encapsulate technical exceptions thrown by the underlying HTTP client.
 
@@ -145,7 +145,7 @@ What are the benefits of using custom exceptions? The very name of such a custom
 For comparison, ```ExternalServiceIncorrectResponseBodyException``` seems to be more descriptive than DecodingException.
 They also help group various technical exceptions that lead to the same cause, for example, an incorrect response object structure.
 Additionally, based on these exceptions, visualizations can be created to show the state of our integration.
-For example, we can create a table that will show how many exceptions of any given type were thrown by our clients within a specified period of time.
+For example, we can create a table that will show how many exceptions of any given type were thrown by our clients within a specified period.
 Having custom exceptions, we are 100% certain that these exceptions were thrown only by our clients.
 
 ### Testing
@@ -153,7 +153,7 @@ Having custom exceptions, we are 100% certain that these exceptions were thrown 
 To verify different scenarios of our HTTP client, it is necessary to appropriately stub the called endpoints in tests.
 For this purpose, we will use the [WireMock](https://wiremock.org/) library.
 
-It is quite important that technical details of created stubs do not leak into the tests.
+It is quite important that the technical details of created stubs do not leak into the tests.
 The test should describe the behavior being tested and encapsulate technical details.
 For example, changing the accept/content-type header or making minor modifications to the called URL should not affect the test itself.
 To achieve this, for each service for which we are writing a service client, we create an object of type ```StubBuilder```.
@@ -173,32 +173,32 @@ StubBuilders for services that return data come in two flavors - [internal](http
 When testing service client, we want to have great flexibility in simulating responses.
 Therefore, StubBuilders from the internal package will model response objects as a string. This allows us to simulate any scenario.
 In end-to-end tests, where a given service is part of the bigger process, such flexibility is not necessary; in fact, it is not even recommended.
-Therefore, StubBuilders from the external package model responses using an object that is used to deserialize the real response.
+Therefore, StubBuilders from the external package model responses using real objects.
 All StubBuilders from the external packages are declared in the class ```ExternalServiceStubs```, to which a reference is located in the base class for
-all integration tests, ```BaseIntegrationTest```. This allows us to have very easy access to any external service stub.
+all integration tests, ```BaseIntegrationTest```. This allows us to have very easy access to all external service stubs in our integration tests.
 
 ```kotlin
 stub.orderManagementService().willReturnOrdersFor(clientId, response = ordersPlacedBySomeCustomer())
 ```
 
 Reading the above code, we immediately know **which** service is being interacted with (Order Management Service) and what will be returned from it (Orders).
-The technical details of the stubbed endpoint have been abstracted into the StubBuilder object.
+The technical details of the stubbed endpoint have been hidden inside the StubBuilder object.
 Tests should emphasize "what" and encapsulate "how." This way, they can serve as documentation.
 
 #### Test Data
 
 The data returned by our stubs can be prepared in three ways:
 * Read the entire response from a file/string.
-* Prepare the response using objects used in the service for deserializing responses from called services.
+* Prepare the response using real objects used in the service for deserializing responses from called services.
 * Create a set of separate objects modeling the returned response from the service for testing purposes and use them to prepare the returned data.
 
 Which option to choose?
-To answer this question, one should analyze the advantages and disadvantages of each.
+To answer this question, we should analyze the advantages and disadvantages of each approach.
 
-Option A — read response from a file/string. Creating responses is very fast and simple.
+Option A — read response from a file/string. Response creation is very fast and simple.
 It allows **verifying the contract** between the client and the supplier (at least at the time of writing the test).
 Imagine that during refactoring, one of the fields in the response object accidentally changes.
-In such a case, client tests will detect the defect before the code reaches production.
+In such a case, client tests using this approach will detect the defect before the code reaches production.
 
 ```kotlin
 @Test
@@ -215,12 +215,12 @@ fun `should return orders for a given clientId`(): Unit = runBlocking {
 }
 ```
 
-On the other hand, keeping data in files/strings is unfortunately difficult to maintain and reuse.
-Programmers often copy entire files for new tests, introducing minimal changes.
+On the other hand, keeping data in files/strings is difficult to maintain and reuse.
+Programmers often copy entire files for new tests, introducing only minimal changes.
 There is a problem with naming these files and refactoring them when the called service introduces an incompatible change.
 
 
-Option B — Use existing response objects.
+Option B — Use real response objects.
 It allows writing one-line, readable assertions and maximally reusing already created data, especially using [test data builders](https://www.natpryce.com/articles/000714.html).
 
 ```kotlin
@@ -238,7 +238,7 @@ It allows writing one-line, readable assertions and maximally reusing already cr
         response shouldBe clientOrders
     }
 ```
-However, a defect in the form of a **contract violation** between the client and supplier won't be caught.
+However, accidental change of field name which results in the  **contract violation** between the client and supplier won't be caught.
 As a result, we might have perfectly tested communication in integration tests that will not work in production.
 
 Option C — create a set of separate response objects. It has all the advantages of options A and B, including maintainability, reusability, and
@@ -247,13 +247,11 @@ and requires discipline on the developers' side, which can be challenging to mai
 
 Which option to choose? Personally, I prefer a hybrid of options A and B.
 For the purpose of testing the “happy path“ in client tests, I return a response that is entirely stored as a string (alternatively, it can be read from a file).
-Such a test allows not only to verify the contract but also the correctness of deserializing the received response into an object.
+Such a test allows not only to verify the contract but also the correctness of deserializing the received response into a response object.
+In other tests (cache, adapter, end-to-end), I create responses returned by the stubbed endpoint using production response objects.
 
-In other tests (cache, adapter), as well as at the end-to-end level,
-I create responses returned by the stubbed endpoint using the same objects to which the received response will be deserialized.
-
-It's worthwhile to extract sample test data into a dedicated class, such as a Fixture class, for each integration (for example ```OrderManagementServiceFixture```).
-This allows for better reuse of existing code and enhances the readability of the tests themselves.
+It's worthwhile to keep sample test data in dedicated classes, such as a Fixture class, for each integration (for example ```OrderManagementServiceFixture```).
+This allows the reuse of test data and enhances the readability of the tests themselves.
 
 ### Test Scenarios
 #### Happy Path
@@ -275,9 +273,9 @@ fun `should return orders for a given clientId`(): Unit = runBlocking {
 ```
 An essential part of the test for the happy path is verification of the contract between the client and the supplier.
 The ```ordersPlacedBySomeCustomer``` method returns a sample response guaranteed by the supplier (Order Management Service).
-On the client side, in the assertion section, we check if this message has been correctly transformed into a response object.
-Instead of comparing individual fields from the response object with the expected value, I highly recommend comparing entire objects.
-It gives us confidence that all fields have been compared. In case of regression, modern IDEs such as IntelliJ indicate exactly where the problem is.
+On the client side, in the assertion section, we check if this message has been correctly deserialized into a response object.
+Instead of comparing individual fields with the expected value, I highly recommend comparing entire objects (returned and expected).
+It gives us confidence that all fields have been compared. In the case of regression, modern IDEs such as IntelliJ indicate exactly where the problem is.
 
 <img alt="Test regression" src="/img/articles/2024-03-10-rest-service-client-design-testing-monitoring/regression.png"/>
 
@@ -318,7 +316,7 @@ fun willAcceptInvoiceCreatedEvent() {
 ```
 
 We verify the content of the request body in the assertion section.
-Here, we also want to hide the technical aspects of performing assertions behind a method.
+Here, we also want to hide the technical aspects of assertions behind a method.
 
 ```kotlin
 stubs.hermes().verifyInvoiceCreatedEventPublished(event = invoiceCreatedEvent)
@@ -335,7 +333,7 @@ fun verifyInvoiceCreatedEventPublished(event: InvoiceCreatedEventDto) {
 }
 ```
 
-Combining stubbing and request verification in one method is not recommended because it can lead to a less comfortable developer experience (DX).
+Combining stubbing and request verification in one method is not recommended.
 Creating stubs in this way makes their usage less convenient since not every test requires detailed verification of what is being sent in the request body.
 The vast majority of tests will stub the endpoint based on the principle:
 accept a given request as long as its structure is preserved and will verify hypotheses other than the content of the request body (mainly end-to-end tests).
@@ -372,16 +370,16 @@ fun `when receive response with 4xx status code then throw exception`(
 ```
 
 In distributed systems, a [404](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404) response code is quite common and may result from temporary inconsistency across the entire system.
-Its occurrence is signaled by the ```ExternalServiceResourceNotFoundException``` exception and a warning-level log.
+Its occurrence is signaled by the ```ExternalServiceResourceNotFoundException``` and a warning-level log.
 Here, we are more interested in the scale of occurrences, which is why we use metrics, than analyzing individual cases, hence we log such cases at the warning level.
 
 The situation looks a bit different in the case of responses with a code of [422](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/422).
 If the request is rejected due to validation errors, either our service has a defect and produces incorrect data,
-or the data comes from another service (which is why it's crucial to log what we receive from external services).
+or we receive incorrect data from external services (which is why it's crucial to log what we receive from external services).
 Alternatively, the error may be on the recipient side in the logic validating the received request. It's worth analyzing each such case, which is why
-errors of this type are logged at the error level and signaled by the ```ExternalServiceRequestValidationException``` exception.
+errors of this type are logged at the error level and signaled by the ```ExternalServiceRequestValidationException```.
 
-Other errors from the 4xx family occur much less frequently.
+Other errors from the 4xx family occur less frequently.
 They are all marked by the ```ExternalServiceClientException``` exception and logged at the error level.
 
 #### Server-side errors
@@ -420,7 +418,7 @@ fun `when service returns above timeout threshold then throw exception`(): Unit 
 ```
 
 No, this is not testing properties in tests.
-It is a verification to ensure that the configuration derived from properties has indeed been applied to the given client.
+This test ensures that the configuration derived from properties has indeed been applied to the given client.
 Ensuring a response within a specified time frame might be part of non-functional requirements and requires verification.
 
 #### Invalid Response Body
@@ -438,7 +436,9 @@ To differentiate metrics generated by different clients easily, it's advisable t
 
 In HTTP clients offered by the Spring framework (WebClient, RestClient),
 metrics are enabled out-of-the-box if we create them using predefined builders (WebClient.Builder, RestClient.Builder).
-However, for other technologies, third-party solutions must be employed.
+However, for other technologies, third-party solutions must be employed. In Allegro, we have a set of libraries that allows us to quickly create new
+HTTP clients in the most popular technologies that provide support for our infrastructure.
+As a result, all clients generate consistent metrics by default tailored to our dashboards.
 
 #### Response Time
 Measuring the response time of HTTP clients allows us to identify bottlenecks.
