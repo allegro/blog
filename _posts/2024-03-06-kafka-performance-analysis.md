@@ -395,6 +395,11 @@ could cause lock contention and a cascade of slow requests. Without tracing indi
 
 We hope that you found this blog post useful, and we wish you good luck in your future performance analysis endeavors!
 
+---
+### Acknowledgments
+
+_We would like to thank our colleague Dominik Kowalski for performing the XFS migration and applying the ext4 configuration changes to the Kafka cluster._
+
 <style>
   .post-content table, .post-content td, .post-content th {
     border: none;
