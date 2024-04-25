@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "INP - what is the new Core Web Vitals metric and how do we work with it at Allegro."
+title: "INP — what is the new Core Web Vitals metric and how do we work with it at Allegro."
 author: kacper.stodolak
 tags: [tech, frontend, performance, inp, webperf]
 ---
@@ -9,12 +9,12 @@ Site performance is very important, first of all, from the perspective of users,
 The user should not wait too long for the page to load. We all know how annoying it can be when we want to press an element
 and it jumps to another place on the page, or when we click on a button and then nothing happens for a very long time. The state of a
 site’s performance in these aspects is measured by Web Vitals performance metrics, and most importantly by a set of three major
-Core Web Vitals metrics (LCP - Largest Contentful Paint, CLS - Cumulative Layout Shift, INP - Interaction to Next Paint), which are
+Core Web Vitals metrics (LCP — Largest Contentful Paint, CLS — Cumulative Layout Shift, INP — Interaction to Next Paint), which are
 responsible for measuring the 3 things: loading time, visual stability and interactivity. These metrics are also important for the
 websites themselves, because in addition to the user experience, they are also taken into account in terms of the website’s positioning
 in search engines (SEO) which is crucial for most websites on the Internet, Allegro included.
 
-In this post, you can read about the **INP** - new Core Web Vitals metric assessing overall responsiveness of the page which **replaced
+In this post, you can read about the **INP** — new Core Web Vitals metric assessing overall responsiveness of the page which **replaced
 FID (First Input Delay) as of March 12, 2024** ([source](https://google.com)).
 
 ## What is INP?
@@ -43,7 +43,7 @@ It can be distinguished 3 phases of this process:
 * Presentation delay – presenting new frame by the browser (render, paint, compositing)
 
 Where can you look for improvements? First of all, in phase one and two.
-1. **Input delay** phase – the interaction can happen at any time during the user's visit. The main thread in the browser
+1. **Input delay** phase – the interaction can happen at any time during the user’s visit. The main thread in the browser
 may be busy this time because of some already ongoing task. It is the situation that can increase the time of
 this phase. Blocked main thread = longer time to call the event callback.
 <img src="/img/articles/2024-04-23-INP-new-core-web-vitals/inp-scheme-input-delay.png" alt="" class="small-image"/>
@@ -93,9 +93,9 @@ Google set three thresholds ranges:
 
 Core Web Vitals is a set of the most important performance metrics that determine overall evaluation of
 “Page Experience” on three different criterias:
-* Loading - Largest Contentful Paint metric (LCP)
-* Visual stability - Cumulative Layout Shift metric (CLS)
-* **Interactivity - Interaction to Next Paint (INP) - On March 12, 2024 INP officially replaced FID and take
+* Loading — Largest Contentful Paint metric (LCP)
+* Visual stability — Cumulative Layout Shift metric (CLS)
+* **Interactivity — Interaction to Next Paint (INP) — On March 12, 2024 INP officially replaced FID and take
 over the role of the Interactivity metric in the CWV set**
 
 All Core Web Vitals are scored based on how well they perform in the field at the 75th percentile of all
@@ -133,7 +133,7 @@ INP:
 * Result is defined in milliseconds (ms)
 * Determines overall page responsiveness
 
-## INP - debugging
+## INP — debugging
 
 ### 1. Using RUM data to find slow interactions
 
@@ -144,7 +144,7 @@ This can be crucial in finding specific elements on a page that are most frequen
 users and with which interactions are reported to be long (>200ms). Data like this may differ from those
 collected manually or collected during synthetic testing, due to hardware differences in users’ end devices.
 
-### 2. Measuring time of single interaction with Google Chrome extension - web-vitals.
+### 2. Measuring time of single interaction with Google Chrome extension — web-vitals.
 
 In addition to other useful information about Web Vitals, this extension serves us with measurement results
 for single interactions with a distinction for all 3 phases. You can find the metric logs in developer tools
@@ -199,7 +199,7 @@ debugging a slow interaction :)
 ### 6. Other helpful tips
 
 * Use CPU throttling during debugging the interaction - some INP issues can be noticeable only on slower devices.
-* You can turn it on in the developers tools -> “Performance” tab settings -> CPU
+* You can turn it on in the developers tools → “Performance” tab settings → CPU
 * Local overrides - you can override locally script (more info: https://developer.chrome.com/docs/devtools/overrides)
 * Blocking scripts locally
 <img src="/img/articles/2024-04-23-INP-new-core-web-vitals/devtools-blocking.png" alt="Blocking request URL in devTools" class="small-image"/>
@@ -282,7 +282,7 @@ function changeBoxSize(box) {
 In the first (`BAD`) example browser has to run a styles recalculation process synchronously to calculate the new height of the box element(“Forced reflow” in the browser).
 
 In the second (`BETTER`) example there is no such problem. We can log the height value calculated during the latest rendering process.
-After that there is a changing element styles operation. It's fine in this example because it's not going to force the browser to run styles
+After that there is a changing element styles operation. It’s fine in this example because it’s not going to force the browser to run styles
 recalculation synchronously during the currently running task.
 
 ### 4. Using CSS content-visibility
@@ -300,7 +300,7 @@ Keeping the number of elements in the DOM as small as possible is important beca
 For example:
 
 * Increased time of first render due to network efficiency and load performance
-* Runtime performance - The browser must constantly recompute the position and styling of nodes.
+* Runtime performance — The browser must constantly recompute the position and styling of nodes.
 Large DOM can cause long styles recalculations that block the main thread for a long time
 
 Read more: https://web.dev/articles/dom-size-and-interactivity
@@ -308,15 +308,15 @@ Read more: https://web.dev/articles/dom-size-and-interactivity
 ### 6. Web Workers
 
 If some very long operations are hard to optimize you can use Web Workers which can run your JavaScript code in a dedicated thread. It allows
-you to not block the main thread during, for example, complicated calculations. However there are some limitations to this solution.
+you to not block the main thread during, for example, complicated calculations. However, there are some limitations to this solution.
 The code executed in the worker has its own global context (it does not have access to the window object). In addition, it is not possible to
 perform direct operations on the DOM.
 
 You can find more information here: https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers
 
-## INP in Allegro - few examples
+## INP in Allegro — few examples
 
-### 1. Slow interactions - long tasks
+### 1. Slow interactions — long tasks
 
 At Allegro, we have taken many actions and attempts to improve the INP score. **By far the most effective were attempts to diagnose
 long interactions based on RUM data and optimize them**. This is very important because one long interaction can spoil the INP results of the
@@ -351,13 +351,13 @@ information about delivery). The operation that caused costly style recalculatio
 which blocked the ability to scroll the content under the sidebar. This significantly increased the total processing time for opening the sidebar,
 even though blocking the ability to scroll the content below was not critical and the most important. The solution to this was to simply postpone
 the operation of attaching CSS class to the body element until after the next frame had been rendered. This way, the user faster received the most
-important visual effect of this interaction - opening the sidebar with important information.
+important visual effect of this interaction — opening the sidebar with important information.
 
 <img src="/img/articles/2024-04-23-INP-new-core-web-vitals/example-sidebar.png" alt="The sidebar component in Allegro" class="small-image"/>
 The sidebar component in Allegro
 
 <img src="/img/articles/2024-04-23-INP-new-core-web-vitals/devtools-styles-recalculation.png" alt="Chrome devTools styles recalculation information" class="small-image" />
-Information about how many elements were affected by style recalculation can be found in devTools in the "Performance" tab.
+Information about how many elements were affected by style recalculation can be found in devTools in the „Performance” tab.
 
 ### 3. Attaching global event listeners too early
 
