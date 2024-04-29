@@ -1,16 +1,337 @@
 ---
 layout: post
-title: "A Mission to Cost-Effectiveness: Trimming Down Google Cloud Dataflow Expenses by Over 60%"
+title: "A Mission to Cost-Effectiveness: Reducing cost of a single Google Cloud Dataflow Pipeline by Over 60%"
 author: jakub.demianowski
 tags: [ tech, big data ]
 ---
+Today, we'll delve into methods for efficiently optimizing physical resources and fine-tuning the configuration of Google Cloud Platform (GCP) Dataflow pipelines to achieve substantial cost reductions.
+Optimization will be presented as a real-life scenario, which is performed in stages.
 
-Work in progress
+Before we start, it's time to introduce several avenues through which the cost of Big Data pipelines can be significantly minimized. These include:
 
-<img src="/img/articles/2024-04-22-cost-optimization-data-pipeline-gcp/01_cpu_utilization_all_workers.png" alt="CPU utilization on all worker nodes" class="small-image" style="box-shadow: 0 0 4px 0 #D7DBD6;"/>
+- Streamlining of our pipeline code, such as modifying physical plans within Spark.
+- Enhancing the configuration of the data processing engine to maximize its efficiency.
+- Careful optimization of consumed physical resources, like choosing the appropriate VM types.
+- Strategically optimizing input and output datasets. Not all data may need processing or perhaps, altering their structure could reduce the processing time.
+- Refining storage strategies for input and output datasets. This is particularly beneficial if reading or writing speeds are sub-optimal and demand improvements.
 
-<img src="/img/articles/2024-04-22-cost-optimization-data-pipeline-gcp/02_cpu_utilization_stats.png" alt="CPU utilization statistics" class="small-image" style="box-shadow: 0 0 4px 0 #D7DBD6;"/>
+During this article we will focus solely on optimizing physical resources and configuration options.
 
-<img src="/img/articles/2024-04-22-cost-optimization-data-pipeline-gcp/03_memory_utilization_max_usage.png" alt="Memory utilization max usage" class="small-image" style="box-shadow: 0 0 4px 0 #D7DBD6;"/>
+## Data processing pipeline being optimized
 
-<img src="/img/articles/2024-04-22-cost-optimization-data-pipeline-gcp/04_memory_utilization_summary.png" alt="Memory utilization summary" class="small-image" style="box-shadow: 0 0 4px 0 #D7DBD6;"/>
+Data pipeline, which is optimized throughout this article is written in Apache Beam using Python SDK. The goal of the pipeline is to join a couple of tables, apply some transformations and produce unified output table. Input tables are up to a couple of terabytes each.
+
+Overall processing cost of the full dataset was around 350$ per day. It gives roughly 10 500$ per month, and 126 000$ per year. It’s currently about 500 000 PLN per year given current currency exchange rates (1$ per ​​3.96 PLN).
+
+Note:
+Why we do not use Dataflow FlexRS?
+
+We will not test Dataflow Flexible Resource Scheduling (FlexRS) which could lower the processing price by combining preemptible and regular VMs, because the job will not start within a given timeframe.
+When you schedule a Dataflow FlexRS job you do not know the exact start time, the only one promise from FlexRS is that the job will start within 6 hours ([documentation notes from Google Cloud website](https://cloud.google.com/dataflow/docs/guides/flexrs)).
+
+## Approach to cost-optimization
+
+At the beginning of cost-optimization I drafted a couple of hypothesis:
+
+- Physical resources are under-utilized.
+- Physical resources are not the most efficient in terms of price per performance, we could find something cheaper and faster.
+- Configuration of the Dataflow job is not optimal and could be optimized.
+
+My goal was to check those hypotheses. I gave myself at most a few days to work on that.
+
+For the sake of convenience and limitation of costs during my work for the most of the time I used 3% subsample of the original source datasets.
+As a result I was running tests with input size at ~ 100 GB level.
+Thus, I limited the time and cost of my testing jobs. Final tests were made on the full dataset.
+
+In order to save time and resources I made some speculative choices regarding what I should test and to not test all the possible combinations of machine families, disk types and configuration options.
+I will try to stick with the most promising choices and omit testing not well-promising configurations.
+
+## Hypothesis testing: physical resources are under-utilized
+
+In our initial configuration we used following type of worker machines:
+
+- machine type: n2-standard-4 (4 vCPU, 16 GB of memory)
+- disk size: 100 GB
+- disk type: HDD
+- max. worker nodes: 500
+- Autoscaling algorithm: throughput based
+
+I wanted to check if those three resources are underutilized. For the sake of time I assumed that HDD disks are slow and not under-utilized.
+HDD disks tend to be rather a bottleneck, then an underutilized resource.
+I made a decision to focus on HDD disks later.
+
+### CPU utilization
+I checked if CPU utilization is on an acceptable level, and it was.
+
+The following diagram from Dataflow UI presents CPU utilization on All Workers in terms of the fraction of CPU utilization for all cores on a single App Engine flexible instance.
+So it gives us an idea of how the CPU is utilized on each virtual machine.
+
+<img src="/img/articles/2024-04-22-cost-optimization-data-pipeline-gcp/01_cpu_utilization_all_workers.png" alt="CPU utilization on all worker nodes" class="medium-image" style="box-shadow: 0 0 4px 0 #D7DBD6;"/>
+
+We could also take a look at the same data presented in terms of statistical metrics.
+
+<img src="/img/articles/2024-04-22-cost-optimization-data-pipeline-gcp/02_cpu_utilization_stats.png" alt="CPU utilization statistics" class="medium-image" style="box-shadow: 0 0 4px 0 #D7DBD6;"/>
+
+From the given graph I could see that mean utilization of the CPU is at the level of 85%, which is a good score.
+The result is affected by two shuffle stages, when we need to send data around the cluster (network is a bottleneck here).
+CPU tends to be idle while shuffling data using Dataflow Shuffle Service.
+
+So CPU resources are not underutilized. We use almost all of what we pay for.
+
+### Memory utilization
+
+At the end I checked memory usage. I saw that we do not use all the memory, which we were paying for. Let’s take a look at the following two graphs.
+
+The first one shows maximal memory utilization among all the workers.
+<img src="/img/articles/2024-04-22-cost-optimization-data-pipeline-gcp/03_memory_utilization_max_usage.png" alt="Memory utilization max usage" class="medium-image" style="box-shadow: 0 0 4px 0 #D7DBD6;"/>
+
+The second one shows memory utilization statistics among all the worker nodes.
+<img src="/img/articles/2024-04-22-cost-optimization-data-pipeline-gcp/04_memory_utilization_summary.png" alt="Memory utilization summary" class="medium-image" style="box-shadow: 0 0 4px 0 #D7DBD6;"/>
+
+The first one presents average memory usage on a worker node, and the second one presents overall memory usage among the whole cluster. We clearly see that we use around 50% of the memory. Bingo, we pay for a memory that we do not use.
+
+### Fixing under-utilized memory
+
+Usually there are two ways of fixing underutilized memory:
+
+- change CPU to memory ratio on worker nodes
+- decrease amount of worker nodes
+
+I've decided to change the CPU to memory ratio, not to decrease the amount of worker nodes. I did not want to compromise on scalability and time needed to perform a job.
+
+Test on a 3% subsample of testing data and achieved the following cost of data processing:
+
+- n2-standard-4: 9.48$
+- n2-highcpu-8: 8.52$ (~ 10% less than original price)
+- n2d-highcpu-8: 8.57$ (~ 10% less than original price)
+
+So here is our first guess - we saved 10% on adjusting CPU and memory ratio. It gives us around 50 000 PN of estimated saving per year (10% from 500 000 PLN annual cost)c.
+
+<table>
+  <tr>
+    <th>Hypothesis</th>
+    <th>Savings<span markdown='1'>[^1]</span></th>
+  </tr>
+  <tr>
+    <td>[1] Physical resources are under utilized</td>
+    <td>50 000 PLN</td>
+  </tr>
+</table>
+
+## Hypothesis testing: physical resources are not the best in terms of price per performance
+
+I assumed that virtual machine type (n2-standard-4) is not the best in terms of price per performance.
+To quickly check performance of different virtual machine types I used [CoreMark scores provided by Google Cloud itself](https://cloud.google.com/compute/docs/benchmarks-linux).
+
+I ended up with the following table. The most important column was “price per 1 mln points” - how much do I need to pay on average to score 1 mln points.
+I used official prices from Google Cloud site VM instance pricing from region europe-west1.
+
+<table>
+  <tr>
+    <th>Virtual Machine Type</th>
+    <th>Points in ScoreMark<span markdown='1'>[^2]</span></th>
+    <th>Price per hour<span markdown='1'>[^3]</span></th>
+    <th>Price per 1 mln points</th>
+  </tr>
+  <tr>
+    <td>n2-standard-4</td>
+    <td>66 833 pts</td>
+    <td>$0.21</td>
+    <td>$3.20</td>
+  </tr>
+  <tr>
+    <td>n2-standard-8</td>
+    <td>138 657 pts</td>
+    <td>$0.43</td>
+    <td>$3.08</td>
+  </tr>
+  <tr>
+    <td>n2d-standard-8</td>
+    <td>164 539 pts</td>
+    <td>$0.37</td>
+    <td>$2.26</td>
+  </tr>
+  <tr>
+    <td>e2-standard-8</td>
+    <td>103 808 pts</td>
+    <td>$0.29</td>
+    <td>$2.84</td>
+  </tr>
+  <tr>
+    <td>t2d-standard-8</td>
+    <td>237 411 pts</td>
+    <td>$0.37</td>
+    <td>$1.57</td>
+  </tr>
+</table>
+
+As we see we have another hypothesis proved to be true. We’re not using the cheapest resources available - T2D virtual machines.
+
+Unfortunately T2D machines do not provide other cpu to memory ratio than 3 GB per 1 vCPU. It’s still better than 4 GB per 1 vCPU, but far from 1 or 2 GB per 1 vCPU. We’re gonna test if even with probably under-utilization the t2d virtual machine type will be cheaper than its counterparts.
+
+### Moving to more effective machine types in terms of price per performance
+
+I performed several tests on a small scale (3% subsample of input data) with t2d machine types. Let’s take a look at them.
+
+- n2-standard-4 + HDD: 9.48$
+- n2-highcpu-8 + HDD: 8.52$ (~ 10% less than original price)
+- n2d-highcpu-8 + HDD: 8.57$ (~ 10% less than original price)
+- t2d-standard-8 + HDD: 6.65$ (~ 32% less than original price)
+
+This way we decreased the processing cost from 500 000 PLN by estimated 160 000 PLN per year to 340 000 PLN (by 32%)*.
+
+<table>
+  <tr>
+    <th>Hypothesis</th>
+    <th>Savings<span markdown='1'>[^1]</span></th>
+  </tr>
+  <tr>
+    <td>[1] Physical resources are under utilized</td>
+    <td>50 000 PLN</td>
+  </tr>
+  <tr>
+    <td>[2] Moving to a more cost-effective VM type</td>
+    <td>110 000 PLN</td>
+  </tr>
+</table>
+
+Total: 160 000 PLN of estimated savings[^1]
+
+### Coming back to optimization of virtual machine storage type
+
+As I found the most suitable virtual machine type, I was able to focus on choosing between SSD and HDD.
+As we all know, HDDs are much slower than SSDs, especially in terms of random read/write.
+For processes where we do not heavily use storage I/Os there’s no need to move to more expensive SSDs.
+
+I decided to check if we should use cheaper and slower HDDs or more expensive and faster SSDs.
+There’s no standard I/O measurement graph in Dataflow UI, thus I choose to just run the processing two times - one time using HDDs, and the second time using SSDs.
+
+Tests has given the following results:
+- n2-standard-4 + HDD: 9.48$
+- n2-highcpu-8 + HDD: 8.52$ (~ 10% less than original price)
+- n2d-highcpu-8 + HDD: 8.57$ (~ 10% less than original price)
+- t2d-standard-8 + HDD: 6.45$ (~ 32% less than original price)
+- t2d-standard-8 + SSD: 5.64$ (~ 41% less than original price)
+
+This way we decreased the estimated processing cost from 500 000 PLN by 205 000 PLN per year to 295 000 PLN (by 41%)*.
+
+<table>
+  <tr>
+    <th>Hypothesis</th>
+    <th>Savings<span markdown='1'>[^1]</span></th>
+  </tr>
+  <tr>
+    <td>[1] Physical resources are under utilized</td>
+    <td>50 000 PLN</td>
+  </tr>
+  <tr>
+    <td>[2] Moving to a more cost-effective VM type</td>
+    <td>110 000 PLN</td>
+  </tr>
+  <tr>
+    <td>[3] Changing VM disk type to SSD</td>
+    <td>45 000 PLN</td>
+  </tr>
+</table>
+
+Total: 205 000 PLN of estimated savings[^1]
+
+## Hypothesis testing: configuration of the Dataflow job is not optimal and could be optimized
+
+Dataflow in comparison to Apache Spark leaves us with almost no configuration options to be changed.
+It’s good, because in Dataflow you get very decent out-of-the-box settings.
+The only one option which I wanted to tune was if we should use Shuffle Service.
+Shuffle Service is a serverless tool that facilitates data shuffling around the cluster, thus relieving worker nodes from this task.
+Also, node preemption is not so painful, because Shuffle Service stores data on an external storage independent of worker nodes.
+But it comes at a price.
+
+Below is presented cost breakdown on processing 3% of input data set using t2d-standard-8 + SSD cost virtual machine:
+
+- Cost per CPU: 2.47 $
+- Cost per Memory: 0.70 $
+- Cost per SSD disk: 0.16 $
+- Cost per shuffle service: 2.32 $
+- Overall cost: 5.64 $
+
+Thus, we see that the cost of the shuffle service plays an important role - it’s more than 40% of the overall cost. Let’s do an experiment and turn Shuffle Service off.
+
+- n2-standard-4 + HDD: 9.48$ (original configuration)
+- t2d-standard-8 + SSD: 5.64$ (~ 41% less than original configuration)
+- t2d-standard-8 + SSD + no Shuffle Service: 3.95$ (~ 58% less than original configuration)
+
+By turning off Shuffle Service we achieved a much lower cost.
+As a bonus, our memory utilization increased to almost 100%, because we use worker nodes to perform a shuffle.
+So we eliminated an underutilized t2d issue connected with a cpu to memory ratio.
+Node preemption is not a problem, since we’re not utilizing preemptible VMs.
+
+I also must add a side note: turning-off external shuffle service may not always result in lower cost.
+It depends on many factors, and you should test in on your own data pipeline.
+Also, you need to take into consideration that the job will usually require more resources (CPU, memory), once you turn off external shuffle service.
+
+This way we decreased the estimated processing cost from 500 000 PLN by 290 000 PLN per year to 210 000 PLN (by 58%).
+So it’s now less than half of the initial cost*.
+
+<table>
+  <tr>
+    <th>Hypothesis</th>
+    <th>Savings<span markdown='1'>[^1]</span></th>
+  </tr>
+  <tr>
+    <td>[1] Physical resources are under utilized</td>
+    <td>50 000 PLN</td>
+  </tr>
+  <tr>
+    <td>[2] Moving to a more cost-effective VM type</td>
+    <td>110 000 PLN</td>
+  </tr>
+  <tr>
+    <td>[3] Changing VM disk type to SSD</td>
+    <td>45 000 PLN</td>
+  </tr>
+  <tr>
+    <td>[4] Turning off Shuffle Service</td>
+    <td>85 000 PLN</td>
+  </tr>
+</table>
+
+Total: 290 000 PLN of estimated savings[^1]
+
+## Final test on a full dataset
+
+Last task was to test findings on the full input datasets (not sub sampling). Here are the costs of processing full dataset for a one day
+(not only 3% of input data, as it was presented previously):
+
+<table>
+  <tr>
+    <th>Configuration</th>
+    <th>Processing cost for one day</th>
+  </tr>
+  <tr>
+    <td>n2-standard-4 + HDD</td>
+    <td>$350.02</td>
+  </tr>
+  <tr>
+    <td>t2d-standard-8 + SSD + shuffle service turned off</td>
+    <td>$134.14 (~ 62% less than original price)</td>
+  </tr>
+</table>
+
+As we see the predicted gain from subsampling was achieved (savings are even higher by 3 pp than in estimated).
+For reference: we estimated based on runs with 3% of input size, that we will achieve about 58% of cost reduction.
+
+- Initial annual cost: 500 000 PLN
+- Estimated annual cost after optimization: 190 000 PLN
+- Total estimated annual savings: 310 000 PLN
+
+Presented figures are only estimates based on a single run and extrapolated to the whole year.
+To know the exact savings we will need to run the processing pipeline over a year, which hasn’t been done.
+
+## Summary
+
+We achieved very good results by even not touching a processing code.
+Speculative approach provided good results.
+There may still be some space for optimization, but within a given timeframe I treat those results as very good and do not find more reasons to further optimize the environment and configuration of the Dataflow job.
+
+[^1]: Presented figures are only estimates based on a single run (with only 3% of input data) and extrapolated to the whole year with the assumption that processing the whole dataset will result in the same savings, like processing 3% of source data.
+[^2]: CoreMark results from [CoreMark scores provided by Google Cloud itself](https://cloud.google.com/compute/docs/benchmarks-linux), taken at 05.04.2024.
+[^3]: Official prices taken from Google Cloud site, VM instance pricing in region europe-west1, taken at 05.04.2024.
