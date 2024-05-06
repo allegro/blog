@@ -4,13 +4,13 @@ title: "A Mission to Cost-Effectiveness: Reducing cost of a single Google Cloud 
 author: jakub.demianowski
 tags: [ tech, big data ]
 ---
-Today, we'll delve into methods for efficiently optimizing physical resources and fine-tuning the configuration of Google Cloud Platform (GCP) Dataflow pipelines to achieve substantial cost reductions.
+Today, we'll delve into methods for efficiently optimizing physical resources and fine-tuning the configuration of Google Cloud Platform (GCP) Dataflow pipeline to achieve cost reductions.
 Optimization will be presented as a real-life scenario, which will be performed in stages.
 
 Before we start, it's time to introduce several avenues through which the cost of Big Data pipelines can be significantly reduced.
 These include:
 
-- Careful optimization of consumed physical resources, like choosing the appropriate VM types.
+- Careful optimization of consumed physical resources, like choosing VM types with optimal CPU to memory ratio and cost-effective CPU type.
 - Enhancing the configuration of the data processing engine to maximize its efficiency.
 - Strategically optimizing input and output datasets. Not all data may need processing or perhaps, altering their structure could reduce the processing time.
 - Refining storage strategies for input and output datasets. This is particularly beneficial if reading or writing speeds are sub-optimal and demand improvements.
@@ -21,6 +21,7 @@ During this article we will focus solely on optimizing physical resources and co
 ## About data pipeline being optimized
 
 Data pipeline, which will serve us as an example throughout this article is written in Apache Beam using Python SDK.
+The pipeline runs on Google Cloud Dataflow processing engine.
 The goal of the pipeline is to join a couple of tables (most of them are in terabyte+ size), apply some transformations and produce unified output table.
 
 Overall processing cost of the full dataset is around 350 $ per day.
@@ -41,7 +42,8 @@ For the sake of convenience and limitation of costs during my work for the most 
 As a result I was running tests with input size at ~ 100 GB level.
 Thus, I limited the time and cost of my testing jobs. Final tests were made on the full dataset.
 
-In order to save time and resources I made some speculative choices regarding what I should test and to not test all the possible combinations of machine families, disk types and configuration options.
+In order to save time and resources I made some speculative choices regarding what I should test during optimization.
+In addition, I've decided to not test all the possible combinations of machine families, disk types and configuration options to save time.
 I will try to stick with the most promising choices and omit testing not well-promising configurations.
 
 ## Hypothesis testing: physical resources are under-utilized
@@ -54,10 +56,7 @@ In our initial configuration we used following type of worker machines:
 - Max. worker nodes: 500
 - Autoscaling algorithm: throughput based
 
-I wanted to check if those three resources are underutilized.
-For the sake of time I assumed that HDD disks are slow and not under-utilized.
-HDD disks tend to be rather a bottleneck, then an underutilized resource.
-I made a decision to focus on HDD disks later.
+I made a decision to focus at the beginning on CPU and memory utilization.
 
 ### CPU utilization
 I checked if CPU utilization is on an acceptable level, and it was.
@@ -72,7 +71,7 @@ We could also take a look at the same data presented in terms of statistical met
 <img src="/img/articles/2024-04-22-cost-optimization-data-pipeline-gcp/02_cpu_utilization_stats.png" alt="CPU utilization statistics" class="medium-image" style="box-shadow: 0 0 4px 0 #D7DBD6;"/>
 
 From the given graph I could see that mean utilization of the CPU is at the level of 85%, which is a good score.
-The result is affected by two shuffle stages, when we need to send data around the cluster (network is a bottleneck here).
+The result is affected by two shuffle stages, when we need to send data around the cluster (usually network is a small bottleneck here).
 CPU tends to be idle while shuffling data using Dataflow Shuffle Service.
 
 So CPU resources are not underutilized. We use almost all of what we pay for.
@@ -171,7 +170,7 @@ I used [official VM instance prices from Google Cloud site](https://cloud.google
 As we see, another hypothesis proved to be true. We're not using virtual machine type with the best performance to price ration - T2D.
 We're using N2 machine type.
 
-Unfortunately T2D machines do not provide other CPU to memory ratio than 3 GB per 1 vCPU.
+Unfortunately T2D machines at the time of writing this article do not provide other CPU to memory ratio than 3 GB per 1 vCPU.
 It’s still better than 4 GB per 1 vCPU, but far from 1 or 2 GB per 1 vCPU.
 We’re going to test if even with probably under-utilization the T2D virtual machine type will be cheaper than its counterparts.
 
@@ -252,7 +251,7 @@ Shuffle Service is a serverless tool that facilitates data shuffling around the 
 Also, node preemption is not so painful, because Shuffle Service stores data on an external storage independent of worker nodes.
 But it comes at a price.
 
-Below is presented cost breakdown on processing 3% of input data set using t2d-standard-8 + SSD cost virtual machine:
+Below is presented cost breakdown of processing 3% of input dataset using virtual machine t2d-standard-8 with SSD:
 
 - Cost per CPU: 2.47 $
 - Cost per Memory: 0.70 $
@@ -307,12 +306,12 @@ Total: 290 000 PLN of estimated savings[^1]
 Note: Why we do not use Dataflow FlexRS, which could lower the processing price by combining preemptible and regular VMs?
 
 We did not test it due to how scheduling in FlexRS works.
-When you schedule a Dataflow FlexRS job you do not know the exact start time, the only one promise from FlexRS is that the job will start within 6 hours ([documentation notes from Google Cloud website](https://cloud.google.com/dataflow/docs/guides/flexrs)).
+When you schedule a Dataflow FlexRS job you do not know the exact start time, the only one promise from FlexRS is that the job will start within 6 hours ([documentation notes from Google Cloud website on that](https://cloud.google.com/dataflow/docs/guides/flexrs)).
 Our data pipeline must start at a given hour and having 6 hours delay is not acceptable.
 
 ## Final test on a full dataset
 
-My last task was to test findings from sub-sampled dataset (3%) tests on the full datasets (not sub sampling).
+My last task was to test findings from sub-sampled input dataset (3%) tests on the full dataset (not sub sampling).
 Here are the costs of processing full dataset for a one day:
 
 <table>
