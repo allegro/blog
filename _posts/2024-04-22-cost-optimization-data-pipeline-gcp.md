@@ -4,7 +4,8 @@ title: "A Mission to Cost-Effectiveness: Reducing cost of a single Google Cloud 
 author: jakub.demianowski
 tags: [ tech, big data ]
 ---
-Today, we’ll delve into methods for efficiently optimizing physical resources and fine-tuning the configuration of Google Cloud Platform (GCP) Dataflow pipeline to achieve cost reductions.
+Today, we’ll delve into methods for efficiently optimizing physical resources and fine-tuning the configuration of Google Cloud Platform (GCP)
+Dataflow pipeline to achieve cost reductions.
 Optimization will be presented as a real-life scenario, which will be performed in stages.
 
 Before we start, it’s time to introduce several avenues through which the cost of Big Data pipelines can be significantly reduced.
@@ -61,14 +62,17 @@ I made a decision to focus at the beginning on CPU and memory utilization.
 ### CPU utilization
 I checked if CPU utilization is on an acceptable level, and it was.
 
-The following diagram from Dataflow UI presents CPU utilization on All Workers in terms of the fraction of CPU utilization for all cores on a single App Engine flexible instance.
+The following diagram from Dataflow UI presents CPU utilization on All Workers in terms of the fraction of CPU utilization
+for all cores on a single App Engine flexible instance.
 So it gives us an idea of how the CPU is utilized on each virtual machine.
 
-<img src="/img/articles/2024-04-22-cost-optimization-data-pipeline-gcp/01_cpu_utilization_all_workers.png" alt="CPU utilization on all worker nodes" class="medium-image" style="box-shadow: 0 0 4px 0 #D7DBD6;"/>
+<img src="/img/articles/2024-04-22-cost-optimization-data-pipeline-gcp/01_cpu_utilization_all_workers.png"
+alt="CPU utilization on all worker nodes" class="medium-image" style="box-shadow: 0 0 4px 0 #D7DBD6;"/>
 
 We could also take a look at the same data presented in terms of statistical metrics.
 
-<img src="/img/articles/2024-04-22-cost-optimization-data-pipeline-gcp/02_cpu_utilization_stats.png" alt="CPU utilization statistics" class="medium-image" style="box-shadow: 0 0 4px 0 #D7DBD6;"/>
+<img src="/img/articles/2024-04-22-cost-optimization-data-pipeline-gcp/02_cpu_utilization_stats.png"
+alt="CPU utilization statistics" class="medium-image" style="box-shadow: 0 0 4px 0 #D7DBD6;"/>
 
 From the given graph I could see that mean utilization of the CPU is at the level of 85%, which is a good score.
 The result is affected by two shuffle stages, when we need to send data around the cluster (usually network is a small bottleneck here).
@@ -81,10 +85,12 @@ So CPU resources are not underutilized. We use almost all of what we pay for.
 At the end I checked memory usage. I saw that we do not use all the memory, which we were paying for. Let’s take a look at the following two graphs.
 
 The first one shows maximal memory utilization among all the workers.
-<img src="/img/articles/2024-04-22-cost-optimization-data-pipeline-gcp/03_memory_utilization_max_usage.png" alt="Memory utilization max usage" class="medium-image" style="box-shadow: 0 0 4px 0 #D7DBD6;"/>
+<img src="/img/articles/2024-04-22-cost-optimization-data-pipeline-gcp/03_memory_utilization_max_usage.png"
+alt="Memory utilization max usage" class="medium-image" style="box-shadow: 0 0 4px 0 #D7DBD6;"/>
 
 The second one shows memory utilization statistics among all the worker nodes.
-<img src="/img/articles/2024-04-22-cost-optimization-data-pipeline-gcp/04_memory_utilization_summary.png" alt="Memory utilization summary" class="medium-image" style="box-shadow: 0 0 4px 0 #D7DBD6;"/>
+<img src="/img/articles/2024-04-22-cost-optimization-data-pipeline-gcp/04_memory_utilization_summary.png"
+alt="Memory utilization summary" class="medium-image" style="box-shadow: 0 0 4px 0 #D7DBD6;"/>
 
 The first one presents average memory usage on a worker node, and the second one presents overall memory usage among the whole cluster.
 We clearly see that we use around 50% of the memory. Bingo, we pay for a memory that we do not use.
@@ -302,11 +308,11 @@ So it’s now less than half of the initial cost[^1].
 
 Total: 290 000 PLN of estimated savings[^1]
 
-
 Note: Why we do not use Dataflow FlexRS, which could lower the processing price by combining preemptible and regular VMs?
 
 We did not test it due to how scheduling in FlexRS works.
-When you schedule a Dataflow FlexRS job you do not know the exact start time, the only one promise from FlexRS is that the job will start within 6 hours ([documentation notes from Google Cloud website on that](https://cloud.google.com/dataflow/docs/guides/flexrs)).
+When you schedule a Dataflow FlexRS job you do not know the exact start time,
+the only one promise from FlexRS is that the job will start within 6 hours ([documentation notes from Google Cloud website on that](https://cloud.google.com/dataflow/docs/guides/flexrs)).
 Our data pipeline must start at a given hour and having 6 hours delay is not acceptable.
 
 ## Final test on a full dataset
@@ -343,8 +349,8 @@ To know the exact savings we will need to run the processing pipeline over a yea
 
 We achieved very good results by even not touching a processing code.
 Speculative approach provided good results.
-There may still be some space for optimization, but within a given timeframe I treat those results as very good and do not find more reasons to further optimize the environment and configuration of the Dataflow job.
-
+There may still be some space for optimization, but within a given timeframe I treat those results as very good and do not find more reasons to further
+optimize the environment and configuration of the Dataflow job.
 
 Also specified strategies do not have to lead to cost optimizations in other pipelines.
 As every data pipeline is different, some changes which brought cost reduction in this example, may in different data pipeline result in increased processing cost.
