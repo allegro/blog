@@ -4,10 +4,10 @@ title: "A Mission to Cost-Effectiveness: Reducing cost of a single Google Cloud 
 author: jakub.demianowski
 tags: [ tech, big data ]
 ---
-Today, we'll delve into methods for efficiently optimizing physical resources and fine-tuning the configuration of Google Cloud Platform (GCP) Dataflow pipeline to achieve cost reductions.
+Today, we’ll delve into methods for efficiently optimizing physical resources and fine-tuning the configuration of Google Cloud Platform (GCP) Dataflow pipeline to achieve cost reductions.
 Optimization will be presented as a real-life scenario, which will be performed in stages.
 
-Before we start, it's time to introduce several avenues through which the cost of Big Data pipelines can be significantly reduced.
+Before we start, it’s time to introduce several avenues through which the cost of Big Data pipelines can be significantly reduced.
 These include:
 
 - Careful optimization of consumed physical resources, like choosing VM types with optimal CPU to memory ratio and cost-effective CPU type.
@@ -43,7 +43,7 @@ As a result I was running tests with input size at ~ 100 GB level.
 Thus, I limited the time and cost of my testing jobs. Final tests were made on the full dataset.
 
 In order to save time and resources I made some speculative choices regarding what I should test during optimization.
-In addition, I've decided to not test all the possible combinations of machine families, disk types and configuration options to save time.
+In addition, I’ve decided to not test all the possible combinations of machine families, disk types and configuration options to save time.
 I will try to stick with the most promising choices and omit testing not well-promising configurations.
 
 ## Hypothesis testing: physical resources are under-utilized
@@ -96,7 +96,7 @@ Usually there are two ways of fixing underutilized memory:
 - Change CPU to memory ratio on worker nodes.
 - Decrease amount of worker nodes.
 
-I've decided to change the CPU to memory ratio, not to decrease the amount of worker nodes.
+I’ve decided to change the CPU to memory ratio, not to decrease the amount of worker nodes.
 I did not want to compromise on scalability and time needed to perform a job.
 
 Test on a 3% subsample of input data has given the following cost of data processing:
@@ -105,7 +105,7 @@ Test on a 3% subsample of input data has given the following cost of data proces
 - n2-highcpu-8: 8.52 $ (~ 10% less than original price)
 - n2d-highcpu-8: 8.57 $ (~ 10% less than original price)
 
-So here is our first guess - we saved 10% on adjusting CPU and memory ratio.
+So here is our first guess — we saved 10% on adjusting CPU and memory ratio.
 It gives us around 50 000 PN of estimated saving per year (10% from 500 000 PLN annual cost).
 
 <table>
@@ -125,7 +125,7 @@ I assumed that the current virtual machine type (n2-standard-4) is not the best 
 To quickly check performance of different virtual machine types I used [CoreMark scores provided by Google Cloud itself](https://cloud.google.com/compute/docs/benchmarks-linux).
 
 Based on CoreMark scores and official Google Cloud VM pricing I prepared a table, which will help me to choose VM type with the best performance to price ratio.
-The most important column is “price per 1 mln points” - how much do I need to pay on average to score 1 mln points.
+The most important column is “price per 1 mln points” — how much do I need to pay on average to score 1 mln points.
 I used [official VM instance prices from Google Cloud site](https://cloud.google.com/compute/vm-instance-pricing) from region europe-west1.
 
 <table>
@@ -167,8 +167,8 @@ I used [official VM instance prices from Google Cloud site](https://cloud.google
   </tr>
 </table>
 
-As we see, another hypothesis proved to be true. We're not using virtual machine type with the best performance to price ration - T2D.
-We're using N2 machine type.
+As we see, another hypothesis proved to be true. We’re not using virtual machine type with the best performance to price ration - T2D.
+We’re using N2 machine type.
 
 Unfortunately T2D machines at the time of writing this article do not provide other CPU to memory ratio than 3 GB per 1 vCPU.
 It’s still better than 4 GB per 1 vCPU, but far from 1 or 2 GB per 1 vCPU.
@@ -348,7 +348,7 @@ There may still be some space for optimization, but within a given timeframe I t
 
 Also specified strategies do not have to lead to cost optimizations in other pipelines.
 As every data pipeline is different, some changes which brought cost reduction in this example, may in different data pipeline result in increased processing cost.
-What is the most important in this article - how to approach cost optimization of a data pipeline, not which type of resources to choose.
+What is the most important in this article — how to approach cost optimization of a data pipeline, not which type of resources to choose.
 
 [^1]: Presented figures are only estimates based on a single run (with only 3% of input data) and extrapolated to the whole year with the assumption that processing the whole dataset will result in the same savings, like processing 3% of source data.
 [^2]: CoreMark results from [CoreMark scores provided by Google Cloud itself](https://cloud.google.com/compute/docs/benchmarks-linux), taken at 05.04.2024.
