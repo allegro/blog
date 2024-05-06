@@ -4,8 +4,8 @@ title: "A Mission to Cost-Effectiveness: Reducing cost of a single Google Cloud 
 author: jakub.demianowski
 tags: [ tech, big data ]
 ---
-Today, we’ll delve into methods for efficiently optimizing physical resources and fine-tuning the configuration of Google Cloud Platform (GCP)
-Dataflow pipeline to achieve cost reductions.
+In this article we’ll present methods for efficiently optimizing physical resources and fine-tuning the configuration of Google Cloud Platform (GCP)
+Dataflow pipeline in order to achieve cost reductions.
 Optimization will be presented as a real-life scenario, which will be performed in stages.
 
 Before we start, it’s time to introduce several avenues through which the cost of Big Data pipelines can be significantly reduced.
@@ -13,7 +13,7 @@ These include:
 
 - Careful optimization of consumed physical resources, like choosing VM types with optimal CPU to memory ratio and cost-effective CPU type.
 - Enhancing the configuration of the data processing engine to maximize its efficiency.
-- Strategically optimizing input and output datasets. Not all data may need processing or perhaps, altering their structure could reduce the processing time.
+- Optimizing input and output datasets. Not all data may need processing or perhaps, altering their structure could reduce the processing time.
 - Refining storage strategies for input and output datasets. This is particularly beneficial if reading or writing speeds are sub-optimal and demand improvements.
 - Streamlining of our pipeline code and utilizing built-in optimization functionalities (for example broadcast joins and repartitioning in Apache Spark).
 
