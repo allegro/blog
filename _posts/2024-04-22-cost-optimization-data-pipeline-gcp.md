@@ -25,9 +25,8 @@ Data pipeline, which will serve us as an example throughout this article is writ
 The pipeline runs on Google Cloud Dataflow processing engine.
 The goal of the pipeline is to join a couple of tables (most of them are in terabyte+ size), apply some transformations and produce unified output table.
 
-Overall processing cost of the full dataset is around 350 $ per day.
-It gives roughly 10 500 $ per month, and 126 000 $ per year.
-It’s currently about 500 000 PLN per year given current currency exchange rates (1 $ per 3.96 PLN).
+Overall processing cost of the full dataset is around $350 per day.
+It gives roughly $10,500 per month, and $127,000 per year.
 
 ## Approach to cost-optimization
 
@@ -95,9 +94,9 @@ alt="Memory utilization summary" class="medium-image" style="box-shadow: 0 0 4px
 The first one presents average memory usage on a worker node, and the second one presents overall memory usage among the whole cluster.
 We clearly see that we use around 50% of the memory. Bingo, we pay for a memory that we do not use.
 
-### Fixing under-utilized memory
+### Improving memory utilization
 
-Usually there are two ways of fixing underutilized memory:
+Usually there are two ways of improving memory utilization:
 
 - Change CPU to memory ratio on worker nodes.
 - Decrease amount of worker nodes.
@@ -107,12 +106,12 @@ I did not want to compromise on scalability and time needed to perform a job.
 
 Test on a 3% subsample of input data has given the following cost of data processing:
 
-- n2-standard-4: 9.48 $
-- n2-highcpu-8: 8.52 $ (~ 10% less than original price)
-- n2d-highcpu-8: 8.57 $ (~ 10% less than original price)
+- n2-standard-4: $9.48
+- n2-highcpu-8: $8.52 (~ 10% less than original price)
+- n2d-highcpu-8: $8.57 (~ 10% less than original price)
 
 So here is our first guess — we saved 10% on adjusting CPU and memory ratio.
-It gives us around 50 000 PN of estimated saving per year (10% from 500 000 PLN annual cost).
+It gives us around $12,700 of estimated saving per year (10% from $127,000 annual cost).
 
 <table>
   <tr>
@@ -121,7 +120,7 @@ It gives us around 50 000 PN of estimated saving per year (10% from 500 000 PLN 
   </tr>
   <tr>
     <td>[1] Physical resources are under utilized</td>
-    <td>50 000 PLN</td>
+    <td>$12,700</td>
   </tr>
 </table>
 
@@ -144,32 +143,32 @@ I used [official VM instance prices from Google Cloud site](https://cloud.google
   <tr>
     <td>n2-standard-4</td>
     <td>66 833 pts</td>
-    <td>0.21 $</td>
-    <td>3.20 $</td>
+    <td>$0.21</td>
+    <td>$3.20</td>
   </tr>
   <tr>
     <td>n2-standard-8</td>
     <td>138 657 pts</td>
-    <td>0.43 $</td>
-    <td>3.08 $</td>
+    <td>$0.43</td>
+    <td>$3.08</td>
   </tr>
   <tr>
     <td>n2d-standard-8</td>
     <td>164 539 pts</td>
-    <td>0.37 $</td>
-    <td>2.26 $</td>
+    <td>$0.37</td>
+    <td>$2.26</td>
   </tr>
   <tr>
     <td>e2-standard-8</td>
     <td>103 808 pts</td>
-    <td>0.29 $</td>
-    <td>2.84 $</td>
+    <td>$0.29</td>
+    <td>$2.84</td>
   </tr>
   <tr>
     <td>t2d-standard-8</td>
     <td>237 411 pts</td>
-    <td>0.37 $</td>
-    <td>1.57 $</td>
+    <td>$0.37</td>
+    <td>$1.57</td>
   </tr>
 </table>
 
@@ -184,12 +183,12 @@ We’re going to test if even with probably under-utilization the T2D virtual ma
 
 I performed several tests on a small scale (3% subsample of input data) with T2D machine types. Let’s take a look at them.
 
-- n2-standard-4 + HDD: 9.48 $
-- n2-highcpu-8 + HDD: 8.52 $ (~ 10% less than original price)
-- n2d-highcpu-8 + HDD: 8.57 $ (~ 10% less than original price)
-- t2d-standard-8 + HDD: 6.65 $ (~ 32% less than original price)
+- n2-standard-4 + HDD: $9.48
+- n2-highcpu-8 + HDD: $8.52 (~ 10% less than original price)
+- n2d-highcpu-8 + HDD: $8.57 (~ 10% less than original price)
+- t2d-standard-8 + HDD: $6.65 (~ 32% less than original price)
 
-This way we decreased the estimated processing cost from 500 000 PLN by 160 000 PLN per year to 340 000 PLN (by 32%)[^1].
+This way we decreased the estimated processing cost from $127,000 by $40,640 per year to $86,360 (by 32%)[^1].
 Unfortunately, we also introduced some possible underutilized resources (memory) by changing CPU to memory ratio.
 
 <table>
@@ -199,15 +198,15 @@ Unfortunately, we also introduced some possible underutilized resources (memory)
   </tr>
   <tr>
     <td>[1] Physical resources are under utilized</td>
-    <td>50 000 PLN</td>
+    <td>$12,700</td>
   </tr>
   <tr>
     <td>[2] Moving to a more cost-effective VM type</td>
-    <td>110 000 PLN</td>
+    <td>$27,940</td>
   </tr>
 </table>
 
-Total: 160 000 PLN of estimated savings[^1]
+Total: $40,640 of estimated savings[^1]
 
 ### Coming back to optimization of virtual machine storage type
 
@@ -219,13 +218,13 @@ I decided to check if we should use cheaper and slower HDDs or more expensive an
 I run the pipeline (3% of input data size) with HDD and SSD disks.
 Here are the results for different VM families:
 
-- n2-standard-4 + HDD: 9.48 $
-- n2-highcpu-8 + HDD: 8.52 $ (~ 10% less than original price)
-- n2d-highcpu-8 + HDD: 8.57 $ (~ 10% less than original price)
-- t2d-standard-8 + HDD: 6.45 $ (~ 32% less than original price)
-- t2d-standard-8 + SSD: 5.64 $ (~ 41% less than original price)
+- n2-standard-4 + HDD: $9.48
+- n2-highcpu-8 + HDD: $8.52 (~ 10% less than original price)
+- n2d-highcpu-8 + HDD: $8.57 (~ 10% less than original price)
+- t2d-standard-8 + HDD: $6.65 (~ 32% less than original price)
+- t2d-standard-8 + SSD: $5.64 (~ 41% less than original price)
 
-This way we decreased the estimated processing cost from 500 000 PLN by 205 000 PLN per year to 295 000 PLN (by 41%)[^1].
+This way we decreased the estimated processing cost from $127,000 by $52,070 per year to $74,930 (by 41%)[^1].
 
 <table>
   <tr>
@@ -234,19 +233,19 @@ This way we decreased the estimated processing cost from 500 000 PLN by 205 000 
   </tr>
   <tr>
     <td>[1] Physical resources are under utilized</td>
-    <td>50 000 PLN</td>
+    <td>$12,700</td>
   </tr>
   <tr>
     <td>[2] Moving to a more cost-effective VM type</td>
-    <td>110 000 PLN</td>
+    <td>$27,940</td>
   </tr>
   <tr>
     <td>[3] Changing VM disk type to SSD</td>
-    <td>45 000 PLN</td>
+    <td>$11,430</td>
   </tr>
 </table>
 
-Total: 205 000 PLN of estimated savings[^1]
+Total: $52,070 of estimated savings[^1]
 
 ## Hypothesis testing: configuration of the Dataflow job is not optimal and could be optimized
 
@@ -257,19 +256,19 @@ Shuffle Service is a serverless tool that facilitates data shuffling around the 
 Also, node preemption is not so painful, because Shuffle Service stores data on an external storage independent of worker nodes.
 But it comes at a price.
 
-Below is presented cost breakdown of processing 3% of input dataset using virtual machine t2d-standard-8 with SSD:
+Cost breakdown of processing 3% input dataset using virtual machine t2d-standard-8 with SSD is presented below:
 
-- Cost per CPU: 2.47 $
-- Cost per Memory: 0.70 $
-- Cost per SSD disk: 0.16 $
-- Cost per shuffle service: 2.32 $
-- Overall cost: 5.64 $
+- Cost of CPU: $2.47
+- Cost of memory: $0.70
+- Cost of SSD disk: $0.16
+- Cost of shuffle service: $2.32
+- Overall cost: $5.64
 
 Thus, we see that the cost of the shuffle service plays an important role - it’s more than 40% of the overall cost. Let’s do an experiment and turn Shuffle Service off.
 
-- n2-standard-4 + HDD: 9.48 $ (original configuration)
-- t2d-standard-8 + SSD: 5.64 $ (~ 41% less than original configuration)
-- t2d-standard-8 + SSD + no Shuffle Service: 3.95 $ (~ 58% less than original configuration)
+- n2-standard-4 + HDD: $9.48 (original configuration)
+- t2d-standard-8 + SSD: $5.64 (~ 41% less than original configuration)
+- t2d-standard-8 + SSD + no Shuffle Service: $3.95 (~ 58% less than original configuration)
 
 By turning off Shuffle Service we achieved a much lower cost.
 As a bonus, our memory utilization increased to almost 100%, because we use worker nodes to perform a shuffle.
@@ -280,7 +279,7 @@ I also must add, that turning-off external shuffle service may not always result
 It depends on many factors, and you should test in on your own data pipeline.
 Also, you need to take into consideration that the job will usually require more resources (CPU, memory), once you turn off external shuffle service.
 
-This way we decreased the estimated processing cost from 500 000 PLN by 290 000 PLN per year to 210 000 PLN (by 58%)[^1].
+This way we decreased the estimated processing cost from $127,000 by $73,660 per year to $53,340 (by 58%)[^1].
 So it’s now less than half of the initial cost[^1].
 
 <table>
@@ -290,23 +289,23 @@ So it’s now less than half of the initial cost[^1].
   </tr>
   <tr>
     <td>[1] Physical resources are under utilized</td>
-    <td>50 000 PLN</td>
+    <td>$12,700</td>
   </tr>
   <tr>
     <td>[2] Moving to a more cost-effective VM type</td>
-    <td>110 000 PLN</td>
+    <td>$27,940</td>
   </tr>
   <tr>
     <td>[3] Changing VM disk type to SSD</td>
-    <td>45 000 PLN</td>
+    <td>$11,430</td>
   </tr>
   <tr>
     <td>[4] Turning off Shuffle Service</td>
-    <td>85 000 PLN</td>
+    <td>$21,590</td>
   </tr>
 </table>
 
-Total: 290 000 PLN of estimated savings[^1]
+Total: $73,660 of estimated savings[^1]
 
 Note: Why we do not use Dataflow FlexRS, which could lower the processing price by combining preemptible and regular VMs?
 
@@ -338,9 +337,9 @@ Here are the costs of processing full dataset for a one day:
 As we see the predicted gain from subsampling was achieved (savings are even higher by 3 pp than in estimated).
 For reference: we estimated based on runs with 3% of input size, that we will achieve about 58% of cost reduction.
 
-- Initial annual cost: 500 000 PLN
-- Estimated annual cost after optimization: 190 000 PLN
-- Total estimated annual savings: 310 000 PLN
+- Initial annual cost: $127,000
+- Estimated annual cost after optimization: $48,260
+- Total estimated annual savings: $78,740
 
 Presented figures are only estimates based on a single run and extrapolated to the whole year.
 To know the exact savings we will need to run the processing pipeline over a year, which hasn’t been done.
