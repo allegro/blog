@@ -8,20 +8,20 @@ tags: [tech, frontend, performance, inp, webperf]
 Site performance is very important, first of all, from the perspective of users, who expect a good experience when visiting the site.
 The user should not wait too long for the page to load. We all know how annoying it can be when we want to press an element
 and it jumps to another place on the page, or when we click on a button and then nothing happens for a very long time. The state of a
-site’s performance in these aspects is measured by Web Vitals performance metrics, and most importantly by a set of three major
+site’s performance in these aspects is measured by [Web Vitals](https://web.dev/articles/vitals) performance metrics, and most importantly by a set of three major
 Core Web Vitals metrics (LCP — Largest Contentful Paint, CLS — Cumulative Layout Shift, INP — Interaction to Next Paint), which are
 responsible for measuring the 3 things: loading time, visual stability and interactivity. These metrics are also important for the
 websites themselves, because in addition to the user experience, they are also taken into account in terms of the website’s positioning
-in search engines (SEO) which is crucial for most websites on the Internet, Allegro included.
+in search engines (SEO) which is crucial for most websites on the Internet, [Allegro](https://allegro.tech/) included.
 
 In this post, you can read about the **INP** — new Core Web Vitals metric assessing overall responsiveness of the page which **replaced
-FID (First Input Delay) as of March 12, 2024** ([source](https://google.com)).
+FID (First Input Delay) as of March 12, 2024** ([source](https://web.dev/blog/inp-cwv-launch)).
 
 ## What is INP?
 
 **INP** (**I**nteraction to **N**ext **P**aint) – is a new WebPerf metric that measures overall responsiveness of the website to user
 interactions throughout the user’s visit to the page. INP value is the measured time from registering a user event to rendering a new frame
-in the browser. To measure it uses [Event Timing API](https://www.w3.org/TR/event-timing/) under the hood. Good responsiveness
+in the browser. It uses [Event Timing API](https://www.w3.org/TR/event-timing/) under the hood. Good responsiveness
 of the website means that the browser presents “visual feedback” of the interaction as quickly as possible
 (more about the meaning of  “visual feedback” in the context of INP metric in the next section ;) ) .
 
@@ -34,32 +34,32 @@ At this point, INP only observes:
 
 ## How is INP measured?
 
-<img src="/img/articles/2024-04-23-INP-new-core-web-vitals/inp-scheme.png" alt="" class="image"/>
+<img src="/img/articles/2024-04-23-INP-new-core-web-vitals/inp-scheme.png" alt="INP measurement scheme. Division into 3 phases: Input delay, Processing time and Presentation delay." class="image"/>
 
 INP measures time from detecting user input to presenting a new frame in the browser.
-It can be distinguished 3 phases of this process:
+This process has three phases:
 * Input delay – delay from detecting user’s interaction to calling event callback
 * Processing time – calling code with event handlers
 * Presentation delay – presenting new frame by the browser (render, paint, compositing)
 
-Where can you look for improvements? First of all, in phase one and two.
+Where can you look for improvements? First of all, in phases one and two.
 1. **Input delay** phase – the interaction can happen at any time during the user’s visit. The main thread in the browser
-may be busy this time because of some already ongoing task. It is the situation that can increase the time of
+may be busy at this time because of some already ongoing task. It is the situation that can increase the time of
 this phase. Blocked main thread = longer time to call the event callback.
-<img src="/img/articles/2024-04-23-INP-new-core-web-vitals/inp-scheme-input-delay.png" alt="" class="small-image"/>
-2. **Processing time** – it is the time when event callbacks with engineer’s code that handle user interaction
+<img src="/img/articles/2024-04-23-INP-new-core-web-vitals/inp-scheme-input-delay.png" alt="INP - scheme of the Input delay phase" class="small-image"/>
+2. **Processing time** – it is the time when event callbacks with engineer’s code that handle user interaction are executed
 (`onClick`, `onKey`). It is crucial to our code that handles interactions to not block the main thread for too long.
 
-<img src="/img/articles/2024-04-23-INP-new-core-web-vitals/inp-processing-time.png" alt="" class="small-image"/>
+<img src="/img/articles/2024-04-23-INP-new-core-web-vitals/inp-processing-time.png" alt="INP - scheme of the Processing time phase" class="small-image"/>
 
 ### How is the final INP value of the visit calculated?
 
-To this point the article was focused only on INP values for single interactions. As mentioned INP is measured for the entire
+Up to this point the article was focused only on INP values for single interactions. As mentioned INP is measured for the entire
 user visit. It is possible to find various information on how the final INP value is calculated.
 
 Web.dev informs:
-1. For visits with small amount of interactions (<=50): INP is the highest measured value during the visit
-2. For visits with large numbers of interactions (>50): the highest value for every 50 interactions is ignored.
+1. For visits with few interactions (<=50): INP is the highest measured value during the visit
+2. For visits with large numbers of interactions (>50): the highest value for every 50 interactions is ignored. Next INP is the highest value from the remaining measurements.
 
 DebugBear.com informs that INP is reporting 98 percentile of all measured interactions.
 
@@ -68,7 +68,7 @@ Example 2: if on the same visit there were **3 interactions with 300ms** then **
 
 ### Important!
 
-* An important aspect to understand is that the “presenting a visual feedback” does not have to mean a noticeable visual effect
+* An important aspect to understand is that “presenting a visual feedback” does not have to mean a noticeable visual effect
 for the user. Some interactions do not give the user any visual feedback of the interaction and such interactions also report
 its INP value. **The INP metric only measures the time to completion of the rendering (presenting a new frame) process
 (even if visually nothing has changed for the user)!**
@@ -87,9 +87,9 @@ Google set three thresholds ranges:
 * Needs Improvement: > 200ms and <= 500ms
 * Poor: > 500ms
 
-<img src="/img/articles/2024-04-23-INP-new-core-web-vitals/good-needs-improvement-poor.png" alt="" class="small-image"/>
+<img src="/img/articles/2024-04-23-INP-new-core-web-vitals/good-needs-improvement-poor.png" alt="INP values - recommended thresholds ranges." class="small-image"/>
 
-## Why is it important to stay with recommended thresholds?
+## Why is it important to stay below recommended thresholds?
 
 Core Web Vitals is a set of the most important performance metrics that determine overall evaluation of
 “Page Experience” on three different criterias:
@@ -102,11 +102,11 @@ All Core Web Vitals are scored based on how well they perform in the field at th
 page loads. Google collects data from real users (Real User Monitoring – RUM).
 
 In search ranking, sites are evaluated as individual URLs. For example, this means that in this aspect
-such addresses `allegro.pl/oferta/offer-1` and `allegro.pl/oferta/offer-2` are rated separately.
+the two addresses `allegro.pl/oferta/offer-1` and `allegro.pl/oferta/offer-2` are rated separately.
 
 Google doesn’t share exact data on how their ranking algorithm works, but what is clear is that overall
 “Page Experience” determined by Core Web Vitals has an important impact on how each website URL is ranked in
-search results. Because of that it is the best to stay in the “good” rating thresholds for all the
+search results. Because of that it is best to stay in the “good” rating thresholds for all the
 Core Web Vitals metric to not be affected in any negative way.
 
 ## INP vs FID
@@ -114,24 +114,39 @@ Core Web Vitals metric to not be affected in any negative way.
 Previously (until March 12, 2024) the role of the metric that determined a page’s responsiveness to user’s
 interactions in the Core Web Vitals set was the FID metric. Both metrics are used to evaluate the user’s
 perception of an application’s responsiveness. FID (First Input Delay), as the name suggests, measures delay of
-processing only first user interaction (input). It is not the only difference because FID does it in a different way.
+processing only for the first user interaction (input). It is not the only difference because FID does it in a different way.
 Unlike INP, it measures the time only from the detection of a user interaction to the start of its processing.
-Referring to the three phases described above FID relates only to the first one (Input delay).
+Referring to the three phases described above FID relates only to the first of the three phases described above (Input delay).
 
-<img src="/img/articles/2024-04-23-INP-new-core-web-vitals/inp-scheme-vs-fid.png" alt="" class="small-image"/>
+<img src="/img/articles/2024-04-23-INP-new-core-web-vitals/inp-scheme-vs-fid.png" alt="INP vs FID scheme." class="small-image"/>
 
 ### Key informations summary:
-FID:
-* Only first interaction
-* Delay from registering event to start of processing (input delay)
-* Result is defined in milliseconds (ms)
-* Determines the speed at which the site is ready for interaction
-
-INP:
-* All users’ interactions during the visit
-* Time from registering event to render visual effect (input delay + processing + presenting)
-* Result is defined in milliseconds (ms)
-* Determines overall page responsiveness
+<table>
+  <thead>
+    <tr>
+      <th>FID</th>
+      <th>INP</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Only first interaction</td>
+      <td>All users’ interactions during the visit</td>
+    </tr>
+    <tr>
+      <td>Delay from registering event to start of processing (input delay)</td>
+      <td>Time from registering event to render visual effect (input delay + processing + presenting)</td>
+    </tr>
+    <tr>
+      <td>Result is defined in milliseconds (ms)  </td>
+      <td>Result is defined in milliseconds (ms) </td>
+    </tr>
+    <tr>
+      <td>Determines the speed at which the site is ready for interaction </td>
+      <td>Determines overall page responsiveness  </td>
+    </tr>
+  </tbody>
+</table>
 
 ## INP — debugging
 
@@ -139,7 +154,7 @@ INP:
 
 If there is such a possibility, the best way to start a debugging journey is to analyze data collected
 directly from users (known as **RUM** – **R**eal **U**ser **M**onitoring). For INP, such data can provide information
-about which element was interacted and the INP time values in all three phases.
+about which element was interacted with and the INP time values in all three phases.
 This can be crucial in finding specific elements on a page that are most frequently interacted with by
 users and with which interactions are reported to be long (>200ms). Data like this may differ from those
 collected manually or collected during synthetic testing, due to hardware differences in users’ end devices.
@@ -150,7 +165,7 @@ In addition to other useful information about Web Vitals, this extension serves 
 for single interactions with a distinction for all 3 phases. You can find the metric logs in developer tools
 in the “Console” tab after turning on the right option in the extension settings.
 
-<img src="/img/articles/2024-04-23-INP-new-core-web-vitals/web-vitals-extension.png" alt="" class="small-image" />
+<img src="/img/articles/2024-04-23-INP-new-core-web-vitals/web-vitals-extension.png" alt="The result output of the web-vitals Chrome extension." class="small-image" />
 
 Web-vitals Chrome extension can be found [HERE](https://chromewebstore.google.com/detail/web-vitals/ahfhijdlegdabablpippeagghigmibma).
 
@@ -187,9 +202,9 @@ in the main thread. It also allows you to detect long tasks, check the exact cal
 rendered frames, cyclic and synchronous style recalculations and more. It can be your best friend during
 debugging a slow interaction :)
 
-<img src="/img/articles/2024-04-23-INP-new-core-web-vitals/devtools-performance-recording.png" alt="" class="small-image"/>
-<img src="/img/articles/2024-04-23-INP-new-core-web-vitals/devtools-performance.png" alt="" class="small-image"/>
-<img src="/img/articles/2024-04-23-INP-new-core-web-vitals/devtools-performance-interaction.png" alt="" class="small-image"/>
+<img src="/img/articles/2024-04-23-INP-new-core-web-vitals/devtools-performance-recording.png" alt="Recording button placement in Chrome developer tools." class="small-image"/>
+<img src="/img/articles/2024-04-23-INP-new-core-web-vitals/devtools-performance.png" alt="Performance section in Chrome developer tools." class="small-image"/>
+<img src="/img/articles/2024-04-23-INP-new-core-web-vitals/devtools-performance-interaction.png" alt="Details of the recorded interaction." class="small-image"/>
 
 ### 5. Synthetic tests tools
 
@@ -202,7 +217,7 @@ debugging a slow interaction :)
 * You can turn it on in the developers tools → “Performance” tab settings → CPU
 * Local overrides - you can override locally script (more info: https://developer.chrome.com/docs/devtools/overrides)
 * Blocking scripts locally
-<img src="/img/articles/2024-04-23-INP-new-core-web-vitals/devtools-blocking.png" alt="Blocking request URL in devTools" class="small-image"/>
+<img src="/img/articles/2024-04-23-INP-new-core-web-vitals/devtools-blocking.png" alt="Blocking request URL in devTools." class="small-image"/>
 * Remote debug on physical devices
   * Android: https://developer.chrome.com/docs/devtools/remote-debugging
   * iOS: https://developer.apple.com/documentation/safari-developer-tools/inspecting-ios
@@ -253,7 +268,7 @@ They need to be used in tandem to achieve that, none of them achieves it separat
 
 ### 3. Be aware of “Layout thrashing”
 
-Some operations from JavaScript code can force layout style recalculation running by browser to calculate, for example, the new position of elements.
+Some operations from JavaScript code can force layout style recalculation in order for the browser to calculate, for example, the new position of elements.
 Sometimes if an operation like this appears in the wrong place in the code it may be necessary for the browser to perform style recalculation
 in the middle of the task (synchronously) making it much longer. Especially if recalculation affects many elements. Such situations occur most
 often when the styles of an element are changed and then immediately the values of those styles are requested in JavaScript. Avoid mixing read and
@@ -294,7 +309,7 @@ Read more: https://developer.mozilla.org/en-US/docs/Web/CSS/content-visibility
 
 ### 5. Minimizing DOM size
 
-In Lighthouse reports it can be found recommendations for pages to contain fewer than ~1400 elements and no more than 32 of tree depth.
+In Lighthouse reports you can find recommendations for pages to contain fewer than ~1400 elements and the tree should not be deeper than 32 levels.
 Keeping the number of elements in the DOM as small as possible is important because large DOM can slow the page down in multiple ways.
 
 For example:
@@ -331,15 +346,15 @@ it will block the main thread for too long.
 Below you can find an example of optimizing a long interaction on the offer page, which was opening and closing full-screen mode in a photo gallery,
 at the top of an offer page. In this case, the long task was split into two smaller ones using the `setTimeout` function with a `delay` parameter value set to 0.
 
-<img src="/img/articles/2024-04-23-INP-new-core-web-vitals/example-long-task.png" alt="" class="image"/>
+<img src="/img/articles/2024-04-23-INP-new-core-web-vitals/example-long-task.png" alt="Example 1. All interaction handling in one long task." class="image"/>
 Example 1: All interaction handling is contained in one single task, which is reported by the browser as a “Long task”.
 
-<img src="/img/articles/2024-04-23-INP-new-core-web-vitals/example-task-render-task.png" alt="" class="image"/>
+<img src="/img/articles/2024-04-23-INP-new-core-web-vitals/example-task-render-task.png" alt="Example 2. Deferred task executed later so as not to block and delay the rendering process." class="image"/>
 Example 2: The same interaction handling after being split into two tasks. The entire non-critical part has been separated into the next task,
 which can be started by the browser at a time suitable for it. In this case, you can see that a new frame was rendered between the two tasks,
 and then the rest of the interaction handling was executed.
 
-<img src="/img/articles/2024-04-23-INP-new-core-web-vitals/example-task-task-render.png" alt="" class="image"/>
+<img src="/img/articles/2024-04-23-INP-new-core-web-vitals/example-task-task-render.png" alt="Example 3. Deferred task executed just after the first task before the rendering process." class="image"/>
 Example 3:  In this example, we can see exactly the same two tasks as in Example 2. The difference is that the first task finished quickly
 enough, so the browser decided that it has enough time to perform the second task before the render.
 
@@ -349,9 +364,9 @@ Some style recalculations can be very costly. Among other things, it may be beca
 Such a situation occurred in one of our interactions: opening a sidebar element (an element that slides out from the side, containing, for example,
 information about delivery). The operation that caused costly style recalculation was the addition of a special CSS class to the `body` element,
 which blocked the ability to scroll the content under the sidebar. This significantly increased the total processing time for opening the sidebar,
-even though blocking the ability to scroll the content below was not critical and the most important. The solution to this was to simply postpone
-the operation of attaching CSS class to the body element until after the next frame had been rendered. This way, the user faster received the most
-important visual effect of this interaction — opening the sidebar with important information.
+even though blocking the ability to scroll the content below was not critical and not the most important. The solution to this was to simply postpone
+the operation of attaching CSS class to the body element until after the next frame had been rendered. This way, the user received the most
+important visual effect of this interaction faster — opening the sidebar with important information.
 
 <img src="/img/articles/2024-04-23-INP-new-core-web-vitals/example-sidebar.png" alt="The sidebar component in Allegro" class="small-image"/>
 The sidebar component in Allegro
@@ -369,3 +384,10 @@ An example of this behavior can be a modal element and the global event listener
 interact with the overlay outside its boundaries. Such listeners should be registered just after opening the modal and removed
 just after the modal is closed. Then such a listener doesn’t interrupt with the others and doesn’t extend them.
 
+## Does it change a lot?
+
+I think it does. Definitely, the introduction of INP has changed a lot in working with WebPerf. The new metric differs strongly from the FID it replaces.
+It forces a focus on all interactions, not just making the site interactive as quickly as possible. This requires digging in and understanding how interactions are processed by the browser.
+It also requires thinking about how other operations can affect the interactivity of the website.
+
+We are still learning how to work in the new reality so we would be excited if you share your own experiences with us!
