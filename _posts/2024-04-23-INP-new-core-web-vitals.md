@@ -155,7 +155,7 @@ Referring to the three phases described above FID relates only to the first of t
 If there is such a possibility, the best way to start a debugging journey is to analyze data collected
 directly from users (known as **RUM** – **R**eal **U**ser **M**onitoring). For INP, such data can provide information
 about which element was interacted with and the INP time values in all three phases.
-This can be crucial in finding specific elements on a page that are most frequently interacted with by
+This can be crucial for finding specific elements on a page that are most frequently interacted with by
 users and with which interactions are reported to be long (>200ms). Data like this may differ from those
 collected manually or collected during synthetic testing, due to hardware differences in users’ end devices.
 
