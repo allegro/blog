@@ -6,11 +6,11 @@ tags: [tech, couchbase, sub-documents, performance, bottlenecks]
 ---
 
 This story shows our journey in addressing a platform stability issue related to autoscaling, which, paradoxically, added some additional overhead instead
-of offloading service. A pivotal part of this narrative is how we used [Couchbase](https://www.couchbase.com/)—a distributed NoSQL database. If you find
+of reducing the load. A pivotal part of this narrative is how we used [Couchbase](https://www.couchbase.com/) — a distributed NoSQL database. If you find
 yourself intrigued by another enigmatic story involving Couchbase, don't miss my
-[blog post](https://blog.allegro.tech/2024/02/couchbase-expired-docs-tuning.html).
+[blog post on tuning expired doc settings]({% post_url 2024-02-12-couchbase-expired-docs-tuning %}).
 
-The post unfolds our quest to discover the root cause of the bottleneck. Initially, I will outline the symptoms of the issue. Subsequently, you will be
+This post unfolds our quest to discover the root cause of the bottleneck. Initially, I will outline the symptoms of the issue. Subsequently, you will be
 introduced to how Couchbase is utilized by the aforementioned service. Equipped with this knowledge, I will recount our attempts to diagnose the problem and
 indicate which observations raised our suspicions. The following section is dedicated to conducting benchmarks to verify our predictions using
 a custom benchmarking tool. Ultimately, we will explore the source code of Couchbase to uncover how the problematic operations are executed. This section
@@ -19,7 +19,7 @@ enable you to swiftly identify and address some of the potential performance iss
 
 ## Set the scene
 
-The service at the heart of the stability issues handles external _HTTP_ traffic; for the purpose of this discussion, we'll refer to it as
+The service at the heart of the stability issues handles external HTTP traffic; for the purpose of this discussion, we'll refer to it as
 "the gateway service". The traffic routed to the gateway service reflects a pattern similar to organic traffic on [Allegro](https://allegro.tech),
 characterized by significant fluctuations in throughput between day and night hours. To efficiently utilize resources, the gateway service employs an autoscaler
 to dynamically adjust the number of instances based on current demands. It's also important to note that spawning a new instance involves a warm-up phase,
@@ -41,7 +41,7 @@ com. couchbase.client.core.error.UnambiguousTimeoutException: SubdocGetRequest, 
     "timings":{"totalMicros":3004052}
 }
 ```
-Interestingly, during these incidents, the Couchbase cluster did not exhibit high _CPU_ or _RAM_ usage. Furthermore, the traffic to Couchbase, measured in
+Interestingly, during these incidents, the Couchbase cluster did not exhibit high CPU or RAM usage. Furthermore, the traffic to Couchbase, measured in
 operations per second, was not exceptionally high. I mean that other Couchbase clients (different microservices) were generating an order of magnitude more
 operations per second without encountering stability issues.
 
@@ -58,7 +58,7 @@ a non-writable channel.
 As a temporary measure, the team overseeing the gateway service implemented the following workarounds:
 
 * Disabled certain types of requests to reduce the overall traffic volume directed to Couchbase.
-* Deactivated the autoscaler, and manually scale up the application to manage peak traffic loads.
+* Deactivated the autoscaler, and manually scaled up the application to manage peak traffic loads.
 
 These actions successfully halted the problems, but they also had repercussions, including business impacts and decreased efficiency in resource utilization.
 
@@ -67,7 +67,7 @@ These actions successfully halted the problems, but they also had repercussions,
 A pivotal aspect of this issue was the use of the [Couchbase sub-document API](https://docs.couchbase.com/go-sdk/2.4/concept-docs/subdocument-operations.html)
 within the gateway service, an approach not widely adopted across our internal microservice landscape, yet notable for its efficiency. According to
 the documentation, this API significantly reduces traffic by allowing the fetching or mutating only specific parts of a Couchbase document.
-Essentially, it acts as a substitute for the concept of [projection](https://en.wikipedia.org/wiki/Projection_(relational_algebra)), familiar to _SQL_ users.
+Essentially, it acts as a substitute for the concept of [projection](https://en.wikipedia.org/wiki/Projection_(relational_algebra)), familiar to SQL users.
 
 In our investigation, we closely examined the data collected on the Couchbase node, the operational dynamics of the gateway service's cache, and insights
 from scrutinizing both the Couchbase driver and server code. We hypothesized that the crux of the problem might be linked to the cache warm-up process for
@@ -110,7 +110,7 @@ The sample document is structured as follows:
 
 The tool allows manipulating several knobs, which includes:
 
-* **Parallelism**: Determines the number of parallel goroutines that will attempt to fetch the same sub-documents concurrently.
+* **Parallelism**: Determines the number of parallel [goroutines](https://gobyexample.com/goroutines) that will attempt to fetch the same sub-documents concurrently.
 * **Document Size**: Defined by the number of sub-keys, this directly affects the document's binary size.
 * **Level of Search Difficulty**: This essentially refers to how deep or how far into the main document the target sub-document is located.
 The concept is illustrated in the diagram below:
@@ -136,17 +136,17 @@ sub-document (accessing a set of sub-documents). It’s important to note that t
 performed only after the completion of the preceding one. In sub-document mode, the difficulty of the fetch operation is controlled through
 an experiment variable.
 * **Completion Wait**: Await the termination of all goroutines.
-* **Results Reporting**: Calculate and display the estimated _RPS_.
+* **Results Reporting**: Calculate and display the estimated RPS (requests per second).
 
 
 ### Estimate baseline
 
 Prior to delving into sub-document operations, we sought to establish the maximum number of regular get operations that our local Couchbase Server instance
-could handle. Through testing at various levels of concurrency, we determined that, for our specific setup, the maximum throughput.
-It was approximately 6,000 to 7,000 requests per second (RPS), regardless of whether the requests were for small documents (less than 200 bytes)
+could handle. Through testing at various levels of concurrency, we determined the maximum throughput for our specific setup.
+It was approximately 6,000 to 7,000 RPS, regardless of whether the requests were for small documents (less than 200 bytes)
 or for non-existent documents. These findings were further validated by the statistics available through the Couchbase UI.
 
-Benchmark Command: Attempting to fetch a non-existent document yielded a rate of *6388.411937 RPS*.
+Benchmark Command: Attempting to fetch a non-existent document yielded a rate of *6388 RPS*.
 
 ```
 ./cb-perf-tester regular  --parallel 200 --repeat 1000 --keys 5 --search-non-existent
@@ -160,7 +160,7 @@ regular report: successes: 0, errors: 200000, duration: 31.306684977s, rps: 6388
 ```
 ![Baseline - fetch a not-existent document](/img/articles/2024-04-03-couchbase-subdocuments-bottleneck/cb-baseline-non-exitstent.png)
 
-Benchmark Command: Fetching an existing small (195 bytes) document yielded a rate of *6388.411937 rps*.
+Benchmark Command: Fetching an existing small (195 bytes) document yielded a rate of *6341 rps*.
 
 ```
 ./cb-perf-tester regular  --parallel 200 --repeat 1000 --keys 5
@@ -176,7 +176,8 @@ regular report: successes: 200000, errors: 0, duration: 31.536538682s, rps: 6341
 
 ### Testing scenarios
 
-Now that we have a baseline for comparison, we're set to evaluate it against the outcomes of various scenarios. To ensure the tests are comparable, we'll maintain a constant parallelism across all tests, specifically using 200 goroutines. The variables that will differ across scenarios include:
+Now that we have a baseline for comparison, we're set to evaluate it against the outcomes of various scenarios. To ensure the tests are comparable,
+we'll maintain constant parallelism across all tests, specifically using 200 goroutines. The variables that will differ across scenarios include:
 
 * **Total Number of Sub-Documents**: This determines the overall size of the sample document, as the document's size is directly related to the number
 of sub-documents it contains.
@@ -208,16 +209,16 @@ As observed in the previous scenario, there is a clear correlation between the n
 ## Further analysis
 
 Given the evident correlation between the document size/number of queried sub-paths and performance degradation, we delve into the mechanics to understand
-the root cause of these test results. A notable observation during the tests relates to _CPU_ utilization within the Docker environment, where, despite having
+the root cause of these test results. A notable observation during the tests relates to CPU utilization within the Docker environment, where, despite having
 six cores available, only a single core was actively utilized. Intriguingly, this usage was monopolized by a single thread (`mc:worker_X`).
 This phenomenon directly stems from Couchbase’s handling of Key-Value (KV) connections. By default, the Couchbase driver initiates only a single connection to
-each cluster node for KV operations. However, this configuration is not immutable and can be adjusted in certain Software Development Kits (SDKs)—the Java _SDK_,
+each cluster node for KV operations. However, this configuration can be adjusted in certain Software Development Kits (SDKs)—the Java SDK,
 for instance, allows modification through [IoConfig.numKvConnections](https://docs.couchbase.com/java-sdk/current/ref/client-settings.html#io-options).
 
 When a connection is established, Couchbase assigns it to
 a [specific worker thread](https://github.com/couchbase/kv_engine/blob/master/docs/in-depth/C10k.md#current-approach-why-not-both)) using
 a [Round-Robin (RR)](https://github.com/couchbase/kv_engine/blob/master/daemon/front_end_thread.h#L84)) algorithm. As a result, the Couchbase Server does not
-fully utilize available _CPU_ power for a single connection, even when a lot of resources are free. This behavior can be seen as beneficial, serving to mitigate
+fully utilize available CPU power for a single connection, even when a lot of resources are free. This behavior can be seen as beneficial, serving to mitigate
 the ["noisy neighbor" effect](https://en.wikipedia.org/wiki/Cloud_computing_issues#Performance_interference_and_noisy_neighbors), provided there are sufficient
 spare cores available to manage new connections. This mechanism ensures balanced resource use across connections, as illustrated in the diagram below:
 
@@ -234,7 +235,7 @@ anomalous symptoms were present, such as a metric indicating the minimum [idle](
 to 0% during the disturbances. This leaves no doubt that operations on sub-documents have the potential to overburden worker threads within
 the Couchbase Server. With this understanding, we are now ready to delve deeper into the root cause of such behavior.
 
-### What documentation says?
+### What documentation says
 
 The documentation for Couchbase, housed alongside the server's source code, is notably comprehensive, including a dedicated section on
 [sub-documents](https://github.com/couchbase/kv_engine/blob/master/docs/SubDocument.md). However, it falls short of providing detailed insights into
@@ -245,11 +246,11 @@ have observed
 [similar problems](https://www.couchbase.com/forums/t/frequent-timeouts-and-requests-over-threshold-for-subdocgetrequests-via-reactive-java-sdk/30211).
 
 
-### What source code says?
+### What source code says
 
 A thorough analysis of the codebase reveals a definitive cause for the performance degradation observed. It's important to note that Couchbase requires
 [decompression](https://docs.couchbase.com/server/current/learn/buckets-memory-and-storage/compression.html) of a document for any lookup or manipulation
-operation, whether the document is retrieved from _RAM_ or disk. Let’s start from a point where Couchbase starts doing
+operation, whether the document is retrieved from RAM or disk. Let’s start from a point where Couchbase starts doing
 [lookups](https://github.com/couchbase/kv_engine/blob/cf020888d2e09b132a02c90b99e160044ddabb11/daemon/subdocument.cc#L568) on a decompressed object:
 
 ```
@@ -264,7 +265,7 @@ for (auto& op : operations) {
 ```
 A critical observation from our analysis is that each operation (lookup) is executed sequentially through the invocation of `subdoc_operate_one_path`.
 To understand the performance implications, let's examine
-[the implementation]((https://github.com/couchbase/kv_engine/blob/cf020888d2e09b132a02c90b99e160044ddabb11/daemon/subdocument.cc#L413C5-L414C76)) of this lookup
+[the implementation](https://github.com/couchbase/kv_engine/blob/cf020888d2e09b132a02c90b99e160044ddabb11/daemon/subdocument.cc#L413C5-L414C76) of this lookup
 process:
 
 ```
@@ -275,7 +276,7 @@ const auto subdoc_res = op.op_exec(spec.path.data(), spec.path.size());
 The Investigation reveals that the lookup functionality is powered by a specialized library,
 [library `subjson`](https://github.com/couchbase/subjson/blob/4b93d966f791209209a0825e46f7049df0673e8f/subdoc/operations.cc#L757), which in turn
 [uses](https://github.com/couchbase/subjson/blob/4b93d966f791209209a0825e46f7049df0673e8f/subdoc/match.cc#L371)
-the [`jsonsl` library](https://github.com/mnunberg/jsonsl) for parsing _JSON_ in a streaming manner. An enlightening piece of information about performance can be found in
+the [`jsonsl` library](https://github.com/mnunberg/jsonsl) for parsing JSON in a streaming manner. An enlightening piece of information about performance can be found in
 the README of the `subjson` library, which is integral to Couchbase's solution. The direct quote from the README is as follows:
 
 > Because the library does not actually build a JSON tree, the memory usage and CPU consumption is constant, regardless of the size of the actual JSON object
@@ -291,21 +292,22 @@ For a more intuitive understanding of these effects, please refer to the diagram
 
 ![Processing sub-documents in details](/img/articles/2024-04-03-couchbase-subdocuments-bottleneck/cb-processing-sub-documents.png)
 
-The performance characteristics we've outlined aligning with the outcomes observed in our experiments. To illustrate, consider a detailed examination of
-a single `HARD` test scenario—specifically, a case where the sub-documents targeted for search were positioned towards the end of the _JSON_ document:
+The performance characteristics we've outlined align with the outcomes observed in our experiments. To illustrate, consider a detailed examination of
+a single `HARD` test scenario—specifically, a case where the sub-documents targeted for search were positioned towards the end of the JSON document:
 
 ```
+./cb-perf-tester subdoc  --parallel 200 --repeat 50 --search-keys 10 --difficulty hard
 Using config file: /Users/tomasz.ziolkowski/.cb-perf-tester.yaml
 benchmark params: keys=10000, level=Hard, search-keys=10, repeats=50, parallel=200
 Generated doc with subkeys: 10000, byte size is: 310043
 
 search for subkeys [level=Hard]: [data.subkey-009999 data.subkey-009998 data.subkey-009997 data.subkey-009996 data.subkey-009995 data.subkey-009994 data.subkey-009993 data.subkey-009992 data.subkey-009991 data.subkey-009990]
 
-subdoc report: successes: 10000, errors: 0, duration: 1m19.784865193s, rps: 125.337055, success rps: 125.337055```
+subdoc report: successes: 10000, errors: 0, duration: 1m19.784865193s, rps: 125.337055, success rps: 125.337055
 ```
 
 By multiplying the size of the document by the number of sub-documents queried, we can determine the total stream size that the library must process, which,
-in this case, approximates to `~3MB`. Further multiplying this figure by the requests per second (RPS) gives us an insight into the overall throughput of
+in this case, approximates to `~3MB`. Further multiplying this figure by the RPS gives us an insight into the overall throughput of
 the stream processing:
 
 `3MB x 125 RPS ~= 375 MBps`
@@ -318,13 +320,13 @@ the HARD level with a document size of approximately `300KB`:
 
 ## Conclusions
 
-The Couchbase sub-document _API_, while designed to optimize network throughput, introduces significant performance trade-offs. Notably, even
+The Couchbase sub-document API, while designed to optimize network throughput, introduces significant performance trade-offs. Notably, even
 *under optimal conditions*, operations on sub-documents are noticeably slower compared to regular get operations fetching
-small documents—evidenced by a comparison of the baseline performance; approximately 4-5k _RPS_ for sub-document operations vs. 6-7k _RPS_ for
+small documents—evidenced by a comparison of the baseline performance; approximately 4-5k RPS for sub-document operations vs. 6-7k RPS for
 regular get operations.
 
 The method Couchbase employs for executing lookups directly influences performance, manifesting declines as either the document size increases or the number of
-lookups per request raises. This slowdown affects all requests over the same connection due to the high _CPU_ demand of sub-document lookup operations.
+lookups per request raises. This slowdown affects all requests over the same connection due to the high CPU demand of sub-document lookup operations.
 Particularly in environments utilizing reactive/asynchronous clients, this can overload the Couchbase worker thread, leading to a halt in request servicing.
 Importantly, an overloaded worker may manage connections from multiple clients, potentially exacerbating the "noisy neighbor" effect.
 
