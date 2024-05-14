@@ -32,8 +32,8 @@ It gives roughly $10,500 per month, and $127,000 per year.
 
 At the beginning of cost-optimization I drafted a couple of hypothesis:
 
-- Physical resources are under-utilized.
-- Physical resources are not the most efficient in terms of price per performance, we could find something cheaper and faster.
+- Physical resources are underutilized.
+- Physical resources has not the best price-to-performance ratio.
 - Configuration of the Dataflow job is not optimal and could be optimized.
 
 My goal was to check those hypotheses. I gave myself at most a few days to work on that.
@@ -46,7 +46,7 @@ In order to save time and resources I made some speculative choices regarding wh
 In addition, I’ve decided to not test all the possible combinations of machine families, disk types and configuration options to save time.
 I will try to stick with the most promising choices and omit testing not well-promising configurations.
 
-## Hypothesis testing: physical resources are under-utilized
+## Hypothesis testing: physical resources are underutilized
 
 In our initial configuration we used following type of worker machines:
 
@@ -124,12 +124,12 @@ It gives us around $12,700 of estimated saving per year (10% from $127,000 annua
   </tr>
 </table>
 
-## Hypothesis testing: physical resources are not the best in terms of price per performance
+## Hypothesis testing: physical resources has not the best price-to-performance ratio
 
-I assumed that the current virtual machine type (n2-standard-4) is not the best in terms of price per performance.
-To quickly check performance of different virtual machine types I used [CoreMark scores provided by Google Cloud itself](https://cloud.google.com/compute/docs/benchmarks-linux).
+I assumed that the current virtual machine type (n2-standard-4) has not the best price-to-performance ratio.
+To check performance of different virtual machine types I used [CoreMark scores provided by Google Cloud itself](https://cloud.google.com/compute/docs/benchmarks-linux).
 
-Based on CoreMark scores and official Google Cloud VM pricing I prepared a table, which will help me to choose VM type with the best performance to price ratio.
+Based on CoreMark scores and official Google Cloud VM pricing I prepared a table, which will help me to choose VM type which has the best price-to-performance ratio.
 The most important column is “price per 1 mln points” — how much do I need to pay on average to score 1 mln points.
 I used [official VM instance prices from Google Cloud site](https://cloud.google.com/compute/vm-instance-pricing) from region europe-west1.
 
@@ -172,14 +172,14 @@ I used [official VM instance prices from Google Cloud site](https://cloud.google
   </tr>
 </table>
 
-As we see, another hypothesis proved to be true. We’re not using virtual machine type with the best performance to price ration - T2D.
+As we see, another hypothesis proved to be true. We’re not using virtual machine type with the best price-to-performance ratio - T2D.
 We’re using N2 machine type.
 
 Unfortunately T2D machines at the time of writing this article do not provide other CPU to memory ratio than 3 GB per 1 vCPU.
 It’s still better than 4 GB per 1 vCPU, but far from 1 or 2 GB per 1 vCPU.
-We’re going to test if even with probably under-utilization the T2D virtual machine type will be cheaper than its counterparts.
+We’re going to test if even with probably underutilized T2D virtual machine type will be cheaper than its counterparts.
 
-### Moving to more effective machine types in terms of price per performance
+### Moving to virtual machine type, which has better price price-to-performance ratio
 
 I performed several tests on a small scale (3% subsample of input data) with T2D machine types. Let’s take a look at them.
 
