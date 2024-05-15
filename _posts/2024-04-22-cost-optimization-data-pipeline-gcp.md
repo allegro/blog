@@ -17,7 +17,7 @@ These include:
 4. Refining storage strategies for input and output datasets. This is particularly beneficial if reading or writing speeds are suboptimal and demand improvements.
 5. Streamlining of our pipeline code and utilizing built-in optimization functionalities (for example broadcast joins and repartitioning in Apache Spark).
 
-Throughout this article we will focus solely on (1) optimizing consumed physical resources and (2) enhancing configuration of the data processing engine.
+Throughout this article we will focus solely on optimizing consumed physical resources (1st point) and enhancing configuration of the data processing engine (2nd point).
 
 ## About data pipeline being optimized
 
@@ -30,18 +30,18 @@ It results in roughly $10,500 per month, and $127,000 per year.
 
 ## Approach to cost optimization
 
-At the beginning of cost optimization I drafted a couple of hypothesis:
+At the beginning of the cost optimization let's draft a couple of hypothesis:
 
 - Physical resources are underutilized.
 - Physical resources has not the best price-to-performance ratio.
 - Configuration of the Dataflow job is not optimal and could be optimized.
 
-My goal was to check those hypotheses. I gave myself at most a few days to work on that.
+My goal will be to check those hypotheses.
 
-During testing phase I used 3% subsample of input datasets. As a result I was running tests with input size at ~100 GB level.
-Thus, I limited cost of tests and significantly reduced its time. Final tests were made on the full dataset, not on a limited subsample.
+During testing phase I'll use a 3% subsample of input datasets. As a result I will be running tests with input size at ~100 GB level.
+Thus, I'll limit the cost of tests and significantly reduced their time. Final tests will be made on the full dataset, not on a limited subsample.
 
-In order to save time and resources I made some speculative choices regarding what I should test during optimization.
+In order to save time and resources I've made some speculative choices regarding what I should test during optimization.
 In addition, I’ve decided to not test all the possible combinations of machine families, disk types and configuration options to save time.
 I will try to stick with the most promising choices and omit testing not well-promising configurations.
 
@@ -315,7 +315,7 @@ Our data pipeline must start at a given hour and having a 6 hours delay is not a
 
 ## Final test on a full dataset
 
-My last task was to test findings from sub-sampled input dataset (3%) tests on the full dataset (not sub sampling).
+My last task was to test findings from subsampled input dataset (3%) tests on the full dataset (without subsampling).
 Here are the costs of processing full dataset for a single day:
 
 <table>
