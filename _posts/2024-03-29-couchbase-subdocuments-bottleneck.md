@@ -49,7 +49,7 @@ Additional key observations related to the issue include:
 * The instability primarily occurred during the service scaling-up process, initially triggered by the autoscaler.
 * Newly spawned instances were predominantly affected.
 * The issues were reported solely for operations directed to a specific node within the cluster.
-* A temporary mitigation for the problems involved repeatedly restarting the failing application instances.
+* A temporary mitigation of the problems involved repeatedly restarting the failing application instances.
 * There was a noticeable pattern on the driver side that preceded the widespread errors, including timeouts and the inability to send requests due to
 a non-writable channel.
 
@@ -69,7 +69,7 @@ within the gateway service, an approach not widely adopted across our internal m
 the documentation, this API significantly reduces traffic by allowing the fetching or mutating only specific parts of a Couchbase document.
 Essentially, it acts as a substitute for the concept of [projection](https://en.wikipedia.org/wiki/Projection_(relational_algebra)), familiar to SQL users.
 
-In our investigation, we closely examined the data collected on the Couchbase node, the operational dynamics of the gateway service's cache, and insights
+In our investigation we closely examined the data collected on the Couchbase node, the operational dynamics of the gateway service's cache, and insights
 from scrutinizing both the Couchbase driver and server code. We hypothesized that the crux of the problem might be linked to the cache warm-up process for
 newly launched instances.
 
@@ -233,7 +233,7 @@ usual response times due to an imbalanced distribution of workload across worker
 This behavior explains the apparent paradox observed during the stability issues: the Couchbase node showed no clear signs of being overloaded, yet certain
 anomalous symptoms were present, such as a metric indicating the minimum [idle](https://en.wikipedia.org/wiki/Idle_(CPU)) percentage across all cores plummeting
 to 0% during the disturbances. This leaves no doubt that operations on sub-documents have the potential to overburden worker threads within
-the Couchbase Server. With this understanding, we are now ready to delve deeper into the root cause of such behavior.
+the Couchbase Server. With this understanding we are now ready to delve deeper into the root cause of such behavior.
 
 ### What documentation says
 
