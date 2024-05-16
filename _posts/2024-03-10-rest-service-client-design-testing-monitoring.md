@@ -280,7 +280,7 @@ It gives us confidence that all fields have been compared. In the case of regres
 <img alt="Test regression" src="/img/articles/2024-03-10-rest-service-client-design-testing-monitoring/regression.png"/>
 
 **Sending a resource** — verification whether the client sends data to the specified URL in a format acceptable by the previously stubbed endpoint.
-In the following example, I test publishing an event to [Hermes](https://hermes.allegro.tech/), a message broker built on top of Kafka widely used in Allegro.
+In the following example, I test publishing an event to [Hermes](https://hermes.allegro.tech/), a message broker built on top of Kafka widely used at Allegro.
 
 ```kotlin
 @Test
