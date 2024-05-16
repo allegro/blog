@@ -156,7 +156,7 @@ For this purpose, we will use the [WireMock](https://wiremock.org/) library.
 It is quite important that the technical details of created stubs do not leak into the tests.
 The test should describe the behavior being tested and encapsulate technical details.
 For example, changing the accept/content-type header or making minor modifications to the called URL should not affect the test itself.
-To achieve this, for each service for which we are writing a service client, we create an object of type ```StubBuilder```.
+To achieve this, for each service for which we write a service client, we create an object of type ```StubBuilder```.
 The ```StubBuilder``` allows hiding the details of stubbing and verification behind a readable API.
 It takes on the impact of changes to the called API, protecting our test from modification.
 It fulfills a similar role to the [Page Object Pattern](https://martinfowler.com/bliki/PageObject.html) in end-to-end tests for web apps.
