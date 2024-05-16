@@ -47,7 +47,7 @@ I will try to stick with the most promising choices and omit testing unpromising
 
 ## Hypothesis testing: physical resources are underutilized
 
-In our initial configuration we used following type of worker machines:
+In our initial configuration we used the following type of worker machines:
 
 - Machine type: n2-standard-4 (4 vCPU, 16 GB of memory)
 - Disk size: 100 GB
