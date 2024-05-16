@@ -87,7 +87,7 @@ Depending on the cause of failure, we may want to log the interaction result at 
 There are critical errors that are worth distinguishing (error), and those that will occasionally occur (warn) and don't require urgent intervention.
 
 To filter logs related to a specific service while browsing through them, I like to include the client's name within curly braces at the beginning of the logs.
-For logging technical aspects of the communication, such as the called URL, used HTTP method, and response code,
+For logging technical aspects of the communication, such as the URL called, HTTP method used, and response code,
 we use filters (logRequestInfo, logResponseInfo) that are plugged in at the client configuration level in the ```createExternalServiceApi``` method.
 
 ```kotlin
