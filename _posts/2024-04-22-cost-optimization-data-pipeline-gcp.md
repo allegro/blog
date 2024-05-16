@@ -176,7 +176,7 @@ We’re using N2 machine type.
 
 Unfortunately T2D machines at the time of writing this article do not provide other CPU to memory ratio than 3 GB per 1 vCPU.
 It’s still better than 4 GB per 1 vCPU, but far from 1 or 2 GB per 1 vCPU.
-We will check if T2D virtual machine type with 4 GB of memory per 1 CPU is be cheaper than its counterparts.
+We will check if T2D virtual machine type with 4 GB of memory per 1 CPU is cheaper than its counterparts.
 
 ### Moving to a virtual machine type, which has better price-to-performance ratio
 
