@@ -43,7 +43,7 @@ Thus, I'll limit the cost of tests and significantly reduce their time. Final te
 
 In order to save time and resources I've made some speculative choices regarding what I should test during optimization.
 In addition, I’ve decided not to test all the possible combinations of machine families, disk types and configuration options to save time.
-I will try to stick with the most promising choices and omit testing not well-promising configurations.
+I will try to stick with the most promising choices and omit testing unpromising configurations.
 
 ## Hypothesis testing: physical resources are underutilized
 
