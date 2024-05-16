@@ -11,7 +11,7 @@ Optimization will be presented as a real-life scenario, which will be performed 
 Before we start, it’s time to introduce several avenues through which the cost of Big Data pipelines can be significantly reduced.
 These include:
 
-1. Careful optimization of consumed physical resources, like choosing VM types with optimal CPU to memory ratio and cost-effective CPU type.
+1. Careful optimization of consumed physical resources, like choosing VM types with optimal CPU to memory ratio and a cost-effective CPU type.
 2. Enhancing the configuration of the data processing engine to maximize its efficiency.
 3. Optimizing input and output datasets. Not all data may need processing or perhaps, altering their structure could reduce the processing time.
 4. Refining storage strategies for input and output datasets. This is particularly beneficial if reading or writing speeds are suboptimal and demand improvements.
