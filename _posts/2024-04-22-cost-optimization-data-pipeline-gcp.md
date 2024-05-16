@@ -98,7 +98,7 @@ We clearly see that we use around 50% of the memory. Bingo, we pay for memory th
 Usually there are two ways of improving memory utilization:
 
 - Change CPU to memory ratio on worker nodes.
-- Decrease amount of worker nodes.
+- Decrease the amount of worker nodes.
 
 I’ve decided to change the CPU to memory ratio, not to decrease the amount of worker nodes.
 I did not want to compromise on scalability and time needed to perform a job.
