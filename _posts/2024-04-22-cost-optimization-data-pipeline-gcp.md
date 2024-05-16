@@ -34,7 +34,7 @@ At the beginning of the cost optimization let's draft a couple of hypothesis:
 
 - Physical resources are underutilized.
 - Physical resources have not the best price-to-performance ratio.
-- Configuration of the Dataflow job is not optimal and could be optimized.
+- Configuration of the Dataflow job is suboptimal and could be optimized.
 
 My goal will be to check those hypotheses.
 
@@ -345,7 +345,7 @@ To know the exact savings we will need to run the processing pipeline over a yea
 
 ## Summary
 
-We achieved very good results without even touching a processing code.
+We achieved excellent outcome without even touching a processing code.
 Speculative approach provided good results.
 There may still be some space for optimization, but within a given timeframe I treat those results as very good and do not find more reasons to further
 optimize the environment and configuration of the Dataflow job.
