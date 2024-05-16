@@ -56,7 +56,7 @@ If the technology we use employs an interface to describe the called REST API (R
 we can name such an interface ```OrderManagementServiceApi``` — following the general pattern of the service name with the suffix **Api**.
 
 These names may seem intuitive and obvious, but without an established naming convention, we might end up with a project where
-different integrations have the following suffixes: HttpClient, Facade, WebClient, Adapter, and Service.
+different integrations have the following suffixes: **HttpClient**, **Facade**, **WebClient**, **Adapter**, and **Service**.
 It’s important to have a consistent convention and adhere to it throughout the project.
 
 ### API
