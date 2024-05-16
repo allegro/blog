@@ -129,7 +129,7 @@ I assumed that the current virtual machine type (n2-standard-4) has not the best
 To check performance of different virtual machine types I used [CoreMark scores provided by Google Cloud itself](https://cloud.google.com/compute/docs/benchmarks-linux).
 
 Based on CoreMark scores and official Google Cloud VM pricing I prepared a table which would help me choose the VM type which had the best price-to-performance ratio.
-The most important column is “price per 1 mln points” — how much do I need to pay on average to score 1 mln points.
+The most important column is “price per 1 mln points” — how much I need to pay on average to score 1 mln points.
 I used [official VM instance prices from Google Cloud site](https://cloud.google.com/compute/vm-instance-pricing) from region europe-west1.
 
 <table>
