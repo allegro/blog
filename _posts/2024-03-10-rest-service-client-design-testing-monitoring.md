@@ -133,7 +133,7 @@ Metrics won't provide us with the details of the communication, but logs will.
 These details can turn out to be crucial in the analysis of incidents, which may reveal, for example, incorrect data produced by our service.
 
 Logs are like backups. We find out if we have them and how valuable they are only when they are needed,
-either because the business requests an analysis of a particular case or when resolving an incident.
+either because the business team requests an analysis of a particular case or when resolving an incident.
 
 ### Error handling
 When writing client code, we aim to highlight maximally how we send/retrieve data and hide the “noise“ that comes from error handling.
