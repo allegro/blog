@@ -181,7 +181,7 @@ all integration tests, ```BaseIntegrationTest```. This allows us to have very ea
 stub.orderManagementService().willReturnOrdersFor(clientId, response = ordersPlacedBySomeCustomer())
 ```
 
-Reading the above code, we immediately know **which** service is being interacted with (Order Management Service) and what will be returned from it (Orders).
+Reading the code above, we immediately know **which** service is being interacted with (Order Management Service) and what will be returned from it (Orders).
 The technical details of the stubbed endpoint have been hidden inside the StubBuilder object.
 Tests should emphasize "what" and encapsulate "how." This way, they can serve as documentation.
 
