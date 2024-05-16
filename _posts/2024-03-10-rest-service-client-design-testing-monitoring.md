@@ -124,7 +124,7 @@ Here's an example of logged interaction for successfully fetching a resource.
 <img alt="Properly logged interaction" src="/img/articles/2024-03-10-rest-service-client-design-testing-monitoring/logs.png"/>
 
 To prevent redundancy in logging code across multiple clients, it is centralized inside ```executeHttpRequest``` method.
-The only thing the developer needs to do is to provide a business-oriented description for the beginning of the interaction and its outcome (parameters: initialLog, successLog, failureMessage).
+The only thing the developer needs to do is to provide a business-oriented description for the beginning of the interaction and its outcome (parameters: `initialLog`, `successLog`, `failureMessage`).
 
 Why do I emphasize logging so much?
 Isn't it enough to log only errors?
