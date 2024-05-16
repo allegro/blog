@@ -170,7 +170,7 @@ StubBuilders for services that return data come in two flavors - [internal](http
 
 <img alt="StubBuilder packages" src="/img/articles/2024-03-10-rest-service-client-design-testing-monitoring/packages.png"/>
 
-When testing service client, we want to have great flexibility in simulating responses.
+When testing a service client, we want to have great flexibility in simulating responses.
 Therefore, `StubBuilders` from the internal package will model response objects as a string. This allows us to simulate any scenario.
 In end-to-end tests, where a given service is part of the bigger process, such flexibility is not necessary; in fact, it is not even recommended.
 Therefore, StubBuilders from the external package model responses using real objects.
