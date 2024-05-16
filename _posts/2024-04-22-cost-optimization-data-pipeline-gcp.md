@@ -38,7 +38,7 @@ At the beginning of the cost optimization let's draft a couple of hypothesis:
 
 My goal will be to check those hypotheses.
 
-During testing phase I'll use a 3% subsample of input datasets. As a result I will be running tests with input size at ~100 GB level.
+During the testing phase I'll use a 3% subsample of input datasets. As a result I will be running tests with input size at ~100 GB level.
 Thus, I'll limit the cost of tests and significantly reduced their time. Final tests will be made on the full dataset, not on a limited subsample.
 
 In order to save time and resources I've made some speculative choices regarding what I should test during optimization.
