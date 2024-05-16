@@ -33,7 +33,7 @@ It results in roughly $10,500 per month, and $127,000 per year.
 At the beginning of the cost optimization let's draft a couple of hypothesis:
 
 - Physical resources are underutilized.
-- Physical resources has not the best price-to-performance ratio.
+- Physical resources have not the best price-to-performance ratio.
 - Configuration of the Dataflow job is not optimal and could be optimized.
 
 My goal will be to check those hypotheses.
