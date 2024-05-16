@@ -342,6 +342,14 @@ figcaption {
     }
 }
 
+.post-content img.small-image-right {
+    @extend img, .small-image;
+    max-width: 30%;
+    margin: 8px;
+    float: right;
+    clear:right;
+}
+
 .post-content img.inline-image {
     display: inline;
     vertical-align: middle;

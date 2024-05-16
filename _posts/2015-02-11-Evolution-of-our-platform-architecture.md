@@ -19,7 +19,7 @@ Here is the story of our transition.
 
 ### Start of scalability adventure
 
-Around 2005 expotential growth of our platform started to become visible. We spread our traffic to multiple web
+Around 2005 exponential growth of our platform started to become visible. We spread our traffic to multiple web
 servers (soon there were more than one hundred of them). We switched our database to Oracle which offered more
 scalability options at that time. Also we wrote multiple cache layers in C to lessen the load on database. These
 were quite advanced C/C++ applications that nowadays you simply take from open source world (such as
