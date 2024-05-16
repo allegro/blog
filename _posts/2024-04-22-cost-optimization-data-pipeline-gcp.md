@@ -316,7 +316,7 @@ Our data pipeline must start at a given hour and having a 6 hours delay is not a
 ## Final test on a full dataset
 
 My last task was to test findings from subsampled input dataset (3%) tests on the full dataset (without subsampling).
-Here are the costs of processing full dataset for a single day:
+Here are the costs of processing a full dataset for a single day:
 
 <table>
   <tr>
