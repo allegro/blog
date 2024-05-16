@@ -58,7 +58,7 @@ In our initial configuration we used the following type of worker machines:
 I made a decision to focus on CPU and memory utilization first.
 
 ### CPU utilization
-I checked if CPU utilization is on an acceptable level, and it was.
+I checked if CPU utilization was on an acceptable level, and it was.
 
 The following diagram from Dataflow UI presents CPU utilization on All Workers in terms of the CPU utilization
 for all cores on a single App Engine flexible instance.
