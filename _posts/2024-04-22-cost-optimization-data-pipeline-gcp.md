@@ -91,7 +91,7 @@ The second one shows memory utilization statistics among all the worker nodes.
 alt="Memory utilization summary" class="medium-image" style="box-shadow: 0 0 4px 0 #D7DBD6;"/>
 
 The first one presents average memory usage on a worker node, the second one presents overall memory usage among the whole cluster.
-We clearly see that we use around 50% of the memory. Bingo, we pay for a memory that we do not use.
+We clearly see that we use around 50% of the memory. Bingo, we pay for memory that we do not use.
 
 ### Improving memory utilization
 
