@@ -23,7 +23,7 @@ Throughout this article we will focus solely on optimizing consumed physical res
 
 Data pipeline, which will serve us as an example throughout this article is written in Apache Beam using Python SDK.
 The pipeline runs on Google Cloud Dataflow processing engine.
-The goal of the pipeline is to join a couple of tables (most of them are in terabyte+ size), apply some transformations and produce unified output table.
+The goal of the pipeline is to join a couple of tables (most of them are in terabyte+ size), apply some transformations and produce a unified output table.
 
 Overall processing cost of the full dataset is around $350 per day.
 It results in roughly $10,500 per month, and $127,000 per year.
