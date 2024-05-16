@@ -142,7 +142,7 @@ In our example, error handling mechanism is hidden inside ```executeHttpRequest`
 It consists of two things: logging and throwing custom exceptions that encapsulate technical exceptions thrown by the underlying HTTP client.
 
 What are the benefits of using custom exceptions? The very name of such a custom exception tells us exactly what went wrong.
-For comparison, ```ExternalServiceIncorrectResponseBodyException``` seems to be more descriptive than DecodingException.
+For comparison, ```ExternalServiceIncorrectResponseBodyException``` seems to be more descriptive than ```DecodingException```.
 They also help group various technical exceptions that lead to the same cause, for example, an incorrect response object structure.
 Additionally, based on these exceptions, visualizations can be created to show the state of our integration.
 For example, we can create a table that will show how many exceptions of any given type were thrown by our clients within a specified period.
