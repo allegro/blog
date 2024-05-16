@@ -80,7 +80,7 @@ So CPU resources are not underutilized. We use almost all of what we pay for.
 
 ### Memory utilization
 
-At the end I checked memory usage. I saw that we do not use all the memory which we were paying for. Let’s take a look at the following two graphs.
+At the end I checked memory usage. I saw that we did not use all the memory which we were paying for. Let’s take a look at the following two graphs.
 
 The first one shows maximal memory utilization among all the workers.
 <img src="/img/articles/2024-04-22-cost-optimization-data-pipeline-gcp/03_memory_utilization_max_usage.png"
