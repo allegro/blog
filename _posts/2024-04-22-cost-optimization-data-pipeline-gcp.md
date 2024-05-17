@@ -274,7 +274,7 @@ As a bonus, our memory utilization increased to almost 100%, because we use work
 So we eliminated an underutilized T2D issue connected with a CPU to memory ratio.
 Node preemption is not a problem since we’re not utilizing preemptible VMs.
 
-I also must add that turning-off external shuffle service may not always result in lower cost.
+I must also add that turning off external shuffle service may not always result in lower cost.
 It depends on many factors, and you should test it on your own data pipeline.
 Also, you need to take into consideration that the job will usually require more resources (CPU, memory) once you turn off external shuffle service.
 
