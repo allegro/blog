@@ -333,7 +333,7 @@ Here are the costs of processing a full dataset for a single day:
   </tr>
 </table>
 
-As we see the predicted gain from subsampling was achieved (savings are even higher by 3 pp than in estimated).
+As we see, the predicted gain from subsampling was achieved, and savings are even 3 pp higher than estimated.
 For reference: we estimated, based on runs with 3% of input size, that we will achieve about 58% of cost reduction.
 
 - Initial annual cost: $127,000
