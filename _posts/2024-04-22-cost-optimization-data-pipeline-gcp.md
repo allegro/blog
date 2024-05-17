@@ -72,7 +72,7 @@ We could also take a look at the same data presented in terms of statistical met
 <img src="/img/articles/2024-04-22-cost-optimization-data-pipeline-gcp/02_cpu_utilization_stats.png"
 alt="CPU utilization statistics" class="medium-image" style="box-shadow: 0 0 4px 0 #D7DBD6;"/>
 
-From the given graph I could see that mean utilization of the CPU is at the level of 85%, which is a good score.
+From the given graph I could see that mean utilization of the CPU was around 85%, which is a good score.
 The result is affected by two shuffle stages, when we need to send data around the cluster (usually network is a small bottleneck here).
 CPU tends to be idle while shuffling data using Dataflow Shuffle Service.
 
