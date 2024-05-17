@@ -110,7 +110,7 @@ Test on a 3% subsample of input data has given the following cost of data proces
 - n2d-highcpu-8: $8.57 (~ 10% less than original price)
 
 We saved 10% on adjusting CPU and memory ratio.
-It results in around $12,700 of estimated saving per year (10% from $127,000 annual cost).
+It results in around $12,700 of estimated savings per year (10% of $127,000 annual cost).
 
 <table>
   <tr>
