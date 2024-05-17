@@ -4,7 +4,7 @@ title: "A Mission to Cost-Effectiveness: Reducing cost of a single Google Cloud 
 author: jakub.demianowski
 tags: [ tech, big data ]
 ---
-In this article we’ll present methods for efficiently optimizing physical resources and fine-tuning the configuration of Google Cloud Platform (GCP)
+In this article we’ll present methods for efficiently optimizing physical resources and fine-tuning the configuration of a Google Cloud Platform (GCP)
 Dataflow pipeline in order to achieve cost reductions.
 Optimization will be presented as a real-life scenario, which will be performed in stages.
 
@@ -19,9 +19,9 @@ These include:
 
 Throughout this article we will focus solely on optimizing consumed physical resources (1st point) and enhancing configuration of the data processing engine (2nd point).
 
-## About data pipeline being optimized
+## About the data pipeline being optimized
 
-Data pipeline, which will serve us as an example throughout this article is written in Apache Beam using Python SDK.
+The data pipeline which will serve us as an example throughout this article is written in Apache Beam using Python SDK.
 The pipeline runs on Google Cloud Dataflow processing engine.
 The goal of the pipeline is to join a couple of tables (most of them are in terabyte+ size), apply some transformations and produce a unified output table.
 
