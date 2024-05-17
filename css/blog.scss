@@ -356,6 +356,10 @@ figcaption {
     margin: auto;
 }
 
+.post-content img.image-with-frame{
+    box-shadow: 0 0 4px 0 #D7DBD6;
+}
+
 .post-content blockquote {
     border-left: 4px solid #e8e8e8;
     padding-left: 20px;
