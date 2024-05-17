@@ -311,7 +311,7 @@ Note: Why did we not use Dataflow [FlexRS](https://cloud.google.com/dataflow/doc
 We did not test it due to how scheduling in FlexRS works.
 When you schedule a Dataflow FlexRS job you do not know the exact start time,
 the only one promise from FlexRS is that the job will start within 6 hours ([documentation notes from Google Cloud website on that](https://cloud.google.com/dataflow/docs/guides/flexrs)).
-Our data pipeline must start at a given hour and having a 6 hours delay is not acceptable.
+Our data pipeline must start at specified time and having a 6 hour delay is not acceptable.
 
 ## Final test on a full dataset
 
