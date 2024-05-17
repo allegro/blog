@@ -178,7 +178,7 @@ Unfortunately, at the time of writing, T2D machines do not provide CPU to memory
 It’s still better than 4 GB per 1 vCPU, but far from 1 or 2 GB per 1 vCPU.
 We will check if T2D virtual machine type with 4 GB of memory per 1 CPU is cheaper than its counterparts.
 
-### Moving to a virtual machine type, which has better price-to-performance ratio
+### Moving to a virtual machine type with better price-to-performance ratio
 
 I performed several tests on a small scale (3% subsample of input data) with T2D machine types. Let’s take a look at them.
 
