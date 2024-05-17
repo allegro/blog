@@ -306,7 +306,7 @@ So it’s now less than half of the initial cost[^1].
 
 Total: $73,660 of estimated savings[^1]
 
-Note: Why did we not use Dataflow FlexRS which could lower the processing price by combining preemptible and regular VMs?
+Note: Why did we not use Dataflow [FlexRS](https://cloud.google.com/dataflow/docs/guides/flexrs) which could lower the processing price by combining preemptible and regular VMs?
 
 We did not test it due to how scheduling in FlexRS works.
 When you schedule a Dataflow FlexRS job you do not know the exact start time,
