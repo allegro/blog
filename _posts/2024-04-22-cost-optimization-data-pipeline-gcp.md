@@ -128,7 +128,7 @@ It results in around $12,700 of estimated savings per year (10% of $127,000 annu
 I assumed that the current virtual machine type (n2-standard-4) has not the best price-to-performance ratio.
 To check performance of different virtual machine types I used [CoreMark scores provided by Google Cloud itself](https://cloud.google.com/compute/docs/benchmarks-linux).
 
-Based on CoreMark scores and official Google Cloud VM pricing I prepared a table which would help me choose the VM type which had the best price-to-performance ratio.
+Based on CoreMark scores and official Google Cloud VM pricing, I prepared a table which would help me choose the VM type with the best price-to-performance ratio.
 The most important column is “price per 1 mln points” — how much I need to pay on average to score 1 mln points.
 I used [official VM instance prices from Google Cloud site](https://cloud.google.com/compute/vm-instance-pricing) from region europe-west1.
 
