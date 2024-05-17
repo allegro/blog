@@ -354,6 +354,6 @@ Also, specified strategies do not have to lead to cost optimizations in other pi
 As every data pipeline is different, some changes which brought cost reduction in this example may result in increased processing cost in different data pipelines.
 What is most important in this article: how to approach cost optimization of a data pipeline, not which type of resources to choose.
 
-[^1]: Presented figures are only estimates based on a single run (with only 3% of input data) and extrapolated to the whole year with the assumption that processing the whole dataset will result in the same savings, like processing 3% of source data.
+[^1]: Presented figures are only estimates based on a single run (with only 3% of input data) and extrapolated to the whole year with the assumption that processing the whole dataset will result in the same relative savings as processing 3% of source data.
 [^2]: CoreMark results from [CoreMark scores provided by Google Cloud itself](https://cloud.google.com/compute/docs/benchmarks-linux), retrieved on 04/05/2024.
 [^3]: Official prices taken from Google Cloud site, VM instance pricing in region europe-west1, retrieved on 04/05/2024.
