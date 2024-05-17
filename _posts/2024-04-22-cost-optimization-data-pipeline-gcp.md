@@ -252,7 +252,7 @@ Dataflow, in comparison to Apache Spark, leaves us with almost no configuration 
 It’s good because in Dataflow you get very decent out-of-the-box settings.
 The single option which I wanted to tune was if we should use Shuffle Service.
 Shuffle Service is a serverless tool that facilitates data shuffling around the cluster, thus relieving worker nodes from this task.
-Also, node preemption is not so painful because Shuffle Service stores data on an external storage independent of worker nodes.
+Also, node preemption is not so painful because Shuffle Service stores data in external storage independent of worker nodes.
 But it comes at a price.
 
 Cost breakdown of processing 3% input dataset using virtual machine t2d-standard-8 with SSD disk is presented below:
