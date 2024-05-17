@@ -21,7 +21,6 @@ it's beneficial to separate the infrastructure from the service layer, as it imp
 Verifying an HTTP service client is not a simple task and requires consideration of many cases — mainly at the integration level.
 Having a separate “building block“ that encapsulates communication with the outside world makes testing much easier.
 Finally, reusability. A service client that has been written once can be successfully used in other projects.
-In Allegro we have
 
 ## Client Design
 As a case study, I will use an example implementation that utilizes WebClient for retrieving data from the Order Management Service,
@@ -188,9 +187,11 @@ Tests should emphasize "what" and encapsulate "how." This way, they can serve as
 #### Test Data
 
 The data returned by our stubs can be prepared in three ways:
-* Read the entire response from a file/string.
-* Prepare the response using real objects used in the service for deserializing responses from called services.
-* Create a set of separate objects modeling the returned response from the service for testing purposes and use them to prepare the returned data.
+<ol type="a">
+  <li>Read the entire response from a file/string.</li>
+  <li>Prepare the response using real objects used in the service for deserializing responses from called services.</li>
+  <li>Create a set of separate objects modeling the returned response from the service for testing purposes and use them to prepare the returned data.</li>
+</ol>
 
 Which option to choose?
 To answer this question, we should analyze the advantages and disadvantages of each approach.
@@ -271,7 +272,7 @@ fun `should return orders for a given clientId`(): Unit = runBlocking {
         response shouldBe OrdersDto(listOf(OrderDto("7952a9ab-503c-4483-beca-32d081cc2446")))
 }
 ```
-An essential part of the test for the happy path is verification of the contract between the client and the supplier.
+An essential part of the test for the “happy path“ is verification of the contract between the client and the supplier.
 The ```ordersPlacedBySomeCustomer``` method returns a sample response guaranteed by the supplier (Order Management Service).
 On the client side, in the assertion section, we check if this message has been correctly deserialized into a response object.
 Instead of comparing individual fields with the expected value, I highly recommend comparing entire objects (returned and expected).
