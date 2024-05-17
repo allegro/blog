@@ -74,7 +74,7 @@ alt="CPU utilization statistics" class="medium-image" style="box-shadow: 0 0 4px
 
 From the given graph I could see that mean utilization of the CPU was around 85%, which is a good score.
 The result is affected by two shuffle stages, when we need to send data around the cluster (usually network is a small bottleneck here).
-CPU tends to be idle while shuffling data using Dataflow Shuffle Service.
+CPU tends to be idle while shuffling data using Dataflow [Shuffle Service](https://cloud.google.com/dataflow/docs/shuffle-for-batch).
 
 So CPU resources are not underutilized. We use almost all of what we pay for.
 
