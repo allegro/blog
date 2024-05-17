@@ -49,7 +49,7 @@ I will try to stick with the most promising choices and omit testing unpromising
 
 In our initial configuration we used the following type of worker machines:
 
-- Machine type: n2-standard-4 (4 vCPU, 16 GB of memory)
+- Machine type: [n2-standard-4](https://cloud.google.com/compute/docs/general-purpose-machines#n2_series) (4 vCPU, 16 GB of memory)
 - Disk size: 100 GB
 - Disk type: HDD
 - Max. worker nodes: 500
