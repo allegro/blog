@@ -118,7 +118,7 @@ It results in around $12,700 of estimated savings per year (10% of $127,000 annu
     <th>Savings<span markdown='1'>[^1]</span></th>
   </tr>
   <tr>
-    <td>[1] Physical resources are under utilized</td>
+    <td>[1] Physical resources are underutilized</td>
     <td>$12,700</td>
   </tr>
 </table>
@@ -196,7 +196,7 @@ Unfortunately, we also introduced some possible underutilized resources (memory)
     <th>Savings<span markdown='1'>[^1]</span></th>
   </tr>
   <tr>
-    <td>[1] Physical resources are under utilized</td>
+    <td>[1] Physical resources are underutilized</td>
     <td>$12,700</td>
   </tr>
   <tr>
@@ -231,7 +231,7 @@ This way we decreased the estimated processing cost from $127,000 by $52,070 per
     <th>Savings<span markdown='1'>[^1]</span></th>
   </tr>
   <tr>
-    <td>[1] Physical resources are under utilized</td>
+    <td>[1] Physical resources are underutilized</td>
     <td>$12,700</td>
   </tr>
   <tr>
@@ -287,7 +287,7 @@ So it’s now less than half of the initial cost[^1].
     <th>Savings<span markdown='1'>[^1]</span></th>
   </tr>
   <tr>
-    <td>[1] Physical resources are under utilized</td>
+    <td>[1] Physical resources are underutilized</td>
     <td>$12,700</td>
   </tr>
   <tr>
