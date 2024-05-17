@@ -341,7 +341,7 @@ For reference: we estimated, based on runs with 3% of input size, that we will a
 - Total estimated annual savings: $78,740
 
 Presented figures are only estimates based on a single run and extrapolated to the whole year.
-To know the exact savings we will need to run the processing pipeline over a year, which hasn’t been done.
+To know the exact savings we will need to run the processing pipeline over a year, which hasn’t been done yet.
 
 ## Summary
 
