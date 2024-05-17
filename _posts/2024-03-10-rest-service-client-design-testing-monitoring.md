@@ -6,7 +6,7 @@ tags: [kotlin, testing, integration tests, rest, wiremock]
 ---
 
 The purpose of this article is to present how to design, test, and monitor a REST service client.
-The article includes a repository with clients written in Kotlin using various technologies such as [WebClient](https://docs.spring.io/spring-framework/reference/web/webflux-webclient.html),
+The article includes a [repository](https://github.com/Klimiec/webclients) with clients written in Kotlin using various technologies such as [WebClient](https://docs.spring.io/spring-framework/reference/web/webflux-webclient.html),
 [RestClient](https://docs.spring.io/spring-framework/reference/integration/rest-clients.html#rest-restclient),
 [Ktor Client](https://ktor.io/docs/getting-started-ktor-client.html),
 [Retrofit](https://square.github.io/retrofit/).
@@ -474,4 +474,4 @@ both in production and tests.
 
 
 ## Code examples
-To explore comprehensive examples, including the usage of WebClient and other HTTP clients, check out [the GitHub repository](https://github.com/Klimiec/webclients).
+To explore comprehensive examples, including the usage of WebClient and other HTTP clients, check out the GitHub [repository](https://github.com/Klimiec/webclients).
