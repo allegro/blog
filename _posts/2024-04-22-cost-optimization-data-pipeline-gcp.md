@@ -80,8 +80,8 @@ So CPU resources are not underutilized. We use almost all of what we pay for.
 
 ### Memory utilization
 
-At the end I checked memory usage. I saw that we did not use all the memory which we were paying for. Let’s take a look at the following two graphs.
-
+In the end I checked memory usage. I saw that we did not use all the memory which we were paying for.
+Let’s take a look at the following two graphs.
 The first one shows maximal memory utilization among all the workers.
 <img src="/img/articles/2024-04-22-cost-optimization-data-pipeline-gcp/03_memory_utilization_max_usage.png"
 alt="Memory utilization max usage" class="medium-image" style="box-shadow: 0 0 4px 0 #D7DBD6;"/>
@@ -91,7 +91,7 @@ The second one shows memory utilization statistics among all the worker nodes.
 alt="Memory utilization summary" class="medium-image" style="box-shadow: 0 0 4px 0 #D7DBD6;"/>
 
 The first one presents average memory usage on a worker node, the second one presents overall memory usage among the whole cluster.
-We clearly see that we use around 50% of the memory. Bingo, we pay for memory that we do not use.
+We clearly see that we only use around 50% of the memory. Bingo, we pay for memory that we do not use.
 
 ### Improving memory utilization
 
