@@ -255,7 +255,7 @@ Shuffle Service is a serverless tool that facilitates data shuffling around the 
 Also, node preemption is not so painful because Shuffle Service stores data in external storage independent of worker nodes.
 But it comes at a price.
 
-Cost breakdown of processing 3% input dataset using virtual machine t2d-standard-8 with SSD disk is presented below:
+Cost breakdown of processing 3% input dataset using virtual machine t2d-standard-8 with SSD disk is presented below[^3]:
 
 - Cost of CPU: $2.47
 - Cost of memory: $0.70
