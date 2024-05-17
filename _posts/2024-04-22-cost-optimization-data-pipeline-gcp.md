@@ -347,7 +347,7 @@ To know the exact savings we will need to run the processing pipeline over a yea
 
 We achieved excellent outcome without even touching the processing code.
 Speculative approach provided good results.
-There may still be some space for optimization, but within a given timeframe I treat those results as first-rate and do not find more reasons to further
+There may still be some space for optimization, but within a given timeframe I treat these results as first-rate and do not find more reasons to further
 optimize the environment and configuration of the Dataflow job.
 
 Also, specified strategies do not have to lead to cost optimizations in other pipelines.
