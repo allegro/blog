@@ -30,7 +30,7 @@ It results in roughly $10,500 per month, and $127,000 per year.
 
 ## Approach to cost optimization
 
-At the beginning of the cost optimization let's draft a couple of hypothesis:
+At the beginning of the cost optimization let's draft a couple of hypotheses:
 
 - Physical resources are underutilized.
 - Physical resources have not the best price-to-performance ratio.
