@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "How to come back to programming after a more than 1.5 year gap - subjective thoughts and tips"
+title: "How to get back to programming after a more than 1.5 year gap - subjective thoughts and tips"
 author: magdalena.mazur
 tags: [ tech, gap-year, maternity-leave, hiatus ]
 ---
