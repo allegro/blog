@@ -24,7 +24,7 @@ Finally, reusability. A service client that has been written once can be success
 
 ## Client Design
 As a case study, I will use an example implementation that utilizes WebClient for retrieving data from the Order Management Service,
-an example service that might appear in an e-commerce site such as [Allegro](https://allegro.pl/).
+an example service that might appear in an e-commerce site such as [Allegro](https://allegro.tech/).
 The heart of our client is the ```executeHttpRequest``` method, which is responsible for executing the provided HTTP request, logging, and error handling.
 It is not part of the WebClient library.
 
@@ -120,7 +120,7 @@ fun logResponseInfo(clientName: String) = ExchangeFilterFunction.ofResponseProce
 
 Here's an example of logged interaction for successfully fetching a resource.
 
-<img alt="Properly logged interaction" src="/img/articles/2024-03-10-rest-service-client-design-testing-monitoring/logs.png"/>
+<img alt="Properly logged interaction" src="/img/articles/2024-06-04-rest-service-client-design-testing-monitoring/logs.png"/>
 
 To prevent redundancy in logging code across multiple clients, it is centralized inside ```executeHttpRequest``` method.
 The only thing the developer needs to do is to provide a business-oriented description for the beginning of the interaction and its outcome (parameters: `initialLog`, `successLog`, `failureMessage`).
@@ -167,7 +167,7 @@ orderManagementServiceStub.willReturnOrdersFor(clientId, response = ordersPlaced
 
 StubBuilders for services that return data come in two flavors - [internal](https://github.com/Klimiec/webclients/tree/591dddd1e61ea5d922f0402534d9a96a513f59b4/httpclient-webclientinterface/src/integration/kotlin/com/dev/sandbox/httpclientwebclientinterface/order/infrastructure/ordermanagementservice/stub/internal) and [external](https://github.com/Klimiec/webclients/tree/591dddd1e61ea5d922f0402534d9a96a513f59b4/httpclient-webclientinterface/src/integration/kotlin/com/dev/sandbox/httpclientwebclientinterface/order/infrastructure/ordermanagementservice/stub/external).
 
-<img alt="StubBuilder packages" src="/img/articles/2024-03-10-rest-service-client-design-testing-monitoring/packages.png"/>
+<img alt="StubBuilder packages" src="/img/articles/2024-06-04-rest-service-client-design-testing-monitoring/packages.png"/>
 
 When testing a service client, we want to have great flexibility in simulating responses.
 Therefore, `StubBuilders` from the internal package will model response objects as a string. This allows us to simulate any scenario.
@@ -278,7 +278,7 @@ On the client side, in the assertion section, we check if this message has been 
 Instead of comparing individual fields with the expected value, I highly recommend comparing entire objects (returned and expected).
 It gives us confidence that all fields have been compared. In the case of regression, modern IDEs such as IntelliJ indicate exactly where the problem is.
 
-<img alt="Test regression" src="/img/articles/2024-03-10-rest-service-client-design-testing-monitoring/regression.png"/>
+<img alt="Test regression" src="/img/articles/2024-06-04-rest-service-client-design-testing-monitoring/regression.png"/>
 
 **Sending a resource** — verification whether the client sends data to the specified URL in a format acceptable by the previously stubbed endpoint.
 In the following example, I test publishing an event to [Hermes](https://hermes.allegro.tech/), a message broker built on top of Kafka widely used at Allegro.
@@ -447,13 +447,13 @@ At which percentile should we set such a metric?
 Generally, the more requests a client generates, the higher the percentile we should aim for.
 Sometimes, issues become visible only at high percentiles (P99, P99.9) for a very high volume of requests.
 
-<img alt="Response Time" src="/img/articles/2024-03-10-rest-service-client-design-testing-monitoring/response_time.png"/>
+<img alt="Response Time" src="/img/articles/2024-06-04-rest-service-client-design-testing-monitoring/response_time.png"/>
 
 #### Throughput
 Number of requests that our application sends to external services per second (RPS).
 An auxiliary metric for the response time metric, where response time is always considered in the context of the generated traffic.
 
-<img alt="Throughput" src="/img/articles/2024-03-10-rest-service-client-design-testing-monitoring/rps.png"/>
+<img alt="Throughput" src="/img/articles/2024-06-04-rest-service-client-design-testing-monitoring/rps.png"/>
 
 #### Error Rate
 Counting responses with codes 4xx/5xx.
@@ -461,7 +461,7 @@ Here, we are interested in visualizing how many such errors occurred within a sp
 The number of errors we analyze depends on the overall traffic, therefore, both metrics should be expressed in the same units, usually requests per second.
 For high traffic and a small number of errors, we can expect that the presented values will be on the order of thousandths.
 
-<img alt="Error Rate" src="/img/articles/2024-03-10-rest-service-client-design-testing-monitoring/errors.png"/>
+<img alt="Error Rate" src="/img/articles/2024-06-04-rest-service-client-design-testing-monitoring/errors.png"/>
 
 ## Summary
 [Microservices Architecture](https://martinfowler.com/articles/microservices.html) relies heavily on network communication.
