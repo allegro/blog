@@ -13,8 +13,8 @@ As a passionate [process mapper](https://en.wikipedia.org/wiki/Business_process_
 I resonate deeply with the idea that graphical visualization using BPMN allows for clear representation of processes, 
 making it easier for all participants to understand, regardless of their role within the organization. Familiarity with BPMN is not solely vital for business 
 analysts, but also serves as a valuable tool for developers, testers, and project managers. Crafting process maps at the initial stages of any project, featuring 
-both the current 'AS-IS' and intended 'TO-BE' process, paves the way for more efficient and transparent communication between technical teams and their business stakeholders. 
-I love that "Aha" moment when participants discover and share knowledge about the process, leading to synergy and better understanding among both business and technical teams.
+both the current AS-IS and intended TO-BE process, paves the way for more efficient and transparent communication between technical teams and their business stakeholders. 
+I love that “Aha” moment when participants discover and share knowledge about the process, leading to synergy and better understanding among both business and technical teams.
 
 ![BPMN simple example](/img/articles/2024-06-04-bpmn-the-key-to-understanding-business-processes/bpmn_example_1.png)
 
