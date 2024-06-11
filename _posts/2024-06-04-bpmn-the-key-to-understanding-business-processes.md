@@ -1,17 +1,20 @@
 ---
 layout: post
-title: BPMN: The Key to Understanding Business Processes
+title: "BPMN: The Key to Understanding Business Processes"
 author: kamila.rybkiewicz
 tags: [tech, bpmn, process mining, event storming, business processes]
 ---
 
+If you have experience with Event Storming and have ever found yourself wishing there was a way to document the insights gathered during a session, 
+or wanting to communicate the process to other team members, then I have a solution for you. This idea can be expressed in a famous saying:
 >_“One picture is worth more than a thousand words.”_
 
-As a passionate process mapper, I am convinced that Business Process Model and Notation (BPMN) is the key to understanding the analysis and
-optimization of business processes. I resonate deeply with the idea mentioned at the beginning of this article, and I believe that graphical 
-visualization using BPMN allows for clear representation of processes, making it easier for all participants to understand, regardless of their 
-role within the organization. I love that “Aha” moment when process participants discover and share knowledge about the process, leading to 
-synergy and better understanding among both business and technical teams.
+As a passionate [process mapper](https://en.wikipedia.org/wiki/Business_process_mapping), I am convinced that [Business Process Model and Notation (BPMN)](https://en.wikipedia.org/wiki/Business_Process_Model_and_Notation) is the key to understanding the analysis and optimization of business processes. 
+I resonate deeply with the idea that graphical visualization using BPMN allows for clear representation of processes, 
+making it easier for all participants to understand, regardless of their role within the organization. Familiarity with BPMN is not solely vital for business 
+analysts, but also serves as a valuable tool for developers, testers, and project managers. Crafting process maps at the initial stages of any project, featuring 
+both the current 'AS-IS' and intended 'TO-BE' process, paves the way for more efficient and transparent communication between technical teams and their business stakeholders. 
+I love that "Aha" moment when participants discover and share knowledge about the process, leading to synergy and better understanding among both business and technical teams.
 
 ![BPMN simple example](/img/articles/2024-06-04-bpmn-the-key-to-understanding-business-processes/bpmn_example_1.png)
 
@@ -20,7 +23,7 @@ synergy and better understanding among both business and technical teams.
 BPMN is a standard graphical notation language that enables the depiction of business processes in a way that is understandable to all stakeholders. 
 Using graphical elements such as tasks, events, decision gateways, and flows, BPMN allows for the precise definition of the sequence of actions, 
 resources, and the role of each participant in the process.
-Here is a simple sample having in mind that in real life maps are much more complex.
+Here is a simple example. Keep in mind that in real life, maps are usually much more complex.
 
 ![BPMN example](/img/articles/2024-06-04-bpmn-the-key-to-understanding-business-processes/bpmn_example_2.png)
 
@@ -37,13 +40,14 @@ first step. Unfortunately, these maps require regular updates to reflect the act
 for understanding, analysis, and optimization.
 
 ## Synergy with Event Storming
-Event Storming, as described in this [article](https://blog.allegro.tech/2022/07/event-storming-workshops.html), 
+Event Storming, as described in this [article]({% post_url 2022-07-19-event-storming-workshops %}), 
 is also close to my heart because the similarity between BPMN process mapping and Event Storming is undeniable. Both approaches emphasize 
 communication and knowledge sharing, leading to better understanding and effective optimization of processes. The difference lies in the 
 fact that Event Storming focuses on an interactive workshop, while BPMN offers a specific process notation. From my experience, these two 
 worlds can be combined. To retain the knowledge discovered in Event Storming workshops, I suggest documenting the process in BPMN notation, 
 which serves as an excellent material for further work on process optimization or spreading knowledge about it further. The importance of 
-open communication and preventing knowledge loss is elaborated [here](https://blog.allegro.tech/2023/10/battle-against-knowledge-loss.html).
+open communication and preventing knowledge loss is elaborated [here]({% 2023-10-30-battle-against-knowledge-loss %}).
+While BPMN, a process notation, and Event Storming, a workshop method, are distinct, they both aim to enhance process understanding.
 Below my comparison of BPMN and Event Storming:
 
 ![BPMN vs Event Storming](/img/articles/2024-06-04-bpmn-the-key-to-understanding-business-processes/bpmn_vs_es.png)
