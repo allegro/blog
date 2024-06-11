@@ -925,6 +925,13 @@ waldemar.panas:
     github: wpanas
     role: Former editor
 
+jakub.dropia:
+    name: Jakub Dropia
+    bio: >
+        A software architecture enthusiast and problem solver in the .NET and distributed systems world with more than a decade experience.
+        For over 3 years has been building the Allegro Pay Internal Developer Platform as Engineering Manager leading the team and providing technical vision.
+    linkedin: jakubdropia
+
 piotr.klimiec:
     name: Piotr Klimiec
     bio: Software Engineer at Allegro.
