@@ -41,20 +41,22 @@ for understanding, analysis, and optimization.
 
 ## Synergy with Event Storming
 Event Storming, as described in this [article]({% post_url 2022-07-19-event-storming-workshops %}), 
-is also close to my heart because the similarity between BPMN process mapping and Event Storming is undeniable. Both approaches emphasize 
+is also close to my heart because the similarity between [BPM (Business Process Modelling)](https://en.wikipedia.org/wiki/Business_process_modeling) 
+using BPMN and Event Storming is undeniable. Both approaches emphasize 
 communication and knowledge sharing, leading to better understanding and effective optimization of processes. The difference lies in the 
 fact that Event Storming focuses on an interactive workshop, while BPMN offers a specific process notation. From my experience, these two 
 worlds can be combined. To retain the knowledge discovered in Event Storming workshops, I suggest documenting the process in BPMN notation, 
 which serves as an excellent material for further work on process optimization or spreading knowledge about it further. The importance of 
 open communication and preventing knowledge loss is elaborated [here]({% 2023-10-30-battle-against-knowledge-loss %}).
-While BPMN, a process notation, and Event Storming, a workshop method, are distinct, they both aim to enhance process understanding.
-Below my comparison of BPMN and Event Storming:
+Although BPM, using BPMN for process notation, and Event Storming, a workshop method, are distinct, they both aim to enhance process understanding. 
+Below is my comparison:
 
 ![BPMN vs Event Storming](/img/articles/2024-06-04-bpmn-the-key-to-understanding-business-processes/bpmn_vs_es.png)
 
 ## Process Mining: Immersion in the Process
-Process Mining is a technique for process analysis that naturally complements BPMN process mapping. By using real data, such as process 
-logs from various systems, Process Mining allows us to see how processes actually unfold in practice. Moreover, we can use a Conformance 
+Process Mining is a technique for process analysis that naturally complements BPMN process mapping. It represents a higher level 
+of process management by utilizing real data, such as process 
+logs from various systems, to show how processes actually unfold in practice. Moreover, we can use a Conformance 
 Checker to compare our desired process model (or how we think it goes), presented through a BPMN map, with actual behaviors and deviations. 
 This enables organizations to identify areas for optimization and improvement, monitor compliance with established standards, and respond 
 to changes in the business environment.
