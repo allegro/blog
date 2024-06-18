@@ -23,7 +23,7 @@ FID (First Input Delay) as of March 12, 2024** ([source](https://web.dev/blog/in
 interactions throughout the user’s visit to the page. INP value is the measured time from registering a user event to rendering a new frame
 in the browser. It uses [Event Timing API](https://www.w3.org/TR/event-timing/) under the hood. Good responsiveness
 of the website means that the browser presents “visual feedback” of the interaction as quickly as possible
-(more about the meaning of  “visual feedback” in the context of the INP metric in the next section ;)) .
+(more about the meaning of “visual feedback” in the context of the INP metric in the next section ;)) .
 
 An interaction can be a single mouse click event or a group of events like a tap interaction (`pointerup`, `pointerdown`, and `click`).
 
@@ -44,7 +44,7 @@ This process has three phases:
 
 Where can you look for improvements? First of all, in phases one and two.
 1. **Input delay** phase – the interaction can happen anytime during the user’s visit. The main thread in the browser
-may be busy at this time because of some already ongoing task. This situatio can increase how long
+may be busy at this time because of some already ongoing task. This situation can increase how long
 this phase lasts. Blocked main thread = longer time to call the event callback.
 <img src="/img/articles/2024-04-23-INP-new-core-web-vitals/inp-scheme-input-delay.png" alt="INP - scheme of the Input delay phase" class="small-image"/>
 2. **Processing time** – it is the time when event callbacks with the engineer’s code that handles user interaction are executed
