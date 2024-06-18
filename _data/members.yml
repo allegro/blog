@@ -915,10 +915,10 @@ maciej.moscicki:
 waldemar.panas:
     name: Waldemar Panas
     bio: >
-        Engineering manager with a rich background in professional software development. 
+        Engineering manager with a rich background in professional software development.
         Since joining Allegro in 2018, Waldemar has been at the forefront of driving innovation and excellence in software engineering.
-        His role extends beyond the confines of Allegro, actively engaging in the wider tech community as a co-organizer 
-        of the [Java User Group in Poznan](https://www.meetup.com/pl-PL/poznan-java-user-group/) and [GeeCON](https://geecon.org/), 
+        His role extends beyond the confines of Allegro, actively engaging in the wider tech community as a co-organizer
+        of the [Java User Group in Poznan](https://www.meetup.com/pl-PL/poznan-java-user-group/) and [GeeCON](https://geecon.org/),
         a prominent conference focused on JVM technologies in Krakow and Prague.
     linkedin: w-panas
     twitter: PanasWaldemar
@@ -928,3 +928,17 @@ waldemar.panas:
 kacper.stodolak:
     name: Kacper Stodolak
     bio: Front-end Software Engineer. Taking care of the Offer page at Allegro. In private sport and cooking enthusiast.
+
+jakub.dropia:
+    name: Jakub Dropia
+    bio: >
+        A software architecture enthusiast and problem solver in the .NET and distributed systems world with more than a decade experience.
+        For over 3 years has been building the Allegro Pay Internal Developer Platform as Engineering Manager leading the team and providing technical vision.
+    linkedin: jakubdropia
+
+piotr.klimiec:
+    name: Piotr Klimiec
+    bio: Software Engineer at Allegro.
+    linkedin: piotr-klimiec
+    github: klimiec
+    twitter: piotr_twit
