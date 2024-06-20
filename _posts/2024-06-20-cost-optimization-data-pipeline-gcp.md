@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "A Mission to Cost-Effectiveness: Reducing cost of a single Google Cloud Dataflow Pipeline by Over 60%"
+title: "A Mission to Cost-Effectiveness: Reducing the cost of a single Google Cloud Dataflow Pipeline by Over 60%"
 author: jakub.demianowski
 tags: [ tech, big data ]
 ---
@@ -64,12 +64,12 @@ The following diagram from Dataflow UI presents CPU utilization on All Workers i
 for all cores on a single App Engine flexible instance.
 So it gives us an idea of how the CPU is utilized on each virtual machine.
 
-<img src="/img/articles/2024-04-22-cost-optimization-data-pipeline-gcp/01_cpu_utilization_all_workers.png"
+<img src="/img/articles/2024-06-20-cost-optimization-data-pipeline-gcp/01_cpu_utilization_all_workers.png"
 alt="CPU utilization on all worker nodes" class="image-with-frame"/>
 
 We could also take a look at the same data presented in terms of statistical metrics.
 
-<img src="/img/articles/2024-04-22-cost-optimization-data-pipeline-gcp/02_cpu_utilization_stats.png"
+<img src="/img/articles/2024-06-20-cost-optimization-data-pipeline-gcp/02_cpu_utilization_stats.png"
 alt="CPU utilization statistics" class="image-with-frame"/>
 
 From the given graph I could see that mean utilization of the CPU was around 85%, which is a good score.
@@ -83,11 +83,11 @@ So CPU resources are not underutilized. We use almost all of what we pay for.
 In the end I checked memory usage. I saw that we did not use all the memory which we were paying for.
 Let’s take a look at the following two graphs.
 The first one shows maximal memory utilization among all the workers.
-<img src="/img/articles/2024-04-22-cost-optimization-data-pipeline-gcp/03_memory_utilization_max_usage.png"
+<img src="/img/articles/2024-06-20-cost-optimization-data-pipeline-gcp/03_memory_utilization_max_usage.png"
 alt="Memory utilization max usage" class="image-with-frame"/>
 
 The second one shows memory utilization statistics among all the worker nodes.
-<img src="/img/articles/2024-04-22-cost-optimization-data-pipeline-gcp/04_memory_utilization_summary.png"
+<img src="/img/articles/2024-06-20-cost-optimization-data-pipeline-gcp/04_memory_utilization_summary.png"
 alt="Memory utilization summary" class="image-with-frame"/>
 
 The first one presents average memory usage on a worker node, the second one presents overall memory usage among the whole cluster.
