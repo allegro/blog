@@ -336,7 +336,7 @@ At Allegro, we have taken many actions and attempts to improve the INP score. **
 long interactions based on RUM data and optimize them**. This is crucial because one long interaction can spoil the INP results of the
 entire website (for visits with a small number of interactions, the time of the longest interaction is reported as the final INP result of the visit).
 
-After locating and examining the troublesome interactions, it turned out to be crucial to **divide long tasks into smaller ones** and to defer non-critical
+After locating and examining the troublesome interactions, it turns out to be crucial to **divide long tasks into smaller ones** and to defer non-critical
 operations until the next frame is rendered. This way, we let the browser decide how many of these tasks it can run before needing to perform another action, 
 such as style recalculation, rendering the next frame, etc. Otherwise, if we put the entire complex interaction handling into a single long task, 
 we do not give the browser any space to maneuver. In this scenario, **the next frame can be rendered only after this long task is completed**, as 
