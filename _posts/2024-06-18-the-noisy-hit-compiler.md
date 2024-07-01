@@ -26,7 +26,7 @@ Response times at P99 & P98 were clearly above timeout threshold. Ok, let's do s
 A sprint later we found in logs a problem with related service -> it could be slow to respond, easy work, small tuning, let's check the results!
 It helped... a bit, but the problem remains, and actually it's growing over time, and we don't know why.
 
-We realized how serious it was when we checked CPU spikes at application start. Application reserves 5 CPU, and usually uses around 2-3 CPU, while at start,
+We realized how serious it was when we checked CPU spikes at application start. Application reserves 5 CPUs, and usually uses around 2-3 CPUs, while at start,
 for very short period of time it could consume 20, 50 and even 75 CPU! When you count a dozen instances that we have, it's massive amount of CPU,
 actually influencing other services as we started to compete for same shared hardware resources.
 <img width=1000 src="/img/articles/2024-06-18-the-noisy-hit-compiler/cpu_spike.png"/>
