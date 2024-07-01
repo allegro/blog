@@ -48,7 +48,7 @@ But let's go back to performance, one-time precomputation in exchange for eterna
 the initial 20 / 50 CPU usage, lets deep dive into the problem.
 
 ## C2 compiler deep dive
-Our application reserves 5 CPU, and according to spec, it should contain one C1 thread & two C2 threads. I can imagine those running 100% burning 3 CPUs,
+Our application reserves 5 CPUs, and according to spec, it should contain one C1 thread & two C2 threads. I can imagine those running at 100% burning 3 CPUs,
 but it's far from those 20 / 50 CPU -> something is wrong.
 <img width=1000 src="/img/articles/2024-06-18-the-noisy-hit-compiler/jit_threads.png"/>
 
