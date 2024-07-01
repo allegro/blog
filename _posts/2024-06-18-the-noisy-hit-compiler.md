@@ -14,7 +14,7 @@ The service itself is written mostly in Kotlin, it's well tested -> although we 
 but one thing you can say about the service, and I hope my team will agree,
 it's an entertaining service, and you can learn a lot in terms of microservices in real life.
 
-But -> lets go to business, we started to notice some worrying behaviour, our favourite app started to face problems.
+But -> lets get down to business, we started to notice some worrying behaviour, our favourite app started to face problems.
 
 ## The Spikes
 Application start was never perfect, once a new instance registers in k8s engine as healthy application it will open up on user traffic,
