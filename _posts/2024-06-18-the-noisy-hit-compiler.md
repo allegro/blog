@@ -9,7 +9,7 @@ How Jit Compiler was playing with us at application start.
 
 ## Background
 We proudly own a user facing application. The traffic is fairly high - a few thousands RPS,
-and to serve requests we need to obtain data from few services and databases - meaning - it's not that simple.
+and to serve requests we need to obtain data from a few services and databases - meaning - it's not that simple.
 The service itself is written mostly in Kotlin, it's well tested -> although we would love to see our tests just a bit faster,
 but one thing you can say about the service, and I hope my team will agree,
 it's and entertaining service, and you can learn a lot in terms of microservices in real life.
