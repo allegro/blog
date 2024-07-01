@@ -66,7 +66,7 @@ Now, let's put all the pieces together -> what is actually going on in the appli
 4. In seconds, JVM decides to recompile different parts of code.
 5. Two C2 threads work 100% to recompile code as pointed by JVM.
 6. When given function is being recompiled, threads are simply waiting for recompiled version, consuming resources.
-7. Neither users nor k8s are aware that this particular instance is massively recompiling code. Until it's finished, it might be slow to respond.
+7. Neither users nor k8s are aware that this particular instance is massively recompiling code. Until it's finished it might be slow to respond.
 8. The application experience multiple micro freezes, until the majority of recompilation is done.
 
 ## Optimizations
