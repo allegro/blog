@@ -136,5 +136,5 @@ But finally our SLA is healthy, restarts are completely transparent!
 Since the beginning we knew that our application needs some kind of warmup, but we weren't clear about the reason for that. Since it has a few external
 dependencies, we expected it to be more related to http clients, connection establishing, filling caches etc. For sure it's part of the process, but what we
 found about JIT surprised us. Introducing warmup and tuning JIT introduced great benefit, as finally any restart of a new version is
-completely transparent to our users. If you have a service which has a slow start, I recommend you to check how much CPU it burns, if you see spike,
+completely transparent to our users. If you have a service which has a slow start I recommend you to check how much CPU it burns, if you see spike
 make a flamegraph or thread dump.
