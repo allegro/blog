@@ -23,7 +23,7 @@ It's started with spikes on response times, every time we deployed a new version
 resulting from overpassing response time threshold.
 <img width=1000 src="/img/articles/2024-06-18-the-noisy-hit-compiler/response_time_spike_no_scale.png"/>
 Response times at P99 & P98 were clearly above timeout threshold. Ok, let's do spike and check what's going on.
-Sprint later we found in logs problem with related service -> it could be slow to respond, easy work, small tuning, let's check the results!
+A sprint later we found in logs a problem with related service -> it could be slow to respond, easy work, small tuning, let's check the results!
 It helped... a bit, but the problem remains, and actually it's growing over time, and we don't know why.
 
 We realized how serious it was when we checked CPU spikes at application start. Application reserves 5 CPU, and usually uses around 2-3 CPU, while at start,
