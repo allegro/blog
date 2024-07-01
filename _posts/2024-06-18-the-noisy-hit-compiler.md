@@ -41,7 +41,7 @@ Let's check flamegraph where we spend most of the time. Bingo! JIT compiler occu
 ## What is Jit compiler?
 What actually is Just-In-Time(JIT) compiler?
 Java Virtual Machine collects statistics at runtime of how many times given code was executed. When it exceeds threshold it will recompile code
-(typically bytecode or kind of VM instructions) into native instruction set optimized for given CPU. It can have major impact on application performance,
+(typically bytecode or kind of VM instructions) into native instruction set optimized for given CPU. It can have a major impact on application performance,
 at a price of recompilation time. JIT compiler consists of two major groups, so called C1 & C2 compiler threads. Those comes from old days when we differentiate between client and server
 implementations. C1 was client compiler, while C2 server compiler. Today we simply use them both.
 But let's go back to performance, one-time precomputation in exchange for eternal performance sounds like a great deal, but it would be good to reduce
