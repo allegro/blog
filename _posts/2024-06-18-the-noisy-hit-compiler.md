@@ -57,7 +57,7 @@ After a short analysis, we've found that there are 76 threads stacked at single 
 Short sample from file you can see below:
 <img width=1000 src="/img/articles/2024-06-18-the-noisy-hit-compiler/c2-threads.png"/>
 
-What's most important from this sample, is C2 compiler thread, it's the key for our mystery.
+What's most important from this sample is the C2 compiler thread, it's the key for our mystery.
 Now, let's put all the pieces together -> what is actually going on in the application.
 
 1. We start the application.
