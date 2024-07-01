@@ -9,7 +9,7 @@ Site performance is very important, first of all, from the perspective of users,
 The user should not wait too long for the page to load. We all know how annoying it can be when we want to press an element
 and it jumps to another place on the page or when we click on a button and then nothing happens for a very long time. The state of a
 site’s performance in these aspects is measured by [Web Vitals](https://web.dev/articles/vitals) performance metrics and most importantly by a set of three major
-Core Web Vitals metrics (LCP — Largest Contentful Paint, CLS — Cumulative Layout Shift, INP — Interaction to Next Paint) are
+Core Web Vitals metrics (LCP — Largest Contentful Paint, CLS — Cumulative Layout Shift, INP — Interaction to Next Paint). They are
 responsible for measuring the 3 things: loading time, visual stability and interactivity. These metrics are also important for the
 websites themselves because, in addition to the user experience, they are also taken into account in terms of the website’s positioning
 in search engines (SEO), which is crucial for most websites on the Internet, [Allegro](https://allegro.tech/) included.
@@ -216,12 +216,12 @@ debugging a slow interaction :)
 
 * Use CPU throttling during debugging the interaction - some INP issues can be noticeable only on slower devices.
 * You can turn it on in the developers tools → “Performance” tab settings → CPU
-* Local overrides - you can override script locally (more info: https://developer.chrome.com/docs/devtools/overrides)
+* Local overrides - you can override script locally (more info: [https://developer.chrome.com/docs/devtools/overrides](https://developer.chrome.com/docs/devtools/overrides))
 * Blocking scripts locally
 <img src="/img/articles/2024-04-23-INP-new-core-web-vitals/devtools-blocking.png" alt="Blocking request URL in devTools." class="small-image"/>
 * Remote debug on physical devices
-  * Android: https://developer.chrome.com/docs/devtools/remote-debugging
-  * iOS: https://developer.apple.com/documentation/safari-developer-tools/inspecting-ios
+  * Android: [https://developer.chrome.com/docs/devtools/remote-debugging](https://developer.chrome.com/docs/devtools/remote-debugging)
+  * iOS: [https://developer.apple.com/documentation/safari-developer-tools/inspecting-ios](https://developer.apple.com/documentation/safari-developer-tools/inspecting-ios)
 
 ## Optimizing INP
 
@@ -231,7 +231,7 @@ Some operations causing long tasks can be broken up into smaller ones. It helps 
 critical operations like rerendering, handling event handlers etc. One of the methods to break up such
 long tasks is using `setTimeout`. Using this, you can move part of the code to be done in another task.
 
-More information: https://web.dev/articles/optimize-long-tasks#use_asyncawait_to_create_yield_points
+More information: [https://web.dev/articles/optimize-long-tasks#use_asyncawait_to_create_yield_points](https://web.dev/articles/optimize-long-tasks#use_asyncawait_to_create_yield_points)
 
 ### 2. Optimizing of event handling
 
@@ -306,7 +306,7 @@ recalculation synchronously during the currently running task.
 You can optimize rendering offscreen content by using the proper value of the `content-visibility` option. It can help the browser to specify
 render priority (higher for content in the viewport and lower for out of viewport elements).
 
-Read more: https://developer.mozilla.org/en-US/docs/Web/CSS/content-visibility
+Read more: [https://developer.mozilla.org/en-US/docs/Web/CSS/content-visibility](https://developer.mozilla.org/en-US/docs/Web/CSS/content-visibility)
 
 ### 5. Minimizing DOM size
 
@@ -317,7 +317,7 @@ Keeping the number of elements in the DOM as small as possible is important beca
 * Runtime performance — The browser must constantly recompute the position and styling of nodes.
 Large DOM can cause long styles recalculations that block the main thread for a long time.
 
-Read more: https://web.dev/articles/dom-size-and-interactivity
+Read more: [https://web.dev/articles/dom-size-and-interactivity](https://web.dev/articles/dom-size-and-interactivity)
 
 ### 6. Web Workers
 
@@ -326,7 +326,7 @@ you to not block the main thread during, for example, complicated calculations. 
 The code executed in the worker has its own global context (it does not have access to the window object). In addition, it is not possible to
 perform direct operations on the DOM.
 
-You can find more information here: https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers
+You can find more information here: [https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers)
 
 ## INP in Allegro — a few examples
 
