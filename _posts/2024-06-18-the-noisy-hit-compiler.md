@@ -121,7 +121,7 @@ private fun warmUp() = try {
 
 ## Results
 
-We send few hundred requests, the code heavily recompiles, to make sure it's fast we slightly increased default C2 number from 2 to 4 threads
+We send a few hundred requests, the code heavily recompiles, to make sure it's fast we slightly increased default C2 number from 2 to 4 threads
 (we didn't keep 8 threads as in previous chapter tests - it doesn't make much sense with warmup).
 Whenever we are done, we switch the flag and with next k8s check on startup probe, the application will finally allow user traffic, and requests now can be
 served as expected. Of course C2 recompilation will continue, and with time more and more code will get recompiled, but now it's just a side process, not sth
