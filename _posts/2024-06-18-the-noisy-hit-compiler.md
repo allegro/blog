@@ -34,7 +34,7 @@ It started to be a pain, so we reacted immediately.
 
 ## Diagnostics
 At Allegro we have easy access to diagnostic tools for our services. Thread dump, heap dump, flame graph - it's all simple to use.
-We started with thread dump. We have few major thread pools in the app, and at start they seem strangely occupied, and the execution take much more time.
+We started with a thread dump. We have a few major thread pools in the app, and at start they seem strangely occupied, and the execution takes much more time.
 Let's check flamegraph where we spend most of the time. Bingo! JIT compiler occupies 40% of time on CPU, it has to be connected!
 <img width=1000 src="/img/articles/2024-06-18-the-noisy-hit-compiler/flamegraph-c2.png"/>
 
