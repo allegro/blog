@@ -390,3 +390,5 @@ It forces a focus on all interactions, not just making the site interactive as q
 It also requires thinking about how other operations can affect the interactivity of the website.
 
 We are still learning how to work in the new reality, so we would be excited if you share your own experiences with us!
+
+Special thanks to [Kamil Borzym]((/authors/kamil.borzym/)), [Paweł Lesiecki](/authors/pawel.lesiecki/) and [Wiktor Czajkowski](https://github.com/virzen) for their help with creating this post.
