@@ -2,7 +2,7 @@
 layout: post
 title: "Trust no one, not even your training data! Machine learning from noisy data"
 author: [alicja.raczkowska,aleksandra.osowska-kurczab,jacek.szczerbinski,klaudia.nazarko,kalina.kobus]
-tags: [tech,mlr,robustness,research,ml,machine-learning,ai]
+tags: [tech,mlr,robustness,research,ml,machine learning,ai]
 ---
 
 - Label noise is ever-present in machine learning practice.

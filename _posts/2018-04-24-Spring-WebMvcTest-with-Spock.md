@@ -2,7 +2,7 @@
 layout: post
 title: Spring &#64;WebMvcTest with Spock Framework
 author: [rafal.glowinski]
-tags: [Spring Boot, Spock, WebMvcTest, java, testing]
+tags: [spring boot, spock, WebMvcTest, java, testing]
 ---
 
 Spring is one of the most popular JVM-targeted frameworks. One of the reasons why it has become so popular is writing tests.

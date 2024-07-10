@@ -2,7 +2,7 @@
 layout: post
 title: Debugging hangs - piecing together why nothing happens
 author: lukasz.rokita
-tags: [tech, java, jvm, debugging, dependency hell]
+tags: [tech, java, JVM, debugging, dependency hell]
 ---
 
 As a part of a broader initiative of refreshing Allegro platform, we are upgrading our internal libraries to Spring Boot 3.0 and Java 17.

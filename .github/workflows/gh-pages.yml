@@ -30,9 +30,6 @@ jobs:
       - run: npm install
       - run: bundle install
       - run: bundle exec jekyll build
-      - run: bundle exec jekyll algolia
-        env:
-          ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
       - uses: actions/upload-pages-artifact@v3
   deploy:
     environment:

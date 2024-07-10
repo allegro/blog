@@ -2,7 +2,7 @@
 layout: post
 title: How to approach testing in development process?
 author: wojciech.lizakowski
-tags: [manual tests, tech, iOS, testing, UI testing, test automation, release process, test]
+tags: [manual tests, tech, ios, testing, ui testing, test automation, release process, test]
 ---
 
 Application release process, or in fact software development process, as a release is the final stage of application

@@ -2,7 +2,7 @@
 layout: post
 title: "One task — two solutions: Apache Spark or Apache Beam?"
 author: [yevgeniya.li]
-tags: [tech, Apache Spark, Apache Beam, BigFlow, BigData, GCP]
+tags: [tech, apache spark, apache beam, bigflow, bigdata, gcp]
 ---
 Some time ago, our team faced the issue of moving an existing [Apache Spark](https://spark.apache.org) job from an on-premise Hadoop cluster to public cloud.
 While working on the transition we came across another way to process data that is [Apache Beam](https://beam.apache.org). We were curious whether this tool had

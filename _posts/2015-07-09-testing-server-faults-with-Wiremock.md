@@ -2,7 +2,7 @@
 layout: post
 title: Testing server faults with Wiremock
 author: filip.marszelewski
-tags: [wiremock, TDD, testing, integration tests, fault injection]
+tags: [wiremock, tdd, testing, integration tests, fault injection]
 ---
 
 SOA (Service Oriented Architecture) as a modern approach to build distributed enterprise applications gives us many benefits,

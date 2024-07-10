@@ -2,7 +2,7 @@
 layout: post
 title: Finite-state machines made easy
 author: [tymon.felski]
-tags: [tech, dotnet, state_machine, allegro_pay]
+tags: [tech, dotnet, state machine, allegro-pay]
 ---
 
 Coordinating complex processes, both business and technical, can be a challenging issue in a distributed system.

@@ -6,7 +6,6 @@ gem 'jekyll-postcss'
 gem 'jekyll-paginate-v2'
 gem 'jekyll-timeago'
 gem 'jekyll-sitemap'
-gem 'jekyll-algolia'
 gem 'jekyll-seo-tag'
 gem 'jekyll-tagging'
 

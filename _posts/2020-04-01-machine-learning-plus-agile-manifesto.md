@@ -2,7 +2,7 @@
 layout: post
 title: "Machine Learning + Agile Manifesto = ?"
 author: zbigniew.barczyk
-tags: [machine_learning, agile, soft_skills]
+tags: [machine learning, agile, soft skills]
 ---
 
 > This post was published on April 1st, 2020, and should not be taken too seriously.

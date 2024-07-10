@@ -2,7 +2,7 @@
 layout: post
 title: "GC, hands off my data!"
 author: [michal.knasiecki]
-tags: [tech, cache, performance, "off-heap", "garbage collectors"]
+tags: [tech, cache, performance, "off-heap", "garbage-collection"]
 excerpt: >
     Each of us has probably experienced a time in our career when we wanted to get
     rid of the Garbage Collector from our application because it was running too long, too often, and perhaps even led to temporary system freezes.

@@ -2,7 +2,7 @@
 layout: post
 title: Deep learning for frame detection in product images
 author: tomasz.bartczak
-tags: [ML, Machine Learning, Deep Learning]
+tags: [ml, machine learning, deep learning]
 ---
 At [Allegro](https://allegro.tech) we are faced with a technical challenge: how to recognize whether a given image
 (a product thumbnail) shows just a product itself. One of the things that we would like to detect is when the product
