@@ -4,7 +4,6 @@ description: "Welcome to our technology blog. We use Open Source solutions on a 
 timezone: Europe/Warsaw
 permalink: /:year/:month/:title.html
 repository: allegro/blog
-baseurl: /
 plugins:
   - jekyll-postcss
   - jekyll-paginate-v2
