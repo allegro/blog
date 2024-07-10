@@ -5,6 +5,7 @@ timezone: Europe/Warsaw
 permalink: /:year/:month/:title.html
 
 plugins:
+  - jekyll-feed
   - jekyll-postcss
   - jekyll-paginate-v2
   - jekyll-timeago

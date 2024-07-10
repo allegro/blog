@@ -1,5 +1,6 @@
 source "https://rubygems.org"
 
+gem "kramdown-parser-gfm"
 gem "jekyll-feed", "~> 0.12"
 gem 'jekyll-postcss'
 gem 'jekyll-paginate-v2'
