@@ -3,7 +3,7 @@ url: "https://blog.allegro.tech"
 description: "Welcome to our technology blog. We use Open Source solutions on a daily basis here at Allegro. Why not work on our karma and give something in return?"
 timezone: Europe/Warsaw
 permalink: /:year/:month/:title.html
-repository: allegro/blog
+
 plugins:
   - jekyll-postcss
   - jekyll-paginate-v2
