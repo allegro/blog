@@ -30,13 +30,13 @@ But when I came upon this article - it was natural to try to evaluate my current
 
 I did it, and I would like to share the results with you without further ado.
 
-# Disclaimer
+## Disclaimer
 
 I work at Allegro Pay, a company of Allegro Group responsible for Allegro Pay, Care, and Cash products.
 What I write further is heavily grounded in the Allegro Pay context, as we have different tech stacks, environments, and technical platforms.
 However, all practices are present both at Allegro and at Allegro Pay. The execution may differ, but engineering maturity is very similar in the end.
 
-# TL;DR
+## TL;DR
 
 In short - Allegro & Allegro Pay scored 11 points out of 12.
 
@@ -53,7 +53,7 @@ Continue reading 🙂
 
 [12 Questions](https://blog.pragmaticengineer.com/pragmatic-engineer-test/) and my answers to them.
 
-# Equity or profit sharing
+## Equity or profit sharing
 
 Half Yes. Not all engineers.
 
@@ -71,7 +71,7 @@ Caveats?
 
 Stocks are still not part of the offer for newcomers, which I think could contribute to attracting more great engineers.
 
-# Roadmap/backlog that engineers contribute to
+## Roadmap/backlog that engineers contribute to
 
 Yes.
 
@@ -83,7 +83,7 @@ to gather “bigger” deliverables and compose a roadmap and plans for the whol
 It works great and allows teams huge flexibility and freedom in their work. As a trade-off, extra work is needed to map these backlogs into
 the organizational level processes - which, usually, are in Google Sheets or a custom tool.
 
-# Engineers directly working with other ICs (Individual Contributors)
+## Engineers directly working with other ICs (Individual Contributors)
 
 Yes.
 
@@ -91,7 +91,7 @@ We collaborate with each other, regardless of role and career level. Even if oth
 You can just write to anyone, and can expect to get an answer. There are some protections to prevent this from turning into complete chaos, like quarterly
 planning of dependencies between teams, help channels, and so on, but if everyone works on the same page, we are just working together without unnecessary barriers.
 
-# Code reviews and testing
+## Code reviews and testing
 
 Yes.
 
@@ -101,7 +101,7 @@ To protect quality, we have code review policies for each repository. In CI/CD, 
 
 All of that is part of everyday workflow. Sometimes, it slows you down, but it is done smartly and, most of the time, helps. As always, everything is under your control, and in the end, it is your responsibility to use these tools properly.
 
-# CI and engineers pushing to prod
+## CI and engineers pushing to prod
 
 Yes.
 
@@ -112,7 +112,7 @@ Each team is responsible for its changes and deployments. We build it, we run it
 Of course, that can also vary. Sometimes, additional security measurements need to be applied depending on the context and product.
 But in the end - we have continuous delivery with dozens of deployments daily.
 
-# Internal open source
+## Internal open source
 
 Yes.
 
@@ -128,7 +128,7 @@ Additionally, we have a [catalog](https://github.com/allegro) of external open-s
 
 What is truly unique and I think fits into this position, is internal tourism. Anyone can request to join any team, and as a regular member work up to a couple of months (usually a quarter), contributing to other teams’ work.
 
-# Healthy on-call as a priority.
+## Healthy on-call as a priority.
 
 Yes.
 
@@ -141,7 +141,7 @@ paid according to the Polish overtime hours policy (150% or 200% hour rate depen
 We have generic alerts, but each stream also has specific rules. There is a common practice where teams improve and change them to remove noise, false positives,
 or simplify on-duty shifts. In the end - SLA must be met - and how teams will approach this - is up to them.
 
-# Technical managers.
+## Technical managers.
 
 Yes.
 
@@ -151,7 +151,7 @@ Even if hiring from outside, they must complete all the technical workshops. It 
 They are deeply rooted in technology. They perform system designs, code reviews, consultancy, and sometimes coding. Proportion varies depending on the team and
 the manager themselves. Besides people management, they are expected to have ownership of technical decisions and project management of the part which the team is responsible for.
 
-# Career ladder (when above 10 engineers) & Parallel IC and manager tracks (when above 30 engineers).
+## Career ladder (when above 10 engineers) & Parallel IC and manager tracks (when above 30 engineers).
 
 Yes & half yes
 
@@ -166,7 +166,7 @@ As you can see, ladders are missing in the IC track; from what I know, this is s
 
 There are few opportunities for Individual Contributors above the Senior level. This can be improved, and it will likely be.
 
-# Feedback culture.
+## Feedback culture.
 
 Yes.
 
@@ -176,7 +176,7 @@ We have continuous feedback - 360, peer-to-peer, promotion, employee engagement 
 Feedback is deeply rooted in our daily work. You can see polls, surveys, requests for feedback and opinions, post-mortems, and so on everywhere.
 It is hard to imagine what else we could do to cover this topic, one of our culture's strongest traits.
 
-# Investing in professional growth.
+## Investing in professional growth.
 
 Yes.
 
@@ -193,7 +193,7 @@ There are also many internal events, hackathons, and initiatives. Opportunities 
 
 Landing here was my biggest personal and professional progression so far.
 
-# The bitter (or not?)
+## The bitter (or not?)
 
 Sounds sweet, right? Where is the bitter here? Well, I am not sure.
 
@@ -233,7 +233,7 @@ only the owner can “order” a new one with a good justification. But you are 
 But I think most big corporations work like that. The past few years were also difficult for the industry. I understand why this is happening.
 If you are an individual contributor, most of these things will not affect you. And those which do - you need to get used to it, and if you focus on the rest - hell - this is a great place to work.
 
-# Is there more?
+## Is there more?
 
 A score of 11 tells that you will find much good stuff in software engineering here.
 
