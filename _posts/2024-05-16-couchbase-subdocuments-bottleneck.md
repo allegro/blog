@@ -115,7 +115,7 @@ The tool allows manipulating several knobs, which includes:
 * **Level of Search Difficulty**: This essentially refers to how deep or how far into the main document the target sub-document is located.
 The concept is illustrated in the diagram below:
 
-![Difficulty of sub-document search](/img/articles/2024-05-16-couchbase-subdocuments-bottleneck/cb-sub-difficulty.png)
+![Difficulty of sub-document search](/assets/img/articles/2024-05-16-couchbase-subdocuments-bottleneck/cb-sub-difficulty.png)
 
 ### Caveats
 
@@ -158,7 +158,7 @@ search for key: not-exists
 
 regular report: successes: 0, errors: 200000, duration: 31.306684977s, rps: 6388.411937, success rps: 0.000000
 ```
-![Baseline - fetch a not-existent document](/img/articles/2024-05-16-couchbase-subdocuments-bottleneck/cb-baseline-non-exitstent.png)
+![Baseline - fetch a not-existent document](/assets/img/articles/2024-05-16-couchbase-subdocuments-bottleneck/cb-baseline-non-exitstent.png)
 
 Benchmark Command: Fetching an existing small (195 bytes) document yielded a rate of *6341 rps*.
 
@@ -172,7 +172,7 @@ search for key: test-regular
 
 regular report: successes: 200000, errors: 0, duration: 31.536538682s, rps: 6341.850068, success rps: 6341.850068
 ```
-![Baseline - fetch an existing document](/img/articles/2024-05-16-couchbase-subdocuments-bottleneck/cb-baseline-hits.png)
+![Baseline - fetch an existing document](/assets/img/articles/2024-05-16-couchbase-subdocuments-bottleneck/cb-baseline-hits.png)
 
 ### Testing scenarios
 
@@ -188,21 +188,21 @@ It's important to highlight that in each scenario, we will manipulate only one v
 
 #### Scenario A: The impact of document size on performance
 
-![Document size vs performance - aggregated](/img/articles/2024-05-16-couchbase-subdocuments-bottleneck/cb-doc-size-vs-performance-all.png)
+![Document size vs performance - aggregated](/assets/img/articles/2024-05-16-couchbase-subdocuments-bottleneck/cb-doc-size-vs-performance-all.png)
 
 To better visualize the impact, let’s look at the diagram for HARD scenario:
 
-![Document size vs performance - hard](/img/articles/2024-05-16-couchbase-subdocuments-bottleneck/cb-doc-size-vs-performance-hard.png)
+![Document size vs performance - hard](/assets/img/articles/2024-05-16-couchbase-subdocuments-bottleneck/cb-doc-size-vs-performance-hard.png)
 
 It is clearly visible that there is a strict correlation between document size and performance.
 
 #### Scenario B: The impact of the number of searched sub-documents on performance
 
-![Number of searched sub-documents vs performance - aggregated](/img/articles/2024-05-16-couchbase-subdocuments-bottleneck/cb-subdocs-num-vs-performance-all.png)
+![Number of searched sub-documents vs performance - aggregated](/assets/img/articles/2024-05-16-couchbase-subdocuments-bottleneck/cb-subdocs-num-vs-performance-all.png)
 
 To better visualize the impact, let’s look at the diagram for HARD scenario:
 
-![Number of searched sub-documents vs performance - hard](/img/articles/2024-05-16-couchbase-subdocuments-bottleneck/cb-subdocs-num-vs-performance-hard.png)
+![Number of searched sub-documents vs performance - hard](/assets/img/articles/2024-05-16-couchbase-subdocuments-bottleneck/cb-subdocs-num-vs-performance-hard.png)
 
 As observed in the previous scenario, there is a clear correlation between the number of sub-documents accessed and the system's performance.
 
@@ -222,13 +222,13 @@ fully utilize available CPU power for a single connection, even when a lot of re
 the ["noisy neighbor" effect](https://en.wikipedia.org/wiki/Cloud_computing_issues#Performance_interference_and_noisy_neighbors), provided there are sufficient
 spare cores available to manage new connections. This mechanism ensures balanced resource use across connections, as illustrated in the diagram below:
 
-![Handling connections - free cores scenario](/img/articles/2024-05-16-couchbase-subdocuments-bottleneck/cb-dispatch-ok.png)
+![Handling connections - free cores scenario](/assets/img/articles/2024-05-16-couchbase-subdocuments-bottleneck/cb-dispatch-ok.png)
 
 Conversely, one may encounter fluctuating performance due to instances of misfortune, where if other clients significantly burden certain worker threads,
 and your connection is allocated to one of these overloaded threads, performance inconsistencies arise. This scenario, where a client experiences higher than
 usual response times due to an imbalanced distribution of workload across worker threads, is depicted in the diagram below:
 
-![Handling connections - overloaded core scenario](/img/articles/2024-05-16-couchbase-subdocuments-bottleneck/cb-dispatch-bad.png)
+![Handling connections - overloaded core scenario](/assets/img/articles/2024-05-16-couchbase-subdocuments-bottleneck/cb-dispatch-bad.png)
 
 This behavior explains the apparent paradox observed during the stability issues: the Couchbase node showed no clear signs of being overloaded, yet certain
 anomalous symptoms were present, such as a metric indicating the minimum [idle](https://en.wikipedia.org/wiki/Idle_(CPU)) percentage across all cores plummeting
@@ -290,7 +290,7 @@ This analysis clearly demonstrates that lookups targeting paths situated towards
 at the beginning. Moreover, each sequential lookup **needs to repeat document parsing**. The impact of this implementation on performance is significant.
 For a more intuitive understanding of these effects, please refer to the diagram below:
 
-![Processing sub-documents in details](/img/articles/2024-05-16-couchbase-subdocuments-bottleneck/cb-processing-sub-documents.png)
+![Processing sub-documents in details](/assets/img/articles/2024-05-16-couchbase-subdocuments-bottleneck/cb-processing-sub-documents.png)
 
 The performance characteristics we've outlined align with the outcomes observed in our experiments. To illustrate, consider a detailed examination of
 a single `HARD` test scenario—specifically, a case where the sub-documents targeted for search were positioned towards the end of the JSON document:
@@ -316,7 +316,7 @@ The calculated throughput slightly exceeds the benchmarks outlined in the README
 various tests. For a comprehensive view of these findings, please refer to the diagram below, which displays the estimated throughput for tests conducted under
 the HARD level with a document size of approximately `300KB`:
 
-![Estimated throughput](/img/articles/2024-05-16-couchbase-subdocuments-bottleneck/cb-estimated-subdocs-throughput.png)
+![Estimated throughput](/assets/img/articles/2024-05-16-couchbase-subdocuments-bottleneck/cb-estimated-subdocs-throughput.png)
 
 ## Conclusions
 

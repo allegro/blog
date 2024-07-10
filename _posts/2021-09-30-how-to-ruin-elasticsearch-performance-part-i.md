@@ -37,7 +37,7 @@ What matters is that for a single-word query this index can find matching docume
 structure can, of course, be used not only for words: in a numeric index, for example, we may have a ready-to-use list with IDs of documents containing
 the value 123 in a specific field.
 
-![Postings lists — lists of document IDs containing each individual word](/img/articles/2021-09-30-how-to-ruin-elasticsearch-performance/postings-lists.webp)
+![Postings lists — lists of document IDs containing each individual word](/assets/img/articles/2021-09-30-how-to-ruin-elasticsearch-performance/postings-lists.webp)
 
 ## Indexing
 
@@ -78,7 +78,7 @@ are _n_ and _m_.
 ### OR
 {: #or-operator }
 
-![Example algorithm for computing results of OR operation](/img/articles/2021-09-30-how-to-ruin-elasticsearch-performance/list-merging-or.webp)
+![Example algorithm for computing results of OR operation](/assets/img/articles/2021-09-30-how-to-ruin-elasticsearch-performance/list-merging-or.webp)
 
 The way to merge two sorted lists in an OR operation is straightforward (and it is also the reason for the lists to be sorted in the first place).
 For each list we need to keep a pointer which will indicate the current position. Both pointers start at the beginning of their corresponding lists.
@@ -97,7 +97,7 @@ The result does not depend on the order of lists (OR operation is symmetric), an
 
 ### AND and AND NOT
 
-![Example algorithm for computing results of AND / AND NOT operations](/img/articles/2021-09-30-how-to-ruin-elasticsearch-performance/list-merging-and.webp)
+![Example algorithm for computing results of AND / AND NOT operations](/assets/img/articles/2021-09-30-how-to-ruin-elasticsearch-performance/list-merging-and.webp)
 
 Calculating the intersection of two sets (what corresponds to the logical AND operator) or their difference (AND NOT) are very similar operations.
 Just as when calculating the sum of sets, we need to maintain two pointers, one for each list. In each step of the iteration we look at the current value

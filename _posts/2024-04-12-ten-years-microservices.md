@@ -15,7 +15,7 @@ am certain that without this change, Allegro would not be where it is today, or 
 Allegro is [one of the largest e-commerce sites in Central Europe](https://about.allegro.eu/who-we-are/at-a-glance), with 20 million users and over 300 million
 offers. It was founded in 1999, originally with just the Polish market in mind. The story I want to tell you starts in 2013, a year before I joined.
 
-<img src="/img/articles/2024-04-12-ten-years-microservices/allegro-site.png" alt="Allegro website showing some offers" class="small-image"
+<img src="/assets/img/articles/2024-04-12-ten-years-microservices/allegro-site.png" alt="Allegro website showing some offers" class="small-image"
 style="box-shadow: 0 0 4px 0 #D7DBD6;"/>
 
 In 2013, the site was already large and relevant, but its commercial success and further growth led to development bottlenecks emerging. The codebase was a
@@ -28,7 +28,7 @@ causing a serious problem in production if something went wrong. It was so deman
 
 ## Rubicon Rises
 
-<img src="/img/articles/2024-04-12-ten-years-microservices/Tabula_Peutingeriana_Rubicon.png" alt="Rubicon river on an old map" class="small-image-right" />
+<img src="/assets/img/articles/2024-04-12-ten-years-microservices/Tabula_Peutingeriana_Rubicon.png" alt="Rubicon river on an old map" class="small-image-right" />
 It was becoming clear that we would hit a wall if we continued working this way. So, around 2012/2013, the idea for a complete overhaul of the architecture
 started to emerge. We began experimenting with [SOA (Service-Oriented Architecture)](https://en.wikipedia.org/wiki/Service-oriented_architecture) by
 creating a small side project, the so-called New Platform, in PHP, as a proof-of-concept. We also decided we would start doing
@@ -65,7 +65,7 @@ to be flexible. So, armed with a plan, we got off to work.
 
 ## Execution
 
-<img src="/img/articles/2024-04-12-ten-years-microservices/tim-gouw-1K9T5YiZ2WU-unsplash.jpg" alt="Man sitting at a laptop, overwhelmed by what he sees on the screen" class="small-image-right" />
+<img src="/assets/img/articles/2024-04-12-ten-years-microservices/tim-gouw-1K9T5YiZ2WU-unsplash.jpg" alt="Man sitting at a laptop, overwhelmed by what he sees on the screen" class="small-image-right" />
 Too much has happened during the 10+ years to report here. The initial period was really frantic since we had to set up everything, and, first of all, teams had
 to switch to a new mindset. This was also a period of intense hiring, and the time I joined the recently opened office in Warsaw. Microservices were at that
 time only starting to gain traction, so while we used the experiences of others as much has possible, we had to learn many things ourselves, sometimes learning
@@ -113,7 +113,7 @@ remembered for one reason or another.
 
 ### No-ing SQL
 
-<img src="/img/articles/2024-04-12-ten-years-microservices/tobias-fischer-PkbZahEG2Ng-unsplash.jpg" alt="Huge modern library filled with books" class="small-image-right" />
+<img src="/assets/img/articles/2024-04-12-ten-years-microservices/tobias-fischer-PkbZahEG2Ng-unsplash.jpg" alt="Huge modern library filled with books" class="small-image-right" />
 When [refactoring our huge monolith into smaller microservices]({% post_url 2015-01-21-working-with-legacy-architecture %}), we needed to also choose the
 database to use for each of them. Since horizontal scalability was our focus, we preferred [NoSQL databases](https://en.wikipedia.org/wiki/NoSQL) when possible.
 This was a big change since the monolithic solution relied on a single, huge SQL database. On top of that, it was not modularized well, and in many places
@@ -143,7 +143,7 @@ advantage of having separate databases for each service, as only that single ser
 
 ### Into the cloud
 
-<img src="/img/articles/2024-04-12-ten-years-microservices/thisisengineering-raeng-zBLtU0zbJcU-unsplash.jpg" alt="Engineer plugging in network cables into servers" class="small-image-right" />
+<img src="/assets/img/articles/2024-04-12-ten-years-microservices/thisisengineering-raeng-zBLtU0zbJcU-unsplash.jpg" alt="Engineer plugging in network cables into servers" class="small-image-right" />
 Before joining Allegro, I had only deployed to physical servers, so moving to the cloud was a big change. At first, we deployed our services to virtual
 machines configured in [OpenStack](https://www.openstack.org/). What a convenience it was to be able to just set up a complete virtual server with a few
 clicks rather than wait days for a physical machine. We used [Puppet](https://www.puppet.com/) to fully configure the virtual machines for each service, so
@@ -168,7 +168,7 @@ of tool we’re talking about here.
 
 ### Monitoring
 
-<img src="/img/articles/2024-04-12-ten-years-microservices/carlos-muza-hpjSkU2UYSU-unsplash.jpg" alt="Laptop displaying various charts" class="small-image-right" />
+<img src="/assets/img/articles/2024-04-12-ten-years-microservices/carlos-muza-hpjSkU2UYSU-unsplash.jpg" alt="Laptop displaying various charts" class="small-image-right" />
 Believe it or not, initially all monitoring was centralized and handled by a single team. If you wanted to have any non-standard charts in
 [Zabbix](https://www.zabbix.com/) or any custom alerts (and obviously, you wanted to), you had to create a ticket in JIRA, describe exactly what you wanted,
 and after a while, the monitoring team would set it up for you. The whole process took about a week, and quite often, right after seeing the new chart you
@@ -178,7 +178,7 @@ observability settings themselves.
 
 ### Going polyglot
 
-<img src="/img/articles/2024-04-12-ten-years-microservices/azamat-e-FP_N_InBPdg-unsplash.jpg" alt="Man working on two laptops at the same time" class="small-image-right" />
+<img src="/assets/img/articles/2024-04-12-ten-years-microservices/azamat-e-FP_N_InBPdg-unsplash.jpg" alt="Man working on two laptops at the same time" class="small-image-right" />
 While Rubicon started out with the premise of rewriting our software in Java, we quickly started experimenting with other JVM languages. The team I worked
 on considered Scala for a while, but after some experimentation decided against using it as our main language. Some other teams, however, did choose it, and
 even though they are a minority at Allegro, we have some microservices written in Scala to this day. On the other hand, Scala is the dominant language at
@@ -213,7 +213,7 @@ solutions (microservices).
 
 ### Using antipatterns wisely
 
-<img src="/img/articles/2024-04-12-ten-years-microservices/alexander-schimmeck-kpihcevjT5w-unsplash.jpg" alt="Two men performing a dangerous stunt on a bicycle" class="small-image-right" />
+<img src="/assets/img/articles/2024-04-12-ten-years-microservices/alexander-schimmeck-kpihcevjT5w-unsplash.jpg" alt="Two men performing a dangerous stunt on a bicycle" class="small-image-right" />
 [Good practices]({% post_url 2016-01-08-microservices-and-macro-mistakes %}) are heuristics: most of the time, following them is a good idea. For example,
 two microservices should not share database tables since this introduces tight coupling: you can’t introduce a change to the schema and deploy just one service
 but not the other. Your two services are not independent, but form a distributed monolith instead. Avoiding such situations is just common sense.
@@ -239,7 +239,7 @@ issue that resulted from sharing Elasticsearch between services. Know when to us
 
 ### One size does not fit all
 
-<img src="/img/articles/2024-04-12-ten-years-microservices/brianna-r-_-54wJzpH6Q-unsplash.jpg" alt="Adult lion with cub" class="small-image-right" />
+<img src="/assets/img/articles/2024-04-12-ten-years-microservices/brianna-r-_-54wJzpH6Q-unsplash.jpg" alt="Adult lion with cub" class="small-image-right" />
 I think we’ve always been quite pragmatic about sizing our microservices. It’s hard to define a set of specific rules for finding the right size, but going
 too far in one direction or the other causes considerable pain. Make a service huge, and it becomes too hard for a single team to maintain and develop, or
 scaling issues arise similar to those you could experience with a monolith. Make it very small, and you might get overwhelmed by the overhead of having your
@@ -272,7 +272,7 @@ microservices [in this Gitlab blog post](https://about.gitlab.com/blog/2022/09/2
 
 ### Service Mesh and common libraries
 
-<img src="/img/articles/2024-04-12-ten-years-microservices/nasa-Q1p7bh3SHj8-unsplash.jpg" alt="City lights visible from space" class="small-image-right" />
+<img src="/assets/img/articles/2024-04-12-ten-years-microservices/nasa-Q1p7bh3SHj8-unsplash.jpg" alt="City lights visible from space" class="small-image-right" />
 Probably the most recent really significant change related to our microservice ecosystem was the [migration to service mesh]({% post_url 2020-05-07-migrating-to-service-mesh %}).
 From developers’ perspective it did not seem all that radical, but it required a lot of work from infrastructure teams. The most important gain is the
 possibility to control some aspects of services’ behavior in a single place. For example, originally if you wanted to have secure connections between
@@ -307,7 +307,7 @@ without it costing too much developers’ time.
 
 ### Learning
 
-<img src="/img/articles/2024-04-12-ten-years-microservices/thought-catalog-mmWqrsjZ4Lw-unsplash.jpg" alt="Person reading" class="small-image-right" />
+<img src="/assets/img/articles/2024-04-12-ten-years-microservices/thought-catalog-mmWqrsjZ4Lw-unsplash.jpg" alt="Person reading" class="small-image-right" />
 During the transition, Allegro invested in learning and development heavily. Daily work was full of learning opportunities since everything we were doing
 was quite new, and many approaches and technologies were not mature yet. We were really on the cutting edge of technology, so for many problems there were
 simply no run-of-the-mill solutions yet. We were already several years into the microservice transition when microservices became a global hype.
@@ -336,7 +336,7 @@ really a great experience to see that something I had built had run its course a
 
 ## Takeaways
 
-<img src="/img/articles/2024-04-12-ten-years-microservices/pyramids.jpg" alt="Pyramids of Egypt" class="small-image-right" />
+<img src="/assets/img/articles/2024-04-12-ten-years-microservices/pyramids.jpg" alt="Pyramids of Egypt" class="small-image-right" />
 When we started out working with microservices, we were well aware of their benefits but also of their cost. The famous
 [You must be this tall to use microservices](https://martinfowler.com/bliki/MicroservicePrerequisites.html) image adorned many of our presentations at that
 time. By taking a realistic stance, we avoided many pitfalls. Our transition to the microservice world took several years, but was successful, and I am

@@ -27,9 +27,9 @@ various approaches, and after numerous iterations, it now functions seamlessly.
 For the context of this article, a crucial detail is that our platform must support at least two ways of selecting offers:
 
 1. Offer listing: Each presented entity is a unique offer listed by a particular merchant.
-  ![offers-listing](/img/articles/2024-02-12-couchbase-expired-docs-tuning/offers-view.png)
+  ![offers-listing](/assets/img/articles/2024-02-12-couchbase-expired-docs-tuning/offers-view.png)
 1. Product listing: Each presented entity represents a unique product connected to a set of offers where you can make a purchase.
-  ![products-listing](/img/articles/2024-02-12-couchbase-expired-docs-tuning/products-view.png)
+  ![products-listing](/assets/img/articles/2024-02-12-couchbase-expired-docs-tuning/products-view.png)
 
 Given the diverse factors influencing whether a customer prefers selecting offers or products, we've deliberately avoided limiting the selection experience.
 In many cases, customers are free to choose either method, and their preferred choice is remembered to ensure a consistent and personalized experience.
@@ -104,7 +104,7 @@ straight to data center B and is not proxied by _DATA CENTER A_.
 Mitigating this issue, short of radical architectural changes, becomes a significant concern. The intricacies of replication timing are central to ensuring
 a seamless and accurate user experience in our multi-data center, active-active architecture.
 
-![replication-lag](/img/articles/2024-02-12-couchbase-expired-docs-tuning/replication.png)
+![replication-lag](/assets/img/articles/2024-02-12-couchbase-expired-docs-tuning/replication.png)
 
 The replication lag can be influenced by various factors depending on the storage solutions in use. One undeniable factor is that it cannot be faster than
 the light distance between data centers. Fortunately, in our case, this distance is minimal, and for the purpose of this story, it can be considered negligible.
@@ -143,14 +143,14 @@ The primary objective of our tool is to measure the Replication Round-Trip Time 
 becomes accessible on cluster B, and vice versa. The logic behind this measurement is inspired by the widely used network diagnostic tool _ping_.
 To provide a clearer understanding of how this tool performs measurements, refer to the diagram below.
 
-![cb-tracker-flow](/img/articles/2024-02-12-couchbase-expired-docs-tuning/cb-tracker.png)
+![cb-tracker-flow](/assets/img/articles/2024-02-12-couchbase-expired-docs-tuning/cb-tracker.png)
 
 With the deployment of such a tool, we initiated continuous replication monitoring in the Couchbase bucket used by the microservice responsible for managing
 customer preferences. This monitoring effort provided us with valuable insights into the cyclic spikes in replication time. As depicted in the diagram below,
 we observed two spikes recurring every hour, about 20 minutes apart. This observation prompted us to investigate potential periodic tasks
 within Couchbase that might be contributing to this cyclic behavior.
 
-![replication-spikes](/img/articles/2024-02-12-couchbase-expired-docs-tuning/replication-spikes.png)
+![replication-spikes](/assets/img/articles/2024-02-12-couchbase-expired-docs-tuning/replication-spikes.png)
 
 ### There are my knobs: unraveling couchbase quirks
 

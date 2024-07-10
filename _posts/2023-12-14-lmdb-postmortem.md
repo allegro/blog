@@ -30,13 +30,13 @@ with session activity in order to better recognize malicious patterns.
 By default, _ModSecurity_ allows storing contextual information in memory. Such an approach is not very useful in connection with HTTP servers that utilize
 multiprocessing as _nginx_ does.
 
-![In-memory approach](/img/articles/2023-12-14-lmdb-postmortem/nginx-in-memory.png)
+![In-memory approach](/assets/img/articles/2023-12-14-lmdb-postmortem/nginx-in-memory.png)
 
 However, we learned that _ModSecurity_ can use [LMDB](http://www.lmdb.tech/doc/) as an internal fast storage for contextual information that could be
 shared between requests that come, for example, from the same IP address. _LMDB_ approach ensures that contextual information stored by one nginx worker process
 is accessible by others.
 
-![LMDB approach](/img/articles/2023-12-14-lmdb-postmortem/nginx-with-lmdb.png)
+![LMDB approach](/assets/img/articles/2023-12-14-lmdb-postmortem/nginx-with-lmdb.png)
 
 At first glance, it looks great; however, in our case, we could not rely on information that is stored directly by _ModSecurity_.
 As you can imagine, our setup is based on more than one server, so we have to be able to pass the same contextual information to each of them.
@@ -47,7 +47,7 @@ _ModSecurity_.
 We built a mechanism that syncs contextual information from dedicated service to LMDB on each transparent proxy host.
 A simplified view of the architecture that allows computing and synchronizing contextual information is depicted below (dotted lines represent asynchronous flow):
 
-![Final architecture](/img/articles/2023-12-14-lmdb-postmortem/nginx-architecture.png)
+![Final architecture](/assets/img/articles/2023-12-14-lmdb-postmortem/nginx-architecture.png)
 
 Such a PoC gave us promising results regarding how fast the contextual information could be provided and how fast it was retrieved by _ModSecurity_.
 Finally, we rolled out the new approach, and everything worked smoothly for such a long time that we assumed it was a rock-solid solution.
@@ -74,7 +74,7 @@ causation.
 
 Let me introduce a simplified view of our infrastructure to show where we gathered data.
 
-![Proxy chain](/img/articles/2023-12-14-lmdb-postmortem/proxy-chain.png)
+![Proxy chain](/assets/img/articles/2023-12-14-lmdb-postmortem/proxy-chain.png)
 
 All proxies measure at least the total processing time, including the time consumed in the proxy and the time that was consumed outside the proxy (passing the
 request to the next server in the above chain and waiting for the response).
@@ -127,7 +127,7 @@ then such relation was often noticed:
 
 To better understand such a relation, let’s draw it:
 
-![Bursts relation](/img/articles/2023-12-14-lmdb-postmortem/bursts-relationship.png)
+![Bursts relation](/assets/img/articles/2023-12-14-lmdb-postmortem/bursts-relationship.png)
 
 Having a clue that there are extended periods of time when processing for a particular process is stuck, we wanted to know what was going on when processes hung.
 We used strace to preview what particular system calls were made during such problems. The challenge was to connect to the process when problems occur,
@@ -161,7 +161,7 @@ Finally, it turned out that the version of _ModSecurity_ that we scrutinized was
 _LMDB_ exclusive transactions while reading the data. Given that, we had a justified belief that issues came from exclusive transactions. It means that
 nginx workers probably block on acquiring locks.
 
-![Exclusive locking](/img/articles/2023-12-14-lmdb-postmortem/locking.png)
+![Exclusive locking](/assets/img/articles/2023-12-14-lmdb-postmortem/locking.png)
 
 ## Reproducing the issue in the isolated environment
 
@@ -284,7 +284,7 @@ So, it is risky to draw conclusions from such observations.
 
 Our lack of understanding of how the particular phases of processing requests are computed led us to the false assumption that we could compute approximate
 _ModSecurity_ overhead by using simple arithmetic: request time - upstream time.
-![nginx variables](/img/articles/2023-12-14-lmdb-postmortem/variables.png)
+![nginx variables](/assets/img/articles/2023-12-14-lmdb-postmortem/variables.png)
 
 It was one of the biggest mistakes that hindered revealing the truth. It turned out that part of _ModSecurity_ processing was included into upstream time,
 so the red part on above diagram also includes _ModSecurity_ processing that is not part of establishing connection. As a form of self-punishment,

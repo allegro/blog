@@ -1,84 +1,49 @@
 ---
 layout: default
 ---
-<section class="post" itemscope itemtype="http://schema.org/TechArticle" id="main-content">
-    <header class="post-header responsive-content">
-        <div class="main-item">
-            <time class="entry-date" datetime="{{ page.date}}"><span>{{ page.date | date: "<strong>%b %-d</strong> %Y" }}</span>
-            </time>
-            <h1 class="post-title" itemprop="headline">{{ page.title }}</h1>
 
-            <div class="post-meta">
-                <ul class="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList">
-                    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                        <a href="/" itemprop="item"><span itemprop="name">allegro.tech blog</span></a>
-                        <meta itemprop="position" content="1" />
-                    </li>
-                    <li class="authors" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                        {% for author in page.author %}
-                        <a href="/authors/{{author}}"
-                           itemprop="item">{{site.data.members[author].name}}</a>
-                        <meta itemprop="name" content="{{site.data.members[author].name}}"/>
-                        {% endfor %}
-                        <meta itemprop="position" content="2" />
-                    </li>
-                    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                        <link href="{{ page.url }}" itemprop="item">
-                        <span itemprop="name">{{ page.title }}</span>
-                        <meta itemprop="position" content="3" />
-                    </li>
-                </ul>
-            </div>
-        </div>
+<link rel="stylesheet" href="{{ '/assets/css/highlights.css?v=' | append: site.github.build_revision }}"/>
+<article class="mx-auto w-full max-w-2xl format format-sm sm:format-base lg:format-lg format-brand dark:format-invert">
+    <header class="mb-4 lg:mb-6 not-format">
+        {% if page.author.size == 1 %}
+            {% include post/single-author.html %}
+        {% else %}
+            {% include post/multiple-authors.html %}
+        {% endif %}
     </header>
-    <meta itemprop="keywords" content="{{ page.tags | join: ', ' }}">
-    <meta itemprop="datePublished" content="{{ page.date }}">
-    <meta itemprop="image" content="{{ site.url }}/img/logo-allegro-tech.png">
-
-    <article class="post-content responsive-content" itemprop="articleBody">
-        <div class="main-item"> {{ content }}</div>
-    </article>
-</section>
-<section id="author" class="post-author responsive-content">
-    {% for author in page.author %}
-    <div class="main-item">
-        {%assign authorKey = author%}
-        {%assign authorData = site.data.members[author] %}
-        {% include single_author.html showLinkToPost=true %}
-    </div>
-    {% endfor %}
-</section>
-
-<section class="comments responsive-content">
-    <div class="main-item">
-        <div class="site-navlist social-icons">
-            <ul>
-                <li><strong>Share this post</strong></li>
-                <li><a class="share-button social icon-link"
-                    href="https://twitter.com/intent/tweet?url={{site.url}}{{page.url}}&amp;text={{page.title}} by @allegrotech">
-                    <img src="/img/social/twitter.svg" alt="Twitter"></a>
-                </li>
-                <li><a class="share-button social icon-link"
-                       href="https://www.facebook.com/sharer/sharer.php?u={{site.url}}{{page.url}}">
-                   <img src="/img/social/facebook.svg" alt="Facebook"></a>
-                </li>
-            </ul>
+    <h1 class="mb-4 text-3xl font-extrabold leading-tight text-gray-900 lg:mb-6 lg:text-4xl dark:text-white">
+        {{page.title}}
+    </h1>
+    {{content}}
+    <section class="my-8">
+        <div class="flex flex-wrap gap-2 sm:gap-4">
+            {% for tag in page.tags %}
+            <a href="{{ '/tag/' | append: tag | replace: " ","-" }}"
+                    class="no-underline hover:underline text-primary-600 dark:text-primary-500 text-sm sm:text-md font-medium inline-flex items-center py-0.5 px-1 whitespace-nowrap"
+            >
+                <svg class="mr-1 w-3 h-3  text-primary-600 dark:text-primary-500" aria-hidden="true"
+                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                     viewBox="0 0 24 24">
+                  <path d="M18.045 3.007 12.31 3a1.965 1.965 0 0 0-1.4.585l-7.33 7.394a2 2 0 0 0 0 2.805l6.573 6.631a1.957 1.957 0 0 0 1.4.585 1.965 1.965 0 0 0 1.4-.585l7.409-7.477A2 2 0 0 0 21 11.479v-5.5a2.972 2.972 0 0 0-2.955-2.972Zm-2.452 6.438a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"/>
+                </svg>
+                  {{ tag }}
+            </a>
+            {% endfor %}
         </div>
-    </div>
-    <div id="disqus_thread" class="main-item"></div>
-</section>
-<script>
-    (function () {
-        const dsq = document.createElement('script');
-        dsq.type = 'text/javascript';
-        dsq.async = true;
-        dsq.src = "//allegrotechio.disqus.com/embed.js";
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-</script>
-<script type="text/javascript" async
-  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
-</script>
-<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-</noscript>
-<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </section>
+    <section class="not-format">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">Discussion</h2>
+        </div>
+        <div id="disqus_thread"></div>
+        <script>
+            (function() { // DON'T EDIT BELOW THIS LINE
+                let d = document, s = d.createElement('script');
+                s.src = 'https://allegrotechio.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </section>
+</article>
