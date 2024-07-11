@@ -13,6 +13,9 @@ plugins:
   - jekyll-seo-tag
   - jekyll/tagging
 
+kramdown:
+  auto_ids: true
+
 #  Disabling cache is needed for Tailwind CSS’s JIT engine.
 #  Without this, the server would need to restart after each change.
 postcss:
