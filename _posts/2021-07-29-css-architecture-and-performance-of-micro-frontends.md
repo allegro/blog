@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "CSS Architecture and Performance in Micro Frontends"
-author: [mateusz.krzeszowiak]
+author: mateusz.krzeszowiak
 tags: [tech, webperf, frontend, performance, perfmatters, css]
 ---
 It’s been over 5 years since the introduction of the [article describing the ongoing transformation of Allegro’s frontend architecture](https://blog.allegro.tech/2016/03/Managing-Frontend-in-the-microservices-architecture.html) — an approach that was later formalized by the industry under the name of Micro Frontends. I think that after all this time we can safely say that this direction was correct and remained almost entirely unchanged in relation to the original idea. Still, some of the challenges foreseen in the publication soon became the reality. In this article I would like to focus on the CSS part of the whole adventure to tell you about how we manage consistency and frontend performance across over half a thousand components, and what it took us to get to where we stand today.

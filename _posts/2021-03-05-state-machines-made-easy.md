@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Finite-state machines made easy
-author: [tymon.felski]
+author: tymon.felski
 tags: [tech, dotnet, state machine, allegro-pay]
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Golang slices gotcha
-author: [tomasz.janiszewski]
+author: tomasz.janiszewski
 tags: [go, golang]
 ---
 

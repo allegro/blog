@@ -1,7 +1,7 @@
 ---
 layout: post
 title: How to facilitate EventStorming workshops
-author: [krzysztof.przychodzki]
+author: krzysztof.przychodzki
 tags: [eventstorming, tech, communication]
 ---
 

@@ -2,9 +2,13 @@
     <div class="p-8 py-6 mx-auto max-w-screen-xl">
         <div class="text-center">
             <a href="https://allegro.tech" class="flex justify-center items-center mb-5 text-2xl font-semibold text-gray-900 dark:text-white">
-                <img alt="allegro.tech" class="h-6" src="{{ '/assets/img/allegro-tech.svg' }}" height="24px" width="115px" />
+                <picture>
+                    <source srcset="{{ '/assets/img/allegro-tech-dark.svg' }}" media="(prefers-color-scheme: dark)" />
+                    <source srcset="{{ '/assets/img/allegro-tech.svg' }}" media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)" />
+                    <img alt="allegro.tech" class="h-6" src="{{ '/assets/img/allegro-tech.svg' }}" height="24px" width="115px" />
+                </picture>
             </a>
-            <span class="block text-sm text-center text-gray-500 dark:text-gray-400">© {{ site.time | date: '%Y' }} <a href="#" class="hover:underline">Allegro</a>.<br />Proudly built by <a href="{{ '/authors' }}" class="text-primary-600 dark:text-primary-500 text-sm sm:text-md font-medium inline-flex items-center">engineers</a>.</span>
+            <span class="block text-sm text-center text-gray-500 dark:text-gray-400">© {{ site.time | date: '%Y' }} <a href="https://allegro.pl" class="hover:underline">Allegro</a><br />Proudly built by <a href="{{ '/authors' }}" class="text-primary-600 dark:text-primary-500 text-sm sm:text-md font-medium inline-flex items-center">engineers</a></span>
             <ul class="flex justify-center mt-5 space-x-5">
                 <li>
                     <a href="https://facebook.com/allegro.tech" class="text-gray-500 hover:text-gray-900 dark:hover:text-white dark:text-gray-400">

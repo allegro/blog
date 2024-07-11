@@ -1,7 +1,7 @@
 ---
 layout: post
 title: API crafted for mobile
-author: [mariusz.wojtysiak]
+author: mariusz.wojtysiak
 tags: [api, rest api, mobile]
 ---
 

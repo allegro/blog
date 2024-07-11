@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Unveiling bottlenecks of couchbase sub-documents operations"
-author: [tomasz.ziolkowski]
+author: tomasz.ziolkowski
 tags: [tech, couchbase, sub-documents, performance, bottlenecks]
 ---
 

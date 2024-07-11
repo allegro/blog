@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Example of modularization in Allegro Pay Android application"
-author: [michal.kwiatek]
+author: michal.kwiatek
 tags: [tech, kotlin, mobile, android, modularization, gradle, allegro-pay]
 ---
 Currently, in the Android world, the topic of modularization is very popular. Many bloggers describe their experiences

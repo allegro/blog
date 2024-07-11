@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Comparing MongoDB composite indexes"
-author: [michal.knasiecki]
+author: michal.knasiecki
 tags: [tech, mongodb, index, performance, "query tuning"]
 ---
 One of the key elements ensuring efficient operation of the services we work on every day at

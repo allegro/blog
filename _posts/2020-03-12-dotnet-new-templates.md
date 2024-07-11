@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Using dotnet new templates to streamline microservices development
-author: [szymon.adach]
+author: szymon.adach
 tags: [dotnet, template, microservices]
 ---
 

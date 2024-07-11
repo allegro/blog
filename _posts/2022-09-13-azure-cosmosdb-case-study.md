@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "How to efficiently write millions of records in the cloud and not go bankrupt — an Azure CosmosDB case study"
-author: [kamil.starczak]
+author: kamil.starczak
 tags: [tech, cloud, azure, cosmosdb]
 ---
 

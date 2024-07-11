@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "How we solved a mobile application performance issue with a few lines of code?"
-author: [lukasz.solniczek]
+author: lukasz.solniczek
 tags: [tech, "Server-driven UI", mobile, mbox, performance]
 excerpt: >
     Sometimes great results in code performance come with a small amount of work.

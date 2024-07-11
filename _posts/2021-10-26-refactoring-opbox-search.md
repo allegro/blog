@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "How we refactored the search form UI component"
-author: [volodymyr.khytskyi]
+author: volodymyr.khytskyi
 tags: [tech, frontend, architecture, refactoring, developmentexperience, typescript]
 ---
 This article describes a classic case of refactoring a search form UI component, a critical part of every e-commerce

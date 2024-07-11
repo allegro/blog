@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Migrating a microservice to Spring WebFlux
-author: [filip.marszelewski]
+author: filip.marszelewski
 tags: [reactive, microservices, webflux]
 ---
 

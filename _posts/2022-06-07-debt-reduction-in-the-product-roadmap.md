@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "How to include refactoring into product development roadmap? Reducing technical debt inspired by real options identification"
-author: [olga.dudzik]
+author: olga.dudzik
 tags: [tech, roadmaps, tech debt, product]
 ---
 

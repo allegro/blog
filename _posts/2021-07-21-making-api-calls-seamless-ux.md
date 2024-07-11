@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Making API calls a seamless user experience
-author: [pawel.wolak]
+author: pawel.wolak
 tags: [javascript, frontend, ajax, restapi, http]
 ---
 

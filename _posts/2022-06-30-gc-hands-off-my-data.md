@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "GC, hands off my data!"
-author: [michal.knasiecki]
+author: michal.knasiecki
 tags: [tech, cache, performance, "off-heap", "garbage-collection"]
 excerpt: >
     Each of us has probably experienced a time in our career when we wanted to get

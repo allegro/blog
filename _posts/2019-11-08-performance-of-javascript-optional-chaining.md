@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Performance of JavaScript optional chaining
-author: [eryk.napierala]
+author: eryk.napierala
 tags: [performance, webperf, perfmatters, javascript, typescript, frontend]
 ---
 

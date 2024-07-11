@@ -1,7 +1,7 @@
 ---
 layout: post
 title: How neuroscience can help you as a software engineer - motivation
-author: [paulina.szwed]
+author: paulina.szwed
 tags: [tech, "soft skills", neuroscience, productivity]
 ---
 

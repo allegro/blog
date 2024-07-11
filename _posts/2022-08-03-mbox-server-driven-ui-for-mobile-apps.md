@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "MBox: server-driven UI for mobile apps"
-author: [paulina.sadowska]
+author: paulina.sadowska
 tags: [tech, "Server-driven UI", mobile, mbox]
 excerpt: >
     In this article, we want to share our approach to using server-driven UI in native mobile apps.

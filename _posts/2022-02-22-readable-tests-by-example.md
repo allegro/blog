@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Make your tests readable by example"
-author: [kamil.jedrzejuk]
+author: kamil.jedrzejuk
 tags: [tech, backend, testing, tdd, bdd, java, groovy, ddd]
 ---
 

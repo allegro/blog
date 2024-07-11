@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Why should we rewrite enzyme.js to react-testing-library and how to do that?"
-author: [magdalena.mazur]
+author: magdalena.mazur
 tags: [tech, frontend, javascript, jest, enzyme, react-testing-library, rtl, react]
 ---
 

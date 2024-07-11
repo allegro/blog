@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Spring &#64;WebMvcTest with Spock Framework
-author: [rafal.glowinski]
+author: rafal.glowinski
 tags: [spring boot, spock, WebMvcTest, java, testing]
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: A comedy of errors. Debugging Java memory leaks.
-author: [michal.kosmulski]
+author: michal.kosmulski
 tags: [JVM, java, memory, leak, resources, garbage-collection, gc]
 ---
 

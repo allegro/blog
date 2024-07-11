@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Hitting the Wall
-author: [tomasz.janiszewski]
+author: tomasz.janiszewski
 tags: [mesos, marathon, mesosphere]
 publish: true
 ---

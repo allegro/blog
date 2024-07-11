@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Estimating the cache efficiency using big data
-author: [filip.marszelewski]
+author: filip.marszelewski
 tags: [cache, big data]
 ---
 

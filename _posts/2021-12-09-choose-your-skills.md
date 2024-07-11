@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Which skills to choose in order to be more valuable
-author: [piotr.prusinski]
+author: piotr.prusinski
 tags: [tech, education, skills, startup, lean startup, mvp]
 ---
 At some point in your career, you realize that it’s time to try to advance through the hierarchy. You think you are

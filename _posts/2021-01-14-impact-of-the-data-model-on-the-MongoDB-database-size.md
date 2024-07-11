@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Impact of data model on MongoDB database size
-author: [michal.knasiecki]
+author: michal.knasiecki
 tags: [mongodb]
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Android UI testing in Allegro Pay organization"
-author: [michal.kwiatek]
+author: michal.kwiatek
 tags: [tech, mobile, kotlin, android, ui testing, allegro-pay]
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Speeding up iOS builds with Bazel
-author: [kamil.pyc]
+author: kamil.pyc
 tags: [mobile, ios, bazel]
 ---
 

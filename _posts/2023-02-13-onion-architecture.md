@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Onion Architecture
-author: [tomasz.tarczynski]
+author: tomasz.tarczynski
 tags: [tech, architecture, software, engineering]
 ---
 Software Architecture is an elusive thing which, if neglected, can lead to a hard-to-develop and maintain codebase, and

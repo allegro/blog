@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Making Webflux code readable with Kotlin coroutines
-author: [zbigniew.kuzera]
+author: zbigniew.kuzera
 tags: [kotlin, coroutines]
 ---
 

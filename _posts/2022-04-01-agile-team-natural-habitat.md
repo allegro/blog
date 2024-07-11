@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "An Agile team in its natural habitat"
-author: [michal.kosmulski]
+author: michal.kosmulski
 tags: [tech, agile, testing, "April 1st"]
 excerpt: "A picture is worth a thousand words — see for yourself how this unique Agile team learns BASIC from their Product Owner."
 ---

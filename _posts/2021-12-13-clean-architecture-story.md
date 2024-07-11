@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Clean Architecture Story"
-author: [michal.kowalcze]
+author: michal.kowalcze
 tags: [tech, architecture, clean-architecture, ddd, kotlin]
 ---
 [The Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) concept has been

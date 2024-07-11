@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Responsible work with MongoDB
-author: [tomasz.fijalkowski]
+author: tomasz.fijalkowski
 tags: [mongodb, nosql, RDBMS]
 ---
 
