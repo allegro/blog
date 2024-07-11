@@ -65,12 +65,12 @@ for all cores on a single App Engine flexible instance.
 So it gives us an idea of how the CPU is utilized on each virtual machine.
 
 <img src="/assets/img/articles/2024-06-20-cost-optimization-data-pipeline-gcp/01_cpu_utilization_all_workers.png"
-alt="CPU utilization on all worker nodes" class="image-with-frame"/>
+alt="CPU utilization on all worker nodes"/>
 
 We could also take a look at the same data presented in terms of statistical metrics.
 
 <img src="/assets/img/articles/2024-06-20-cost-optimization-data-pipeline-gcp/02_cpu_utilization_stats.png"
-alt="CPU utilization statistics" class="image-with-frame"/>
+alt="CPU utilization statistics"/>
 
 From the given graph I could see that mean utilization of the CPU was around 85%, which is a good score.
 The result is affected by two shuffle stages, when we need to send data around the cluster (usually network is a small bottleneck here).
@@ -84,11 +84,11 @@ In the end I checked memory usage. I saw that we did not use all the memory whic
 Let’s take a look at the following two graphs.
 The first one shows maximal memory utilization among all the workers.
 <img src="/assets/img/articles/2024-06-20-cost-optimization-data-pipeline-gcp/03_memory_utilization_max_usage.png"
-alt="Memory utilization max usage" class="image-with-frame"/>
+alt="Memory utilization max usage"/>
 
 The second one shows memory utilization statistics among all the worker nodes.
 <img src="/assets/img/articles/2024-06-20-cost-optimization-data-pipeline-gcp/04_memory_utilization_summary.png"
-alt="Memory utilization summary" class="image-with-frame"/>
+alt="Memory utilization summary"/>
 
 The first one presents average memory usage on a worker node, the second one presents overall memory usage among the whole cluster.
 We clearly see that we only use around 50% of the memory. Bingo, we pay for memory that we do not use.

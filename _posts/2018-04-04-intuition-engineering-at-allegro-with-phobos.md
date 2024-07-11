@@ -31,7 +31,7 @@ availability zones.
 
 ## Vizceral
 Let's have a look at a video showing traffic failover simulation.
-<div class="i-wrapper"><div>
+
 <iframe height="315"  width="420" src="https://www.youtube.com/embed/KVbTjlZ0sfE" frameborder="0" allowfullscreen></iframe>
 </div></div>
 At first, you see the normal state. The middle circle represents the Internet, showing how many requests are coming in

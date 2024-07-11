@@ -31,7 +31,7 @@ up with a [manager’s schedule](http://www.paulgraham.com/makersschedule.html).
 
 <img src="/assets/img/articles/2023-08-22-management-engineering-acrobatics/flying-trapeze-performers.jpg"
      alt ="Circus performers on the flying trapeze, Public Domain image from https://commons.wikimedia.org/wiki/File:Programma_van_Circus_Krone_in_Rotterdam_drie_Alizes_,_vliegende_trapeze_met_o.a.,_Bestanddeelnr_910-4372.jpg"
-     class="small-image"/>
+     />
 
 Over time, your technical skills start deteriorating, and if you miss the right moment, you may find yourself at
 a point of no return. Like a circus artist on a flying trapeze, you have to time your actions right to avoid

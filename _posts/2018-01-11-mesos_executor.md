@@ -110,7 +110,7 @@ is written by a user to handle custom workloads. It can use V0 or V1 API and
 can run single or multiple tasks depending on implementation. In this article
 we are focusing on our custom implementation and what we achieved with it.
 
-<div class="i-wrapper"><div>
+
 <iframe height="315"  width="420" src="https://www.youtube.com/embed/tzaYXgnYKyQ" frameborder="0" allowfullscreen></iframe>
 </div></div>
 
@@ -280,6 +280,6 @@ Mesos is totally customizable and able to handle all edge cases but sometimes
 it’s really expensive in terms of time, maintainability and stability.
 Sometimes it’s better to use solutions that work out of the box instead of reinventing the wheel.
 
-<div class="i-wrapper"><div>
+
 <iframe height="315"  width="420" src="https://www.youtube.com/embed/Zm5RgED_1gM" frameborder="0" allowfullscreen></iframe>
 </div></div>

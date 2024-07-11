@@ -30,13 +30,13 @@ Let’s start with a simple example of BST:
 
 <img src="/assets/img/articles/2023-11-27-how-does-btree-make-your-queries-fast/bst-basic.webp"
 alt="Binary Search Tree with three nodes"
-class="small-image"/>
+/>
 
 The greater number is always on the right, the lower on the left. It may become clearer when we add more numbers.
 
 <img src="/assets/img/articles/2023-11-27-how-does-btree-make-your-queries-fast/bst-bigger.webp"
 alt="Binary Search Tree with seven nodes"
-class="small-image"/>
+/>
 
 This tree contains seven numbers, but we need to visit at most three nodes to locate any number.
 The following example visualizes searching for 14.
@@ -44,7 +44,7 @@ I used SQL to define the query in order to think about this tree as if it were a
 
 <img src="/assets/img/articles/2023-11-27-how-does-btree-make-your-queries-fast/bst-bigger-searching.webp"
 alt="Searching for single node within Binary Search Tree with seven nodes"
-class="small-image"/>
+/>
 
 ## Hardware
 
@@ -82,19 +82,19 @@ Memory may be visualized as a line of containers for values, where every contain
 
 <img src="/assets/img/articles/2023-11-27-how-does-btree-make-your-queries-fast/memory.webp"
 alt="Simple memory visualization"
-class="small-image"/>
+/>
 
 Now let’s assume we want to read data from containers 1, 4, and 6. It requires random access:
 
 <img src="/assets/img/articles/2023-11-27-how-does-btree-make-your-queries-fast/memory-random-access.webp"
 alt="Random access visualized on a small chunk of a memory"
-class="small-image"/>
+/>
 
 And then let’s compare it with reading containers 3, 4, and 5. It may be done sequentially:
 
 <img src="/assets/img/articles/2023-11-27-how-does-btree-make-your-queries-fast/memory-sequential-access.webp"
 alt="Sequential access visualized on a small chunk of a memory"
-class="small-image"/>
+/>
 
 The difference between a "random jump" and a "sequential read" can be explained based on Hard Disk Drive.
 It consists of the head and the disk.
@@ -102,7 +102,7 @@ It consists of the head and the disk.
 <img src="/assets/img/articles/2023-11-27-how-does-btree-make-your-queries-fast/hdd-disk.webp"
 alt="Hard Disk Drive with cover removed, Public Domain image
 from https://en.wikipedia.org/wiki/Hard_disk_drive#/media/File:Laptop-hard-drive-exposed.jpg"
-class="small-image"/>
+/>
 
 "Random jump" requires moving the head to the given place on the disk.
 "Sequential read" is simply spinning the disk, allowing the head to read consecutive values.
@@ -138,25 +138,25 @@ That’s how these positions are calculated based on the example (the parent nod
 
 <img src="/assets/img/articles/2023-11-27-how-does-btree-make-your-queries-fast/tree-representation-in-memory-1.webp"
 alt="Binary tree representation in the memory—part 1/2"
-class="small-image"/>
+/>
 
 According to the calculated positions, nodes are aligned into the memory:
 
 <img src="/assets/img/articles/2023-11-27-how-does-btree-make-your-queries-fast/tree-representation-in-memory-2.webp"
 alt="Binary tree representation in the memory—part 2/2"
-class="small-image"/>
+/>
 
 Do you remember the query visualized a few chapters ago?
 
 <img src="/assets/img/articles/2023-11-27-how-does-btree-make-your-queries-fast/bst-bigger-searching.webp"
 alt="Searching for single node within Binary Search Tree with seven nodes"
-class="small-image"/>
+/>
 
 That’s what it looks like on the memory level:
 
 <img src="/assets/img/articles/2023-11-27-how-does-btree-make-your-queries-fast/tree-representation-in-memory-query.webp"
 alt="Binary tree representation in the memory - querying"
-class="small-image"/>
+/>
 
 When performing the query, memory addresses 1, 3, and 6 need to be visited.
 Visiting three nodes is not a problem; however, as we store more data, the tree gets higher.
@@ -238,7 +238,7 @@ We may obtain trees with different depths if the values are added in an incorrec
 
 <img src="/assets/img/articles/2023-11-27-how-does-btree-make-your-queries-fast/bst-imbalance.webp"
 alt="Two Binary Trees with shapes depending on the order of inserted values."
-class="small-image"/>
+/>
 
 When the tree has different depths on different nodes, it is called an unbalanced tree.
 There are basically two ways of returning such a tree to a balanced state:
@@ -255,7 +255,7 @@ and adding new values until there is no free space in it.
 
 <img src="/assets/img/articles/2023-11-27-how-does-btree-make-your-queries-fast/self-balancing-step-1.webp"
 alt="Self-balancing, step 1, Add new values until there is a free space in existing nodes."
-class="small-image"/>
+/>
 
 If there is no space on the corresponding page, it needs to be split.
 To perform a split, a „split point” is chosen.
@@ -264,20 +264,20 @@ The „Split point” is a value that will be moved to the upper page.
 
 <img src="/assets/img/articles/2023-11-27-how-does-btree-make-your-queries-fast/self-balancing-step-2a.webp"
 alt="Self-balancing, step 2a, Splitting the page."
-class="small-image"/>
+/>
 
 Now, it gets us to an interesting point where there is no upper page.
 In such a case, a new one needs to be generated (and it becomes the new root page!).
 
 <img src="/assets/img/articles/2023-11-27-how-does-btree-make-your-queries-fast/self-balancing-step-2b.webp"
 alt="Self-balancing, step 2b, Generating a new root page."
-class="small-image"/>
+/>
 
 And finally, there is some free space in the three, so value 14 may be added.
 
 <img src="/assets/img/articles/2023-11-27-how-does-btree-make-your-queries-fast/self-balancing-step-2c.webp"
 alt="Self-balancing, step 2c, Adding the 14 to B-tree."
-class="small-image"/>
+/>
 
 Following this algorithm, we may constantly add new values to the B-tree, and it will remain balanced all the time!
 
