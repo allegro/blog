@@ -47,7 +47,7 @@ communication and knowledge sharing, leading to better understanding and effecti
 fact that Event Storming focuses on an interactive workshop, while BPMN offers a specific process notation. From my experience, these two 
 worlds can be combined. To retain the knowledge discovered in Event Storming workshops, I suggest documenting the process in BPMN notation, 
 which serves as an excellent material for further work on process optimization or spreading knowledge about it further. The importance of 
-open communication and preventing knowledge loss is elaborated [here]({% 2023-10-30-battle-against-knowledge-loss %}).
+open communication and preventing knowledge loss is elaborated [here]({% post_url 2023-10-30-battle-against-knowledge-loss %}).
 Although BPM, using BPMN for process notation, and Event Storming, a workshop method, are distinct, they both aim to enhance process understanding. 
 Below is my comparison:
 
