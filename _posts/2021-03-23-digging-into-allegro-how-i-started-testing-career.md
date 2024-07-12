@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Digging into Allegro, or how I started my testing career
-author: [aleksandra.kulesz]
+author: aleksandra.kulesz
 tags: [tech, testing, intern, "career change"]
 ---
 Maybe it’s another “How I’ve changed my worklife” story, but I hope it is an interesting one. It seems quite important to tell: before the beginning of my

@@ -13,7 +13,7 @@ p99 latency was up to 1 second, and the p999 latency was up to 3 seconds. This w
 decided to look into this issue. In this blog post, we would like to describe our journey — how we used Kafka protocol sniffing and eBPF to identify and remove
 the performance bottleneck.
 
-![Kafka Produce Latency](/img/articles/2024-03-06-kafka-performance-analysis/kafka-performance-analysis.png)
+![Kafka Produce Latency](/assets/img/articles/2024-03-06-kafka-performance-analysis/kafka-performance-analysis.png)
 
 ## The Need for Tracing
 Kafka brokers [expose various metrics](https://docs.confluent.io/platform/current/kafka/monitoring.html#localtimems). From them, we were able to tell that
@@ -28,7 +28,7 @@ The first thing we did was finding _arrival_ and _end_ times for every Kafka pro
 
 |                                                                                                                                                                                        |
 |:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
-|                                    ![Timeline of Kafka produce request](/img/articles/2024-03-06-kafka-performance-analysis/request_timeline1.png)                                     |
+|                                    ![Timeline of Kafka produce request](/assets/img/articles/2024-03-06-kafka-performance-analysis/request_timeline1.png)                                     |
 | *Timeline of a produce request. Arrival and end times define the boundaries of the request. The components of Kafka involved in handling the request and their latencies are unknown.* |
 
 
@@ -81,7 +81,7 @@ In Kafka, every partition has its own directory, named according to the pattern:
 files where messages are stored. In the figure below, we can see an example of this structure. In this scenario, the broker hosts two partitions (0 and 7)
 for _topicA_ and one partition (1) for _topicB_.
 
-![Kafka Partition Directories](/img/articles/2024-03-06-kafka-performance-analysis/kafka_directories.png)
+![Kafka Partition Directories](/assets/img/articles/2024-03-06-kafka-performance-analysis/kafka_directories.png)
 
 By slightly altering the ext4slower program to include parent directories, we were able to trace Kafka file system writes. For every write with a duration
 exceeding a specified threshold, we observed the following:
@@ -136,11 +136,11 @@ START TIME    END TIME      LATENCY  MESSAGE_ID  FILE                           
 From the analysis, we were able to tell that **there were many slow produce requests that spent all of their time waiting for the file system write to
 complete.**
 
-![Request Timeline with Slow Write](/img/articles/2024-03-06-kafka-performance-analysis/timeline_slow_write.png)
+![Request Timeline with Slow Write](/assets/img/articles/2024-03-06-kafka-performance-analysis/timeline_slow_write.png)
 
 There were however requests that didn't have corresponding slow writes.
 
-![Request Timeline with Fast Write](/img/articles/2024-03-06-kafka-performance-analysis/timeline_fast_write.png)
+![Request Timeline with Fast Write](/assets/img/articles/2024-03-06-kafka-performance-analysis/timeline_fast_write.png)
 
 ## Kafka Lock Contention
 Slow produce requests without corresponding slow writes were always occurring around the time of some other slow write. We started wondering whether those
@@ -197,7 +197,7 @@ We searched for this thread's activity in the async-profiler output:
 
 |                                                                                                                            |
 |:--------------------------------------------------------------------------------------------------------------------------:|
-| ![Async profiler output visualized in Java Mission Control](/img/articles/2024-03-06-kafka-performance-analysis/locks.png) |
+| ![Async profiler output visualized in Java Mission Control](/assets/img/articles/2024-03-06-kafka-performance-analysis/locks.png) |
 |         *Async profiler output visualized in Java Mission Control. Thread with TID 4484 is blocked on a monitor.*          |
 
 In the output, we saw what we suspected — a thread was waiting on a lock for approximately the same duration as the slow write occurring on another thread.
@@ -205,7 +205,7 @@ This confirmed our initial hypothesis.
 
 |                                                                                                                                                                                            |
 |:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
-| ![For a slow request with fast file system writes, waiting to obtain a lock turned out to be the source of latency](/img/articles/2024-03-06-kafka-performance-analysis/timeline_lock.png) |
+| ![For a slow request with fast file system writes, waiting to obtain a lock turned out to be the source of latency](/assets/img/articles/2024-03-06-kafka-performance-analysis/timeline_lock.png) |
 |                                    *For a slow request with fast file system writes, waiting to acquire a lock turned out to be the source of latency.*                                    |
 
 
@@ -223,13 +223,13 @@ respectively. Our goal was to identify the activated paths in the kernel and the
 
 |                                                                                                           |
 |:---------------------------------------------------------------------------------------------------------:|
-| ![on-CPU profile of ext4_file_write_iter](/img/articles/2024-03-06-kafka-performance-analysis/on_cpu.png) |
+| ![on-CPU profile of ext4_file_write_iter](/assets/img/articles/2024-03-06-kafka-performance-analysis/on_cpu.png) |
 |                                 *on-CPU profile of ext4_file_write_iter*                                  |
 
 
 |                                                                                                             |
 |:-----------------------------------------------------------------------------------------------------------:|
-| ![off-CPU profile of ext4_file_write_iter](/img/articles/2024-03-06-kafka-performance-analysis/off_cpu.png) |
+| ![off-CPU profile of ext4_file_write_iter](/assets/img/articles/2024-03-06-kafka-performance-analysis/off_cpu.png) |
 |                                  *off-CPU profile of ext4_file_write_iter*                                  |
 
 We noticed that the function [ext4\_dirty\_inode](https://elixir.bootlin.com/linux/v5.15.91/source/fs/ext4/inode.c#L5971) [1] was present in both flamegraphs.
@@ -285,7 +285,7 @@ to be able to observe the impact of our optimizations over longer periods.
 To report traced functions latency over long periods, we used [ebpf_exporter](https://github.com/cloudflare/ebpf_exporter), a tool that exposes eBPF-based
 metrics in Prometheus format. We were then able to visualize traces in Grafana. For example, maximum ext4 write latency for a given broker:
 
-![Base ext4 Latency](/img/articles/2024-03-06-kafka-performance-analysis/base_max_write_iter.png)
+![Base ext4 Latency](/assets/img/articles/2024-03-06-kafka-performance-analysis/base_max_write_iter.png)
 
 With that, we were able to run brokers with different configurations and observe their write latency over time.
 
@@ -321,8 +321,8 @@ it guarantees that the data is written to the main file system prior to the meta
 
 |                                                                                                        |
 |:------------------------------------------------------------------------------------------------------:|
-|      ![Base Produce Latency](/img/articles/2024-03-06-kafka-performance-analysis/base_p999_2.png)      |
-| ![Writeback Produce Latency](/img/articles/2024-03-06-kafka-performance-analysis/writeback_p999_2.png) |
+|      ![Base Produce Latency](/assets/img/articles/2024-03-06-kafka-performance-analysis/base_p999_2.png)      |
+| ![Writeback Produce Latency](/assets/img/articles/2024-03-06-kafka-performance-analysis/writeback_p999_2.png) |
 |               *With data=writeback, p999 decreased from 3 seconds to 800 milliseconds.*                |
 
 ### Enabling Fast Commit
@@ -340,7 +340,7 @@ became the new source of latency but its maximum latency was lower than that of 
 
 |                                                                                                                                                                           |
 |:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
-| ![Comparison of maximum latency [s] of ext4 writes for brokers without and with fast commit.](/img/articles/2024-03-06-kafka-performance-analysis/write_iter_heatmap.png) |
+| ![Comparison of maximum latency [s] of ext4 writes for brokers without and with fast commit.](/assets/img/articles/2024-03-06-kafka-performance-analysis/write_iter_heatmap.png) |
 |                                       *Comparison of maximum latency [s] of ext4 writes for brokers without and with fast commit.*                                        |
 
 
@@ -349,8 +349,8 @@ Lower file system write latency, in turn, resulted in reduced produce latency:
 
 |                                                                                                   |
 |:-------------------------------------------------------------------------------------------------:|
-|   ![Base Produce Latency](/img/articles/2024-03-06-kafka-performance-analysis/base_p999_2.png)    |
-| ![Fast Commit Produce Latency](/img/articles/2024-03-06-kafka-performance-analysis/fc_p999_2.png) |
+|   ![Base Produce Latency](/assets/img/articles/2024-03-06-kafka-performance-analysis/base_p999_2.png)    |
+| ![Fast Commit Produce Latency](/assets/img/articles/2024-03-06-kafka-performance-analysis/fc_p999_2.png) |
 |   *With fast commit enabled, produce P999 latency went down from 3 seconds to 500 milliseconds*   |
 
 ### Summary
@@ -371,8 +371,8 @@ We migrated one of the brokers to the XFS file system. The results were impressi
 optimizations was the consistency of XFS performance. While other broker configurations experienced p999 latency spikes throughout the day, XFS – with its default configuration – had only a
 few hiccups.
 
-![Base Produce Latency](/img/articles/2024-03-06-kafka-performance-analysis/base_p999_2.png)
-![Produce Latency XFS](/img/articles/2024-03-06-kafka-performance-analysis/xfs_p999_2.png)
+![Base Produce Latency](/assets/img/articles/2024-03-06-kafka-performance-analysis/base_p999_2.png)
+![Produce Latency XFS](/assets/img/articles/2024-03-06-kafka-performance-analysis/xfs_p999_2.png)
 
 After a couple of weeks of testing, we were confident that XFS was the best choice. Consequently, we migrated all our brokers from ext4 to XFS.
 
@@ -381,7 +381,7 @@ Using a combination of packet sniffing, eBPF, and async-profiler we managed to i
 then tested a couple of solutions to the problem: `data=writeback` journaling mode, `fast commits`, and changing the file system to XFS. The results of these
 optimizations are visualized in the heatmap below:
 
-![Produce Latency Heatmap](/img/articles/2024-03-06-kafka-performance-analysis/heatmap_p999.png)
+![Produce Latency Heatmap](/assets/img/articles/2024-03-06-kafka-performance-analysis/heatmap_p999.png)
 
 Ultimately, we found XFS to be the most performant and rolled it out to all of our brokers. **With XFS, the number of produce requests exceeding 65ms (our SLO)
 was lowered by 82%.**

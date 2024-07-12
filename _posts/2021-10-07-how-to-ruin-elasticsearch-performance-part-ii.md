@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "How to ruin your Elasticsearch performance — Part II: Breaking things, one at a time"
-author: [michal.kosmulski]
+author: michal.kosmulski
 tags: [tech, "full-text search", elasticsearch, elastic, es, performance]
 ---
 It’s easy to find resources about _improving_ [Elasticsearch](https://www.elastic.co/elastic-stack) performance, but what if you wanted to _reduce_ it?

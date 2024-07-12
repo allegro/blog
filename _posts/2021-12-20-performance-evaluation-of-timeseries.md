@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Evaluating performance of time series collections"
-author: [michal.knasiecki]
+author: michal.knasiecki
 tags: [tech, mongodb, performance, "time series"]
 excerpt: >
     A new version of MongoDB, 5.0, has been recently launched. The list of changes included one that I found

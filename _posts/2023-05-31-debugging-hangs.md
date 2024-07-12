@@ -2,7 +2,7 @@
 layout: post
 title: Debugging hangs - piecing together why nothing happens
 author: lukasz.rokita
-tags: [tech, java, jvm, debugging, dependency hell]
+tags: [tech, java, JVM, debugging, dependency hell]
 ---
 
 As a part of a broader initiative of refreshing Allegro platform, we are upgrading our internal libraries to Spring Boot 3.0 and Java 17.
@@ -75,7 +75,7 @@ So we have the a lvmid – local JVM identifier, which will help us locate the o
 In the screen below we can see that the thread waits on `Mono.block()` which is left unbounded in a happy path scenario.
 Well, we are in the worst case so first of all we add a simple timeout `Mono.block(Duration.ofSeconds(10))`.
 
-![jconsole](/img/articles/2023-05-31-debugging-hangs/jconsole.png)
+![jconsole](/assets/img/articles/2023-05-31-debugging-hangs/jconsole.png)
 
 This fails our tests and for the first time the error appears:
 ```

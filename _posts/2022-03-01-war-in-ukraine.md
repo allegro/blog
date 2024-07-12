@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "The War in Ukraine"
-author: [michal.kosmulski]
+author: michal.kosmulski
 tags: [tech, "soft skills", helping]
 ---
 The attack on Ukraine has shocked the entire world, but in Poland it is making especially big waves. Not just due to geographical proximity - Ukrainians are one of the largest minorities in Poland and simply put it is affecting people we know personally.
