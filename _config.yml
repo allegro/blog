@@ -6,7 +6,7 @@ permalink: /:year/:month/:title.html
 
 plugins:
   - jekyll-feed
-  - jekyll-postcss
+  - jekyll-postcss-v2
   - jekyll-paginate-v2
   - jekyll-timeago
   - jekyll-sitemap
