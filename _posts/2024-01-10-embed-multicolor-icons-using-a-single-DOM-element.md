@@ -28,7 +28,7 @@ It has to meet several requirements:
 
 ## Can we do better than we’ve been doing so far?
 
-![Multilayer icon](/img/articles/2024-01-10-embed-multicolor-icons-using-a-single-DOM-element/icon.webp "Multilayer icon")
+![Multilayer icon](/assets/img/articles/2024-01-10-embed-multicolor-icons-using-a-single-DOM-element/icon.webp "Multilayer icon")
 
 All the tools needed to perform the trick have been available in major browsers for at least few years.
 Is it possible everyone just failed to connect the dots?
@@ -64,7 +64,7 @@ About five years ago, we considered using CSS masks, but we still supported IE b
 At that time, we had not yet thought of combining it with fragments.
 
 As a case study let’s pick one of our icons —
-<img class="inline-image" alt="a-icon" src ="https://a.allegroimg.com/original/34412f/ae71613e49d986c5c838698e2e86/illustration-allegro-in-circle-big-db0c91e439"/>.
+<img class="inline" style="margin: 0" alt="a-icon" src ="https://a.allegroimg.com/original/34412f/ae71613e49d986c5c838698e2e86/illustration-allegro-in-circle-big-db0c91e439"/>.
 
 With the following source:
 
@@ -111,10 +111,10 @@ As a result, the SVG is supposed to look like this:
 
 It produces 4 fragments, one for each of the three paths and the last for the whole icon. Each of them can now be rendered as a separate image:
 
-1. [`#a`](https://a.allegroimg.com/original/34901c/db3b33c5488eb13bc5244e215953/illustration-allegro-in-circle-big-ab3336c0b3#a) — <img class="inline-image" alt="#a" src="https://a.allegroimg.com/original/34901c/db3b33c5488eb13bc5244e215953/illustration-allegro-in-circle-big-ab3336c0b3#a"/>
-2. [`#border`](https://a.allegroimg.com/original/34901c/db3b33c5488eb13bc5244e215953/illustration-allegro-in-circle-big-ab3336c0b3#border) — <img class="inline-image" alt="#border" src="https://a.allegroimg.com/original/34901c/db3b33c5488eb13bc5244e215953/illustration-allegro-in-circle-big-ab3336c0b3#border"/>
-3. [`#shadow`](https://a.allegroimg.com/original/34901c/db3b33c5488eb13bc5244e215953/illustration-allegro-in-circle-big-ab3336c0b3#shadow) — <img class="inline-image" alt="#shadow" src="https://a.allegroimg.com/original/34901c/db3b33c5488eb13bc5244e215953/illustration-allegro-in-circle-big-ab3336c0b3#shadow"/>
-4. [`#icon`](https://a.allegroimg.com/original/34901c/db3b33c5488eb13bc5244e215953/illustration-allegro-in-circle-big-ab3336c0b3#icon) — <img class="inline-image" alt="#icon" src="https://a.allegroimg.com/original/34901c/db3b33c5488eb13bc5244e215953/illustration-allegro-in-circle-big-ab3336c0b3#icon"/>
+1. [`#a`](https://a.allegroimg.com/original/34901c/db3b33c5488eb13bc5244e215953/illustration-allegro-in-circle-big-ab3336c0b3#a) — <img class="inline" style="margin: 0" alt="#a" src="https://a.allegroimg.com/original/34901c/db3b33c5488eb13bc5244e215953/illustration-allegro-in-circle-big-ab3336c0b3#a"/>
+2. [`#border`](https://a.allegroimg.com/original/34901c/db3b33c5488eb13bc5244e215953/illustration-allegro-in-circle-big-ab3336c0b3#border) — <img class="inline" style="margin: 0" alt="#border" src="https://a.allegroimg.com/original/34901c/db3b33c5488eb13bc5244e215953/illustration-allegro-in-circle-big-ab3336c0b3#border"/>
+3. [`#shadow`](https://a.allegroimg.com/original/34901c/db3b33c5488eb13bc5244e215953/illustration-allegro-in-circle-big-ab3336c0b3#shadow) — <img class="inline" style="margin: 0" alt="#shadow" src="https://a.allegroimg.com/original/34901c/db3b33c5488eb13bc5244e215953/illustration-allegro-in-circle-big-ab3336c0b3#shadow"/>
+4. [`#icon`](https://a.allegroimg.com/original/34901c/db3b33c5488eb13bc5244e215953/illustration-allegro-in-circle-big-ab3336c0b3#icon) — <img class="inline" style="margin: 0" alt="#icon" src="https://a.allegroimg.com/original/34901c/db3b33c5488eb13bc5244e215953/illustration-allegro-in-circle-big-ab3336c0b3#icon"/>
 
 Now, the regular fragment-less URL will display a blank image.
 Thus, for the full icon, we’re going to add a [`#icon`](https://a.allegroimg.com/original/34c91a/651290b94002acbe836ae520e8ff/illustration-allegro-in-circle-big-ab3336c0b3#icon) fragment to the URL.
@@ -188,7 +188,7 @@ Usually, icons are [purely decorative content](https://developer.mozilla.org/en-
 That’s why we remove them from the accessibility tree by `aria-hidden="true"`.
 
 The result is supposed to look like the original icon from the start —
-<img class="inline-image" alt="the original icon from the beginning" src="https://a.allegroimg.com/original/34412f/ae71613e49d986c5c838698e2e86/illustration-allegro-in-circle-big-db0c91e439"/>.
+<img class="inline" style="margin: 0" alt="the original icon from the beginning" src="https://a.allegroimg.com/original/34412f/ae71613e49d986c5c838698e2e86/illustration-allegro-in-circle-big-db0c91e439"/>.
 
 Now, the single element gives us control over up to three parts of our icon.
 Moreover, we can change colors independently and dynamically.

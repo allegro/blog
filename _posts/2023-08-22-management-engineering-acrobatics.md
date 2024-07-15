@@ -29,9 +29,9 @@ same time. When you become a manager, not only do you have less time for technic
 lose the ability to focus on these tasks even if you do find a time slot. This is because, like it or not, you end
 up with a [manager’s schedule](http://www.paulgraham.com/makersschedule.html).
 
-<img src="/img/articles/2023-08-22-management-engineering-acrobatics/flying-trapeze-performers.jpg"
+<img src="/assets/img/articles/2023-08-22-management-engineering-acrobatics/flying-trapeze-performers.jpg"
      alt ="Circus performers on the flying trapeze, Public Domain image from https://commons.wikimedia.org/wiki/File:Programma_van_Circus_Krone_in_Rotterdam_drie_Alizes_,_vliegende_trapeze_met_o.a.,_Bestanddeelnr_910-4372.jpg"
-     class="small-image"/>
+     />
 
 Over time, your technical skills start deteriorating, and if you miss the right moment, you may find yourself at
 a point of no return. Like a circus artist on a flying trapeze, you have to time your actions right to avoid

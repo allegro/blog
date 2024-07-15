@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Using ESLint to improve your app’s performance
-author: [pawel.wolak]
+author: pawel.wolak
 tags: [eslint, performance, webperf, javascript, frontend]
 ---
 

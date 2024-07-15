@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "One task — two solutions: Apache Spark or Apache Beam?"
-author: [yevgeniya.li]
-tags: [tech, Apache Spark, Apache Beam, BigFlow, BigData, GCP]
+author: yevgeniya.li
+tags: [tech, apache spark, apache beam, bigflow, bigdata, gcp]
 ---
 Some time ago, our team faced the issue of moving an existing [Apache Spark](https://spark.apache.org) job from an on-premise Hadoop cluster to public cloud.
 While working on the transition we came across another way to process data that is [Apache Beam](https://beam.apache.org). We were curious whether this tool had
@@ -13,7 +13,7 @@ process the same data using these technologies. Below you can get to know the ar
 * Task: join and clean data.
 * Result: 4 output tables.
 
-![scripting](/img/articles/2021-06-28-1-task-2-solutions-spark-or-beam/bigdata-projects-architecture.png)
+![scripting](/assets/img/articles/2021-06-28-1-task-2-solutions-spark-or-beam/bigdata-projects-architecture.png)
 
 Note: Below I described our solution and used tools and technologies which do not pretend to be 100% the right approach so your results might be different.
 

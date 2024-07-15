@@ -34,7 +34,7 @@ At this point, INP only observes:
 
 ## How is INP measured?
 
-<img src="/img/articles/2024-07-01-INP-new-core-web-vitals/inp-scheme.png" alt="INP measurement scheme. Division into 3 phases: Input delay, Processing time and Presentation delay." class="image"/>
+<img src="/assets/img/articles/2024-07-01-INP-new-core-web-vitals/inp-scheme.png" alt="INP measurement scheme. Division into 3 phases: Input delay, Processing time and Presentation delay."/>
 
 INP measures the time from detecting user input to presenting a new frame in the browser.
 This process has three phases:
@@ -46,11 +46,11 @@ Where can you look for improvements? First of all, in phases one and two.
 1. **Input delay** phase – the interaction can happen anytime during the user’s visit. The main thread in the browser
 may be busy at this time because of some already ongoing task. This situation can increase how long
 this phase lasts. Blocked main thread = longer time to call the event callback.
-<img src="/img/articles/2024-07-01-INP-new-core-web-vitals/inp-scheme-input-delay.png" alt="INP - scheme of the Input delay phase" class="small-image"/>
+<img src="/assets/img/articles/2024-07-01-INP-new-core-web-vitals/inp-scheme-input-delay.png" alt="INP - scheme of the Input delay phase" />
 2. **Processing time** – it is the time when event callbacks with the engineer’s code that handles user interaction are executed
 (`onClick`, `onKey`). It is crucial not to block the main thread for too long with the code that handles interactions.
 
-<img src="/img/articles/2024-07-01-INP-new-core-web-vitals/inp-processing-time.png" alt="INP - scheme of the Processing time phase" class="small-image"/>
+<img src="/assets/img/articles/2024-07-01-INP-new-core-web-vitals/inp-processing-time.png" alt="INP - scheme of the Processing time phase" />
 
 ### How is the final INP value of the visit calculated?
 
@@ -87,7 +87,7 @@ Google set three threshold ranges ([source](https://web.dev/articles/inp#good-sc
 * Needs Improvement: > 200ms and <= 500ms
 * Poor: > 500ms
 
-<img src="/img/articles/2024-07-01-INP-new-core-web-vitals/good-needs-improvement-poor.png" alt="INP values - recommended thresholds ranges." class="small-image"/>
+<img src="/assets/img/articles/2024-07-01-INP-new-core-web-vitals/good-needs-improvement-poor.png" alt="INP values - recommended thresholds ranges." />
 
 ## Why is it important to stay below recommended thresholds?
 
@@ -118,7 +118,7 @@ processing only for the first user interaction (input). It is not the only diffe
 Unlike INP, it measures the time from detecting a user interaction to the start of its processing.
 FID relates only to the first of the three phases described above (Input delay).
 
-<img src="/img/articles/2024-07-01-INP-new-core-web-vitals/inp-scheme-vs-fid.png" alt="INP vs FID scheme." class="small-image"/>
+<img src="/assets/img/articles/2024-07-01-INP-new-core-web-vitals/inp-scheme-vs-fid.png" alt="INP vs FID scheme." />
 
 ### Key information summary:
 <table>
@@ -165,9 +165,9 @@ In addition to other helpful information about Web Vitals, this extension gives 
 for single interactions with a distinction for all 3 phases. After turning on the right option in the extension
 settings, you can find the metric logs in developer tools in the “Console” tab.
 
-<img src="/img/articles/2024-07-01-INP-new-core-web-vitals/web-vitals-extension-settings.png" alt="Console logging option in the web-vitals extension settings" class="small-image">
+<img src="/assets/img/articles/2024-07-01-INP-new-core-web-vitals/web-vitals-extension-settings.png" alt="Console logging option in the web-vitals extension settings" >
 
-<img src="/img/articles/2024-07-01-INP-new-core-web-vitals/web-vitals-extension.png" alt="The resulting output of the web-vitals Chrome extension." class="small-image" />
+<img src="/assets/img/articles/2024-07-01-INP-new-core-web-vitals/web-vitals-extension.png" alt="The resulting output of the web-vitals Chrome extension."  />
 
 Web-vitals Chrome extension can be found [HERE](https://chromewebstore.google.com/detail/web-vitals/ahfhijdlegdabablpippeagghigmibma).
 
@@ -203,9 +203,9 @@ what is happening in the browser and in the main thread. It also allows you to d
 rendered frames, cyclic and synchronous style recalculations and more. It can be your best friend during
 debugging a slow interaction :)
 
-<img src="/img/articles/2024-07-01-INP-new-core-web-vitals/devtools-performance-recording.png" alt="Recording button placement in Chrome developer tools." class="small-image"/>
-<img src="/img/articles/2024-07-01-INP-new-core-web-vitals/devtools-performance.png" alt="Performance section in Chrome developer tools." class="small-image"/>
-<img src="/img/articles/2024-07-01-INP-new-core-web-vitals/devtools-performance-interaction.png" alt="Details of the recorded interaction." class="small-image"/>
+<img src="/assets/img/articles/2024-07-01-INP-new-core-web-vitals/devtools-performance-recording.png" alt="Recording button placement in Chrome developer tools." />
+<img src="/assets/img/articles/2024-07-01-INP-new-core-web-vitals/devtools-performance.png" alt="Performance section in Chrome developer tools." />
+<img src="/assets/img/articles/2024-07-01-INP-new-core-web-vitals/devtools-performance-interaction.png" alt="Details of the recorded interaction." />
 
 ### 5. Synthetic tests tools
 
@@ -218,7 +218,7 @@ debugging a slow interaction :)
 * You can turn it on in the developers tools → “Performance” tab settings → CPU
 * Local overrides - you can override script locally (more info: [https://developer.chrome.com/docs/devtools/overrides](https://developer.chrome.com/docs/devtools/overrides))
 * Blocking scripts locally
-<img src="/img/articles/2024-07-01-INP-new-core-web-vitals/devtools-blocking.png" alt="Blocking request URL in devTools." class="small-image"/>
+<img src="/assets/img/articles/2024-07-01-INP-new-core-web-vitals/devtools-blocking.png" alt="Blocking request URL in devTools." />
 * Remote debug on physical devices
   * Android: [https://developer.chrome.com/docs/devtools/remote-debugging](https://developer.chrome.com/docs/devtools/remote-debugging)
   * iOS: [https://developer.apple.com/documentation/safari-developer-tools/inspecting-ios](https://developer.apple.com/documentation/safari-developer-tools/inspecting-ios)
@@ -345,15 +345,15 @@ it will block the main thread for too long.
 Below you can find an example of optimizing a long interaction on the offer page, which was opening and closing full-screen mode in a photo gallery,
 at the top of an offer page. In this case, the long task was split into two smaller ones using the `setTimeout` function with a `delay` parameter value set to 0.
 
-<img src="/img/articles/2024-07-01-INP-new-core-web-vitals/example-long-task.png" alt="Example 1. All interaction handling in one long task." class="image"/>
+<img src="/assets/img/articles/2024-07-01-INP-new-core-web-vitals/example-long-task.png" alt="Example 1. All interaction handling in one long task."/>
 Example 1: All interaction handling is contained in one single task, which the browser reports as a “Long task”.
 
-<img src="/img/articles/2024-07-01-INP-new-core-web-vitals/example-task-render-task.png" alt="Example 2. Deferred task executed later so as not to block and delay the rendering process." class="image"/>
+<img src="/assets/img/articles/2024-07-01-INP-new-core-web-vitals/example-task-render-task.png" alt="Example 2. Deferred task executed later so as not to block and delay the rendering process."/>
 Example 2: The same interaction handling after being split into two tasks. The entire non-critical part has been separated into the next task,
 which can be started by the browser at a time suitable for it. In this case, you can see that a new frame was rendered between the two tasks,
 and then the rest of the interaction handling was executed.
 
-<img src="/img/articles/2024-07-01-INP-new-core-web-vitals/example-task-task-render.png" alt="Example 3. Deferred task executed just after the first task before the rendering process." class="image"/>
+<img src="/assets/img/articles/2024-07-01-INP-new-core-web-vitals/example-task-task-render.png" alt="Example 3. Deferred task executed just after the first task before the rendering process."/>
 Example 3:  In this example, we can see exactly the same two tasks as in Example 2. The difference is that the first task finished quickly
 enough, so the browser decided that it had enough time to perform the second task before the render.
 
@@ -367,10 +367,10 @@ even though blocking the ability to scroll the content below was not critical an
 the operation of attaching CSS class to the body element until after the next frame had been rendered. This way, the user received the most
 important visual effect of this interaction faster — opening the sidebar with important information.
 
-<img src="/img/articles/2024-07-01-INP-new-core-web-vitals/example-sidebar.png" alt="The sidebar component in Allegro" class="small-image"/>
+<img src="/assets/img/articles/2024-07-01-INP-new-core-web-vitals/example-sidebar.png" alt="The sidebar component in Allegro" />
 The sidebar component at Allegro
 
-<img src="/img/articles/2024-07-01-INP-new-core-web-vitals/devtools-styles-recalculation.png" alt="Chrome developer tools styles recalculation information" class="small-image" />
+<img src="/assets/img/articles/2024-07-01-INP-new-core-web-vitals/devtools-styles-recalculation.png" alt="Chrome developer tools styles recalculation information"  />
 Information about how many elements were affected by style recalculation can be found in developer tools in the „Performance” tab.
 
 ### 3. Attaching global event listeners too early
@@ -390,3 +390,5 @@ It forces a focus on all interactions, not just making the site interactive as q
 It also requires thinking about how other operations can affect the interactivity of the website.
 
 We are still learning how to work in the new reality, so we would be excited if you share your own experiences with us!
+
+Special thanks to [Kamil Borzym]((/authors/kamil.borzym/)), [Paweł Lesiecki](/authors/pawel.lesiecki/) and [Wiktor Czajkowski](https://github.com/virzen) for their help with creating this post.
