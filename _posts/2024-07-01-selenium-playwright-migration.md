@@ -15,14 +15,13 @@ Anyone interested in test automation has likely heard of [Playwright](https://pl
 automation (Playwright for Java was
 released in March 2021, for Node.js slightly earlier — in January 2020) and is becoming more and more popular among testers. This is mainly because it is
 modern, simple and intuitive to use. From my perspective the key reason for Playwright's growing popularity is that many test framework features, which
-previously had to be implemented manually, are available out of the box with Playwright. For example: test retry mechanisms? Absolutely. Test report
+previously had to be implemented manually, are available out of the box with Playwright. For example: Test retry mechanisms? Absolutely. Test report
 generation? You bet. Parallel execution? Of course.
 
 But there's a catch. These features are primarily prepared for the Node.js environment. Playwright for the JVM environment is being developed as a secondary
-priority and does not offer its own powerful runner and such fancy functionalities, at least for now, requires manual implementation.
+priority and does not offer its own powerful runner and such fancy functionalities, at least for now, require manual implementation.
 
-So, is it worth switching from Selenium to Playwright in a JVM environment? Absolutely! As long as your existing framework includes the necessary, previously
-mentioned features and follows the Page Object Model (POM) principles.
+So, is it worth switching from Selenium to Playwright in a JVM environment? Absolutely! This is true as long as your existing framework includes the necessary features mentioned earlier and adheres to the Page Object Model (POM) principles. Later in the article, I will explain why.
 
 What is POM all about? POM's main advantage is that the test code is separated from the code responsible for interacting with the pages. POM is
 based on representing the structure of the tested web page in the form of classes/objects. Such an object then contains methods that represent the actions a
@@ -49,20 +48,21 @@ piece of cake.
 The backend part of the team also develops software in the JVM environment and uses test repository to generate test data needed for daily basis
 development. This was an additional reason not to switch into different programming language.
 
-## And now, one by one: how to start such a migration?
+## And now, one by one: how to conduct such a migration?
 
 Since I approached the migration as a POC, I first created a separate `v2` folder on a separate branch, where whole code that would eventually replace Selenium
 was to be placed. I wanted to conduct this migration without conflicts, so that at one point, there could be two functioning libraries, and then gradually phase
-out one of them - Selenium. This was a good and safe approach because it allowed for controlled implementation of the new solution. What steps I have taken:
+out one of them - Selenium. This was a good and safe approach because it allowed for controlled implementation of the new solution. Let's go through the
+steps I have taken.
 
-### Add playwright dependency to `pom.xml` file
+### Adding Playwright dependency to `pom.xml` file
 
-```java
-        <dependency>
-            <groupId>com.microsoft.playwright</groupId>
-            <artifactId>playwright</artifactId>
-            <version>1.42.0</version>
-        </dependency>
+```xml
+<dependency>
+    <groupId>com.microsoft.playwright</groupId>
+    <artifactId>playwright</artifactId>
+    <version>1.42.0</version>
+</dependency>
 ```
 
 ### Change in the `BaseTest.class`
@@ -86,7 +86,7 @@ public class BaseTest {
     }
 
     @AfterClass(alwaysRun = true)
-    public void quitDriver() {
+    public void afterTest() {
         browser.close();
         playwright.close();
     }
@@ -118,7 +118,7 @@ public class LandingPage extends BasePage {
 This refactor went smoothly, efficiently and pleasantly. This was for Playwright numerous advantages over Selenium. One of them is that Playwright
 ensures that elements are ready for interaction before executing actions. This reduces necessity for artificial timeouts, which are a common cause of unstable
 tests. Moreover, Playwright has its own assertions that are designed for the dynamic nature of the web. Checks in assertions are automatically retried until the
-required conditions are satisfied.
+required conditions are satisfied. If the necessary checks are not successful within the allotted `timeout`, the action fails with a `TimeoutError`.
 
 One of the simplest possible examples, which at the same time clearly shows the difference in necessary workarounds between Selenium and Playwright, is typing
 text into an input field. Let's assume I want to type the value of credit into an input field. The input is located on the landing page of Allegro Merchant
@@ -139,7 +139,7 @@ public class Wait {
 }
 ```
 
-Then I have to implement a scrolling mechanism as input is at the bottom part of page.
+Then I had to implement a scrolling mechanism as input is at the bottom part of page.
 
 ```java
 public class Scroll {
@@ -159,7 +159,7 @@ Next step is to clear the input and assure that input is ready to retrieve value
 implement something more stable. To achieve that I used JavascriptExecutor.
 
 ```java
-    private void clearCreditValueInput() {
+private void clearCreditValueInput() {
     JavascriptExecutor js = (JavascriptExecutor) driver;
     js.executeScript("document.querySelector('input[placeholder=\"Jaką kwotę z odnawialnego limitu chcesz wypłacić?\"]').value=''");
 }
@@ -168,7 +168,6 @@ implement something more stable. To achieve that I used JavascriptExecutor.
 Finally, I was able to write down the exact function to set the value of credit in input.
 
 ```java
-
 @Step("Set value of credit for {value}")
 public LandingPage setValueOfCredit(Integer value) {
     WebElement input = waitForElementToBeVisibleAndGet(driver, VALUE_OF_CREDIT_INPUT);
@@ -184,7 +183,6 @@ A lot of work, isn't it? At the same time Playwright does an exact action within
 and the corresponding implementation in Playwright is also simple:
 
 ```java
-
 @Step("Set value of credit for {value}")
 public LandingPage setValueOfCredit(Integer value) {
     page.getByTestId(VALUE_OF_CREDIT_INPUT).clear();
@@ -193,7 +191,7 @@ public LandingPage setValueOfCredit(Integer value) {
 }
 ```
 
-Out of sheer curiosity, I decided to compare the execution times of a test using Selenium and Playwright. To do this, I migrated a single scenario—the happy
+Out of sheer curiosity, I decided to compare the execution times of a test using Selenium and Playwright. To do this, I migrated a single scenario — the happy
 path of our team's core process. I ran this test locally 10 times for both Playwright and Selenium, and the results were as follows:
 
 | Execution number | Selenium [s] | Playwright [s] |
@@ -212,17 +210,11 @@ path of our team's core process. I ran this test locally 10 times for both Playw
 
 #### Summary
 
-Selenium:
-
-* Total Executions: 10
-* Successful Executions: 8
-* Average Execution Time: 20,420 s
-
-Playwright:
-
-* Total Executions: 10
-* Successful Executions: 10
-* Average Execution Time: 16,516 s
+|                        | Selenium | Playwright |
+|------------------------|----------|-----------|
+| Total Executions       | 10       | 10        |
+| Successful Executions  | 8        | 10        |
+| Average Execution Time | 20,420 s | 16,516 s  |
 
 #### Conclusion of the test
 
@@ -230,53 +222,78 @@ Playwright demonstrates a more consistent and faster average execution time comp
 excluded from the average calculation. Performing such a quick and simple check gave me confirmation that I was going in the right direction. I continued to
 migrate other scenarios.
 
-### Change existing workflow to run tests with Playwright on CI (GitHub Actions) and create Allure report of the results
+### Change in existing workflow to run tests with Playwright on CI (GitHub Actions) and create Allure report of the results
 
 In order to execute tests on CI I needed to add two steps: one installing Playwright and second running tests.
 
 ```yaml
-      -   name: Install Playwright
-          run: ./mvnw exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install --with-deps"
+  -   name: Install Playwright
+      run: ./mvnw exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install --with-deps"
 
-      -   name: Build and Test
-          if: always()
-          run: ./mvnw clean test -Dsurefire.suiteXmlFiles=src/test/resources/playwright_mf_acceptance_tests_business_loan.xml
-          env:
-              MVN_EIC_USERNAME: ${{ secrets.EIC_USERNAME }}
-              MVN_EIC_PASSWORD: ${{ secrets.EIC_PASSWORD }}
+  -   name: Build and Test
+      if: always()
+      run: ./mvnw clean test -Dsurefire.suiteXmlFiles=src/test/resources/playwright_mf_acceptance_tests_business_loan.xml
+      env:
+          MVN_EIC_USERNAME: ${{ secrets.EIC_USERNAME }}
+          MVN_EIC_PASSWORD: ${{ secrets.EIC_PASSWORD }}
 ```
 
-My workflow contains also a step for creating report after execution which is conducted by Allure library within those few steps:
+Disclaimer: You can always use dedicated Playwright container and run your tests in it. This is beneficial for avoiding dependency contamination in the host
+environment and for maintaining a consistent environment for tasks such as screenshots across various operating systems. In that case you don't have to
+install Playwright dependencies, because its official Docker image has it all. An example usage would look like this:
 
 ```yaml
-      -   name: Get Allure history
-          uses: actions/checkout@v2
-          if: always()
-          continue-on-error: true
-          with:
-              ref: gh-pages
-              path: gh-pages
+jobs:
+  playwright:
+    name: 'Playwright Tests'
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright/java:v1.45.0-jammy
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Build & Install
+        run: mvn -B install -D skipTests --no-transfer-progress
+      - name: Run tests
+        run: mvn test
+        env:
+          HOME: /root
+```
+However, just to show the easiest way to transform into Playwright from Selenium, we will stick to previous version of executing tests on CI.
 
-      -   name: Allure Report action from marketplace
-          uses: simple-elf/allure-report-action@v1
-          if: always()
-          id: allure-report
-          with:
-              allure_results: target/allure-results
-              gh_pages: gh-pages
-              allure_report: allure-report
-              allure_history: allure-history
-              subfolder: playwright-mf-business-loan-acceptance-tests
+My workflow also contains a step for creating a report after execution, which is conducted by Allure library within those few steps:
 
-      -   name: Deploy report to Github Pages
-          if: always()
-          uses: peaceiris/actions-gh-pages@v3
-          continue-on-error: true
-          with:
-              PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              PUBLISH_BRANCH: gh-pages
-              PUBLISH_DIR: allure-history
+```yaml
+  -   name: Get Allure history
+      uses: actions/checkout@v2
+      if: always()
+      continue-on-error: true
+      with:
+          ref: gh-pages
+          path: gh-pages
 
+  -   name: Allure Report action from marketplace
+      uses: simple-elf/allure-report-action@v1
+      if: always()
+      id: allure-report
+      with:
+          allure_results: target/allure-results
+          gh_pages: gh-pages
+          allure_report: allure-report
+          allure_history: allure-history
+          subfolder: playwright-mf-business-loan-acceptance-tests
+
+  -   name: Deploy report to Github Pages
+      if: always()
+      uses: peaceiris/actions-gh-pages@v3
+      continue-on-error: true
+      with:
+          PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PUBLISH_BRANCH: gh-pages
+          PUBLISH_DIR: allure-history
 ```
 
 Test Execution Report Using Allure Reporting Tool looks as follows:
@@ -289,7 +306,7 @@ An expanded list of steps executed during test run:
 
 ## Advantages of Playwright over Selenium for which we chose it
 
-* Playwright natively supports modern web features such as Single Page Applications (SPAs), Shadow DOM, and Web Components. It seamlessly handles these
+* Playwright natively supports modern web features such as Single Page Applications (SPAs), Shadow DOM and Web Components. It seamlessly handles these
   technologies, unlike Selenium, which often requires additional configurations and workarounds.
 * Playwright provides native support for Chromium, Firefox, and WebKit from the outset. Selenium, in contrast, requires separate drivers for each browser.
 * Playwright offers built-in support for asynchronous operations and events, crucial for JavaScript-heavy websites where elements load asynchronously.
