@@ -1,7 +1,7 @@
 ---
 layout: post
 title: My first days at Allegro
-author: [anna.stanislawska]
+author: anna.stanislawska
 tags: [tech]
 ---
 The beginnings in a new job can be really tough, especially in such uncertain times as the pandemic. Remote onboarding, Zoom meetings, inability to talk

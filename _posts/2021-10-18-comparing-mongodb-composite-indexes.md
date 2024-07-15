@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Comparing MongoDB composite indexes"
-author: [michal.knasiecki]
+author: michal.knasiecki
 tags: [tech, mongodb, index, performance, "query tuning"]
 ---
 One of the key elements ensuring efficient operation of the services we work on every day at
@@ -431,7 +431,7 @@ done >> find3.js
 This time I was finally able to get a result better than the one achieved with the artificial key approach: **9.71s**.
 All results are summarized in the chart below:
 
-![Collection stats](/img/articles/2021-10-18-comparing-mongodb-composite-indexes/final-results.png)
+![Collection stats](/assets/img/articles/2021-10-18-comparing-mongodb-composite-indexes/final-results.png)
 
 ## Conclusion
 

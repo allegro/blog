@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "Transactions in MongoDB"
-author: [piotr.kisielewicz]
-tags: [tech, techradar, NoSQL]
+author: piotr.kisielewicz
+tags: [tech, techradar, nosql]
 excerpt: >
     Let's look at what transactions in MongoDB are and how they differ from SQL transactions.
 ---

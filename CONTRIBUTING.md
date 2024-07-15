@@ -98,7 +98,7 @@ The repository for blog authors is at https://github.com/allegro-internal/blog/ 
 technical, used for publishing the blog outside the organization, and actually contains a copy of
 allegro-internal/blog but without full commit and review history).
 
-You need to add yourself to the `blog-authors` AD group in [SIM](https://sim.allegrogroup.com/) in order to gain write
+You need to add yourself to the `blog-authors` AD group in [myLuna](http://myluna.allegrogroup.com/) in order to gain write
 permissions to allegro-internal/blog repository.
 
 ## What goes into your PR
@@ -301,7 +301,7 @@ Most **frequently you will use the closing single quote** (’) for contractions
 source: [practicaltypography.com](https://practicaltypography.com)
 
 You can visit [fsymbols](http://fsymbols.com/keyboard/linux/compose/) for information about configuring and using Compose key on Linux.
-On Windows, you can install [WinCompose](http://wincompose.info/) to get similar functionality.
+On Windows, you can install [WinCompose](https://github.com/samhocevar/wincompose) to get similar functionality.
 You can also [enter any Unicode character based on its hex code](http://fsymbols.com/keyboard/linux/unicode/).
 
 ## Avoiding image optimization

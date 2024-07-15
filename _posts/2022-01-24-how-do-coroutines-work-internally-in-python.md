@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "How do coroutines work internally in Python?"
-author: [tomasz.szewczyk]
+author: tomasz.szewczyk
 tags: [tech, python, async, coroutines]
 ---
 
@@ -678,7 +678,7 @@ MongoDB driver [Motor](https://motor.readthedocs.io/en/stable/).
 In reality, the Python event loop runs on futures, also known as promises
 in other languages. Coroutines are implemented with tasks which rely on
 futures. Our implementation is actually simplified as it bypasses some abstraction
-layers. You should remember that when looking into Python sources, 
+layers. You should remember that when looking into Python sources,
 so you don’t get confused!
 
 When I first started learning coroutines I had hard times trying to figure out

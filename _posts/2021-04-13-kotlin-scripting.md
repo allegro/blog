@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Kotlin - a language for everyone and for everything. Even scripts.
-author: [weronika.orczyk]
+author: weronika.orczyk
 tags: [tech, kotlin, script]
 ---
 
@@ -11,7 +11,7 @@ choosing a programming language to work with, which frameworks to use and which 
 All of them have pros and cons, but when looking for an all-purpose language you should take Kotlin
 into consideration and ask yourself the question: “Do I really need another programming language?”.
 
-![scripting](/img/articles/2021-04-13-scripting.jpg)
+![scripting](/assets/img/articles/2021-04-13-scripting.jpg)
 
 Kotlin is an open source, statically typed and powerful language. It takes inspiration from many programming languages like Java,
 Scala, C#, Groovy, Python and it attempts to combine the best features from each. The support for multiplatform programming

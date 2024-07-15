@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Responsible work with MongoDB
-author: [tomasz.fijalkowski]
-tags: [MongoDB, NoSQL, RDBMS]
+author: tomasz.fijalkowski
+tags: [mongodb, nosql, RDBMS]
 ---
 
 Understanding data model is sufficient to design good database schema in RDBMS (relational
