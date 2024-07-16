@@ -20,7 +20,7 @@ ATM is the place where we can meet each other, share our experiences and just ge
 Join us in the fascinating journey through the inspiring, exciting and unique stories of Allegro
 technologists that we gathered to listen to in the first days of this fall.
 
-<div class="i-wrapper">
+<div>
     <div>
         <iframe height="315" width="560" src="https://www.youtube.com/embed/R8M-aU--TO8" frameborder="0" allowfullscreen=""></iframe>
     </div>
@@ -47,7 +47,7 @@ behaviors are worth imitating.
 What makes it even more special — nominations and the final vote were in the hands of our IT employees.
 Congrats to all 10 Heroes who were chosen!
 
-<img alt="allegro tech heroes" src="/img/articles/2019-12-19-allegro-tech-meeting/allegro_tech_heroes.jpg" />
+<img alt="allegro tech heroes" src="/assets/img/articles/2019-12-19-allegro-tech-meeting/allegro_tech_heroes.jpg" />
 
 
 
@@ -86,7 +86,7 @@ model evaluation, underfitting/overfitting problem and ending with convolutional
 deep reinforcement learning.
 The talk contains good practice quotes and also plot twists so if you want to feel bamboozled as well,
 check the video below :)
-<div class="i-wrapper">
+<div>
     <div>
         <iframe height="315" width="560" src="https://www.youtube.com/embed/XDMNm7PQpxk" frameborder="0" allowfullscreen=""></iframe>
     </div>
@@ -102,7 +102,7 @@ a new communication layer in our microservice setup or deep JVM details?
 Paweł Jurczenko chose the latter subject and did a thorough overview of many topics
 related to threads on JVM. He talked about threading models, compared some concurrency primitives,
 explained challenges with non-blocking I/O and how to tune your application thread pools.
-<div class="i-wrapper">
+<div>
     <div>
         <iframe height="315" width="560" src="https://www.youtube.com/embed/Wjg3UxYmw3I" frameborder="0" allowfullscreen=""></iframe>
     </div>
@@ -115,7 +115,7 @@ For example Krzysztof Szłapiński decided to tell us something about teleportat
 But not like just normal teleportation: quantum teleportation.
 We were really interested in how it works, how we can use it and what the potential problems and limitations are.
 If you want to build yourself a teleporter, check Krzysiek’s presentation.
-<div class="i-wrapper">
+<div>
     <div>
         <iframe height="315" width="560" src="https://www.youtube.com/embed/_Gqvuxei8DE" frameborder="0" allowfullscreen=""></iframe>
     </div>
@@ -136,7 +136,7 @@ Iza talked about the systems thinking in examples and the methods to see somethi
 more than only the tip of the iceberg.
 
 If you want to deep dive into particular cases - watch the video.
-<div class="i-wrapper">
+<div>
     <div>
         <iframe height="315" width="560" src="https://www.youtube.com/embed/eroIBiM4Cn8" frameborder="0" allowfullscreen=""></iframe>
     </div>
@@ -155,7 +155,7 @@ a cover of the song [Let it go](https://www.youtube.com/watch?v=EUNyUR4fY7U) whi
 what obstacles developers might be facing.
 Let us know what you think about this work style!
 
-<img alt="speakers" src="/img/articles/2019-12-19-allegro-tech-meeting/let_me_code_speakers.png" />
+<img alt="speakers" src="/assets/img/articles/2019-12-19-allegro-tech-meeting/let_me_code_speakers.png" />
 
 ## Networking
 ATM is a kind of technology celebration at Allegro. These are 2 days filled with lectures on various

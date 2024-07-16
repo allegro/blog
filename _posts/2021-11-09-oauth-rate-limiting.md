@@ -87,7 +87,7 @@ proportions. If, for example, the span of the current window is 75% of the previ
 then the value of the current rate-limit counter is a sum of 75% of the previous frame counter and 25% of the current
 frame counter. The results are put into a hashmap with users as keys and counters as values, which acts as a cache.
 
-![Sliding window algorithm](/img/articles/2021-11-09-oauth-rate-limiting/sliding-window-algorithm.png)
+![Sliding window algorithm](/assets/img/articles/2021-11-09-oauth-rate-limiting/sliding-window-algorithm.png)
 In the picture above the current counter value would be:
 
 ```
@@ -181,8 +181,8 @@ performance. Each instance refreshes the counter asynchronously - reads and writ
 dedicated thread. Each one also holds the counters only for the clients they have to handle. A particular instance
 removes the client's state after it stops sending requests.
 
-![Sharing the state example](/img/articles/2021-11-09-oauth-rate-limiting/sharing-the-state.png)
-![Sharing the state example table](/img/articles/2021-11-09-oauth-rate-limiting/sharing-the-state-table.png)
+![Sharing the state example](/assets/img/articles/2021-11-09-oauth-rate-limiting/sharing-the-state.png)
+![Sharing the state example table](/assets/img/articles/2021-11-09-oauth-rate-limiting/sharing-the-state-table.png)
 
 This table depicts an example flow of counters on two instances (A, B) of our OAuth service. Each of them has its own
 counter
@@ -320,11 +320,11 @@ To monitor and verify our solution we needed a bunch of metrics telling us how m
 policy and which of them are getting closer to being blocked. In practice, two charts shown below were enough to monitor
 their behaviour:
 
-![Ratelimit Denied Rate](/img/articles/2021-11-09-oauth-rate-limiting/ratelimit-denied-rate.png)
+![Ratelimit Denied Rate](/assets/img/articles/2021-11-09-oauth-rate-limiting/ratelimit-denied-rate.png)
 
 This chart shows clients and their blocked rate. Each color depicts a different blocked client.
 
-![Ratelimit Allowed Rate](/img/articles/2021-11-09-oauth-rate-limiting/ratelimit-allowed-rate.png)
+![Ratelimit Allowed Rate](/assets/img/articles/2021-11-09-oauth-rate-limiting/ratelimit-allowed-rate.png)
 
 This one on the other hand depicts the allowed rate. The limit line is helpful to see if any client is getting closer to
 it and will be blocked soon. It’s worth mentioning that the default rate limit policy isn’t sufficient for all of the

@@ -2,7 +2,7 @@
 layout: post
 title: How to approach testing in development process?
 author: wojciech.lizakowski
-tags: [manual tests, tech, iOS, testing, UI testing, test automation, release process, test]
+tags: [manual tests, tech, ios, testing, ui testing, test automation, release process, test]
 ---
 
 Application release process, or in fact software development process, as a release is the final stage of application
@@ -53,7 +53,7 @@ and very low internal to external defects found ratio. Obviously, the above requ
 working in an agile way, with frequent releases and not enough time for bug fixing. Eventually, a team would have to
 come to terms with bugs found in a production environment.
 
-![Waterfall or Agile](/img/articles/2018-02-15-how-to-approach-testing-in-development-process/wva.svg)
+![Waterfall or Agile](/assets/img/articles/2018-02-15-how-to-approach-testing-in-development-process/wva.svg)
 
 ## Automated vs manual testing – only one or both?
 Application testing is the most discussed topic. Should you execute only manual, repeatable, and thus boring tests or
@@ -120,7 +120,7 @@ After reading the previous paragraphs, finding the best solution should be easie
 consider their choice well and consider all the factors mentioned above. Eventually, the best choice depends on
 knowledge and experience of QA engineers.
 
-![Waterfall or Agile](/img/articles/2018-02-15-how-to-approach-testing-in-development-process/manualvsautomation.svg)
+![Waterfall or Agile](/assets/img/articles/2018-02-15-how-to-approach-testing-in-development-process/manualvsautomation.svg)
 
 ## Testing tools – do you need them? Which should you choose?
 
@@ -179,7 +179,7 @@ solution, were supposed to be changed in the nearest future. In other words, we 
 environment setup and test design to create tests to be executed only a few times, so the ROI would be very low.
 Therefore, it was better to focus more on manual testing.
 
-![Waterfall or Agile](/img/articles/2018-02-15-how-to-approach-testing-in-development-process/tlcdip.svg)
+![Waterfall or Agile](/assets/img/articles/2018-02-15-how-to-approach-testing-in-development-process/tlcdip.svg)
 
 ## Summary
 As there is no perfect model that would fit every project, QA engineers should decide about the testing process by

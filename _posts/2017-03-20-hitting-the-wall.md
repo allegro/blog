@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Hitting the Wall
-author: [tomasz.janiszewski]
+author: tomasz.janiszewski
 tags: [mesos, marathon, mesosphere]
 publish: true
 ---
@@ -23,7 +23,7 @@ If there is no mention of Marathon version, it is 1.3.10 and below; we need
 some time to test and deploy the latest 1.4 release.
 If you are interested in how our ecosystem is built, take a look at below MesosCon
 presentation.
-<div class="i-wrapper"><div>
+
 <iframe  height="315"  width="420"  src="https://www.youtube.com/embed/2dlCObSvgBc"  frameborder="0"  allowfullscreen></iframe>
 </div></div>
 
@@ -47,7 +47,7 @@ Marathon as our main (and so far only) framework on top of Apache Mesos.
 Below image is a snapshot of a traffic visualization for our services.
 It is generated with [vizceral](https://github.com/Netflix/vizceral).
 
-![Microservices visualization](/img/articles/2017-03-20-hitting-the-wall/vizceral.jpg)
+![Microservices visualization](/assets/img/articles/2017-03-20-hitting-the-wall/vizceral.jpg)
 
 ## Problems
 
@@ -132,7 +132,7 @@ presenting how much CPU time every method takes.
 You can compare how much CPU time gathering metrics takes with interval set to
 10 seconds (left) and 55 seconds (right).
 
-![Flame graph with default metrics setting](/img/articles/2017-03-20-hitting-the-wall/flame_before_after.png)
+![Flame graph with default metrics setting](/assets/img/articles/2017-03-20-hitting-the-wall/flame_before_after.png)
 
 ### Threads
 Marathon uses Akka as an actor framework. Its
@@ -150,7 +150,7 @@ Still, it’s more than the configured value but we will be able to handle this.
 Below you can see a diagram presenting how number of threads decreased after
 updating Marathon.
 
-![Marathon threads](/img/articles/2017-03-20-hitting-the-wall/marathon_threads_1.png)
+![Marathon threads](/assets/img/articles/2017-03-20-hitting-the-wall/marathon_threads_1.png)
 
 Another optimization we introduced was to increase
 `akka.default-dispatcher.throughput` to 20. According to
@@ -216,8 +216,8 @@ for a couple of minutes. The following graph presents typical events delay for o
 our cluster in a typical workday. Below you can compare unfiltered callbacks,
 and filtered SSE events delay. Data was gathered with marathon-consul.
 
-![Marathon events delay](/img/articles/2017-03-20-hitting-the-wall/marathon-consul.png)
-![Marathon events delay (SSE)](/img/articles/2017-03-20-hitting-the-wall/marathon-consul-sse.png)
+![Marathon events delay](/assets/img/articles/2017-03-20-hitting-the-wall/marathon-consul.png)
+![Marathon events delay (SSE)](/assets/img/articles/2017-03-20-hitting-the-wall/marathon-consul-sse.png)
 
 Our solution to this problem is to create a custom executor
 that will register an application in our systems just like Aurora does. This will
@@ -325,7 +325,7 @@ wall.
 
 ### How to avoid the wall:
 
-<div class="i-wrapper"><div>
+
 <iframe height="315"  width="420" src="https://www.youtube.com/embed/9lzOCVpvcpg" frameborder="0" allowfullscreen></iframe>
 </div></div>
 

@@ -17,7 +17,7 @@ At Allegro we are managing tens of MongoDB clusters, with hundreds of MongoDB da
 This kind of approach, where one MongoDB cluster runs multiple MongoDB databases, allowed us to utilize resources
 more effectively, while at the same time easing maintenance of clusters.
 
-![Old approach](/img/articles/2023-09-14-online-mongodb-migration/one_cluster_multiple_databases.png)
+![Old approach](/assets/img/articles/2023-09-14-online-mongodb-migration/one_cluster_multiple_databases.png)
 
 We’ve been living with this approach for years, but over time, more and more databases were
 created on shared clusters, increasing the frequency of the noisy neighbour problem.
@@ -35,7 +35,7 @@ The most common cause of the noisy neighbour problem in the Allegro infrastructu
 On various occasions it occurred that a non-optimal query performed on a large collection was consuming too much CPU,
 negatively affecting all the other databases on that cluster, making them slower or completely unresponsive.
 
-![Cluster CPU usage](/img/articles/2023-09-14-online-mongodb-migration/cluster_cpu.png)
+![Cluster CPU usage](/assets/img/articles/2023-09-14-online-mongodb-migration/cluster_cpu.png)
 
 ### MongoDB on Kubernetes as a solution to the noisy neighbour problem
 
@@ -43,7 +43,7 @@ To solve the noisy neighbour problem a separate team implemented a solution allo
 From now on, each MongoDB cluster is formed of multiple replicas and an arbiter spread among datacenters, serving only a single MongoDB database.
 Running each database on a separate cluster with isolated resources managed by Kubernetes was our solution to the noisy neighbour problem.
 
-![Kubernetes CPU usage](/img/articles/2023-09-14-online-mongodb-migration/k8s_cpu.png)
+![Kubernetes CPU usage](/assets/img/articles/2023-09-14-online-mongodb-migration/k8s_cpu.png)
 
 At this point we knew what we needed to do to solve our problems — we had to migrate all MongoDB databases from old shared clusters
 to new independent clusters on Kubernetes. Now came the time to answer the question: _How should we do it?_
@@ -139,7 +139,7 @@ We have formulated a procedure consisting of six consecutive steps:
 5. Start to push all the events stored in the queue (changes on _source database_) to the _destination database_,
 6. Wait for the queue to empty to establish eventual consistency.
 
-![Migration process](/img/articles/2023-09-14-online-mongodb-migration/migration_process.png)
+![Migration process](/assets/img/articles/2023-09-14-online-mongodb-migration/migration_process.png)
 
 Our migration procedure works flawlessly because processing Mongo Change Events in a sequence guarantees migration idempotency.
 Without this characteristic, we would have to change the order of steps 1 and 2 in the procedure, creating a possibility of losing data during migration.
@@ -152,7 +152,7 @@ we do not lose any of the events stored on the _source database_ during that tim
 
 The diagram below presents how such a kind of _write anomaly_ could happen if we started dumping data before listening for Mongo Change Events.
 
-![Avoiding event loss](/img/articles/2023-09-14-online-mongodb-migration/avoiding_event_loss.png)
+![Avoiding event loss](/assets/img/articles/2023-09-14-online-mongodb-migration/avoiding_event_loss.png)
 
 ### Implementation details
 
@@ -168,7 +168,7 @@ using [Mongo Change Streams with collection target](https://www.mongodb.com/docs
 All collections have their own separate queues in which Mongo Change Events are stored.
 At the final phase of migration, each of these queues is processed independently.
 
-![Concurrent migrations](/img/articles/2023-09-14-online-mongodb-migration/concurrent_migrations.png)
+![Concurrent migrations](/assets/img/articles/2023-09-14-online-mongodb-migration/concurrent_migrations.png)
 
 #### Initial data transfer
 
@@ -365,4 +365,4 @@ At Allegro we use _mongo-migration-stream_ as a library in a Web application wit
 This approach allows Allegro engineers to manage database migrations on their own, without involving database team members.
 On the screenshot below you can see our Web application GUI during a migration.
 
-![mongo-migration-stream Web Application at Allegro](/img/articles/2023-09-14-online-mongodb-migration/mongo_migration_stream_ui.png)
+![mongo-migration-stream Web Application at Allegro](/assets/img/articles/2023-09-14-online-mongodb-migration/mongo_migration_stream_ui.png)
