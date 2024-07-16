@@ -16,7 +16,7 @@ analysts, but also serves as a valuable tool for developers, testers, and projec
 both the current AS-IS and intended TO-BE process, paves the way for more efficient and transparent communication between technical teams and their business stakeholders.
 I love that “Aha” moment when participants discover and share knowledge about the process, leading to synergy and better understanding among both business and technical teams.
 
-![BPMN simple example](/assets/img/articles/2024-06-04-bpmn-the-key-to-understanding-business-processes/bpmn_example_1.png)
+![BPMN simple example](/assets/img/articles/2024-07-16-bpmn-the-key-to-understanding-business-processes/bpmn_example_1.png)
 
 ## BPMN: Basics and Functions
 
@@ -25,7 +25,7 @@ Using graphical elements such as tasks, events, decision gateways, and flows, BP
 resources, and the role of each participant in the process.
 Here is a simple example. Keep in mind that in real life, maps are usually much more complex.
 
-![BPMN example](/assets/img/articles/2024-06-04-bpmn-the-key-to-understanding-business-processes/bpmn_example_2.png)
+![BPMN example](/assets/img/articles/2024-07-16-bpmn-the-key-to-understanding-business-processes/bpmn_example_2.png)
 
 ## Benefits from a Broader Perspective
 Mapping processes with BPMN brings numerous benefits to organizations. First, it enables a better understanding and analysis of business processes,
@@ -51,7 +51,7 @@ open communication and preventing knowledge loss is elaborated [here]({% post_ur
 Although BPM, using BPMN for process notation, and Event Storming, a workshop method, are distinct, they both aim to enhance process understanding.
 Below is my comparison:
 
-![BPMN vs Event Storming](/assets/img/articles/2024-06-04-bpmn-the-key-to-understanding-business-processes/bpmn_vs_es.png)
+![BPMN vs Event Storming](/assets/img/articles/2024-07-16-bpmn-the-key-to-understanding-business-processes/bpmn_vs_es.png)
 
 ## Process Mining: Immersion in the Process
 Process Mining is a technique for process analysis that naturally complements BPMN process mapping. It represents a higher level
