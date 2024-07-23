@@ -1,11 +1,11 @@
 ---
 layout: post
-title: "The noisy Jit Compiler"
+title: "The noisy JIT Compiler"
 author: tomasz.richert
 tags: [tech, microservice, performance, JVM, compiler]
 ---
 
-How Jit Compiler toyed with us at application start.
+How JIT Compiler toyed with us at application start.
 
 ## Background
 We proudly own a user facing application. The traffic is fairly high - a few thousands RPS,
