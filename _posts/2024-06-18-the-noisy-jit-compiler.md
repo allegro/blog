@@ -5,19 +5,19 @@ author: tomasz.richert
 tags: [tech, microservice, performance, JVM, compiler]
 ---
 
-How Jit Compiler was playing with us at application start.
+How Jit Compiler toyed with us at application start.
 
 ## Background
 We proudly own a user facing application. The traffic is fairly high - a few thousands RPS,
 and to serve requests we need to obtain data from a few services and databases - meaning - it's not that simple.
-The service itself is written mostly in Kotlin, it's well tested -> although we would love to see our tests just a bit faster,
+The service itself is written mostly in Kotlin. It's well tested, although we would love to see our tests just a bit faster,
 but one thing you can say about the service, and I hope my team will agree,
 it's an entertaining service, and you can learn a lot in terms of microservices in real life.
 
-But -> lets get down to business, we started to notice some worrying behaviour, our favourite app started to face problems.
+But let's get down to business, we started to notice some worrying behaviour, our favourite app started to face problems.
 
 ## The Spikes
-Application start was never perfect, once a new instance registers in k8s engine as healthy application it will open up on user traffic,
+Application start was never perfect. Once a new instance registers in k8s engine as healthy application it will open up on user traffic,
 and for just started application it's not an easy task.
 It's started with spikes on response times, every time we deployed a new version, and we do it frequently, at least once a week, we observed timeouts
 resulting from overpassing response time threshold.
@@ -25,7 +25,7 @@ resulting from overpassing response time threshold.
 ![Response time spike](/assets/img/articles/2024-06-18-the-noisy-jit-compiler/response_time_spike_no_scale.png)
 
 Response times at P99 & P98 were clearly above timeout threshold. Ok, let's do spike and check what's going on.
-A sprint later we found in logs a problem with related service -> it could be slow to respond, easy work, small tuning, let's check the results!
+A sprint later we found in logs a problem with related service. It could be slow to respond, easy work, small tuning, let's check the results!
 It helped... a bit, but the problem remains, and actually it's growing over time, and we don't know why.
 
 We realized how serious it was when we checked CPU spikes at application start. Application reserves 5 CPUs, and usually uses around 2-3 CPUs, while at start,
@@ -54,7 +54,7 @@ the initial 20 / 50 CPU usage, lets deep dive into the problem.
 
 ## C2 compiler deep dive
 Our application reserves 5 CPUs, and according to spec, it should contain one C1 thread & two C2 threads. I can imagine those running at 100% burning 3 CPUs,
-but it's far from those 20 / 50 CPU -> something is wrong.
+but it's far from those 20 / 50 CPU, something is wrong.
 
 ![JIT Threads](/assets/img/articles/2024-06-18-the-noisy-jit-compiler/jit_threads.png)
 
@@ -65,7 +65,7 @@ Short sample from file you can see below:
 ![C2 Threads](/assets/img/articles/2024-06-18-the-noisy-jit-compiler/c2-threads.png)
 
 What's most important from this sample is the C2 compiler thread, it's the key for our mystery.
-Now, let's put all the pieces together -> what is actually going on in the application.
+Now, let's put all the pieces together, what is actually going on in the application.
 
 1. We start the application.
 2. We allow k8s to probe healthcheck endpoint and at some point app is marked as Running.
@@ -74,7 +74,7 @@ Now, let's put all the pieces together -> what is actually going on in the appli
 5. Two C2 threads work 100% to recompile code as pointed by JVM.
 6. When given function is being recompiled, threads are simply waiting for recompiled version, consuming resources.
 7. Neither users nor k8s are aware that this particular instance is massively recompiling code. Until it's finished it might be slow to respond.
-8. The application experience multiple micro freezes, until the majority of recompilation is done.
+8. The application experiences multiple micro freezes, until the majority of recompilation is done.
 
 ## Optimizations
 Let's try to verify this theory and add more 'juice' to the JIT compiler. From default 2 threads for C2 compiler, we moved to 8 threads using
@@ -134,9 +134,9 @@ We send a few hundred requests, the code heavily recompiles, to make sure it's f
 (we didn't keep 8 threads as in previous chapter tests - it doesn't make much sense with warmup).
 Whenever we are done, we switch the flag and with next k8s check on startup probe, the application will finally allow user traffic, and requests now can be
 served as expected. Of course C2 recompilation will continue, and with time more and more code will get recompiled, but now it's just a side process, not sth
-that freezes application.
+that freezes the application.
 
-Let's take a look on dashboards, CPU now looks as expected, spikes no longer take 20 / 50 cores.
+Let's take a look at dashboards, CPU now looks as expected, spikes no longer take 20 / 50 cores.
 
 ![CPU After](/assets/img/articles/2024-06-18-the-noisy-jit-compiler/cpu_after.png)
 But finally our SLA is healthy, restarts are completely transparent!
@@ -144,8 +144,8 @@ But finally our SLA is healthy, restarts are completely transparent!
 ![SLA After](/assets/img/articles/2024-06-18-the-noisy-jit-compiler/sla_after.png)
 
 ## Final thoughts
-Since the beginning we knew that our application needs some kind of warmup, but we weren't clear about the reason for that. Since it has a few external
-dependencies, we expected it to be more related to http clients, connection establishing, filling caches etc. For sure it's part of the process, but what we
+Since the beginning we knew that our application needed some kind of warmup, but we weren't clear about the reason for that. Since it has a few external
+dependencies, we expected it to be more related to HTTP clients, connection establishing, filling caches etc. For sure it's part of the process, but what we
 found about JIT surprised us. Introducing warmup and tuning JIT introduced great benefit, as finally any restart of a new version is
 completely transparent to our users. If you have a service which has a slow start I recommend you to check how much CPU it burns, if you see spike
 make a flamegraph or thread dump.
