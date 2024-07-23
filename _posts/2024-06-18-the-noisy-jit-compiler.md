@@ -2,7 +2,7 @@
 layout: post
 title: "The noisy Jit Compiler"
 author: tomasz.richert
-tags: [tech, microservice, performance, jvm, compiler]
+tags: [tech, microservice, performance, JVM, compiler]
 ---
 
 How Jit Compiler was playing with us at application start.
@@ -21,7 +21,9 @@ Application start was never perfect, once a new instance registers in k8s engine
 and for just started application it's not an easy task.
 It's started with spikes on response times, every time we deployed a new version, and we do it frequently, at least once a week, we observed timeouts
 resulting from overpassing response time threshold.
-<img width=1000 src="/img/articles/2024-06-18-the-noisy-hit-compiler/response_time_spike_no_scale.png"/>
+
+![Response time spike](/assets/img/articles/2024-06-18-the-noisy-jit-compiler/response_time_spike_no_scale.png)
+
 Response times at P99 & P98 were clearly above timeout threshold. Ok, let's do spike and check what's going on.
 A sprint later we found in logs a problem with related service -> it could be slow to respond, easy work, small tuning, let's check the results!
 It helped... a bit, but the problem remains, and actually it's growing over time, and we don't know why.
@@ -29,14 +31,17 @@ It helped... a bit, but the problem remains, and actually it's growing over time
 We realized how serious it was when we checked CPU spikes at application start. Application reserves 5 CPUs, and usually uses around 2-3 CPUs, while at start,
 for very short period of time it could consume 20, 50 and even 75 CPUs! When you count a dozen instances that we have, it's a massive amount of CPUs,
 actually influencing other services as we started to compete for same shared hardware resources.
-<img width=1000 src="/img/articles/2024-06-18-the-noisy-hit-compiler/cpu_spike.png"/>
+
+![CPU spike](/assets/img/articles/2024-06-18-the-noisy-jit-compiler/cpu_spike.png)
+
 It started to be a pain, so we reacted immediately.
 
 ## Diagnostics
 At Allegro we have easy access to diagnostic tools for our services. Thread dump, heap dump, flame graph - it's all simple to use.
 We started with a thread dump. We have a few major thread pools in the app, and at start they seem strangely occupied, and the execution takes much more time.
 Let's check flamegraph where we spend most of the time. Bingo! JIT compiler occupies 40% of time on CPU, it has to be connected!
-<img width=1000 src="/img/articles/2024-06-18-the-noisy-hit-compiler/flamegraph-c2.png"/>
+
+![Flamegraph](/assets/img/articles/2024-06-18-the-noisy-jit-compiler/flamegraph-c2.png)
 
 ## What is Jit compiler?
 What actually is Just-In-Time(JIT) compiler?
@@ -50,12 +55,14 @@ the initial 20 / 50 CPU usage, lets deep dive into the problem.
 ## C2 compiler deep dive
 Our application reserves 5 CPUs, and according to spec, it should contain one C1 thread & two C2 threads. I can imagine those running at 100% burning 3 CPUs,
 but it's far from those 20 / 50 CPU -> something is wrong.
-<img width=1000 src="/img/articles/2024-06-18-the-noisy-hit-compiler/jit_threads.png"/>
+
+![JIT Threads](/assets/img/articles/2024-06-18-the-noisy-jit-compiler/jit_threads.png)
 
 Let's check thread dump, what our app actually does.
 After a short analysis, we've found that there are 76 threads stacked at single method - _finishString from ReaderBasedJsonParser.
 Short sample from file you can see below:
-<img width=1000 src="/img/articles/2024-06-18-the-noisy-hit-compiler/c2-threads.png"/>
+
+![C2 Threads](/assets/img/articles/2024-06-18-the-noisy-jit-compiler/c2-threads.png)
 
 What's most important from this sample is the C2 compiler thread, it's the key for our mystery.
 Now, let's put all the pieces together -> what is actually going on in the application.
@@ -73,7 +80,9 @@ Now, let's put all the pieces together -> what is actually going on in the appli
 Let's try to verify this theory and add more 'juice' to the JIT compiler. From default 2 threads for C2 compiler, we moved to 8 threads using
 -XX:CICompilerCount flag.
 So far, every restart was causing a deep drop in app SLA, with 8x threads it's significantly faster.
-<img width=1000 src="/img/articles/2024-06-18-the-noisy-hit-compiler/8x_C2.png"/>
+
+![8xC2](/assets/img/articles/2024-06-18-the-noisy-jit-compiler/8x_C2.png)
+
 With more studies, we found that the major part of initial C2 recompilation takes around 30 seconds on default setup. During that time the app does not meet the SLA.
 With 8 threads recompilation is much faster, and now we need around 10 seconds. Nice progress, but it's rather a theory verification and quick fix,
 not the solution yet.
@@ -128,9 +137,11 @@ served as expected. Of course C2 recompilation will continue, and with time more
 that freezes application.
 
 Let's take a look on dashboards, CPU now looks as expected, spikes no longer take 20 / 50 cores.
-<img width=1000 src="/img/articles/2024-06-18-the-noisy-hit-compiler/cpu_after.png"/>
+
+![CPU After](/assets/img/articles/2024-06-18-the-noisy-jit-compiler/cpu_after.png)
 But finally our SLA is healthy, restarts are completely transparent!
-<img width=1000 src="/img/articles/2024-06-18-the-noisy-hit-compiler/sla_after.png"/>
+
+![SLA After](/assets/img/articles/2024-06-18-the-noisy-jit-compiler/sla_after.png)
 
 ## Final thoughts
 Since the beginning we knew that our application needs some kind of warmup, but we weren't clear about the reason for that. Since it has a few external
