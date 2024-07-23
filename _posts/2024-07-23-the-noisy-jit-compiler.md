@@ -5,13 +5,15 @@ author: tomasz.richert
 tags: [tech, microservice, performance, JVM, compiler]
 ---
 
-How JIT Compiler toyed with us at application start.
+This article is a case study of how we improved stability in our critical application.
+It's mostly a technical analysis of what happens in fresh Java based instance,
+how JIT Compiler toyed with us at application start and how we learned to control it.
 
 ## Background
 We proudly own a user facing application. The traffic is fairly high - a few thousands RPS,
 and to serve requests we need to obtain data from a few services and databases - meaning - it's not that simple.
-The service itself is written mostly in Kotlin. It's well tested, although we would love to see our tests just a bit faster,
-but one thing you can say about the service, and I hope my team will agree,
+The service itself is written mostly in Kotlin. It's well tested, although we would love to see our tests just a bit faster.
+But one thing you can say about the service, and I hope my team will agree,
 it's an entertaining service, and you can learn a lot in terms of microservices in real life.
 
 But let's get down to business, we started to notice some worrying behaviour, our favourite app started to face problems.
