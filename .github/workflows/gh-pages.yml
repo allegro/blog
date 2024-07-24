@@ -26,7 +26,7 @@ jobs:
       - run: gem update --system 3.2.3
       - uses: actions/setup-node@v4
         with:
-          node-version: 'latest'
+          node-version: '21'
       - run: npm install
       - run: bundle install
       - run: bundle exec jekyll build
