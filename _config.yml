@@ -8,7 +8,6 @@ plugins:
   - jekyll-feed
   - jekyll-postcss-v2
   - jekyll-paginate-v2
-  - jekyll-timeago
   - jekyll-sitemap
   - jekyll-seo-tag
   - jekyll/tagging
@@ -25,9 +24,6 @@ feed:
   posts_limit: 10
   excerpt_only: true
   disable_in_development: true
-
-jekyll_timeago:
-  depth: 1
 
 pagination:
   enabled: true
