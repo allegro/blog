@@ -171,47 +171,23 @@ If this is your first post, prepare your Bio (see above for details).
 
 ### Rendering on local machine
 
-If you're Mac user and you haven't installed Ruby yourself, then you could perform the following steps:
-* `brew install ruby`
-* add `export PATH="/usr/local/opt/ruby/bin:$PATH"` into your `.bashrc`/`.zshrc`
+To build our blog locally, you need 2 things:
 
-Install needed gems:
+- ruby (if you use Mac, you have it already installed)
+- npm (https://nodejs.org/en/download/package-manager)
+
+#### Install blog dependencies
 
 ```bash
-make install
+bundle install
+npm install
 `````
 
 Launch the site using [Jekyll](https://help.github.com/articles/using-jekyll-with-pages),
 
 ```bash
-make serve
+bundle exec jekyll serve
 ````
-
-### Rendering using Docker
-
-Alternatively you can use Docker to render the blog. Follow these steps:
- - `docker run -it -v "$PWD":/usr/blog -w /usr/blog -p 4000:4000 ruby:3.0 /bin/bash` - this will mount your repository in /usr/blog and map port 4000
- - `bundle install`
- - `bundle exec jekyll serve -i --host=0.0.0.0` - this line has to be changed in Makefile to force `jekyll` to bind to `0.0.0.0`
-
- Now you are ready to host the blog using `make serve`. The changes made to local files will still be visible interactively since Docker mounts your local file system and reads the modifications.
-
-Is your article rendered correctly?
-
-Check if there are any obvious errors by running the linter:
-
-```bash
-make lint
-```
-
-You can also run linter with `-f` parameter against specific file (or files), eg:
-
-```bash
-./lint.sh -f _posts/2020-01-01-file-to-check.md -f _posts/2020-01-02-another-file-to-check.md
-```
-
-
-Create a Pull Request and get some feedback.
 
 ## Typography
 
