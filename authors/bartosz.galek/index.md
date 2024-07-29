@@ -1,4 +1,4 @@
 ---
 layout: author
-author: kamil.pyc
+author: bartosz.galek
 ---
