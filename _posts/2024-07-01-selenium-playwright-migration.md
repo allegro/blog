@@ -29,7 +29,7 @@ user can perform on the page. By separating the test logic from the implementati
 needs to be updated. Applying this pattern allows for avoiding code redundancy. This increases its maintainability and makes writing tests easier. Following
 diagram presents the idea of Page Object Model implementation.
 
-![Page Object Model](/img/articles/2024-07-01-selenium-playwright-java/pom.png)
+![Page Object Model](/assets/img/articles/2024-07-01-selenium-playwright-migration/pom.png)
 
 In the Allegro Merchant Finance team, the technology stack for automated acceptance tests included:
 
@@ -298,11 +298,11 @@ My workflow also contains a step for creating a report after execution, which is
 
 Test Execution Report Using Allure Reporting Tool looks as follows:
 
-![Allure Test Report](/img/articles/2024-07-01-selenium-playwright-java/report.png)
+![Allure Test Report](/assets/img/articles/2024-07-01-selenium-playwright-migration/report.png)
 
 An expanded list of steps executed during test run:
 
-![Allure Test Report Expanded Features](/img/articles/2024-07-01-selenium-playwright-java/report-expanded-features.png)
+![Allure Test Report Expanded Features](/assets/img/articles/2024-07-01-selenium-playwright-migration/report-expanded-features.png)
 
 ## Advantages of Playwright over Selenium for which we chose it
 
