@@ -7,7 +7,7 @@ tags: [ tech, gap-year, maternity-leave, hiatus ]
 
 Hi, I am Magda and I will tell you a story about coming back to work after a break of 21 months and 2 days. Everything here will be a subjective perspective about my experience.
 
-Maybe you are planning a one year trip around the world? Maybe you will have a longer medical break? Or maybe just like me, you come back after maternity leave. I belive that all these stories could be quite similar. Let’s check how it was.
+Maybe you are planning a one year trip around the world? Perhaps you will have a longer medical break? Or maybe just like me, you come back after maternity leave. I belive that all these stories could be quite similar. Let’s check how it was.
 
 ## My first month
 ### First week – mix of excitation and fear
