@@ -1,31 +1,49 @@
-plugins:
-    - jekyll-redirect-from
-    - jekyll-sitemap
-
-# Site settings
-title: allegro.tech
-menu: false
-future: true
-description: "We use Open Source solutions on a daily basis here at Allegro Group. Why not work on our karma and give something in return? Welcome to our open source technology blog."
-name: allegro.tech
+title: blog.allegro.tech
 url: "https://blog.allegro.tech"
-twitter_username: allegrotech
-github_username: allegro
-facebook_username: allegro.tech
-google_plus_id: +AllegroTechBlog
-meetup_username: allegrotech
-slideshare_username: allegrotech
+description: "Welcome to our technology blog. We use Open Source solutions on a daily basis here at Allegro. Why not work on our karma and give something in return?"
 timezone: Europe/Warsaw
-
-kramdown:
-    input: GFM
-    hard_wrap: false
-    coderay_line_numbers: nil
-
-sass:
-    sass_dir: css/partials
-
 permalink: /:year/:month/:title.html
 
-relative_links:
-    enabled: true
+plugins:
+  - jekyll-feed
+  - jekyll-postcss-v2
+  - jekyll-paginate-v2
+  - jekyll-sitemap
+  - jekyll-seo-tag
+  - jekyll/tagging
+
+kramdown:
+  auto_ids: true
+
+#  Disabling cache is needed for Tailwind CSS’s JIT engine.
+#  Without this, the server would need to restart after each change.
+postcss:
+  cache: false
+
+feed:
+  posts_limit: 10
+  excerpt_only: true
+  disable_in_development: true
+
+pagination:
+  enabled: true
+  per_page: 25
+  permalink: "/posts/:num/"
+  sort_reverse: true
+
+algolia:
+  application_id: 'NWRMGRQ60C'
+  index_name: 'blog'
+
+tag_page_layout: tag_page
+tag_page_dir: tag
+
+exclude:
+  - .idea
+  - .github
+  - vendor
+  - node_modules
+  - package.json
+  - package-lock.lock
+  - postcss.config.js
+  - tailwind.config.js

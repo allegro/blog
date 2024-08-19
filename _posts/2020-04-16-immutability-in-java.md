@@ -1,7 +1,7 @@
 ---
 layout: post
 title: The problem of immutability in Java
-author: [bartlomiej.mazur]
+author: bartlomiej.mazur
 tags: [java, performance]
 ---
 

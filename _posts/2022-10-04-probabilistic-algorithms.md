@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "Probabilistic Data Structures and Algorithms in NoSQL databases"
-author: [michal.knasiecki]
-tags: [tech, performance, NoSQL]
+author: michal.knasiecki
+tags: [tech, performance, nosql]
 excerpt: >
     What would you say if we stored 1&nbsp;000 records in a database, and the database claimed that there were only 998 of them?
     Or, if we created a database storing sets of values and in some cases the database would claim that some

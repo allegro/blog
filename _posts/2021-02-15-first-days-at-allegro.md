@@ -1,7 +1,7 @@
 ---
 layout: post
 title: My first days at Allegro
-author: [krzysztof.przychodzki]
+author: krzysztof.przychodzki
 tags: [tech]
 ---
 

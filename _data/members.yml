@@ -915,12 +915,51 @@ maciej.moscicki:
 waldemar.panas:
     name: Waldemar Panas
     bio: >
-        Engineering manager with a rich background in professional software development. 
+        Engineering manager with a rich background in professional software development.
         Since joining Allegro in 2018, Waldemar has been at the forefront of driving innovation and excellence in software engineering.
-        His role extends beyond the confines of Allegro, actively engaging in the wider tech community as a co-organizer 
-        of the [Java User Group in Poznan](https://www.meetup.com/pl-PL/poznan-java-user-group/) and [GeeCON](https://geecon.org/), 
+        His role extends beyond the confines of Allegro, actively engaging in the wider tech community as a co-organizer
+        of the [Java User Group in Poznan](https://www.meetup.com/pl-PL/poznan-java-user-group/) and [GeeCON](https://geecon.org/),
         a prominent conference focused on JVM technologies in Krakow and Prague.
     linkedin: w-panas
     twitter: PanasWaldemar
     github: wpanas
     role: Former editor
+
+kacper.stodolak:
+    name: Kacper Stodolak
+    bio: Front-end Software Engineer. Taking care of the Offer page at Allegro. In private sport and cooking enthusiast.
+
+jakub.demianowski:
+    name: Jakub Demianowski
+    bio: Kuba works at Allegro crafting recommendation systems, leveraging microservices, big data, and MLOps. Outside of his technical explorations, he is an avid wall climbing enthusiast.
+    linkedin: jakub-demianowski
+    github: jdemianowski
+
+jakub.dropia:
+    name: Jakub Dropia
+    bio: >
+        A software architecture enthusiast and problem solver in the .NET and distributed systems world with more than a decade experience.
+        For over 3 years has been building the Allegro Pay Internal Developer Platform as Engineering Manager leading the team and providing technical vision.
+    linkedin: jakubdropia
+
+piotr.klimiec:
+    name: Piotr Klimiec
+    bio: Software Engineer at Allegro.
+    linkedin: piotr-klimiec
+    github: klimiec
+    twitter: piotr_twit
+
+tomasz.richert:
+    name: Tomasz Richert
+    bio: Engineering Manager in Allegro Advertising division
+    linkedin: tomekrichert7
+    github: tomasz-richert
+
+kamila.rybkiewicz:
+    name: Kamila Rybkiewicz
+    bio: An enthusiast of agile teamwork and close collaboration. Her personal mission is to bridge the gap between Business and Technology in the area of Process Excellence and Process Automation.
+
+patrycja.husarska:
+    name: Patrycja Husarska
+    bio: Senior Test Automation Engineer in Allegro Merchant Finance team, dedicated to finding bugs and ensuring quality. Avid traveler and gardener.
+    linkedin: patrycja-husarska
