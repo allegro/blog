@@ -16,7 +16,7 @@ You’re happy to be back, but at the same time you wonder what it’ll be like.
 ### Second week – only fear
 Suddenly you realize how many things have changed, how many things you have to catch up on and how many things you have forgotten. It’s not a good feeling. This is the most difficult time because you usually confront your assumptions about returning with reality.
 
-### Third week – light in the tunnel
+### Third week – a light in the tunnel
 You notice that you are slowly getting over the technical problems. With little hints from the team, it turns out that you still remember most of the professional and company knowledge. And you catch up on new things quickly. The work is accelerating and slowly giving the same satisfaction as before.
 
 ### Fourth week – feeling of relief
@@ -26,12 +26,12 @@ You take up your tasks, you get going, you’re back in the game. Of course, you
 After such a long hiatus from work, you will surely wonder what it’s like to come back and whether you will be able to cope. You will feel a lot of stress. Maybe it’s a good time to do something for yourself. Read a book about fighting stress, listen to an inspiring podcast, relieve your emotions by doing sports. You know yourself, you know what helps you and what doesn’t. Try to relieve the tension so that you can come back with an open mind and willingness to take action. Enjoy your last completely free time.
 
 ### What is worth doing – company matters
-1. One month before, remind the team leader that you are coming back. Ask him if there will be any integration being organized and declare your willingness to participate.
+1. One month before, remind the team leader that you are coming back. Ask him if there is team building being organized and declare your willingness to participate.
 1. One week before coming back, ask your team leader and HR partner what documents or obligatory trainings like OSH you should sign up for or do first after coming back.
-2. Mark as read all emails older than 2 months. I know that there is a willingness to read every single mail from 2 years, but really it’s a waste of your time. You were gone, you can’t change it, you will miss some things, but you can catch up to them as you work. Search only for every emails from your HR. It can be important.
-3. Ask if to go for an onboarding for new employers (if your company organizes sth like that) and take part. You will catch up on company–wide backlogs and learn new company–wide tools and guidelines.
+2. Mark as read all emails older than 2 months. I know that there is a willingness to read every single message from 2 years' time, but really it’s a waste of your time. You were gone, you can’t change it, you will miss some things, but you can catch up to them as you work. Search only for every emails from your HR. It can be important.
+3. Sign up to go for an onboarding for new employers (if your company organizes sth like that) and take part actively. You will catch up on company–wide backlogs and learn new company–wide tools and guidelines.
 4. Read the documentation/team wiki – it helps you recall basic information.
-5. Bring cake to your first day in the office with your colleagues. This will break the ice and will be a good sweet start. Your co–workers will thank me. ;–)
+5. Bring cake on your first day in the office with your colleagues. This will break the ice and will be a good sweet start. Your co–workers will thank me. ;–)
 
 ### What is worth doing – technical matters
 1. Search Roadmaps for current year and read about things you don’t know.
@@ -43,11 +43,11 @@ After such a long hiatus from work, you will surely wonder what it’s like to c
 * your attitude,
 * no fear of asking questions,
 * openness to new people who weren’t in the company before, realize that now you are the new one,
-* organization of your own work (no one will guide you, you have to take care of yours possible shortcomings!)
+* organization of your own work (no one will guide you, you have to take care of your possible shortcomings!)
 
-### Factors beyond our control:
+### Factors beyond your control:
 * co-workers’ attitude and willingness to help,
-* team leader attitude and your cooperations,
+* team leader attitude and your cooperation,
 * changes at the company: what has been happening in the company during the time you weren’t there e.g. how much the processes have changed
 * return time: In what period do you come? Busy? Or maybe a vacation? Maybe there’s no one to introduce you to work? Maybe it’s better to come back, for example, in January than before the holidays when everyone is on leave.
 
