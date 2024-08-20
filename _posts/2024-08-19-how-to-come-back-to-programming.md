@@ -20,7 +20,7 @@ Suddenly you realize how many things have changed, how many things you have to c
 You notice that you are slowly getting over the technical problems. With little hints from the team, it turns out that you still remember most of the professional and company knowledge. And you catch up on new things quickly. The work is accelerating and slowly giving the same satisfaction as before.
 
 ### Fourth week – feeling of relief
-You take up your tasks, you get going, you’re back in the game. Of course, you still need time to catch up, but it’s not that bad. You start taking on bigger tasks, you write down your professional goals, you take part in discussions on topics that you have already absorbed.
+You start your tasks, you get going, you’re back in the game. Of course, you still need time to catch up, but it’s not that bad. You start taking on bigger tasks, you write down your professional goals, you take part in discussions on topics that you have already absorbed.
 
 ## Tips and thoughts
 After such a long hiatus from work, you will surely wonder what it’s like to come back and whether you will be able to cope. You will feel a lot of stress. Maybe it’s a good time to do something for yourself. Read a book about fighting stress, listen to an inspiring podcast, relieve your emotions by doing sports. You know yourself, you know what helps you and what doesn’t. Try to relieve the tension so that you can come back with an open mind and willingness to take action. Enjoy your last completely free time.
@@ -34,9 +34,9 @@ After such a long hiatus from work, you will surely wonder what it’s like to c
 5. Bring cake on your first day in the office with your colleagues. This will break the ice and will be a good sweet start. Your co–workers will thank me. ;–)
 
 ### What is worth doing – technical matters
-1. Search Roadmaps for current year and read about things you don’t know.
-1. See the libraries that are now used in the project.
-1. Ask for help! When you come back, start writing down the topics that you would like to catch up on or that you are not familiar with. Write down all your questions in one place. After a while, ask your team members to explain them.
+1. Search Technical Roadmaps for current year and search and read about the keywords that you don’t know.
+2. See the libraries that are now used in the project. Take a look at the documentation, those you don't know.
+3. Ask for help! When you come back, start writing down the topics that you would like to catch up on or that you are not familiar with. Write down all your questions in one place. After a while, ask your team members to explain them.
 
 ## Which factors may impact a successful return to work
 ### Factors dependent on you:
