@@ -25,6 +25,14 @@ You notice that you are slowly getting over the technical problems. With little 
 
 You start your tasks, you get going, you’re back in the game. Of course, you still need time to catch up, but it’s not that bad. You start taking on bigger tasks, you write down your professional goals, you take part in discussions on topics that you have already absorbed.
 
+## Challenges after returning to work
+### Family
+I agreed with my husband that for the first month or two he would take care of our son during any illnesses, so that I could focus on work. I didn't expect that our son would be sick practically non-stop during that time, infecting both of us. It was hard at times. On the other hand, I think that being a parent makes me more effective at work, I'm less stressed than before and I have more distance from myself. Returning to work gives a lot in the context of self-fulfilment. If of course you like what you do. ;-) It definitely did for me.
+
+### Regretting lost opportunities
+In economics, there is something called opportunity cost. By definition: 'is the potential forgone profit from a missed opportunity—the result of choosing one alternative over another' ([investopedia](https://www.investopedia.com/terms/o/opportunitycost.asp)). When we take a break from work, we might feel like we missed out on opportunities, such as promotions. For ambitious individuals, it can be challenging to accept these lost chances. It's important to remember that it's not always possible to catch up quickly but everything is still ahead of us. However, our time away doesn't make us vanish; it's a period of growth, whether professionally or personally.
+
+
 ## Tips and thoughts
 ### What is worth doing – selfcare
 After such a long hiatus from work, you will surely wonder what it’s like to come back and whether you will be able to cope. You will feel a lot of stress. Maybe it’s a good time to do something for yourself. Read a book about fighting stress, listen to an inspiring podcast, relieve your emotions by doing sports.
@@ -74,4 +82,4 @@ My team leader's assurance that I had a place to come back, along with providing
 
 I know that not everyone has a team as cool as mine at Allegro. But I believe everyone should understand the challenges of returning to work after several months. It would be beneficial if companies introduced extra onboarding programs for employees returning after long breaks and placed more emphasis on addressing their needs. This approach would enable them to quickly adapt and fulfill their duties effectively. Which is a win for both sides. And not because these people need to be favored, but because their situation is specific.
 
-If you are coming back after a long break, enjoy your return to professional life. Remember that a break is not the end of the world. Keep your head up, do your thing. You don’t even know how quickly you will settle in the old-new reality. After some time, you will start working as if nothing had ever changed.
+If you are coming back after a long break, enjoy your return to professional life. Remember that a break is not the end of the world. Keep your head up, do your thing. You don’t even know how quickly you will settle in the old-new reality. After some time, you will start working as if nothing had ever changed or you will be just a new version of yourself.
