@@ -30,7 +30,7 @@ Source code lines (code + blank lines):
 
 Stats were gathered by the [Statistic](https://plugins.jetbrains.com/plugin/4509-statistic) plugin in IntelliJ.
 
-![Statistic](/assets/img/articles/2024-08-20-accelerate-test-execution-in-groovy-spock/statistic.png "Number of code lines in Statistic")
+![Statistic](/assets/img/articles/2024-09-04-accelerate-test-execution-in-groovy-spock/statistic.png "Number of code lines in Statistic")
 
 The production code is written in Kotlin and Java with [Spring Framework](https://spring.io/projects/spring-framework).
 **The majority of the tests utilize Groovy and Spock,**
@@ -44,7 +44,7 @@ some of them are created with [Kotest](https://kotest.io/) and Kotlin
 In a project that uses Gradle, like mine, to check what your runner is, open settings `CMD + ,`.
 Navigate via `Build, execution, deployment > Build tools > Gradle` and check field `Run tests using`.
 
-![Test runner](/assets/img/articles/2024-08-20-accelerate-test-execution-in-groovy-spock/runner.png "Check test runner in IntelliJ")
+![Test runner](/assets/img/articles/2024-09-04-accelerate-test-execution-in-groovy-spock/runner.png "Check test runner in IntelliJ")
 
 
 ### Measuring Gradle task timings
@@ -315,7 +315,7 @@ Sources:
 ## Check your tests
 Reviewing test durations:
 
-![Tests duration](/assets/img/articles/2024-08-20-accelerate-test-execution-in-groovy-spock/tests.png "Sort tests by duration in IntelliJ")
+![Tests duration](/assets/img/articles/2024-09-04-accelerate-test-execution-in-groovy-spock/tests.png "Sort tests by duration in IntelliJ")
 
 Sort your tests by duration to identify the most time-consuming ones.
 For instance, three classes with unit tests exceeding 20 seconds can significantly affect overall test time.
