@@ -193,7 +193,7 @@ Some of the types of changes that do not affect the public API and are ignored:
 > - Changing the name of jars or directories in the classpath
 > - Renaming a parameter
 
-source:
+source:<br/>
 [Groovy compilation avoidance documentation](https://docs.gradle.org/current/userguide/groovy_plugin.html#sec:groovy_compilation_avoidance)
 
 
@@ -212,8 +212,12 @@ Total elapsed (all tasks) = 9.496 seconds
 `compileTestGroovy` takes the same amount of time for every run.
 
 By adding
-```enableFeaturePreview('GROOVY_COMPILATION_AVOIDANCE')```
-to `settings.gradle`, each subsequent run of the same unit test took less than 3 seconds:
+```
+enableFeaturePreview('GROOVY_COMPILATION_AVOIDANCE')
+```
+to `settings.gradle`,
+each subsequent run of the same unit test took less than 3 seconds:
+
 ```
 Tasks >1000ms
 - 2398 ms :unitTest
@@ -307,10 +311,10 @@ Again, **the execution time was reduced by about 60%.**
 >If only a small set of Groovy source files are changed, only the affected source files will be recompiled. Classes that don’t need to be recompiled remain unchanged in the output directory. For example, if you only change a few Groovy test classes, you don’t need to recompile all Groovy test source files — only the changed ones need to be recompiled.<br><br>
 >To understand how incremental compilation works, see [Incremental Java compilation](https://docs.gradle.org/current/userguide/java_plugin.html#sec:incremental_compile) for a detailed overview. Note that there’re several differences from Java incremental compilation:
 
-Sources:
-[Groovy Incremental compilation](https://docs.gradle.org/current/userguide/groovy_plugin.html#sec:incremental_groovy_compilation)
-[Compilation avoidance vs incremental compilation](https://blog.gradle.org/compilation-avoidance)
-[Groovy incremental compilation known issues](https://docs.gradle.org/current/userguide/groovy_plugin.html#sec:incremental_groovy_compilation_known_issues)
+Sources:<br/>
+[Groovy Incremental compilation](https://docs.gradle.org/current/userguide/groovy_plugin.html#sec:incremental_groovy_compilation)<br/>
+[Compilation avoidance vs incremental compilation](https://blog.gradle.org/compilation-avoidance)<br/>
+[Groovy incremental compilation known issues](https://docs.gradle.org/current/userguide/groovy_plugin.html#sec:incremental_groovy_compilation_known_issues)<br/>
 
 ## Check your tests
 Reviewing test durations:
@@ -452,9 +456,9 @@ org.gradle.daemon=true (dameon should be running by default)
 ```
 
 
-[Increase heap size](https://docs.gradle.org/current/userguide/performance.html#increase_the_heap_size)
-[Enable build cache](https://docs.gradle.org/current/userguide/build_cache.html#sec:build_cache_enable)
-[Use Gradle daemon](https://docs.gradle.org/current/userguide/gradle_daemon.html#enable_deamon)
+[Increase heap size](https://docs.gradle.org/current/userguide/performance.html#increase_the_heap_size)<br/>
+[Enable build cache](https://docs.gradle.org/current/userguide/build_cache.html#sec:build_cache_enable)<br/>
+[Use Gradle daemon](https://docs.gradle.org/current/userguide/gradle_daemon.html#enable_deamon)<br/>
 
 Gradle is running on the JVM, keeping it in the latest version together with Java runtime may benefit in better performance.
 
@@ -463,7 +467,7 @@ Gradle is running on the JVM, keeping it in the latest version together with Jav
 ### Optimize the runtime of Spring Boot tests
 Tldr; Problematic @DirtiesContext, @ActiveProfiles, @MockBean, number of cached Spring contexts etc.
 
-[How to optimize the runtime of your Spring Boot integration tests](https://medium.com/@inzuael/how-to-optimize-the-runtime-of-your-springboot-integration-tests-2a13584f577e)
+[How to optimize the runtime of your Spring Boot integration tests](https://medium.com/@inzuael/how-to-optimize-the-runtime-of-your-springboot-integration-tests-2a13584f577e)<br/>
 [Spring Tests](https://www.baeldung.com/spring-tests)
 
 ### IntelliJ Runner vs Gradle
