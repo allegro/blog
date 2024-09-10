@@ -949,6 +949,14 @@ piotr.klimiec:
     github: klimiec
     twitter: piotr_twit
 
+radoslaw.panuszewski:
+    name: Radosław Panuszewski
+    bio: Software engineer at Developer Experience Team. Gradle enthusiast and Kotlin fan who shares his knowledge internally and with the open source community.
+
+aleksandr.serbin:
+    name: Aleksandr Serbin
+    bio: Software engineer at Developer Experience Team. Allegro-rewrite founder. 
+
 tomasz.richert:
     name: Tomasz Richert
     bio: Engineering Manager in Allegro Advertising division
@@ -969,3 +977,4 @@ kacper.koza:
     bio: Senior Software Engineer at Allegro.
     github: kacperkoza
     linkedin: kacper-koza-352a5913b
+
