@@ -14,7 +14,15 @@ of code migration management.
 
 ## The challenge
 
-<script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+<style>
+.mermaid{
+    background: white;
+}
+</style>
 <link rel="stylesheet" type="text/css" href="/assets/img/articles/2024-09-10-automating-code-migrations-at-scale/asciinema-player.css" />
 
 Migrating code across numerous repositories is incredibly painful when new

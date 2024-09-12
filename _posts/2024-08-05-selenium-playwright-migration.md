@@ -2,7 +2,7 @@
 layout: post
 title: "Migrating Selenium to Playwright in Java - evolution, not revolution"
 author: [ patrycja.husarska ]
-tags: [ tech, testing, selenium, java, playwright, ui-testing ]
+tags: [ tech, testing, selenium, java, playwright, ui testing ]
 ---
 
 Are you, as a test automation engineer, tired of Selenium's flakiness? Are you seeking a better tool to automate your end-to-end tests? Have you heard of
