@@ -105,7 +105,6 @@ kotlin {
 }
 ```
 
-> [!WARNING]
 > Remember to declare the toolchain for every subproject, not only for the root project! Otherwise, it will take the JDK
 > version used to run Gradle.
 
@@ -272,7 +271,6 @@ able to correctly understand and upgrade your configuration.
 
 Use bundles to group dependencies.
 
-> [!WARNING]
 > Do not create multiple TOML files - dependabot will be unable to detect them.
 
 ## Mysterious compiler flags
