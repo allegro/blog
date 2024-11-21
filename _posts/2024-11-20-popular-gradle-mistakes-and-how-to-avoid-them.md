@@ -308,48 +308,6 @@ and [deprecated](https://kotlinlang.org/docs/kapt.html):
 Omit the `spring-boot-configuration-processor`. Chances are you will be able to get rid of kapt too, and make your
 build faster.
 
-## Exotic Avro plugin usage
-
-**⛔️ Anti-Pattern**
-
-Manually loading Avro files from resources rather than using generated classes adds unnecessary complexity.
-
-```kotlin
-fun loadAvroSchemaFromFile(location: String): FormatSchema {
-    val schemaFile = applicationContext.getResource(location)
-    val schema = Schema.Parser().setValidate(true).parse(schemaFile.inputStream)
-    return AvroSchema(schema)
-}
-```
-
-**💡 Why is it a problem?**
-
-This approach increases maintenance costs, adds boilerplate, and misses out on the benefits of generated code.
-
-```kotlin
-AvroSchema(AvroGeneratedClassName.getClassSchema())
-```
-
-**✅ Best practice**
-
-Use the Avro plugin’s standard approach to generate Java classes directly from `.avro` files. This reduces redundancy and
-leverages the plugin’s automatic generation capabilities.
-
-Simply apply the plugin:
-
-```kotlin
-plugins {
-    id "com.github.davidmc24.gradle.plugin.avro" version "1.9.1"
-}
-```
-
-And remember to put your avro (`*.avdl`) files in `/src/main/avro`:
-
-![avro-srcset](/assets/img/articles/2024-11-20-popular-gradle-mistakes-and-how-to-avoid-them/avro.png)
-
-That’s all; no more gradle-related configuration is required. Generated classes will be available for import. Those
-classes will have `.getSchema()` methods if you still want to access the raw schema.
-
 ## Overlapping Formatters
 
 **⛔️ Anti-Pattern**
