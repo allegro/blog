@@ -5,45 +5,45 @@ author: [ patryk.bernacki ]
 tags: [ programming, principles, code, tech  ]
 ---
 
-When we think about Circuit Breaker pattern, we instantly connect it to http client in our mind. Just make some annotation or wrapper and proceed with codding. In this article I will try to encourage you to use this pattern for resolving business problems. Based on live example in allegro I will show you how to use implementation of CircuitBreaker from [Resiliance4j](https://resilience4j.readme.io/) library for cases other then http calls.
+When we think about the Circuit Breaker pattern, we instantly associate it with the HTTP client. Just make some annotation or wrapper and proceed with coding. In this article, I will encourage you to use this pattern to resolve business problems. Based on a live example from Allegro I will show you how to use the implementation of CircuitBreaker from [Resiliance4j](https://resilience4j.readme.io/) library for cases other than HTTP calls.
 
-## What's circuit breaker pattern
-Circuit breaker is a simple but powerful pattern for detecting failures and ensuring reliability of system.
-It tracks how many times the operation has failed and if it exceeds the threshold. The circuit will transit to **OPEN** when the threshold is exceeded, and it will not allow to execute given task. After some time it will change its state to **HALF_OPEN** during which some operation will be allowed to check if the system is back to normal. If the operation is successful, the circuit will change its state to **CLOSED** and will allow all operations. If the operation fails, the circuit will change its state to **OPEN** again.
+## What's the circuit breaker pattern
+The circuit breaker is a simple but powerful pattern for detecting failures and ensuring reliability of the system.
+It tracks how many times the operation has failed and if it exceeds a specific threshold. The circuit will transition to **OPEN** when the threshold is exceeded, and it will not allow us to execute a given task. After some time, it will change its state to **HALF_OPEN** during which some operations will be allowed to check if the system is back to normal. If an operation is successful, the circuit will change its state to **CLOSED** and will allow all operations. If the operation fails, the circuit will change its state to **OPEN** again.
 
 ![cb](/assets/img/articles/2024-11-30-circuitbreaker-not-only-for-http-calls/cb.png)
 
-For me at first it was a little bit confusing to remember that **OPEN** is negative state but if you think about it like about electronic circuit it all makes sense.
+For me, at first, it was a little bit confusing to remember that **OPEN** is a negative state. However, if you think about it like about an electronic circuit, it all makes sense.
 
 ![cb_ele_schema](/assets/img/articles/2024-11-30-circuitbreaker-not-only-for-http-calls/cb_electric.png)
 
 ## Allegro requirements
-Allegro is complex but must be simple to use, fast and reliable and payment process (on which we will focus) is not an exception - there are a lot of going in the background starting from adding item to a basket, choosing delivery, payment method and ending on payment. There are dozens of services and many third party company involved.
+Allegro is complex but must be simple to use, fast and reliable. The payment process (which we will focus on) is no exception - there are a lot of things going in the background, starting from adding items to a basket, choosing a delivery method as well as a payment method and ending on payment itself. There are dozens of services and many third-party companies involved.
 
-In such complex system it is normal that from time to time some part of it will fail, but we have to make sure that we are handling it properly.
+In such a complex system, it is normal that some part of it fails from time to time, but we need to ensure that we handle them properly.
 
 ## Buisness problem to be solved
-One of responsibilities of team which I am a part of is to provide payment methods from which user can choose preferable one.
+One of the responsibilities of the team which I am a part of is to provide payment methods from which user can choose their preferred one.
 
 ![payment_methods](/assets/img/articles/2024-11-30-circuitbreaker-not-only-for-http-calls/payment_methods.png)
 ![pbl](/assets/img/articles/2024-11-30-circuitbreaker-not-only-for-http-calls/pbl.png)
 
-As we can see there are plenty of methods and every one have to be handled differently. For each a different third party is involved and risk of failure is increasing and more important - part of those failures are not fixable in allegro system.
+As we can see above, there are plenty of methods, and each one has to be handled differently. For each method, a different third party is involved, and the risk of failure is increasing. More importantly, many of those failures are not fixable in the Allegro system.
 
-How to handle it? We have two choices:
-- return an exceptions during payments to users and wait patiently for fix
-- handle it gracefully and switch off payment method.
+How should we handle it? We have basically two choices:
+- Return exceptions during payments to users and wait patiently for a fix.
+- Handle it gracefully and switch off the payment method.
 
-Of course, we choose second option. In "stone age" we had to turn off services responsible for payment methods, then we evolved, and we move turning off methods to configuration but both of these method were slow - many users have already experienced problem after clicking "pay" button before methods were turned them off.
+Of course, we choose the second option. In the "Stone Age" we had to turn off services responsible for payment methods, then we evolved, and we moved from turning off methods to configuration. However, both of these methods were slow - many users had already experienced problems after clicking the "pay" button before methods were turned off.
 
-We needed something faster and not requiring human intervention.
-We came up with idea to use Circuit Breaker implementation for this problem from Resiliance4j library. We never use it for other reason than annotation for http calls. Were a little bit uncertain, but we decided to gave it a try.
+We needed something faster that did not require human intervention.
+We therefore came up with the idea to use Circuit Breaker implementation for this problem from the Resiliance4j library. We had never used it for any other reason than annotation for http calls. Were a little bit uncertain, but we decided to give it a try.
 
 ## Solution with implementation
 
 ![arch](/assets/img/articles/2024-11-30-circuitbreaker-not-only-for-http-calls/arch.png)
 
-We are using message broker which receives information about failures from different payment services on each payment method and pass them to microservice which holds implementation of circuitbreakers.
+We are using a message broker that receives information about failures from different payment services for each payment method and passes this information to a microservice that holds implementation of circuitbreakers.
 
 We are using Resiliance4j library for Circuit Breaker implementation.
 https://github.com/resilience4j/resilience4j
@@ -58,11 +58,12 @@ class SimpleCircuitBreakers(
 )
 ```
 
-We have created SimpleCircuitBreakers class which hold:
-- circuitBreakerConfig - configuration for circuit breakers (failure threshold and many more, for more information please refer to [official documentation](https://resilience4j.readme.io/docs/circuitbreaker)),
-- circuitBreakerRegistry - holds circuit breakers separate for each payment method,
-- executorService - scheduling tasks which are triggered after changing state of circuit breaker.
-- paymentMethodsStateRepository - custom class which is responsible for handling transition between states of circuit breakers.
+We have created SimpleCircuitBreakers class which holds:
+- circuitBreakerConfig: configuration for circuit breakers (failure threshold and many more; for more information please refer to [official documentation](https://resilience4j.readme.io/docs/circuitbreaker)),
+- circuitBreakerRegistry: holds circuit breakers separately for each payment method,
+- executorService - schedules tasks that are triggered after changing the state of the circuit breaker.
+- paymentMethodsStateRepository: a custom class which is responsible for handling transition between the states of circuit breakers.
+
 ### Event to be processed
 ```kotlin
 data class CircuitBreakerEvent(
@@ -70,7 +71,7 @@ data class CircuitBreakerEvent(
     val paymentMethod: String
 )
 ```
-CircuitBreakerEvent is en event received from message broker. It contains name of selected payment method in payment and information if payment was successful or not.
+CircuitBreakerEvent is an event received from a message broker. It contains the name of the selected payment method, and information about whether the payment was successful or not.
 
 ### Adding new circuit breaker to CircuitBreakerRegistry
 ```kotlin
@@ -95,13 +96,13 @@ private fun CircuitBreaker.v() =
             }
     }
 ```
-In findOrAdd method we are looking for circuit breaker in registry. If it is not present we are creating new one with given configuration.
+In the findOrAdd method, we look for circuit breakers in the registry. If it is not present, we create a new one with the given configuration.
 
-Function addStateTransitionsHandling apply logic to handle state transitions (e.g. from CLOSED TO OPEN, FROM HALF_OPEN to CLOSED). In our example we are saving new state to repository so services responsible for providing methods can filter out one which are turned off.
+Function addStateTransitionsHandling applies logic to handle state transitions (e.g. from **CLOSED** to **OPEN**, from **HALF_OPEN** to **CLOSED**). In our example, we save the new state to a repository so the services responsible for providing methods can filter out one that is turned off.
 
 
 #### Important note
-Please note that if tas was added to onStateTransition it will run on the same thread as the one which triggered processing so it can be shut down before executions of task ends - we learned it in hard way. Make sure to use right implementation of interface. We used:
+Please note that if a task was added to onStateTransition it will run on the same thread as the one that triggered processing, so it can be shut down before execution of task ends - we learned this the hard way. Make sure to use the right implementation of the interface. We used:
 
 ```kotlin
 Executors.newSingleThreadScheduledExecutor { threadTask: Runnable? ->
@@ -132,13 +133,17 @@ Executors.newSingleThreadScheduledExecutor { threadTask: Runnable? ->
     }
 ```
 
-In process method we are looking for circuit breaker in registry and then we are publishing event to it.
+In the process method, we look for circuit breakers in the registry and then we publish events to it.
 
-In publishEvent method we are checking if payment was successful or not and then we are calling proper method on circuit breaker. I am sure that You can noticed some "hack" right away, implementation in resiliance4j needs us to provide time of task execution since circuitBreakres can also resolve slow task as failures, so we provided 1s as default.
-Next hack is in tryAcquirePermission. Rightfully it should be invoked in service which is responsible for filtering out method to decide if we can make a payment with method or not, but we gather events in separate microservice and we were not able to do it.
+In the publishEvent method, we check if the payment was successful or not, and then we call the proper method on the circuit breaker. I am sure that you noticed some "hack" right away; the implementation in Resiliance4j requires us to provide the duration of the task execution since circuit breakers can also treat slow tasks as failures. Therefore, we provided 1 second as the default.
+Next hack is in tryAcquirePermission. Ideally, it should be invoked in a service that is responsible for filtering out methods to decide whether we can make a payment with a particular method or not. However, we gather events in a separate microservice, and we were not able to do so.
 
-Here the interesting questions can be risen, what about HALF_OPEN? How do we handle it if we are not using tryAcquirePermission correctly? Should we turn off method or not? We have to for sure allow some kind of traffic to check if method is back to normal. So we came up with idea to calculate what percentage of user should try to pay with methods in HALF_OPEN state based on method popularity to make sure everything is back to normal.
+Here, some interesting questions can be raised:
+What about **HALF_OPEN**?
+How do we handle it if we are not using tryAcquirePermission correctly?
+Should we turn off the method or not?
+We definitely need to allow some kind of traffic to check if the method is back to normal. Therefore, we came up with the idea of calculating what percentage of users should try to pay with methods in a **HALF_OPEN** state based on method popularity to make sure everything is back to normal.
 
 ## Conclusions
-In above example we show how to use circuit breakers from resiliance4j for handling cases other then http calls.
-With that ~70 lines of code we were able to significantly improve time of reaction to failures, redirect users to working payment providers, meet business requirement about reliability and take of developers shoulders need to switching off method manually.
+In the above example, we show how to use circuit breakers from Resiliance4j for handling cases other than http calls.
+With that ~70 lines of code we were able to significantly improve our response time to failures, redirect users to functioning payment providers, meet business requirements regarding reliability, and take off developers' shoulders by manually switching off methods.
