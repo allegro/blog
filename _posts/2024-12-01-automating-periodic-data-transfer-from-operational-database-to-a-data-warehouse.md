@@ -5,7 +5,10 @@ author: [ rdariusz.zbyrad ]
 tags: [ gcp, bigquery, bigdata  ]
 ---
 
-Many companies face the challenge of efficiently processing large datasets for analytics. Using an operational database for heavy analytical queries can lead to performance issues or, in extreme cases, system failures. This highlights the need to transfer data from operational databases to data warehouses. This approach allows heavy analytical queries without overburdening transactional systems and supports shorter retention periods in production databases.
+Many companies face the challenge of efficiently processing large datasets for analytics. 
+Using an operational database for such purposes can lead to performance issues or, in extreme cases, system failures. 
+It's highlights the need to transfer data from operational databases to data warehouses. 
+This approach allows heavy analytical queries without overburdening transactional systems and supports shorter retention periods in production databases.
 
 ## Requirements
 
@@ -25,14 +28,18 @@ For this article, let's assume the following:
 Google offers several solutions for automating the data transfer:
 
 1.  **Google Dataflow** (based on Apache Beam): Allows creating data pipelines (ETL/ELT) to synchronize data between PostgreSQL and BigQuery.
-2.  **BigQuery Data Transfer Service (BDTS)**: Automates data imports from various sources to BigQuery. However, since it doesn't natively support PostgreSQL, you'd need an intermediary step, such as exporting data to a CSV file on Cloud Storage and then importing it into BigQuery.
+2.  **BigQuery Data Transfer Service (BDTS)**: Automates data imports from various sources to BigQuery. 
+However, since it doesn't natively support PostgreSQL, you'd need an intermediary step, 
+such as exporting data to a CSV file on Cloud Storage and then importing it into BigQuery.
 3.  **Datastream (CDC)**: A change data capture service that supports PostgreSQL as a source for real-time data streaming.
 
-Due to our inability to connect GCP directly to PostgreSQL (even via network tunneling like Cloud VPN or Cloud Interconnect), these options are not viable. In scenarios where such a connection is possible, one of these tools could be considered.
+Due to our inability to connect GCP directly to PostgreSQL (even via network tunneling like Cloud VPN or Cloud Interconnect), 
+these options are not viable. In scenarios where such a connection is possible, one of these tools could be considered.
 
 ### Outbox pattern
 
-The **Outbox Pattern** can be implemented using tools like [Debezium](https://debezium.io/), which captures database changes (CDC) and streams them to [Apache Kafka](https://kafka.apache.org/).
+The **Outbox Pattern** can be implemented using tools like (**Debezium**)[https://debezium.io/],
+which captures database changes (CDC) and streams them to (Apache Kafka)[https://kafka.apache.org/].
 
 **How Debezium Works with PostgreSQL**:
 
@@ -46,16 +53,21 @@ The **Outbox Pattern** can be implemented using tools like [Debezium](https://de
 2. Debezium monitors the `outbox` table and sends events to Kafka.
 3. Kafka consumers process these events and write data to BigQuery.
 
-Although Debezium offers real-time streaming, which is excellent for low-latency applications, it's not ideal for our requirements. Ensuring 100% data consistency between source and destination is critical, and streaming approaches like Debezium can introduce complexities in handling connection failures or consumer errors, potentially resulting in data loss or duplication. While compensatory mechanisms exist, they increase system complexity.
+Although Debezium offers real-time streaming, which is excellent for low-latency applications, it's not ideal for our requirements. 
+Ensuring 100% data consistency between source and destination is critical. 
+Streaming approaches like Debezium can introduce complexities in handling connection failures or consumer errors, 
+potentially resulting in data loss or duplication. While compensatory mechanisms exist, they increase system complexity.
 
-In contrast, a batch processing approach provides greater control over data transfers, ensuring atomicity and accuracy for each batch. Accepting a delay of a few minutes to hours is reasonable since:
+In contrast, a batch processing approach provides greater control over data transfers, ensuring atomicity and accuracy for each batch. 
+Accepting a delay of a few minutes to hours is reasonable since:
 
 -   Data is copied atomically within a specific time range.
 -   We can verify data consistency between systems after each transfer.
 
 ### "Kopiowaczka" Solution
 
-The chosen solution, called **Kopiowaczka** (Polish for "the copier"), is based on cyclic or manual data transfer tasks. Each task specifies the table to copy and the date range of the data. A dedicated task table tracks the process and its status:
+The chosen solution, called **Kopiowaczka** (Polish for "the copier"), is based on cyclic or manual data transfer tasks. 
+Each task specifies the table to copy and the date range of the data. A dedicated task table tracks the process and its status:
 
 ```sql
 CREATE TABLE task_table (
@@ -77,7 +89,8 @@ New tasks start with a `NEW` status. A cyclic scheduler processes tasks with thi
 4.  Copying data from the temporary table to the final table in BigQuery, ensuring no duplicates (via `LEFT JOIN`).
 5.  Verifying the record count between the source and destination tables.
 
-If an error occurs at any stage (e.g., exceptions or record count mismatches), the task is retried up to three times before being marked as `ERROR`. Failed tasks trigger monitoring alerts to notify the appropriate teams.
+If an error occurs at any stage (e.g., exceptions or record count mismatches), the task is retried up to three times before being marked as `ERROR`. 
+Failed tasks trigger monitoring alerts to notify the appropriate teams.
 
 
 **Step 1: Extract Data from PostgreSQL to CSV**
@@ -152,7 +165,11 @@ if (!job.isDone()) {
 
 **Step 4: Copy Data to the Final Table (Avoiding Duplicates)**
 
-Data can be copied with overlap, or even repeatedly for the same date range. However, the final table in BigQuery should not contain duplicates. Unfortunately, BigQuery does not have a built-in mechanism to enforce a unique key constraint. There are various ways to ensure that duplicates are avoided. One effective approach is to copy the data into a temporary table, as done in the previous step, and then use a LEFT JOIN operation to insert only those records that do not already exist in the final table:
+Data can be copied with overlap, or even repeatedly for the same date range. However, the final table in BigQuery should not contain duplicates. 
+Unfortunately, BigQuery does not have a built-in mechanism to enforce a unique key constraint. 
+There are various ways to ensure that duplicates are avoided. 
+One effective approach is to copy the data into a temporary table, as done in the previous step. 
+Then, use a LEFT JOIN operation to insert only those records that do not already exist in the final table.
 
 ```sql
 INSERT INTO final_table
@@ -163,7 +180,10 @@ WHERE f.unique_key IS NULL;
 
 **Step 5: Verify Record Count**
 
-After copying the data to the final table in BigQuery, the next step is to verify the correctness of the entire transfer process. To ensure that all data has been accurately copied, the number of records in the source PostgreSQL table is compared with the number in the target BigQuery table for the specified date range. Alternatively, verification can be done by summing values in selected columns. The choice of verification method depends on the nature and structure of the data.
+After copying the data to the final table in BigQuery, the next step is to verify the correctness of the entire transfer process. 
+To ensure that all data has been accurately copied, the number of records in the source PostgreSQL table is 
+compared with the number in the target BigQuery table. This comparison is done for the specified date range. Alternatively, 
+verification can be done by summing values in selected columns. The choice of verification method depends on the nature and structure of the data.
 
 ```java
 // PostgreSQL count
@@ -201,4 +221,6 @@ if (postgresCount == bigQueryCount) {
 
 ## Conclusion
 
-This solution provides full control over data transfer processes, minimizes risks of inconsistencies, and is more stable than streaming approaches. While the described implementation is conceptual and requires adaptation to specific business needs, it emphasizes reliability and simplicity, making it suitable for many real-world scenarios.
+This solution provides full control over data transfer processes, minimizes risks of inconsistencies, and is more stable than streaming approaches. 
+While the described implementation is conceptual and requires adaptation to specific business needs, it emphasizes reliability and simplicity, 
+making it suitable for many real-world scenarios.
