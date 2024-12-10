@@ -185,6 +185,11 @@ To ensure that all data has been accurately copied, the number of records in the
 compared with the number in the target BigQuery table. This comparison is done for the specified date range. Alternatively, 
 verification can be done by summing values in selected columns. The choice of verification method depends on the nature and structure of the data.
 
+This verification step is intended to catch discrepancies between the source and destination. While the issue of mismatched row counts is rare, 
+it could happen if someone schedules a manual migration process with a 'date_to' date in the future. 
+If new rows are inserted into PostgreSQL after the data copy but before verification, PostgreSQL may contain more rows than BigQuery, 
+causing the verification to fail. However, such cases are uncommon and typically easy to avoid with careful scheduling or improved validation.
+
 ```java
 // PostgreSQL count
 String postgresCountQuery = "SELECT COUNT(*) FROM ? WHERE date_column BETWEEN ? AND ?";
