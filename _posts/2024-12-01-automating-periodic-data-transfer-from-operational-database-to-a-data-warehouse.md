@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Automating Periodic Data Transfer from an Operational Database to a Data Warehouse
-author: [ rdariusz.zbyrad ]
+author: [ dariusz.zbyrad ]
 tags: [ gcp, bigquery, bigdata  ]
 ---
 
