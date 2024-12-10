@@ -221,6 +221,6 @@ if (postgresCount == bigQueryCount) {
 
 ## Conclusion
 
-This solution provides full control over data transfer processes, minimizes risks of inconsistencies, and is more stable than streaming approaches. 
+This solution provides full control over the data transfer processes, minimizes risks of inconsistencies, and is more stable than streaming approaches. 
 While the described implementation is conceptual and requires adaptation to specific business needs, it emphasizes reliability and simplicity, 
 making it suitable for many real-world scenarios.
