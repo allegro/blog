@@ -58,6 +58,8 @@ We had never used it for any other reason than as an annotation for HTTP calls. 
 
 We are using a message broker that receives information about failures from different payment services for each
 payment method and passes this information to a microservice that manages the circuit breakers.
+The state change is then stored in the `payment-method-state-repository` used by
+the `payment-methods availability-service` which decides whether the methods should be marked as disabled - for use on the frontend.
 
 We are using [Resilience4j](https://github.com/resilience4j/resilience4j) library for Circuit Breaker implementation.
 
