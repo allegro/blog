@@ -7,7 +7,7 @@ tags: [ gcp, bigquery, bigdata  ]
 
 Many companies face the challenge of efficiently processing large datasets for analytics. 
 Using an operational database for such purposes can lead to performance issues or, in extreme cases, system failures. 
-It's highlights the need to transfer data from operational databases to data warehouses. 
+This highlights the need to transfer data from operational databases to data warehouses. 
 This approach allows heavy analytical queries without overburdening transactional systems and supports shorter retention periods in production databases.
 
 ## Requirements
