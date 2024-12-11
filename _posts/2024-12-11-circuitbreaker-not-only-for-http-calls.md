@@ -2,7 +2,7 @@
 layout: post
 title: Circuit Breaker not only for HTTP calls! (based on resilience4j)
 author: [ patryk.bernacki ]
-tags: [ programming, principles, code, tech  ]
+tags: [ programming, principles, code, tech ]
 ---
 
 When we think about the Circuit Breaker pattern, we instantly associate it with the HTTP client. Just make some annotation or wrapper and proceed with coding.
@@ -17,12 +17,12 @@ After some time, it will change its state to **HALF_OPEN** during which some ope
 If an operation is successful, the circuit will change its state to **CLOSED** and will allow all operations.
 If the operation fails, the circuit will change its state to **OPEN** again.
 
-![circuit breaker pattern](/assets/img/articles/2024-11-30-circuitbreaker-not-only-for-http-calls/cb.png)
+![circuit breaker pattern](/assets/img/articles/2024-12-11-circuitbreaker-not-only-for-http-calls/cb.png)
 
 For me, at first, it was a little bit confusing to remember that **OPEN** is a negative state. However, if you think about it like about an electronic circuit,
 it all makes sense.
 
-![electrical diagram](/assets/img/articles/2024-11-30-circuitbreaker-not-only-for-http-calls/cb_electric.png)
+![electrical diagram](/assets/img/articles/2024-12-11-circuitbreaker-not-only-for-http-calls/cb_electric.png)
 
 ## Allegro requirements
 Allegro is complex but must be simple to use, fast and reliable. The payment process (which we will focus on) is no exception -
@@ -34,8 +34,8 @@ In such a complex system, it is normal that some part of it fails from time to t
 ## Business problem to be solved
 One of the responsibilities of the team of which I am a part is to provide payment methods from which user can choose their preferred one.
 
-![payment methods](/assets/img/articles/2024-11-30-circuitbreaker-not-only-for-http-calls/payment_methods.png)
-![banks list](/assets/img/articles/2024-11-30-circuitbreaker-not-only-for-http-calls/pbl.png)
+![payment methods](/assets/img/articles/2024-12-11-circuitbreaker-not-only-for-http-calls/payment_methods.png)
+![banks list](/assets/img/articles/2024-12-11-circuitbreaker-not-only-for-http-calls/pbl.png)
 
 As we can see above, there are plenty of methods, and each one has to be handled differently. For each method, a different third party is involved,
 and the risk of failure is increasing. More importantly, many of those failures are not fixable in the Allegro system.
@@ -54,7 +54,7 @@ We had never used it for any other reason than as an annotation for HTTP calls. 
 
 ## Solution with implementation
 
-![solution service architecture](/assets/img/articles/2024-11-30-circuitbreaker-not-only-for-http-calls/arch.png)
+![solution service architecture](/assets/img/articles/2024-12-11-circuitbreaker-not-only-for-http-calls/arch.png)
 
 We are using a message broker that receives information about failures from different payment services for each
 payment method and passes this information to a microservice that manages the Circuit Breakers.
