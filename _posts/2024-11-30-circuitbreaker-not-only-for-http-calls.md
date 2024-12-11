@@ -9,8 +9,8 @@ When we think about the Circuit Breaker pattern, we instantly associate it with 
 In this article, I will encourage you to use this pattern to resolve business problems.
 Based on a live example from [Allegro](https://allegro.tech/) I will show you how to use the implementation of CircuitBreaker from [Resilience4j](https://resilience4j.readme.io/) library for cases other than HTTP calls.
 
-## What's the circuit breaker pattern
-The circuit breaker is a simple but powerful pattern for detecting failures and ensuring reliability of the system.
+## What's the Circuit Breaker pattern
+The Circuit Breaker is a simple but powerful pattern for detecting failures and ensuring reliability of the system.
 It tracks how many times the operation has failed and if it exceeds a specific threshold,
 the circuit will transition to **OPEN** state. In this state, the task is not executed any more when invoked.
 After some time, it will change its state to **HALF_OPEN** during which some operations will be allowed to execute, which will check if the system is back to normal.
@@ -57,7 +57,7 @@ We had never used it for any other reason than as an annotation for HTTP calls. 
 ![solution service architecture](/assets/img/articles/2024-11-30-circuitbreaker-not-only-for-http-calls/arch.png)
 
 We are using a message broker that receives information about failures from different payment services for each
-payment method and passes this information to a microservice that manages the circuit breakers.
+payment method and passes this information to a microservice that manages the Circuit Breakers.
 The state change is then stored in the `payment-method-state-repository` used by
 the `payment-methods availability-service` which decides whether the methods should be marked as disabled - for use on the frontend.
 
@@ -74,10 +74,10 @@ class SimpleCircuitBreakers(
 ```
 
 We have created `SimpleCircuitBreakers` class which holds:
-- `circuitBreakerConfig` - configuration for circuit breakers (failure threshold and many more; for more information please refer to [official documentation](https://resilience4j.readme.io/docs/circuitbreaker)),
-- `circuitBreakerRegistry` - holds circuit breakers separately for each payment method,
-- `executorService` - schedules tasks that are triggered after changing the state of the circuit breaker,
-- `paymentMethodsStateRepository` - a custom class which is responsible for handling transition between the states of circuit breakers.
+- `circuitBreakerConfig` - configuration for Circuit Breakers (failure threshold and many more; for more information please refer to [official documentation](https://resilience4j.readme.io/docs/circuitbreaker)),
+- `circuitBreakerRegistry` - holds Circuit Breakers separately for each payment method,
+- `executorService` - schedules tasks that are triggered after changing the state of the Circuit Breaker,
+- `paymentMethodsStateRepository` - a custom class which is responsible for handling transition between the states of Circuit Breakers.
 
 ### Event to be processed
 ```kotlin
@@ -89,10 +89,12 @@ data class PaymentEvent(
 `PaymentEvent` is an event received from a message broker. It contains the name of the selected payment method,
 and information about whether the payment was successful or not.
 
-### Adding new circuit breaker to `CircuitBreakerRegistry`
+### Adding new Circuit Breaker to `CircuitBreakerRegistry`
 ```kotlin
-class SimpleCircuitBreakers(...){
-    ...
+class SimpleCircuitBreakers(
+    //...
+){
+    //...
     private fun findOrAdd(circuitBreakerName: String): CircuitBreaker =
         circuitBreakerRegistry.find(circuitBreakerName)
             .orElseGet {
@@ -113,10 +115,9 @@ class SimpleCircuitBreakers(...){
                     }, 0, TimeUnit.SECONDS)
                 }
         }
-    ...
 }
 ```
-In the `findOrAdd` method, we look for circuit breakers in the registry. If it is not present, we create a new one with the given configuration.
+In the `findOrAdd` method, we look for Circuit Breakers in the registry. If it is not present, we create a new one with the given configuration.
 
 Function `addStateTransitionsHandling` applies logic to handle state transitions (e.g. from **CLOSED** to **OPEN**, from **HALF_OPEN** to **CLOSED**).
 In our example, we save the new state to a repository so the services responsible for providing methods can filter out those that are turned off.
@@ -137,8 +138,10 @@ Executors.newSingleThreadScheduledExecutor { threadTask: Runnable? ->
 
 ### Handling events
 ```kotlin
-class SimpleCircuitBreakers(...){
-    ...
+class SimpleCircuitBreakers(
+    ///...
+){
+    //...
     fun process(event: PaymentEvent) =
         findOrAdd(event.paymentMethod)
             .publishEvent(event)
@@ -156,15 +159,14 @@ class SimpleCircuitBreakers(...){
             this.releasePermission()
         }
     }
-    ...
 }
 ```
 
-In the `process` method, we look for circuit breakers in the registry and then we publish events to it.
+In the `process` method, we look for Circuit Breakers in the registry and then we publish events to it.
 
-In the `publishEvent` method, we check if the payment was successful or not, and then we call the proper method on the circuit breaker.
+In the `publishEvent` method, we check if the payment was successful or not, and then we call the proper method on the Circuit Breaker.
 I am sure that you noticed some "hack" right away; the implementation in Resilence4j requires us to provide the duration of the task execution since
-circuit breakers can also treat slow tasks as failures. Therefore, we provided 1 second as the default. Next hack is in `tryAcquirePermission`.
+Circuit Breakers can also treat slow tasks as failures. Therefore, we provided 1 second as the default. Next hack is in `tryAcquirePermission`.
 Ideally, it should be invoked in a service that is responsible for filtering out methods to decide whether we can make a payment with a particular method or not.
 However, we gather events in a separate microservice, and we were not able to do so.
 
@@ -178,6 +180,6 @@ Therefore, we came up with the idea of calculating what percentage of users shou
 to make sure everything is back to normal.
 
 ## Conclusions
-In the above example, we show how to use circuit breakers from Resilience4j for handling cases other than HTTP calls.
+In the above example, we show how to use Circuit Breaker from Resilience4j for handling cases other than HTTP calls.
 With that ~70 lines of code, we were able to significantly improve our response time to failures, redirect users to functioning payment providers,
 meet business requirements regarding reliability, and take the manual switching off of payment methods off from developers' shoulders.
