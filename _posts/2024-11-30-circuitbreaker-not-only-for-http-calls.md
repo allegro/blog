@@ -117,7 +117,7 @@ class SimpleCircuitBreakers(
         }
 }
 ```
-In the `findOrAdd` method, we look for Circuit Breakers in the registry. If it is not present, we create a new one with the given configuration.
+In the `findOrAdd` method, we look for Circuit Breakers in the registry. If it is not present, we create a new one `circuitBreakerRegistry.circuitBreaker()` with the given configuration.
 
 Function `addStateTransitionsHandling` applies logic to handle state transitions (e.g. from **CLOSED** to **OPEN**, from **HALF_OPEN** to **CLOSED**).
 In our example, we save the new state to a repository so the services responsible for providing methods can filter out those that are turned off.
