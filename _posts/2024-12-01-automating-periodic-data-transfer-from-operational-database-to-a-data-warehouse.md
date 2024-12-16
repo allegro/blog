@@ -169,7 +169,7 @@ Data can be copied with overlap, or even repeatedly, for the same date range. Ho
 Unfortunately, BigQuery does not have a built-in mechanism to enforce a unique key constraint. 
 There are various ways to ensure that duplicates are avoided. 
 One effective approach is to copy the data into a temporary table, as done in the previous step. 
-Then, use a LEFT JOIN operation to insert only those records that do not already exist in the final table.
+Then, use a `LEFT JOIN` operation to insert only those records that do not already exist in the final table.
 
 ```sql
 INSERT INTO final_table
