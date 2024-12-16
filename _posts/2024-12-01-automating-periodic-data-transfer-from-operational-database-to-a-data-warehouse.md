@@ -165,7 +165,7 @@ if (!job.isDone()) {
 
 **Step 4: Copy Data to the Final Table (Avoiding Duplicates)**
 
-Data can be copied with overlap, or even repeatedly for the same date range. However, the final table in BigQuery should not contain duplicates. 
+Data can be copied with overlap, or even repeatedly, for the same date range. However, the final table in BigQuery should not contain duplicates. 
 Unfortunately, BigQuery does not have a built-in mechanism to enforce a unique key constraint. 
 There are various ways to ensure that duplicates are avoided. 
 One effective approach is to copy the data into a temporary table, as done in the previous step. 
