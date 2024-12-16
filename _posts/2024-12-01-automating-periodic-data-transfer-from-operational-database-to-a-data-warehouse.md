@@ -12,7 +12,7 @@ This approach allows heavy analytical queries without overburdening transactiona
 
 ## Requirements
 
-For this article, let's assume the following:
+For this article, let’s assume the following:
 
 -   **Source/Operational Database**: PostgreSQL
 -   **Target/Data Warehouse**: BigQuery
@@ -29,7 +29,7 @@ Google offers several solutions for automating the data transfer:
 
 1.  **Google Dataflow** (based on Apache Beam): Allows creating data pipelines (ETL/ELT) to synchronize data between PostgreSQL and BigQuery.
 2.  **BigQuery Data Transfer Service (BDTS)**: Automates data imports from various sources to BigQuery. 
-However, since it doesn't natively support PostgreSQL, you'd need an intermediary step, 
+However, since it doesn’t natively support PostgreSQL, you’d need an intermediary step, 
 such as exporting data to a CSV file on Cloud Storage and then importing it into BigQuery.
 3.  **Datastream (CDC)**: A change data capture service that supports PostgreSQL as a source for real-time data streaming.
 
@@ -43,7 +43,7 @@ which captures database changes (CDC) and streams them to (Apache Kafka)[https:/
 
 **How Debezium Works with PostgreSQL**:
 
- - Uses PostgreSQL's Write-Ahead Logs (WAL) to track table changes.
+ - Uses PostgreSQL’s Write-Ahead Logs (WAL) to track table changes.
  - Can monitor specific tables (e.g., an `outbox` table).
  - Publishes changes to Kafka topics as JSON events.
 
@@ -53,7 +53,7 @@ which captures database changes (CDC) and streams them to (Apache Kafka)[https:/
 2. Debezium monitors the `outbox` table and sends events to Kafka.
 3. Kafka consumers process these events and write data to BigQuery.
 
-Although Debezium offers real-time streaming, which is excellent for low-latency applications, it's not ideal for our requirements. 
+Although Debezium offers real-time streaming, which is excellent for low-latency applications, it’s not ideal for our requirements. 
 Ensuring 100% data consistency between source and destination is critical. 
 Streaming approaches like Debezium can introduce complexities in handling connection failures or consumer errors, 
 potentially resulting in data loss or duplication. While compensatory mechanisms exist, they increase system complexity.
@@ -64,10 +64,11 @@ Accepting a delay of a few minutes to hours is reasonable since:
 -   Data is copied atomically within a specific time range.
 -   We can verify data consistency between systems after each transfer.
 
-### "Kopiowaczka" Solution
+### ”Kopiowaczka” Solution
 
-The chosen solution, called **Kopiowaczka** (Polish for "the copier"), is based on cyclic or manual data transfer tasks. 
-Each task specifies the table to copy and the date range of the data. A dedicated task table tracks the process and its status:
+The chosen solution, called **Kopiowaczka** (Polish for ”the copier”), was named humorously by the development team. The name reflects its core functionality: repeatedly copying data from one source to another in a reliable and systematic way. ”Kopiowaczka” emerged as an internal nickname during early discussions, as the team joked about the simplicity yet monotony of its purpose—”just copy and copy.” The name stuck, eventually becoming an official term used in documentation and team conversations.
+
+The solution is based on cyclic or manual data transfer tasks. Each task specifies the table to copy and the date range of the data. A dedicated task table tracks the process and its status:
 
 ```sql
 CREATE TABLE task_table (
@@ -139,7 +140,7 @@ BlobInfo blobInfo = BlobInfo.newBuilder(gcsBucketName, csvFileName).build();
 storage.create(blobInfo, Files.readAllBytes(Paths.get(csvFilePath)));
 ```
 
-#### Step 3: Import CSV into a Temporary BigQuery Table
+**Step 3: Import CSV into a Temporary BigQuery Table**
 
 The CSV is imported into a temporary BigQuery table:
 
@@ -186,7 +187,7 @@ compared with the number in the target BigQuery table. This comparison is done f
 verification can be done by summing values in selected columns. The choice of verification method depends on the nature and structure of the data.
 
 This verification step is intended to catch discrepancies between the source and destination. While the issue of mismatched row counts is rare, 
-it could happen if someone schedules a manual migration process with a 'date_to' date in the future. 
+it could happen if someone schedules a manual migration process with a ’date_to’ date in the future. 
 If new rows are inserted into PostgreSQL after the data copy but before verification, PostgreSQL may contain more rows than BigQuery, 
 causing the verification to fail. However, such cases are uncommon and typically easy to avoid with careful scheduling or improved validation.
 
