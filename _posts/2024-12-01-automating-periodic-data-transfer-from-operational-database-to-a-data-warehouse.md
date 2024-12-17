@@ -68,7 +68,7 @@ Accepting a delay of a few minutes to hours is reasonable since:
 
 The chosen solution, called **Kopiowaczka** (Polish for ”the copier”), was named humorously by the development team. 
 The name reflects its core functionality: repeatedly copying data from one source to another in a reliable and systematic way. 
-”Kopiowaczka” emerged as an internal nickname during early discussions, as the team joked about the simplicity yet monotony of its purpose—”just copy and copy”. 
+”Kopiowaczka” emerged as an internal nickname during early discussions, as the team joked about the simplicity yet monotony of its purpose — ”just copy and copy”. 
 The name stuck, eventually becoming an official term used in documentation and team conversations.
 
 The solution is based on cyclic or manual data transfer tasks. Each task specifies the table to copy and the date range of the data. A dedicated task table tracks the process and its status:
