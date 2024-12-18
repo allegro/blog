@@ -38,8 +38,8 @@ these options are not viable. In scenarios where such a connection is possible, 
 
 ### Outbox pattern
 
-The **Outbox Pattern** can be implemented using tools like (**Debezium**)[https://debezium.io/],
-which captures database changes (CDC) and streams them to (Apache Kafka)[https://kafka.apache.org/].
+The **Outbox Pattern** can be implemented using tools like [**Debezium**](https://debezium.io/),
+which captures database changes (CDC) and streams them to [**Apache Kafka**](https://kafka.apache.org/).
 
 **How Debezium Works with PostgreSQL**:
 
@@ -64,14 +64,15 @@ Accepting a delay of a few minutes to hours is reasonable since:
 -   Data is copied atomically within a specific time range.
 -   We can verify data consistency between systems after each transfer.
 
-### ”Kopiowaczka” Solution
+### “Kopiowaczka“ Solution
 
-The chosen solution, called **Kopiowaczka** (Polish for ”the copier”), was named humorously by the development team. 
+The chosen solution, called **Kopiowaczka** (Polish for “the copier“), was named humorously by the development team. 
 The name reflects its core functionality: repeatedly copying data from one source to another in a reliable and systematic way. 
-”Kopiowaczka” emerged as an internal nickname during early discussions, as the team joked about the simplicity yet monotony of its purpose — ”just copy and copy”. 
+“Kopiowaczka“ emerged as an internal nickname during early discussions, as the team joked about the simplicity yet monotony of its purpose — “just copy and copy“. 
 The name stuck, eventually becoming an official term used in documentation and team conversations.
 
-The solution is based on cyclic or manual data transfer tasks. Each task specifies the table to copy and the date range of the data. A dedicated task table tracks the process and its status:
+The solution is based on cyclic or manual data transfer tasks. Each task specifies the table to copy and the date range of the data. 
+A dedicated task table tracks the process and its status:
 
 ```sql
 CREATE TABLE task_table (
@@ -154,10 +155,10 @@ TableId tempTableId = TableId.of(datasetName, "temp_table");
 String gcsPath = String.format("gs://%s/%s", stagingBucketName, csvFileName);
 
 LoadJobConfiguration loadConfig = LoadJobConfiguration.builder(tempTableId, gcsPath)
-    .setFormatOptions(FormatOptions.csv())
+    .setFormatOptions(FormatOptions.csv())
     .setNullMarker("null")
     .setJobTimeoutMs(loadJobTimeout())
-    .build();
+    .build();
 
 Job loadJob = bigquery.create(JobInfo.of(loadConfig));
 loadJob.waitFor();
