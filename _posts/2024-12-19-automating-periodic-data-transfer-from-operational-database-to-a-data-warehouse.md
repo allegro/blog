@@ -2,12 +2,12 @@
 layout: post
 title: Automating Periodic Data Transfer from an Operational Database to a Data Warehouse
 author: [ dariusz.zbyrad ]
-tags: [ gcp, bigquery, bigdata  ]
+tags: [ gcp, bigquery, bigdata ]
 ---
 
-Many companies face the challenge of efficiently processing large datasets for analytics. 
-Using an operational database for such purposes can lead to performance issues or, in extreme cases, system failures. 
-This highlights the need to transfer data from operational databases to data warehouses. 
+Many companies face the challenge of efficiently processing large datasets for analytics.
+Using an operational database for such purposes can lead to performance issues or, in extreme cases, system failures.
+This highlights the need to transfer data from operational databases to data warehouses.
 This approach allows heavy analytical queries without overburdening transactional systems and supports shorter retention periods in production databases.
 
 ## Requirements
@@ -28,12 +28,12 @@ For this article, let’s assume the following:
 Google offers several solutions for automating the data transfer:
 
 1.  **Google Dataflow** (based on Apache Beam): Allows creating data pipelines (ETL/ELT) to synchronize data between PostgreSQL and BigQuery.
-2.  **BigQuery Data Transfer Service (BDTS)**: Automates data imports from various sources to BigQuery. 
-However, since it doesn’t natively support PostgreSQL, you’d need an intermediary step, 
+2.  **BigQuery Data Transfer Service (BDTS)**: Automates data imports from various sources to BigQuery.
+However, since it doesn’t natively support PostgreSQL, you’d need an intermediary step,
 such as exporting data to a CSV file on Cloud Storage and then importing it into BigQuery.
 3.  **Datastream (CDC)**: A change data capture service that supports PostgreSQL as a source for real-time data streaming.
 
-Due to our inability to connect GCP directly to PostgreSQL (even via network tunneling like Cloud VPN or Cloud Interconnect), 
+Due to our inability to connect GCP directly to PostgreSQL (even via network tunneling like Cloud VPN or Cloud Interconnect),
 these options are not viable. In scenarios where such a connection is possible, one of these tools could be considered.
 
 ### Outbox pattern
@@ -53,12 +53,12 @@ which captures database changes (CDC) and streams them to [**Apache Kafka**](htt
 2. Debezium monitors the `outbox` table and sends events to Kafka.
 3. Kafka consumers process these events and write data to BigQuery.
 
-Although Debezium offers real-time streaming, which is excellent for low-latency applications, it’s not ideal for our requirements. 
-Ensuring 100% data consistency between source and destination is critical. 
-Streaming approaches like Debezium can introduce complexities in handling connection failures or consumer errors, 
+Although Debezium offers real-time streaming, which is excellent for low-latency applications, it’s not ideal for our requirements.
+Ensuring 100% data consistency between source and destination is critical.
+Streaming approaches like Debezium can introduce complexities in handling connection failures or consumer errors,
 potentially resulting in data loss or duplication. While compensatory mechanisms exist, they increase system complexity.
 
-In contrast, a batch processing approach provides greater control over data transfers, ensuring atomicity and accuracy for each batch. 
+In contrast, a batch processing approach provides greater control over data transfers, ensuring atomicity and accuracy for each batch.
 Accepting a delay of a few minutes to hours is reasonable since:
 
 -   Data is copied atomically within a specific time range.
@@ -66,12 +66,12 @@ Accepting a delay of a few minutes to hours is reasonable since:
 
 ### “Kopiowaczka“ Solution
 
-The chosen solution, called **Kopiowaczka** (Polish for “the copier“), was named humorously by the development team. 
-The name reflects its core functionality: repeatedly copying data from one source to another in a reliable and systematic way. 
-“Kopiowaczka“ emerged as an internal nickname during early discussions, as the team joked about the simplicity yet monotony of its purpose — “just copy and copy“. 
+The chosen solution, called **Kopiowaczka** (Polish for “the copier“), was named humorously by the development team.
+The name reflects its core functionality: repeatedly copying data from one source to another in a reliable and systematic way.
+“Kopiowaczka“ emerged as an internal nickname during early discussions, as the team joked about the simplicity yet monotony of its purpose — “just copy and copy“.
 The name stuck, eventually becoming an official term used in documentation and team conversations.
 
-The solution is based on cyclic or manual data transfer tasks. Each task specifies the table to copy and the date range of the data. 
+The solution is based on cyclic or manual data transfer tasks. Each task specifies the table to copy and the date range of the data.
 A dedicated task table tracks the process and its status:
 
 ```sql
@@ -94,7 +94,7 @@ New tasks start with a `NEW` status. A cyclic scheduler processes tasks with thi
 4.  Copying data from the temporary table to the final table in BigQuery, ensuring no duplicates (via `LEFT JOIN`).
 5.  Verifying the record count between the source and destination tables.
 
-If an error occurs at any stage (e.g., exceptions or record count mismatches), the task is retried up to three times before being marked as `ERROR`. 
+If an error occurs at any stage (e.g., exceptions or record count mismatches), the task is retried up to three times before being marked as `ERROR`.
 Failed tasks trigger monitoring alerts to notify the appropriate teams.
 
 
@@ -106,18 +106,18 @@ Data is queried from PostgreSQL based on the table name and date range, then sav
 String query = "SELECT * FROM ? WHERE date_column BETWEEN ? AND ?";
 
 try (Connection connection = DriverManager.getConnection(connectionUrl);
-    PreparedStatement stmt = connection.prepareStatemen 
+    PreparedStatement stmt = connection.prepareStatemen
 
     stmt.setString(1, tableNameToCopy);
     stmt.setDate(2, startDate);
-    stmt.setDate(3, endDate);  
+    stmt.setDate(3, endDate);
 
     try (ResultSet rs = stmt.executeQuery();
-        BufferedWriter writer = Files.newBufferedWriter(Paths.get(csvFilePath))) {   
+        BufferedWriter writer = Files.newBufferedWriter(Paths.get(csvFilePath))) {
         CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader(rs));
 
-        int batchSize = 10000; 
-        int rowCount = 0; 
+        int batchSize = 10000;
+        int rowCount = 0;
 
         while (rs.next()) {
             csvPrinter.printRecord(
@@ -170,10 +170,10 @@ if (!job.isDone()) {
 
 **Step 4: Copy Data to the Final Table (Avoiding Duplicates)**
 
-Data can be copied with overlap, or even repeatedly, for the same date range. However, the final table in BigQuery should not contain duplicates. 
-Unfortunately, BigQuery does not have a built-in mechanism to enforce a unique key constraint. 
-There are various ways to ensure that duplicates are avoided. 
-One effective approach is to copy the data into a temporary table, as done in the previous step. 
+Data can be copied with overlap, or even repeatedly, for the same date range. However, the final table in BigQuery should not contain duplicates.
+Unfortunately, BigQuery does not have a built-in mechanism to enforce a unique key constraint.
+There are various ways to ensure that duplicates are avoided.
+One effective approach is to copy the data into a temporary table, as done in the previous step.
 Then, use a `LEFT JOIN` operation to insert only those records that do not already exist in the final table.
 
 ```sql
@@ -185,14 +185,14 @@ WHERE f.unique_key IS NULL;
 
 **Step 5: Verify Record Count**
 
-After copying the data to the final table in BigQuery, the next step is to verify the correctness of the entire transfer process. 
-To ensure that all data has been accurately copied, the number of records in the source PostgreSQL table is 
-compared with the number in the target BigQuery table. This comparison is done for the specified date range. Alternatively, 
+After copying the data to the final table in BigQuery, the next step is to verify the correctness of the entire transfer process.
+To ensure that all data has been accurately copied, the number of records in the source PostgreSQL table is
+compared with the number in the target BigQuery table. This comparison is done for the specified date range. Alternatively,
 verification can be done by summing values in selected columns. The choice of verification method depends on the nature and structure of the data.
 
-This verification step is intended to catch discrepancies between the source and destination. While the issue of mismatched row counts is rare, 
-it could happen if someone schedules a manual migration process with a `date_to` date in the future. 
-If new rows are inserted into PostgreSQL after the data copy but before verification, PostgreSQL may contain more rows than BigQuery, 
+This verification step is intended to catch discrepancies between the source and destination. While the issue of mismatched row counts is rare,
+it could happen if someone schedules a manual migration process with a `date_to` date in the future.
+If new rows are inserted into PostgreSQL after the data copy but before verification, PostgreSQL may contain more rows than BigQuery,
 causing the verification to fail. However, such cases are uncommon and typically easy to avoid with careful scheduling or improved validation.
 
 ```java
@@ -208,7 +208,7 @@ int postgresCount = rs.next() ? rs.getInt(1) : 0;
 
 // BigQuery count
 String bigQueryCountQuery = String.format(
-    "SELECT COUNT(*) AS row_count FROM `%s` WHERE date_column BETWEEN @start_date AND @end_date", 
+    "SELECT COUNT(*) AS row_count FROM `%s` WHERE date_column BETWEEN @start_date AND @end_date",
     bigQueryFinalTable
 );
 
@@ -231,6 +231,6 @@ if (postgresCount == bigQueryCount) {
 
 ## Conclusion
 
-This solution provides full control over the data transfer processes, minimizes risks of inconsistencies, and is more stable than streaming approaches. 
-While the described implementation is conceptual and requires adaptation to specific business needs, it emphasizes reliability and simplicity, 
+This solution provides full control over the data transfer processes, minimizes risks of inconsistencies, and is more stable than streaming approaches.
+While the described implementation is conceptual and requires adaptation to specific business needs, it emphasizes reliability and simplicity,
 making it suitable for many real-world scenarios.
