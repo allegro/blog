@@ -1,0 +1,43 @@
+<div class="flex flex-col items-center sm:flex-row sm:gap-4 not-format p-4">
+    <img class="mx-auto mb-4 rounded-full sm:ml-0 sm:mr-6" src="{{ '/assets/img/authors/' | append: authorKey | append: '.jpg' }}" alt="{{authorData.name}}" style="width: 150px; height: 150px; align-self: flex-start;">
+    <div class="text-center sm:text-left">
+        <h3 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+            <a href="{{ '/authors/' | append: authorKey }}" rel="author" class="text-xl font-bold text-gray-900 dark:text-white">
+                {{ authorData.name }}
+            </a>
+        </h3>
+        {% if authorData.role %}
+            <small class="ml-0">{{authorData.role}}</small>
+        {% endif %}
+        <p class="mt-4 font-light text-gray-500 dark:text-gray-400">
+            {{authorData.bio | markdownify}}
+        </p>
+        <div class="flex justify-center space-x-4 sm:justify-start mt-4 gap-4">
+            {%if authorData.twitter %}
+            <a class="username" href="https://twitter.com/{{authorData.twitter}}">
+                <span class="social"><img class="w-8 h-8 dark:invert" src="{{ '/assets/img/social/twitter.svg' }}" alt="Twitter" /></span>
+                {% comment %} <span>{{authorData.twitter}}</span> {% endcomment %}
+            </a>
+            {% endif %} {%if authorData.github %}
+            <a class="username" href="https://github.com/{{authorData.github}}">
+                <span class="social"><img class="w-8 h-8 dark:invert" src="{{ '/assets/img/social/github.svg' }}" alt="Github" /></span>
+                {% comment %} <span>{{authorData.github}}</span> {% endcomment %}
+            </a>
+            {% endif %} {%if authorData.stackOverflow.id and authorData.stackOverflow.name %}
+            <a class="username" href="https://stackoverflow.com/users/{{authorData.stackOverflow.id}}">
+                <span class="social"
+                    ><img class="w-8 h-8 dark:invert" src="{{ '/assets/img/social/stackoverflow.svg' }}" alt="StackOverflow"
+                /></span>
+                {% comment %} <span>{{authorData.stackOverflow.name}}</span> {% endcomment %}
+            </a>
+            {% endif %} {%if authorData.linkedin %}
+            <a class="username" href="https://www.linkedin.com/in/{{authorData.linkedin}}">
+                <span class="social"
+                    ><img class="w-8 h-8 dark:invert" src="{{ '/assets/img/social/linkedin.svg' }}" alt="Linkedin"
+                /></span>
+                {% comment %} <span>{{authorData.linkedin}}</span> {% endcomment %}
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
