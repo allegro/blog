@@ -1,0 +1,14 @@
+{% assign author = post.author[0] %}
+<div class="inline-flex items-center text-sm text-gray-900 dark:text-white gap-4">
+    <img
+            style="margin: 0"
+            class="w-7 h-7 rounded-full"
+            src="{{ '/assets/img/authors/' | append: author | append: '.jpg' }}"
+            alt="{{ site.data.members[author].name }}"
+    />
+    <div>
+        <a href="{{ '/authors/' | append: author }}" rel="author" class="text-sm no-underline text-gray-500 dark:text-white">
+            {{ site.data.members[author].name }}
+        </a>
+    </div>
+</div>
