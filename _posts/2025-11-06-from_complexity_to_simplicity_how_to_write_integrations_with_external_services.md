@@ -1,0 +1,197 @@
+---
+layout: post
+title: "From complexity to simplicity: How to write integrations with external services"
+author: piotr.klimiec
+tags: [architecture, kotlin]
+---
+
+Integration with external services, regardless of their type, is the backbone of modern microservices architecture.
+The era of huge monolithic applications with a single database is over.
+Today, implementing even a small business process requires cooperation with other services.
+
+In this article, I'd like to share with you an approach to designing such an integration.
+It’s a simple set of guidelines that helps you create a clear, well-structured, and reliable design — an approach used by some teams at Allegro.
+
+### Introduction
+
+Before I reveal the final solution, I want to explain what frustrated me in the approach I tried before.
+For a very long time my default approach to writing integration with external services was applying Hexagonal Architecture.
+While [Hexagonal Architecture](https://web.archive.org/web/20180121161736/http://alistair.cockburn.us/Hexagonal+Architecture) looks great on paper,
+applying it in real-world projects can be challenging, especially without prior experience. If you’re new to the topic, all these concepts and
+recommendations can be hard to grasp. In my opinion, writing code should be easy. If you need to spend hours explaining all these
+concepts to a new developer, and then spend even more time during code reviews fixing misalignments with Hexagonal Architecture, something is not right.
+
+The high entry barrier to Hexagonal Architecture isn’t the only thing that has started to bother me over time.
+Other aspects that have also raised my concerns are the recommended naming conventions for ports and the way code is organized regarding
+integration with external services. Below, I’ll elaborate on these topics in more detail.
+
+
+### Problems with Hexagonal Architecture
+
+One of the first issues I noticed with Hexagonal Architecture is that port names are often too generic.
+Alistair Cockburn, the author of Hexagonal Architecture, recommends that a port’s name should reflect “communication
+intent” behind it — the reason why the domain interacts with the outside world.
+To make this intent clear, a port’s name should typically include a verb.
+
+Examples:
+
+| Description                                                  | Name                      |
+|:-------------------------------------------------------------|:--------------------------|
+| This port is for getting order fees                          | GetOrderFees              |
+| This port is for getting order's IDs                         | GetOrderIds               |
+| This port is for publishing product description              | PublishProductDescription |
+| This port is for notifying subscribers                       | NotifySubscribers         |
+
+The problem with highlighting “communication intent” and using a verb-based convention is that it works well only for single-method ports.
+If we want to include more than one method in a port, this approach stops working, and developers must shift toward noun-based conventions
+with suffixes like Provider, Notifier, Fetcher, and so on.
+
+Ports that use either verb-based or noun-based naming conventions are in my opinion often too general — they lack the precision needed in more complex systems.
+When reading the code, it’s not always obvious which external services are involved in a given business process.
+In large-scale systems like Allegro — where the same type of data can come from different services — knowing the exact data source is extremely helpful,
+both for understanding the system and for maintaining it.
+
+Imagine you get an alert that some endpoint in your service is responding slower than expected and is breaking SLA. What do you do?
+If the problem is not related to time spent in garbage collection or thread pool utilization, it is likely related to the response times
+from external services or the database. In such cases, it is crucial to quickly understand which external systems are involved in executing the given
+business process in order to confirm this hypothesis. If the names of the ports used for communication with
+external services have very generic names like ```GetProduct```, this kind of analysis is harder, especially at 3 a.m.
+
+In large microservice environments, teams often manage 10+ services. It’s impossible to remember the details of all of them — especially if you joined recently,
+or haven’t touched a given service in a while. That’s why it helps to include the name of the external system in the port name — it makes
+debugging and support much easier.
+
+Secondly, method names in these interfaces often mirror the interface name itself when using verb-based convention.
+For instance, in a port  ```GetProduct```, you might find a method like ```getProduct(...)``` or ```getProductFor(...)```.
+When you also consider the fact that reference names for these ports are often auto-generated by the IDE, you can easily end up with code like:
+
+```kotlin
+
+val getProduct: GetProduct
+
+getProduct.getProductFor(...)
+
+```
+Unfortunately, it doesn’t read well.
+
+Another problem I see with Hexagonal Architecture is port placement.
+Ports are defined by the domain layer to decouple business logic from the infrastructure layer (external services).
+It’s the domain that declares the port contracts — which means all interfaces describing ports, along with any supporting classes they require,
+should reside in the domain layer.
+
+In many projects I’ve seen in the past, more than 50% of the domain layer consisted of port definitions and their supporting classes.
+In such designs, it was hard to tell what the domain was actually doing because it was cluttered with many small classes.
+Sometimes it even turned out that the domain wasn’t doing anything at all — serving merely as a placeholder for port definitions and their dependencies.
+Ports in the domain also created confusion about where to find them, as each project had its own take on what “in the domain” really meant.
+
+With all these concerns about Hexagonal Architecture in mind, let’s discuss a solution that addresses them quite well.
+
+### Adding Service Context to Port Names
+
+The original idea of expressing “communication intent” is valid — but in my experience, it works better in the method name, not the interface name.
+For the interface itself, I recommend the naming pattern \<ServiceName\>Facade.
+
+Example:
+
+```kotlin
+interface ProductDescriptionFacade {
+    fun getProductDescription(productId: ProductId): ProductDescriptionDto
+}
+
+
+val productDescriptionFacade: ProductDescriptionFacade
+val productDescription = productDescriptionFacade.getProductDescription(productId)
+```
+
+This makes it immediately clear which external system is being used.
+The interface can be implemented by an HTTP client or adapter — that’s why the name Facade fits well.
+Not every method in the facade has to be a direct mapping to an external API call.
+Sometimes, the adapter performs additional processing or aggregation before returning the result — and that’s perfectly fine.
+
+When applying the \<ServiceName\>Facade convention, remember that we are not designing interfaces around a specific service!
+Using the service name in a port is meant only to make the code easier to read — not to drive the design of our application.
+The choice of integration style between two services should always be preceded by deliberate analysis.
+Sometimes the external model is good enough that there’s no need to map it to something else, and we can simply bring it into our service — conformist style.
+Other times, maximum separation is required — in that case, we create our own model and isolate ourselves as much as possible from external
+dependencies — Anti-Corruption Layer (ACL).
+
+
+### Moving Ports Out of the Domain Layer
+Another change is moving ports, along with the supporting classes that define their contract out of the domain layer to infrastructure layer.
+The infrastructure layer, which contains all information about integrations with external services, is divided into a domain part
+and a technical implementation part (internal). Below is an example package structure for integration with AddressService.
+
+![package](/assets/img/articles/2025-11-06-ports-in-hexagonal-architecture/package.png)
+
+Each integration with an external system consists of three things:
+- Port: an interface used by the domain layer, named using the pattern \<ServiceName\>Facade, e.g. AddressServiceFacade.
+- model.kt file: This file contains all data classes used in the port’s method signatures. These classes are shared with the domain and define the port’s contract.
+- internal package: This package contains the actual implementation of the port (e.g. an HTTP client), along with any mapping or deserialization logic, spring configuration.
+  Everything here is considered internal and should not be used outside.
+
+Keep in mind that all classes inside the internal package must remain unused outside of that package.
+The following architectural test ensures that no class from the internal package is used outside of it.
+This enforces a clear boundary between the public and private parts of each integration.
+At the domain level, the only elements that can be accessed from the infrastructure package are the facade interfaces (*Facade.kt) and classes defined in model.kt file.
+This layout clearly separates API used by the domain (ports) from internal implementation details, making the codebase easier to navigate and maintain.
+
+```kotlin
+
+    @ParameterizedTest
+    @MethodSource("internalPackages")
+    fun `access to internal infrastructure classes is restricted to their own package`(
+        internalPackage: String,
+        importedClasses: JavaClasses
+    ) {
+        val rule = noClasses()
+            .that().resideOutsideOfPackage("$internalPackage..")
+            .should().dependOnClassesThat().resideInAnyPackage("$internalPackage..")
+        rule.check(importedClasses)
+    }
+
+    ...
+
+    companion object {
+        @JvmStatic
+        fun internalPackages(): Stream<Arguments> {
+            val importedClasses = ClassFileImporter()
+                .withImportOption(ImportOption.DoNotIncludeTests())
+                .importPackagesOf(AppRunner::class.java)
+
+            return importedClasses.map { it.packageName }
+                .filter { it.endsWith("internal") }
+                .distinct()
+                .map { Arguments.of(it, importedClasses) }
+                .stream()
+        }
+    }
+```
+
+Why move Port and model.kt outside the domain package?
+By following this convention, it becomes much easier to find all the interfaces that describe integrations with external services.
+It also keeps the domain package lightweight and dedicated to the core elements that support the application layer, like domain services, factories, and
+other domain-specific components.
+
+### Embrace the Change
+
+What happens if at some point we switch integration from service X to service Y? What impact will it have?
+
+In such a case, the only thing we need to do is rename the interface and package to match the new implementation.
+This change has zero impact on the business logic.
+The thing that matters most to the domain — the interface contract — stays exactly the same.
+Ports are defined by the domain's requirements, with the only difference being that they are physically placed in the infrastructure package, which in turn is
+divided into a domain part, containing the port definition and the model, and an internal part that describes the details of the current implementation,
+hidden from other packages.
+
+The entire complexity of the change is isolated within the internal package, keeping the rest of the application unaffected.
+No changes in the internal package will affect business logic.
+
+
+### Summary
+
+To conclude, I’d like to emphasize that architecture should be flexible and adapted to the specific needs of your project, your team, and other relevant factors.
+The presented set of guidelines helps you design integrations with external services that are simple to implement, easy to change, and maintainable in the long run.
+
+### Credits
+The presented solution is inspired by the excellent talk [“Modularity and Hexagonal Architecture in Real Life”](https://www.youtube.com/watch?v=ILBX9fa9aJo) by Jakub Nabradlik.
+The idea of using an internal package and ArchUnit, instead of relying on package scope to protect the details of each integration, comes from the team I work with.
