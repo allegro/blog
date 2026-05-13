@@ -1,0 +1,23 @@
+<div class="flex items-center mb-6 not-italic">
+    <div class="inline-flex items-center text-sm text-gray-900 dark:text-white flex-grow flex-wrap gap-4">
+        <div class="flex -space-x-4 rtl:space-x-reverse">
+            {% for author in page.author %}
+                <img class="w-16 h-16 border-2 border-white rounded-full dark:border-gray-800"
+                    src="{{ '/assets/img/authors/' | append: author | append: '.jpg' }}"
+                    alt="{{ author }}"
+                >
+            {% endfor %}
+        </div>
+        <div class="text-balance">
+            {% for author in page.author %}
+                <a href="{{ '/authors/' | append: author }}" rel="author" class="text-xl font-bold text-gray-900 dark:text-white">{{
+                    site.data.members[author].name }}</a>{% if forloop.last == false %},{% endif %}
+                {% endfor %}
+            <p class="text-base text-gray-500 dark:text-gray-400">
+                <time pubdate datetime="{{ page.date }}" title="{{ page.date }}">
+                    {{ page.date | date: "<strong>%b %-d</strong> %Y" }}
+                </time>
+            </p>
+        </div>
+    </div>
+</div>
