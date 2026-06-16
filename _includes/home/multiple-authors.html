@@ -1,0 +1,15 @@
+<div class="flex -space-x-2 rtl:space-x-reverse">
+    {% for author in post.author %}
+    <img class="w-7 h-7 border-2 border-white rounded-full dark:border-gray-800"
+        style="margin-top: 0; margin-bottom: 0;"
+         src="{{ '/assets/img/authors/' | append: author | append: '.jpg' }}"
+         alt="{{ author }}"
+    >
+    {% endfor %}
+</div>
+<div class="text-balance">
+    {% for author in post.author %}
+        <a href="{{ '/authors/' | append: author }}" rel="author" class="text-sm no-underline text-gray-500 dark:text-white">
+            {{ site.data.members[author].name }}</a>{% if forloop.last == false %},{% endif %}
+    {% endfor %}
+</div>
