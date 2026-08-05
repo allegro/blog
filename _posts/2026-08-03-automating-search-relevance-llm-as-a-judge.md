@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Automating Search Relevance Assessment at Scale with LLM-as-a-Judge"
-author: [joanna.marhula, mateusz.a.sidor]
+author: [joanna.marhula, mateusz.sidor]
 tags: [tech, search relevance, relevance evaluation, llm, llm-as-a-judge, ai product, local llms]
 ---
 
