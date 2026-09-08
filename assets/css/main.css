@@ -1,0 +1,27 @@
+---
+---
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    article a {
+        @apply break-words;
+    }
+
+    article > h2 {
+        @apply text-balance;
+    }
+
+    article > h2 > code {
+        background-color: transparent !important;
+        padding: 0 !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .hide-on-mobile {
+        display: none !important;
+    }
+}
