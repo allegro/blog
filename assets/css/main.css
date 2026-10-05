@@ -1,0 +1,118 @@
+---
+---
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    article a {
+        @apply break-words;
+    }
+
+    article > h2 {
+        @apply text-balance;
+    }
+
+    article > h2 > code {
+        background-color: transparent !important;
+        padding: 0 !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .hide-on-mobile {
+        display: none !important;
+    }
+}
+
+.post-content img {
+    cursor: zoom-in;
+}
+
+.image-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1rem 1rem;
+    background: rgb(0 0 0 / 88%);
+}
+
+.image-lightbox[hidden] {
+    display: none;
+}
+
+.image-lightbox__content {
+    display: flex;
+    max-width: 100%;
+    max-height: 100%;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.image-lightbox__image {
+    display: block;
+    max-width: 100%;
+    max-height: calc(100vh - 7rem);
+    object-fit: contain;
+    cursor: zoom-out;
+}
+
+.image-lightbox__caption {
+    max-width: 100%;
+    color: #fff;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.image-lightbox__caption:empty {
+    display: none;
+}
+
+.image-lightbox__close {
+    position: absolute;
+    top: 0.75rem;
+    right: 1rem;
+    display: grid;
+    width: 2.75rem;
+    height: 2.75rem;
+    place-items: center;
+    border: 0;
+    border-radius: 9999px;
+    background: rgb(255 255 255 / 15%);
+    color: #fff;
+    cursor: pointer;
+}
+
+.image-lightbox__close::before,
+.image-lightbox__close::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1.35rem;
+    height: 2px;
+    border-radius: 1px;
+    background: currentColor;
+    content: '';
+}
+
+.image-lightbox__close::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.image-lightbox__close::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.image-lightbox__close:hover,
+.image-lightbox__close:focus-visible {
+    background: rgb(255 255 255 / 30%);
+}
+
+body.image-lightbox-open {
+    overflow: hidden;
+}

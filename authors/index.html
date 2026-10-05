@@ -1,0 +1,21 @@
+---
+layout: default
+title: blog authors
+---
+
+<h1>Authors</h1>
+<section>
+    <ul class="list-none">
+        {% assign authors = site.data.members | sort %}
+        {% for author in authors%}
+            {% assign authorKey = author[0] %}
+            {% assign authorData = author[1] %}
+            <li>
+                {% include author/details.html showLinkToPost=true %}
+            </li>
+            {% if forloop.last == false %}
+                <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700 mt-0 mb-2" />
+            {% endif %}
+        {% endfor %}
+    </ul>
+</section>

@@ -1,0 +1,25 @@
+name: Update allegro.tech
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate Token for Blog Pusher
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+            app-id: ${{ secrets.BLOG_PUSHER_APP_ID }}
+            private-key: ${{ secrets.BLOG_PUSHER_PRIVATE_KEY }}
+            owner: allegro
+            repositories: allegro.tech
+
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          repository: allegro/allegro.tech
+          event-type: blog-update
