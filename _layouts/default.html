@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en-US" class="scroll-pt-24">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="{{ '/assets/css/main.css?v=' | append: site.github.build_revision }}"/>
+    {% seo %}
+    {% if page.author %}
+        {% if page.author.first %}
+            <meta property="og:image" content="https://ogp.dsabyte.com/api/image.png?layoutName=Blog&Title={{ page.title | url_encode }}&Author+Name={{ page.author | array_to_sentence_string | url_encode }}&Author+Avtar={{ site.url }}{{ '/assets/img/authors/' | append: page.author[0] | append: '.jpg' }}&Icon+URL={{ site.url }}/assets/img/og-icon.png&Tags={% for tag in page.tags limit:4 %}{{ tag | url_encode }}{% if forloop.last == false %},{% endif %}{% endfor %}&Theme=light&ext=.png">
+        {% else %}
+            <meta property="og:image" content="https://ogp.dsabyte.com/api/image.png?layoutName=Blog&Title={{ page.title | url_encode }}&Author+Name={{ page.author | url_encode }}&Author+Avtar={{ site.url }}{{ '/assets/img/authors/' | append: page.author | append: '.jpg' }}&Icon+URL={{ site.url }}/assets/img/og-icon.png&Tags={% for tag in page.tags limit:4 %}{{ tag | url_encode }}{% if forloop.last == false %},{% endif %}{% endfor %}&Theme=light&ext=.png">
+        {% endif %}
+    {% endif %}
+    <link rel="icon" href="/favicon.ico">
+    <link rel="alternate" type="application/atom+xml" title="RSS Feed" href="/feed.xml" />
+    <script defer data-domain="blog.allegro.tech" src="https://plausible.io/js/script.js"></script>
+    <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+{% include header.html %}
+<main class="pt-8 pb-8 bg-white dark:bg-gray-900 antialiased" style="min-height: calc(100dvh - 15rem);">
+    <div class="flex justify-between px-4 md:p-0 mx-auto max-w-screen-xl">
+        <div class="mx-auto w-full max-w-2xl format format-sm sm:format-base lg:format-lg dark:format-invert">
+            {{ content }}
+        </div>
+    </div>
+</main>
+{% include footer.html %}
+</body>
+</html>
