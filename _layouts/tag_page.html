@@ -1,0 +1,25 @@
+---
+layout: default
+---
+
+<section class="bg-white dark:bg-gray-900">
+    <div class="mx-auto max-w-screen-xl">
+        <h1>Articles tagged with <br /><span class="text-primary-600 dark:text-primary-500">{{ page.tag }}</span></h1>
+        {% for post in page.posts %}
+            <article>
+                <div class="flex justify-between items-center mb-5 text-gray-500">
+                    <span class="text-sm">{{ post.date | date_to_string }}</span>
+                </div>
+                <h2 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                    <a href="{{ post.url }}" class="no-underline hover:underline">{{ post.title }}</a>
+                </h2>
+                <p class="font-light text-gray-500 dark:text-gray-400">{{ post.excerpt | markdownify | strip_html }}</p>
+                <div class="flex items-center flex-wrap gap-4 mb-6" style="row-gap: 0">
+                    {% if post.author.size == 1 %} {% include home/single-author.html %} {% else %} {% include home/multiple-authors.html %} {% endif %}
+                </div>
+            </article>
+        {% if forloop.last == false %}
+            <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700" style="margin-top: 0; margin-bottom: 1.5rem" />
+        {% endif %} {% endfor %}
+    </div>
+</section>

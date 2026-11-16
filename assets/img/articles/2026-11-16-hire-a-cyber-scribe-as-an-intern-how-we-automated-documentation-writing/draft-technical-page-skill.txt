@@ -1,0 +1,45 @@
+---
+name: draft-technical-page
+description: Draft or update one technical feature page using a scoped pull
+   request and approved sources. Use when a maintainer requests technical
+   documentation for a specific change.
+---
+
+# Draft a technical page
+
+Follow `../../documentation-standard.md` throughout this workflow.
+
+## Required inputs
+
+- Feature and intended reader
+- Pull request URL or commit SHA in the source repository
+- Destination page in the documentation repository, or its page-creation
+   convention
+- Approved requirements, API contracts, and design links relevant to the task
+- Documentation owner
+
+If the feature, revision, destination, or authoritative source is missing, ask
+for it before drafting. Do not guess.
+
+## Procedure
+
+1. Confirm the inputs and inspect the pull request diff at the supplied
+    revision. Read the full changed files and relevant tests at that revision.
+2. Make a short evidence list. For each planned claim, record its source and
+    whether it describes intended behavior, implemented behavior, or context.
+3. Compare sources. If they conflict or leave a material behavior unclear,
+    stop and ask the owner. Do not turn an open question into a requirement.
+4. Draft only the requested page using the technical page structure in the
+    standard. Link related pages instead of copying them.
+5. Check every factual claim against its source. Run the repository's
+   documentation checks and inspect the resulting diff. For claims that need
+   confirmation beyond the available evidence, add a reviewer action item that
+   states what to verify and identifies the relevant source or owner.
+
+## Return to the requester
+
+- The draft path and a concise summary of changed behavior
+- Sources checked and reviewer action items for claims that still need
+   confirmation
+- Checks run and their results
+- A clear statement that no commit, publication, or pull request was created

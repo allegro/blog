@@ -1,0 +1,34 @@
+name: Push to public fork
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  publish:
+    if:  ${{ github.repository_owner != 'allegro' }}
+    runs-on: [ubuntu-latest, self-hosted]
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      -   name: Generate Token for Blog Pusher
+          id: app-token
+          uses: actions/create-github-app-token@v1
+          with:
+              app-id: ${{ secrets.BLOG_PUSHER_APP_ID }}
+              private-key: ${{ secrets.BLOG_PUSHER_PRIVATE_KEY }}
+              owner: allegro
+              repositories: blog
+
+      - name: rebase public fork
+        run: |
+          # Squash all history in order to remove any sensitive data in pre-code-review versions
+          git checkout --orphan new-main main &&
+          git commit -m "All history was squashed" &&
+          git branch -M new-main main &&
+          git push "https://x-access-token:$REPO_TOKEN@github.com/allegro/blog.git" main -f
+        env:
+          REPO_TOKEN: ${{ steps.app-token.outputs.token }}

@@ -1,0 +1,85 @@
+# Project Brief: <project name>
+
+Fill in every section. Write "not applicable" or "not started" instead of leaving
+a field empty. Link to the approved source of truth instead of copying from it.
+Never put passwords, tokens, or real user credentials here; use
+access-controlled references for sensitive test data.
+
+## 1. General Information
+
+| Role / Team | Name / Details |
+| --- | --- |
+| Product Owner (PO) | <name> |
+| Tech Lead | <name> |
+| QA Lead | <name> |
+| UX Designer | <name> |
+| Analyst | <name> |
+| Slack channel | <channel> |
+| Epic link (Jira) | <link> |
+| Deployment date (deadline) | <date and how firm it is> |
+| Collaborating teams | <teams> |
+
+## 2. Business Goal
+
+| Section | Content |
+| --- | --- |
+| Business goal | <problem being solved, expected value for users and the business> |
+
+## 3. Acceptance Criteria
+
+| # | Criterion |
+| --- | --- |
+| 1 | <observable, testable criterion> |
+| 2 | <observable, testable criterion> |
+
+## 4. Project Phases, Deployment, Legal and Security
+
+| Topic | Content |
+| --- | --- |
+| Deployment method | <feature flag name, rollout phases> |
+| A/B testing and experiments | <yes/no, scope, success criterion> |
+| Legal and security | <status, approvals, link to the decision> |
+
+## 5. Mockups and Accessibility
+
+| Topic | Content |
+| --- | --- |
+| Design link | <link to a specific, approved frame, or "pending approval"> |
+| Contrast | <requirements and status> |
+| Screen readers | <requirements and status> |
+| Enlarged fonts | <requirements and status> |
+
+## 6. Technical Details and Architecture
+
+| Topic | Content |
+| --- | --- |
+| Architecture | <intended approach and the reasoning behind it> |
+| Backend / API contract | <link to the contract> |
+| Components | <main components> |
+
+## 7. Analytics
+
+| Event name | Category | Action | Label | Custom parameters |
+| --- | --- | --- | --- | --- |
+| <event> | <category> | <action> | <label> | <parameters> |
+
+## 8. Quality Assurance and Testing
+
+| Topic | Content |
+| --- | --- |
+| Test data | <access-controlled reference, not the data itself> |
+| Happy path | <scenario> |
+| Corner cases | <scenarios> |
+
+## 9. Definition of Ready Checklist
+
+| Status | Checklist item |
+| --- | --- |
+| [ ] | Tech Lead and QA Lead are selected and assigned to the parent epic |
+| [ ] | Project channel created |
+| [ ] | Business goal is documented in the parent epic |
+| [ ] | Acceptance criteria are written down in the epic and tasks |
+| [ ] | The project has a designated deployment date |
+| [ ] | The release method is determined |
+| [ ] | Mockups are completed and approved |
+| [ ] | Backend contract is frozen |

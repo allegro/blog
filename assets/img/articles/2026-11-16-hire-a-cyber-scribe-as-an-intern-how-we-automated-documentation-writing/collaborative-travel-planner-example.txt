@@ -1,0 +1,88 @@
+Project Document: Collaborative Travel Planner (Wędrownik App)
+
+Illustrative example. The project details, names, identifiers, metrics, locations,
+and accounts below are examples and are not production data.
+
+1. General Information
+
+Role / Team | Name / Details
+Product Owner (PO) | Name
+Tech Lead | Name
+QA Lead | Name
+UX Designer | Name
+Analyst | Name
+Slack Channel | #proj-collab-planner
+Epic Link (Jira) | TRV-XXXX
+Deployment Date (Deadline) | November 15, 2026 (Flexible)
+Collaborating Teams | Core Web, Maps, Backend API
+
+2. Business Goal
+
+The "Collaborative Travel Planner" project aims to allow groups of users to simultaneously and collaboratively plan trips in our web application. This solves the problem of scattered communication and the need to use external tools like spreadsheets. This functionality will increase user engagement, facilitate collaboration when choosing destinations, and increase the chances of group conversion (shared bookings for hotels and attractions).
+
+3. Acceptance Criteria
+
+- Every user with a generated invitation link and appropriate permissions can add and remove points of interest (POI) on the map.
+- Any modifications to the plan list must be reflected for other users in real time with a delay of no more than 2 seconds.
+- Built-in voting mechanism (thumbs up/down) for accommodation and trip proposals.
+- The list and map views must be fully responsive, adapted for mobile devices (PWA).
+
+4. Project Phases, Deployment & Legal/Security
+
+- Deployment method: Deployed under the ff_collaborative_planner_enabled Feature Flag. Flag management is handled on the backend (using a tool like LaunchDarkly).
+- A/B testing and experiments: Yes, A/B tests are initially planned for 10% of users. The success criterion is a 15% increase in the engagement rate compared to the control group.
+- Legal & Security: Completed. The legal team approved the privacy policy regarding the shared links mechanism.
+
+5. Mockups and Accessibility (UI/UX & a11y)
+
+- Figma Link: No final external URL yet (draft version pending approval).
+- a11y requirements:
+  - Provided standard-compliant contrast (minimum 4.5:1) for add and vote buttons.
+  - Set descriptions for Screen Readers - e.g., aria-labels informing about new elements added to the plan.
+  - Included support for enlarged fonts without losing UI readability.
+
+6. Technical Details and Architecture
+
+Asynchronous synchronization based on WebSockets with a fallback to Server-Sent Events (SSE) was applied.
+
+6.1 Backend / API Contract
+
+POST /api/v1/trips/{tripId}/points
+Description: Endpoint adding a new point to the shared plan. Emits an event to other users in the session.
+
+Request body:
+{
+  "pointId": "uuid-1234-5678",
+  "type": "ATTRACTION",
+  "location": { "lat": 52.2297, "lon": 21.0122 },
+  "name": "National Museum",
+  "addedBy": "user-789"
+}
+
+6.2 Frontend / Web Architecture
+
+- React/Vue Components: CollaborativeMapContainer, LiveUserCursors, PlannerSidebar.
+- State Management: Use of Redux (or Context API) coupled with Socket.io for optimistic UI rendering of newly added points.
+
+7. Analytics
+
+Event Name | Category | Action | Label | Custom Parameters
+CollabPlanner_Opened | Screen | View | PlannerTab | tripId, isOwner
+POI_Added | Interaction | Add | MapMarker | poiType, lat, lon, tripId
+
+8. Quality Assurance & Testing
+
+- Test data: Prepared accounts: test_owner_01 (plan creator) and test_guest_01 (participant from link).
+- Scenarios (Happy Paths): User A opens the travel plan, generates an invitation link. User B enters via the link and adds a new hotel. User A sees the new point with a delay of up to 2 seconds.
+- Corner Cases: Testing connection loss during editing - upon network resume, changes must be synchronized (Conflict Resolution).
+
+9. Definition of Ready (DoR) Checklist
+
+- [x] Tech Lead and QA Lead are selected and assigned to the parent epic
+- [x] Project channel created on Slack
+- [x] Business goal is documented in the parent epic
+- [x] Acceptance criteria are written down in the epic and tasks
+- [x] The project has a designated deployment date
+- [x] The release method is determined
+- [ ] Mockups are completed and approved (requires PO approval)
+- [x] Backend contract is frozen

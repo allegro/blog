@@ -1,0 +1,52 @@
+---
+layout: default
+title: about
+---
+
+<section>
+    <header>
+        <h1>About us</h1>
+        <p>
+            This is Allegro’s public-facing tech blog. We use it to share our knowledge with the community and to tell others what our work at Allegro is like.
+            It is also a tool for promoting Allegro to potential candidates. However, we try to be objective, and we explicitly avoid any kind of
+            excessive propaganda. We write for smart people who are good at telling genuinely interesting and useful information from corporate.
+        </p>
+    </header>
+</section>
+<section>
+    <h2>Goals:</h2>
+    <ul>
+        <li>Creating a technical blog valuable for the community. We focus on development and devops.</li>
+        <li>Letting the community know about events we organize or take part in.</li>
+        <li>Maintaining the image of Allegro as a technical leader and a place where great engineers work.</li>
+        <li>Highlighting our achievements but also describing our failures, for example by publishing outage postmortems.</li>
+    </ul>
+    <h2>Our editors:</h2>
+    <ul class="list-none" style="padding: 0">
+        {% assign authors = site.data.members | sort %}
+        {% for author in authors %}
+            {% assign authorKey = author[0] %}
+            {% assign authorData = author[1] %}
+                {% if authorData.role contains "Editor" %}
+                    <li>{% include author/details.html %}</li>
+                {% endif %}
+        {% endfor %}
+    </ul>
+    <h2>Former editors:</h2>
+    <ul class="list-none" style="padding: 0">
+        {% assign authors = site.data.members | sort %}
+        {% for author in authors %}
+            {% assign authorKey = author[0] %}
+            {% assign authorData = author[1] %}
+            {% if authorData.role contains "Former" %}
+                <li>{% include author/details.html %}</li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+    <h2>Unassociated reviewers:</h2>
+    <p>
+        We'd also like to thank all the people, too numerous to list here, who reviewed articles without being formal members of the editorial board.
+        Just like code reviews, article reviews are open to everyone at the company and often people just drop in when they feel competent to discuss a
+        topic. You can't overestimate the value of such spontaneous help.
+    </p>
+</section>

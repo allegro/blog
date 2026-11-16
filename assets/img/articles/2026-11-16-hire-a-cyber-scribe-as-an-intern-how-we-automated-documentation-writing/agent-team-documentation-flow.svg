@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1892 768" role="img" aria-labelledby="title desc">
+  <title id="title">How we work with the AI agent</title>
+  <desc id="desc">A five-step workflow in which the team provides context, the AI agent analyzes it and drafts documentation, and the team reviews, approves, and publishes the result. Review comments return the draft to the agent for changes.</desc>
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="6" stdDeviation="7" flood-color="#1f2937" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#9aa3af"/>
+    </marker>
+    <marker id="feedback-arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#2f73df"/>
+    </marker>
+    <style>
+      .heading { font: 700 44px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #202735; }
+      .subtitle { font: 400 25px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #596273; }
+      .legend { font: 500 23px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #202735; }
+      .number { font: 700 31px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #ffffff; }
+      .owner { font: 700 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; letter-spacing: 1px; }
+      .label { font: 700 32px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #202735; }
+      .body { font: 400 22px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #343c4d; }
+      .badge { font: 400 22px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #202735; }
+      .feedback-label { font: 600 20px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #2f73df; }
+      .flow { fill: none; stroke: #9aa3af; stroke-width: 3; marker-end: url(#arrow); }
+      .feedback { fill: none; stroke: #2f73df; stroke-width: 4; stroke-linecap: round; stroke-dasharray: 10 9; marker-end: url(#feedback-arrow); }
+    </style>
+  </defs>
+
+  <rect width="1892" height="768" fill="#ffffff"/>
+
+  <text x="64" y="84" class="heading">How we work with the AI agent</text>
+  <text x="64" y="130" class="subtitle">The agent drafts, people decide</text>
+
+  <circle cx="1476" cy="99" r="12" fill="#2f73df"/>
+  <text x="1499" y="107" class="legend">Team</text>
+  <circle cx="1654" cy="99" r="12" fill="#7948dd"/>
+  <text x="1677" y="107" class="legend">AI agent</text>
+
+  <rect x="64" y="201" width="297" height="320" rx="24" fill="#eef4ff" stroke="#2f73df" stroke-width="3" filter="url(#shadow)"/>
+  <circle cx="212" cy="267" r="34" fill="#2f73df"/>
+  <text x="212" y="278" text-anchor="middle" class="number">1</text>
+  <text x="212" y="341" text-anchor="middle" class="owner" fill="#2f73df">TEAM</text>
+  <text x="212" y="384" text-anchor="middle" class="label">Context</text>
+  <text x="212" y="428" text-anchor="middle" class="body">
+    <tspan x="212">Task, designs</tspan>
+    <tspan x="212" dy="31">and code changes</tspan>
+  </text>
+
+  <path d="M372 360 H421" class="flow"/>
+
+  <rect x="431" y="201" width="296" height="320" rx="24" fill="#f5efff" stroke="#7948dd" stroke-width="3" filter="url(#shadow)"/>
+  <circle cx="579" cy="267" r="34" fill="#7948dd"/>
+  <text x="579" y="278" text-anchor="middle" class="number">2</text>
+  <text x="579" y="341" text-anchor="middle" class="owner" fill="#7948dd">AGENT</text>
+  <text x="579" y="384" text-anchor="middle" class="label">Analysis</text>
+  <text x="579" y="428" text-anchor="middle" class="body">
+    <tspan x="579">Gathers data and asks</tspan>
+    <tspan x="579" dy="31">when something is missing</tspan>
+  </text>
+
+  <path d="M738 360 H787" class="flow"/>
+
+  <rect x="797" y="201" width="297" height="320" rx="24" fill="#f5efff" stroke="#7948dd" stroke-width="3" filter="url(#shadow)"/>
+  <circle cx="945" cy="267" r="34" fill="#7948dd"/>
+  <text x="945" y="278" text-anchor="middle" class="number">3</text>
+  <text x="945" y="341" text-anchor="middle" class="owner" fill="#7948dd">AGENT</text>
+  <text x="945" y="384" text-anchor="middle" class="label">Draft</text>
+  <text x="945" y="428" text-anchor="middle" class="body">
+    <tspan x="945">Writes documentation</tspan>
+    <tspan x="945" dy="31">that follows our standard</tspan>
+    <tspan x="945" dy="31">and validates it</tspan>
+  </text>
+
+  <path d="M1105 360 H1154" class="flow"/>
+
+  <rect x="1164" y="201" width="295" height="320" rx="24" fill="#eef4ff" stroke="#2f73df" stroke-width="3" filter="url(#shadow)"/>
+  <circle cx="1311" cy="267" r="34" fill="#2f73df"/>
+  <text x="1311" y="278" text-anchor="middle" class="number">4</text>
+  <text x="1311" y="341" text-anchor="middle" class="owner" fill="#2f73df">TEAM</text>
+  <text x="1311" y="384" text-anchor="middle" class="label">Review</text>
+  <text x="1311" y="428" text-anchor="middle" class="body">
+    <tspan x="1311">We check the content</tspan>
+    <tspan x="1311" dy="31">and request changes</tspan>
+  </text>
+
+  <path d="M1470 360 H1519" class="flow"/>
+
+  <rect x="1529" y="201" width="297" height="320" rx="24" fill="#eef4ff" stroke="#2f73df" stroke-width="3" filter="url(#shadow)"/>
+  <circle cx="1677" cy="267" r="34" fill="#2f73df"/>
+  <text x="1677" y="278" text-anchor="middle" class="number">5</text>
+  <text x="1677" y="341" text-anchor="middle" class="owner" fill="#2f73df">TEAM</text>
+  <text x="1677" y="384" text-anchor="middle" class="label">Publish</text>
+  <text x="1677" y="428" text-anchor="middle" class="body">
+    <tspan x="1677">Approval, PR,</tspan>
+    <tspan x="1677" dy="31">review and merge</tspan>
+  </text>
+
+  <path d="M1311 526 V593 H945 V532" class="feedback"/>
+  <rect x="1055" y="575" width="146" height="36" rx="18" fill="#ffffff" stroke="#2f73df" stroke-width="2"/>
+  <text x="1128" y="601" text-anchor="middle" class="feedback-label">changes</text>
+
+  <rect x="165" y="648" width="496" height="59" rx="30" fill="#f3f4f6"/>
+  <circle cx="206" cy="677" r="14" fill="#20a36b"/>
+  <path d="M199 677 L204 682 L213 671" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="233" y="685" class="badge">Nothing is merged without approval</text>
+
+  <rect x="697" y="648" width="496" height="59" rx="30" fill="#f3f4f6"/>
+  <circle cx="738" cy="677" r="14" fill="#20a36b"/>
+  <path d="M731 677 L736 682 L745 671" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="765" y="685" class="badge">The agent asks instead of guessing</text>
+
+  <rect x="1228" y="648" width="496" height="59" rx="30" fill="#f3f4f6"/>
+  <circle cx="1269" cy="677" r="14" fill="#20a36b"/>
+  <path d="M1262 677 L1267 682 L1276 671" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="1296" y="685" class="badge">Every change goes through review</text>
++</svg>

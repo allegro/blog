@@ -1,0 +1,51 @@
+# Documentation standard
+
+## Purpose and ownership
+
+- Audience: engineers who maintain or integrate with this feature.
+- Each page names an owner and the event that should trigger an update.
+- The documentation repository holds the maintained summary of product
+   behavior and confirmed decisions. Source repositories remain authoritative
+   for implementation details, contracts, and tests; link to them instead of
+   copying.
+
+## Evidence rules
+
+- Use the pull request diff to identify what changed; inspect the complete
+   changed files and tests at the same revision to understand the change.
+- Use the pull request diff, current code, API contracts, and tests to
+   establish what is implemented. Use the approved Project Brief and designs
+   (for example, a Figma frame) to establish what was intended. Jira tickets,
+   Slack discussions, and old pages are context only: they describe plans or
+   history, not what is implemented now.
+- Link each non-obvious technical claim to its source. Label unresolved or
+   historical information; never fill gaps with assumptions.
+- If intended and implemented behavior differ, or sources otherwise conflict,
+   stop and ask the named owner to resolve the conflict. Do not silently pick
+   one source.
+- In the handoff, list reviewer action items only for claims that the available
+   evidence cannot fully verify. State what the reviewer must confirm and which
+   source or owner can resolve it; do not present the claim as verified.
+
+## Technical page structure
+
+These sections apply to the technical pages of a feature.
+
+1. Purpose and user-visible behavior
+2. Main components and their responsibilities
+3. Important interactions or API contracts
+4. Failure, compatibility, and rollout behavior, when applicable
+5. Tests and operational links
+6. Owner and last-verified date
+
+Omit sections that do not apply. Do not invent details to fill a section.
+
+## Security and review
+
+- Never copy credentials, tokens, personal data, or restricted test fixtures.
+- Draft only in the requested destination in the documentation repository.
+   Treat source repositories as read-only. Do not commit, publish, or open a
+   pull request without explicit approval.
+- Before review, check links, terminology, formatting, and repository-specific
+   documentation rules. Show the diff, evidence, unresolved questions, and any
+   reviewer action items.
